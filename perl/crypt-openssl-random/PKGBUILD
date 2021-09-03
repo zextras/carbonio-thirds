@@ -1,0 +1,44 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-perl-crypt-openssl-random"
+pkgver="0.15"
+pkgrel="1"
+pkgdesc="OpenSSL/LibreSSL pseudo-random number generator access"
+pkgdesclong=(
+  "OpenSSL/LibreSSL pseudo-random number generator access"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends=(
+  "carbonio-perl-base"
+  "carbonio-openssl"
+)
+section="libs"
+priority="important"
+sources=(
+  "https://cpan.metacpan.org/authors/id/R/RU/RURBAN/Crypt-OpenSSL-Random-${pkgver}.tar.gz"
+  "remove-guess.patch"
+)
+hashsums=(
+  "SKIP"
+  "d5f8aad1abb062ea114a0a4990258948bb5eea0fa5632f0d49991cbd15644333"
+)
+
+build() {
+  cd "${srcdir}/Crypt-OpenSSL-Random-${pkgver}"
+  patch -Np1 -i ../remove-guess.patch
+  perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
+    INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
+    LIB=/opt/zextras/common/lib/perl5 LIBS="-L/opt/zextras/common/lib -lssl -lcrypto" INC="-I/opt/zextras/common/include"
+  make
+}
+
+package() {
+  cd "${srcdir}/Crypt-OpenSSL-Random-${pkgver}"
+  make install DESTDIR="${pkgdir}"
+  find "${pkgdir}" -name '.packlist' -delete
+  find "${pkgdir}" -name '*.pod' -delete  
+}

@@ -1,0 +1,40 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-perl-lwp-mediatypes"
+pkgver="6.04"
+pkgrel="1"
+pkgdesc="Guess media type for a file or a URL"
+pkgdesclong=(
+  "Guess media type for a file or a URL"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends=(
+  "carbonio-perl-base"
+)
+section="libs"
+priority="important"
+sources=(
+  "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/LWP-MediaTypes-${pkgver}.tar.gz"
+)
+hashsums=(
+  "SKIP"
+)
+
+build() {
+  cd "${srcdir}/LWP-MediaTypes-${pkgver}"
+  perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
+    INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
+    LIB=/opt/zextras/common/lib/perl5 LIBS="-L/opt/zextras/common/lib -lssl -lcrypto" INC="-I/opt/zextras/common/include"
+  make
+}
+
+package() {
+  cd "${srcdir}/LWP-MediaTypes-${pkgver}"
+  make install DESTDIR="${pkgdir}"
+  find "${pkgdir}" -name '.packlist' -delete
+  find "${pkgdir}" -name '*.pod' -delete
+}

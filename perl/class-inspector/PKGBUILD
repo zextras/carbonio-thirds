@@ -1,0 +1,40 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-perl-class-inspector"
+pkgver="1.36"
+pkgrel="1"
+pkgdesc="Get information about a class and its structure"
+pkgdesclong=(
+  "Get information about a class and its structure"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends=(
+  "carbonio-perl-base"
+)
+section="libs"
+priority="important"
+sources=(
+  "https://cpan.metacpan.org/authors/id/P/PL/PLICEASE/Class-Inspector-${pkgver}.tar.gz"
+)
+hashsums=(
+  "SKIP"
+)
+
+build() {
+  cd "${srcdir}/Class-Inspector-${pkgver}"
+    perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
+    INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
+    LIB=/opt/zextras/common/lib/perl5
+  make
+}
+
+package() {
+  cd "${srcdir}/Class-Inspector-${pkgver}"
+  make install DESTDIR="${pkgdir}"
+  find "${pkgdir}" -name '.packlist' -delete
+  find "${pkgdir}" -name '*.pod' -delete
+}

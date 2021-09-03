@@ -1,0 +1,41 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-perl-io-socket-ssl"
+pkgver="2.071"
+pkgrel="1"
+pkgdesc="SSL sockets with IO::Socket interface"
+pkgdesclong=(
+  "SSL sockets with IO::Socket interface"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends=(
+  "carbonio-perl-socket"
+  "carbonio-perl-base"
+)
+section="libs"
+priority="important"
+sources=(
+  "https://cpan.metacpan.org/authors/id/S/SU/SULLR/IO-Socket-SSL-${pkgver}.tar.gz"
+)
+hashsums=(
+  "SKIP"
+)
+
+build() {
+  cd "${srcdir}/IO-Socket-SSL-${pkgver}"
+  perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
+    INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
+    LIB=/opt/zextras/common/lib/perl5 LIBS="-L/opt/zextras/common/lib -lssl -lcrypto" INC="-I/opt/zextras/common/include"
+  make
+}
+
+package() {
+  cd "${srcdir}/IO-Socket-SSL-${pkgver}"
+  make install DESTDIR="${pkgdir}"
+  find "${pkgdir}" -name '.packlist' -delete
+  find "${pkgdir}" -name '*.pod' -delete
+}

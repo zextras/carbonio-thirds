@@ -1,0 +1,55 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-bdb"
+pkgver="5.3.28"
+pkgrel="1"
+pkgdesc="The Berkeley DB embedded database system"
+pkgdesclong=(
+  "The Berkeley DB embedded database system"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends=(
+  "carbonio-base"
+)
+section="utils"
+priority="optional"
+sources=(
+  "https://download.oracle.com/berkeley-db/db-${pkgver}.tar.gz"
+  "atomic.patch"
+)
+hashsums=(
+  "fa3f8a41ad5101f43d08bc0efb6241c9b6fc1ae9"
+  "ba0e2b4f53e9cb0ec58f60a979b53b8567b4565f0384886196f1fc1ef111d151"
+)
+
+build() {
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
+  export CFLAGS="-O2"
+  export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
+  cd "${srcdir}/db-${pkgver}"
+  patch -p0 -i ../atomic.patch
+
+  cd build_unix
+
+  ../dist/configure \
+    --prefix=/opt/zextras/common \
+    --enable-compat185 \
+    --enable-shared \
+    --disable-static \
+    --enable-cxx \
+    --enable-dbm \
+    --enable-stl
+  make LIBSO_LIBS=-lpthread
+}
+
+package() {
+  cd "${srcdir}/db-${pkgver}"
+  cd build_unix
+  make DESTDIR="${pkgdir}" install
+  rm -r "${pkgdir}"/opt/zextras/common/docs
+  rm -rf "${pkgdir}"/opt/zextras/common/lib/*.la
+}

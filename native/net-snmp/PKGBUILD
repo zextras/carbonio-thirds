@@ -1,0 +1,64 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-net-snmp"
+pkgver="5.9.1"
+pkgrel="1"
+pkgdesc="A suite of applications used to implement SNMP v1, SNMP v2c and SNMP v3 using both IPv4 and IPv6"
+pkgdesclong=(
+  "A suite of applications used to implement SNMP v1, SNMP v2c and SNMP v3 using both IPv4 and IPv6"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends:apt=(
+  "carbonio-libart"
+  "carbonio-freetype"
+  "carbonio-libpng"
+  "carbonio-libxml2"
+)
+makedepends:apt=(
+  "libpcre3-dev"
+)
+depends:yum=(
+  "carbonio-libxml2"
+)
+makedepends:yum=(
+  "perl-core"
+  "perl-devel"
+  "zlib-devel"
+)
+section="utils"
+priority="optional"
+sources=(
+  "https://downloads.sourceforge.net/net-snmp/net-snmp-${pkgver}.tar.gz"
+)
+hashsums=(
+  "30989e43034e17433b885854490f2f37470a532cb7cab0d2a3beb37f5f3c2b10e803af125a5177d87fc0a36cecc266fefc016b609427b558f36567c2f1a84b20"
+)
+
+build() {
+  cd "${srcdir}/net-snmp-${pkgver}"
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
+  export CFLAGS="-fPIC -O2"
+  export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
+
+  ./configure --prefix=/opt/zextras/common \
+    --with-default-snmp-version=3 --with-sys-contact="admin" \
+    --with-sys-location="unknown" --with-logfile="/opt/zextras/log/snmpd.log" \
+    --with-openssl=/opt/zextras/common \
+    --disable-embedded-perl \
+    --with-perl-modules="INSTALL_BASE=/opt/zextras/common LIB=/opt/zextras/common/lib/perl5 INSTALLSITEMAN3DIR=OZCS/man/man3" \
+    --with-persistent-directory="/opt/zextras/data/snmp/persist" \
+    --localstatedir="/opt/zextras/data/snmp/state"
+  make -j16
+}
+
+package() {
+  cd "${srcdir}/net-snmp-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+
+  find "${pkgdir}" -name '*.a' -delete
+  find "${pkgdir}" -name '*.la' -delete
+}

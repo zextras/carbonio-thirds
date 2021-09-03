@@ -1,0 +1,61 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-unbound"
+pkgver="1.13.1"
+pkgrel="1"
+pkgdesc="Validating, recursive, and caching DNS resolver"
+pkgdesclong=(
+  "Validating, recursive, and caching DNS resolver"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends:apt=(
+  "carbonio-libevent"
+  "carbonio-libsodium"
+  "carbonio-openssl"
+)
+makedepends:apt=(
+  "libexpat1-dev"
+)
+depends:yum=(
+  "carbonio-libevent"
+  "carbonio-libsodium"
+  "carbonio-openssl"
+)
+makedepends:yum=(
+  "expat-devel"
+)
+section="utils"
+priority="optional"
+sources=(
+  "https://unbound.net/downloads/unbound-${pkgver}.tar.gz"
+)
+hashsums=(
+  "f4d26dca28dbcc33a5e65a55147fa01077c331292e88b6a87798cb6c3d4edb0515015d131fd893c92b74d22d9998a640f0adce404e6192d61ebe69a6a599287c"
+)
+
+build() {
+
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib"
+  export CFLAGS="-g -O2"
+
+  cd "${srcdir}/unbound-${pkgver}"
+  ./configure --prefix=/opt/zextras/common \
+    --with-libevent=/opt/zextras/common \
+    --with-ssl=/opt/zextras/common \
+    --with-username=zimbra \
+    --with-conf-file=/opt/zextras/conf/unbound.conf \
+    --with-pidfile=/opt/zextras/log/unbound.pid \
+    --with-chroot-dir=/opt/zextras
+  make -j16
+}
+
+package() {
+  cd "${srcdir}/unbound-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  rm -rf "${pkgdir}"/opt/zextras/common/lib/*.a
+  rm -rf "${pkgdir}"/opt/zextras/common/lib/*.la
+}

@@ -1,0 +1,45 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-altermime"
+pkgver="0.3.10"
+pkgrel="1"
+pkgdesc="MIME encoded email pack alteration tool"
+pkgdesclong=(
+  "MIME encoded email pack alteration tool"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends=(
+  "hashcat"
+  "carbonio-mta-base"
+)
+section="utils"
+priority="optional"
+sources=(
+  "https://pldaniels.com/altermime/altermime-${pkgver}.tar.gz"
+  "altermime-0.3.10-fprintf-compiler-error.patch"
+  "altermime-0.3.10-cflags.patch"
+)
+hashsums=(
+  "aaf0ad8029958a2dc6da3abb4dc178c2"
+  "4b8ce1a5878e595db6fdec8bb2bc3871"
+  "194efdd0f1cc15e0b8a3f7bbf8b2acd3"
+)
+
+build() {
+  cd "${srcdir}/altermime-${pkgver}"
+  patch -Np0 -i "../altermime-0.3.10-fprintf-compiler-error.patch"
+  patch -Np0 -i "../altermime-0.3.10-cflags.patch"
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
+  export CFLAGS="-O2"
+  make
+}
+
+package() {
+  cd "${srcdir}/altermime-${pkgver}"
+  install -d "${pkgdir}/opt/zextras/common/bin"
+  install -m 755 altermime "${pkgdir}/opt/zextras/common/bin/"
+}

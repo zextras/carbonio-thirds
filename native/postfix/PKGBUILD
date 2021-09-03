@@ -1,0 +1,96 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-postfix"
+pkgver="3.6.1"
+pkgrel="1"
+pkgdesc="Fast, easy to administer, secure mail server"
+pkgdesclong=(
+  "Fast, easy to administer, secure mail server"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends:apt=(
+  "libc6"
+  "libpcre3"
+  "carbonio-openldap"
+  "carbonio-cyrus-sasl"
+  "carbonio-openssl"
+  "carbonio-mariadb"
+  "carbonio-mta-base"
+)
+makedepends:apt=(
+  "libc6-dev"
+  "libpcre3-dev"
+)
+depends:yum=(
+  "libnsl2"
+  "pcre"
+  "carbonio-openldap"
+  "carbonio-cyrus-sasl"
+  "carbonio-openssl"
+  "carbonio-mariadb"
+  "carbonio-mta-base"
+)
+makedepends:yum=(
+  "libnsl2-devel"
+  "pcre-devel"
+)
+section="utils"
+priority="optional"
+sources=(
+  "https://de.postfix.org/ftpmirror/official/postfix-${pkgver}.tar.gz"
+  "carbonio-postfix.patch"
+)
+hashsums=(
+  "6f83a6aa55bd442fe005b35c7470483ff5ba6781121f783b07ef454580354fc5c85d0d5106936810d6bef0f5592937f0863eec3b82e138caac7694e2a3bb7bc3"
+  "99848c9a8baf69649ba9dcb3e9bcee1e203733ffab6a0d5f9a60746ebd033765"
+)
+
+build() {
+  cd "${srcdir}/postfix-${pkgver}"
+  patch -Np1 -i ../carbonio-postfix.patch
+
+  make makefiles \
+	OPT="-O2" \
+	CCARGS='-DDEF_COMMAND_DIR=\"/opt/zextras/common/sbin\" \
+	-DDEF_DAEMON_DIR=\"/opt/zextras/common/libexec\" \
+	-DDEF_CONFIG_DIR=\"/opt/zextras/common/conf\" \
+	-DDEF_QUEUE_DIR=\"/opt/zextras/data/postfix/spool\" \
+	-DDEF_SENDMAIL_PATH=\"/opt/zextras/common/sbin/sendmail\" \
+	-DDEF_NEWALIAS_PATH=\"/opt/zextras/common/sbin/newaliases\" \
+	-DDEF_MAILQ_PATH=\"/opt/zextras/common/sbin/mailq\" \
+	-DDEF_MANPAGE_DIR=\"/opt/zextras/common/share/man\" \
+	-DDEF_HTML_DIR=\"no\" \
+	-DDEF_README_DIR=\"no\" \
+	-DDEF_DB_TYPE=\"lmdb\" \
+	-DDEF_DATA_DIR=\"/opt/zextras/data/postfix/data\" \
+	-DUSE_SASL_AUTH -DUSE_CYRUS_SASL \
+	-DHAS_LMDB -DNO_DB \
+	-DHAS_LDAP -DHAS_MYSQL -DUSE_TLS -DHAS_PCRE -I/usr/include/pcre \
+	-DUSE_LDAP_SASL \
+	-I/opt/zextras/common/include \
+	-I/opt/zextras/common/include/mysql \
+	-I/opt/zextras/common/include/sasl \
+	-I/usr/include' \
+	AUXLIBS='-L/opt/zextras/common/lib \
+	-lpcre -lldap -llber -llmdb -lmysqlclient -lsasl2 -lssl -lcrypto \
+	-L/usr/lib -lz -lm -lpthread' \
+  SHLIB_RPATH="-Wl,-rpath,/opt/zextras/common/lib/postfix -Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib" \
+  OPT="-O2 -Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib"
+  make -j16
+}
+
+package() {
+  cd "${srcdir}/postfix-${pkgver}"
+  sh postfix-install -non-interactive-package install_root="${pkgdir}"
+  sed  -e 's|postconf|/opt/zextras/common/sbin/postconf|' auxiliary/qshape/qshape.pl > "${pkgdir}"/opt/zextras/common/sbin/qshape.pl
+  chmod a+rx "${pkgdir}"/opt/zextras/common/sbin/qshape.pl
+  cd "${pkgdir}"/opt/zextras/common/sbin
+  rm -f newaliases
+  rm -f mailq
+  ln -s sendmail mailq
+  ln -s sendmail newaliases
+}

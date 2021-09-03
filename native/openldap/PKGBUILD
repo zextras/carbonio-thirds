@@ -1,0 +1,91 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-openldap"
+pkgver="2.4.59"
+pkgrel="1"
+pkgdesc="Lightweight Directory Access Protocol (LDAP) library"
+pkgdesclong=(
+  "Lightweight Directory Access Protocol (LDAP) library"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends=(
+  "carbonio-cyrus-sasl"
+  "carbonio-libtool"
+  "carbonio-openssl"
+  "carbonio-base"
+)
+section="libs"
+priority="important"
+sources=(
+  "https://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-${pkgver}.tgz"
+  "carbonio-openldap.patch"
+)
+hashsums=(
+  "99f37d6747d88206c470067eda624d5e48c1011e943ec0ab217bae8712e22f34"
+  "9d9460e24b582685d02f707248840ff19231e2cf1b8ba84fccf5b29438c768e8"
+)
+
+build() {
+  cd "${srcdir}/openldap-${pkgver}"
+  patch -Np1 -i ../carbonio-openldap.patch
+
+  export LDFLAGS="-L/opt/zextras/common/lib -Wl,-rpath,/opt/zextras/common/lib"
+  export CFLAGS="-O0 -D_REENTRANT"
+  export CPPFLAGS="-I/opt/zextras/common/include"
+  export PATH=/opt/zextras/common/bin:$PATH
+
+  ./configure \
+    --prefix=/opt/zextras/common \
+    --libexecdir=/opt/zextras/common/libexec \
+    --sysconfdir=/opt/zextras/common/etc \
+    --localstatedir=/var/lib/openldap \
+    --sbindir=/opt/zextras/common/bin \
+    --disable-hdb \
+    --disable-ndb \
+    --disable-perl \
+    --disable-shell \
+    --disable-sql \
+    --enable-backends=mod \
+    --enable-crypt \
+    --enable-dynamic \
+    --enable-ipv6 \
+    --enable-local \
+    --enable-modules \
+    --enable-overlays=mod \
+    --enable-slapd \
+    --enable-spasswd \
+    --with-cyrus-sasl \
+    --with-threads \
+    --with-tls=openssl \
+    --localstatedir=/opt/zextras/data/ldap/state \
+    --enable-crypt
+
+  LD_RUN_PATH=/opt/zextras/common/lib make depend
+  LD_RUN_PATH=/opt/zextras/common/lib make DEFINES="-DCHECK_CSN -DSLAP_SCHEMA_EXPOSE"
+  make -C libraries/liblmdb prefix=/opt/zextras/common
+  make -C contrib/slapd-modules/noopsrch prefix=/opt/zextras/common
+  make -C contrib/slapd-modules/passwd/sha2 prefix=/opt/zextras/common
+}
+
+package() {
+  cd "${srcdir}/openldap-${pkgver}"
+  make install DESTDIR="${pkgdir}" STRIP=""
+  make -C libraries/liblmdb install prefix=/opt/zextras/common DESTDIR="${pkgdir}"
+  make -C contrib/slapd-modules/passwd/sha2 install prefix=/opt/zextras/common DESTDIR="${pkgdir}"
+  make -C contrib/slapd-modules/noopsrch install prefix=/opt/zextras/common DESTDIR="${pkgdir}"
+  ln -s /opt/zextras/common/lib/liblber.so \
+    "${pkgdir}"/opt/zextras/common/lib/liblber.so.2
+  ln -s /opt/zextras/common/lib/libldap.so \
+    "${pkgdir}"/opt/zextras/common/lib/libldap.so.2
+  ln -s /opt/zextras/common/lib/liblmdb.so \
+    "${pkgdir}"/opt/zextras/common/lib/liblmdb.so.0
+
+  # libexec .a and .la files should not be deleted
+  # they are related to slapd plugins
+  find "${pkgdir}/opt/zextras/common/lib" -name '*.a' -delete
+  find "${pkgdir}/opt/zextras/common/lib" -name '*.la' -delete
+}

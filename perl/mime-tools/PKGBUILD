@@ -1,0 +1,40 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-perl-mime-tools"
+pkgver="5.509"
+pkgrel="1"
+pkgdesc="Modules for parsing (and creating!) MIME entities"
+pkgdesclong=(
+  "Modules for parsing (and creating!) MIME entities"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends=(
+  "carbonio-perl-base"
+)
+section="libs"
+priority="important"
+sources=(
+  "https://cpan.metacpan.org/authors/id/D/DS/DSKOLL/MIME-tools-${pkgver}.tar.gz"
+)
+hashsums=(
+  "SKIP"
+)
+
+build() {
+  cd "${srcdir}/MIME-tools-${pkgver}"
+  perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
+    INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
+    LIB=/opt/zextras/common/lib/perl5 LIBS="-L/opt/zextras/common/lib -lssl -lcrypto" INC="-I/opt/zextras/common/include"
+  make
+}
+
+package() {
+  cd "${srcdir}/MIME-tools-${pkgver}"
+  make install DESTDIR="${pkgdir}"
+  find "${pkgdir}" -name '.packlist' -delete
+  find "${pkgdir}" -name '*.pod' -delete
+}

@@ -1,0 +1,40 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-perl-list-moreutils"
+pkgver="0.430"
+pkgrel="1"
+pkgdesc="Provide the stuff missing in List::Util"
+pkgdesclong=(
+  "Provide the stuff missing in List::Util"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends=(
+  "carbonio-perl-base"
+)
+section="libs"
+priority="important"
+sources=(
+  "https://cpan.metacpan.org/authors/id/R/RE/REHSACK/List-MoreUtils-${pkgver}.tar.gz"
+)
+hashsums=(
+  "SKIP"
+)
+
+build() {
+  cd "${srcdir}/List-MoreUtils-${pkgver}"
+  perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
+    INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
+    LIB=/opt/zextras/common/lib/perl5 LIBS="-L/opt/zextras/common/lib -lssl -lcrypto" INC="-I/opt/zextras/common/include"
+  make
+}
+
+package() {
+  cd "${srcdir}/List-MoreUtils-${pkgver}"
+  make install DESTDIR="${pkgdir}"
+  find "${pkgdir}" -name '.packlist' -delete
+  find "${pkgdir}" -name '*.pod' -delete
+}

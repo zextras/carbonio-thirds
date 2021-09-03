@@ -1,0 +1,43 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-libevent"
+pkgver="2.1.12"
+pkgrel="1"
+pkgdesc="An event notification library"
+pkgdesclong=(
+  "An event notification library"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends=(
+  "carbonio-memcached-base"
+  "carbonio-openssl"
+)
+section="libs"
+priority="important"
+sources=(
+  "https://github.com/libevent/libevent/releases/download/release-${pkgver}-stable/libevent-${pkgver}-stable.tar.gz"
+)
+hashsums=(
+  "92e6de1be9ec176428fd2367677e61ceffc2ee1cb119035037a27d346b0403bb"
+)
+
+build() {
+  cd "${srcdir}/libevent-${pkgver}-stable"
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
+  export CFLAGS="-O2"
+  export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
+  ./configure --prefix=/opt/zextras/common
+  make -j16
+}
+
+package() {
+  cd "${srcdir}/libevent-${pkgver}-stable"
+  make DESTDIR="${pkgdir}" install
+  sed -i "s/env python/env python3/g" "${pkgdir}"/opt/zextras/common/bin/event_rpcgen.py
+  rm -rf "${pkgdir}"/opt/zextras/common/lib/*.a
+  rm -rf "${pkgdir}"/opt/zextras/common/lib/*.la  
+}

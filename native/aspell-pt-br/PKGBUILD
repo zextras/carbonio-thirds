@@ -1,0 +1,68 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-aspell-pt-br"
+pkgver="20190329"
+pkgrel="1"
+pkgdesc="Portuguese and Brazilian Portuguese dictionary for aspell"
+pkgdesclong=(
+  "Portuguese and Brazilian Portuguese dictionary for aspell"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends=(
+  "carbonio-aspell"
+  "carbonio-spell-base"
+)
+section="utils"
+priority="optional"
+sources=(
+  "https://ftp.gnu.org/gnu/aspell/dict/pt_BR/aspell6-pt_BR-20131030-12-0.tar.bz2"
+  "https://natura.di.uminho.pt/download/sources/Dictionaries/aspell6/aspell6.pt-20190329.tar.bz2"
+  "https://natura.di.uminho.pt/download/sources/Dictionaries/aspell6/aspell6.pt-preao-20190329.tar.bz2"
+)
+hashsums=(
+  "eb0d99db0b5d5c442133a88bddfe96dd252c0c3df3da36e9326c241dc4bc14f7"
+  "1bcea03ddcada29eb503a4af334897bb732ca3d207fd9999b3c98824a0daa132"
+  "fc00cc5fc208e5caa973b3603ba2eafddf77c0d9ee320d30ac820893e7c7d069"
+)
+
+build() {
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
+  export CFLAGS="-O2"
+
+  cd "${srcdir}"
+  cd aspell6-pt_BR-20131030-12-0
+  ./configure \
+    --vars ASPELL=/opt/zextras/common/bin/aspell \
+    PREZIP=/opt/zextras/common/bin/prezip-bin
+  make
+
+  cd ../aspell6-pt_PT-20190329-0
+  ./configure \
+    --vars ASPELL=/opt/zextras/common/bin/aspell \
+    PREZIP=/opt/zextras/common/bin/prezip-bin
+  make
+
+  cd ../aspell6-pt_PT-preao-20190329-0
+  ./configure \
+    --vars ASPELL=/opt/zextras/common/bin/aspell \
+    PREZIP=/opt/zextras/common/bin/prezip-bin
+  make
+}
+
+package() {
+  cd "${srcdir}"
+  cd aspell6-pt_BR-20131030-12-0
+  make DESTDIR="${pkgdir}" install
+
+  cd ../aspell6-pt_PT-20190329-0
+  make DESTDIR="${pkgdir}" install
+
+  cd ../aspell6-pt_PT-preao-20190329-0
+  make DESTDIR="${pkgdir}" install
+
+  echo "add pt_BR.multi" > "${pkgdir}"/opt/zextras/common/lib/aspell-0.60/brasileiro.alias
+}

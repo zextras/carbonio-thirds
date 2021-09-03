@@ -1,0 +1,37 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-base-dummy"
+pkgver="1"
+pkgrel="1"
+pkgdesc="Zextras dummy package to resolve zextras-base dependency"
+pkgdesclong=(
+  "Zextras dummy package to resolve zextras-base dependency"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+provides=(
+  "carbonio-base"
+  "carbonio-core"
+  "carbonio-apache-base"
+  "carbonio-apache-components"
+  "carbonio-dnscache-base"
+  "carbonio-ldap-base"
+  "carbonio-memcached-base"
+  "carbonio-mta-base"
+  "carbonio-perl-base"
+  "carbonio-proxy-base"
+  "carbonio-snmp-base"
+  "carbonio-spell-base"
+  "carbonio-store-base"
+  "carbonio-osl"
+  "carbonio-os-requirements"
+)
+section="utils"
+priority="important"
+
+package() {
+  install -dm644 "${pkgdir}"/usr/bin/.dummy
+}

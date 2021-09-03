@@ -1,0 +1,57 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-apr-util"
+pkgver="1.6.1"
+pkgrel="1"
+pkgdesc="High-performance interface between mailer (MTA) and content checkers"
+pkgdesclong=(
+  "High-performance interface between mailer (MTA) and content checkers"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends=(
+  "carbonio-apr"
+)
+makedepends:apt=(
+  "libexpat1-dev"
+)
+makedepends:yum=(
+  "expat-devel"
+)
+section="utils"
+priority="optional"
+sources=(
+  "https://archive.apache.org/dist/apr/apr-util-${pkgver}.tar.gz"
+)
+hashsums=(
+  "b65e40713da57d004123b6319828be7f1273fbc6490e145874ee1177e112c459"
+)
+
+build() {
+  cd "${srcdir}/apr-util-${pkgver}"
+
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
+  export CFLAGS="-O2"
+  ./configure --prefix=/opt/zextras/common \
+    --with-apr=/opt/zextras/common/bin/apr-1-config \
+    --with-crypto \
+    --with-openssl=/opt/zextras/common \
+    # --with-ldap
+    # --with-gdbm=/opt/zextras/common  
+    # --with-sqlite3=/opt/zextras/common   
+    # --with-nss=/opt/zextras/common   
+    # --with-odbc=/opt/zextras/common \
+    # --with-berkeley-db=/opt/zextras/common   
+    # --with-pgsql=/opt/zextras/common \
+    # --with-mysql=/opt/zextras/common \
+    # --with-oracle=/opt/zextras/common \
+  make
+}
+
+package() {
+  cd "${srcdir}/apr-util-${pkgver}"
+  make install DESTDIR="${pkgdir}"
+}

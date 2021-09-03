@@ -1,0 +1,84 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-openjdk"
+pkgver="13.0.2"
+pkgrel="1"
+pkgdesc="OpenJDK Java 13 development kit"
+pkgdesclong=(
+  "OpenJDK Java 13 development kit"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https:/zextras.com"
+depends=(
+  "carbonio-base"
+)
+section="utils"
+priority="optional"
+sources=(
+  "https:/download.java.net/java/GA/jdk${pkgver}/d4173c853231432d94f001e99d882ca7/8/GPL/openjdk-${pkgver}_linux-x64_bin.tar.gz"
+  "https://hg.mozilla.org/mozilla-central/raw-file/tip/security/nss/lib/ckfw/builtins/certdata.txt"
+  "import-cacerts"
+  "cacerts"
+)
+hashsums=(
+  "acc7a6aabced44e62ec3b83e3b5959df2b1aa6b3d610d58ee45f0c21a7821a71"
+  "SKIP"
+  "875f360d4183a947b7a28badad9d6ea981fe5e72a4cd226e752d265d09b04448"
+  "09754edeef3ef6906c67e7ed4d41d9c32bdd840f10f45748b215d050fe198db8"
+)
+
+package() {
+  cd "${srcdir}"
+  mkdir -p "${pkgdir}"/opt/zextras/common/bin
+  mkdir -p "${pkgdir}"/opt/zextras/common/lib/jvm
+  cp -r "jdk-${pkgver}" "${pkgdir}"/opt/zextras/common/lib/jvm/java
+  cd "${pkgdir}"/opt/zextras/common/lib/jvm/java
+  mv include/linux/* include
+  rm -rf include/linux
+  rm -rf lib/src.zip
+  rm -rf ../legal
+  rm -rf demo
+  rm -rf sample
+  chmod 644 lib/ct.sym
+
+  cd lib/security
+  rm -f cacerts
+  ln -s /opt/zextras/common/etc/java/cacerts cacerts
+  
+  cd "${pkgdir}"/opt/zextras/common/bin
+  ln -s ../lib/jvm/java/bin/jar
+  ln -s ../lib/jvm/java/bin/java
+  ln -s ../lib/jvm/java/bin/javac
+  ln -s ../lib/jvm/java/bin/javap
+  ln -s ../lib/jvm/java/bin/jhat
+  ln -s ../lib/jvm/java/bin/jmap
+  ln -s ../lib/jvm/java/bin/jps
+  ln -s ../lib/jvm/java/bin/jstack
+  ln -s ../lib/jvm/java/bin/jstat
+  ln -s ../lib/jvm/java/bin/keytool
+
+  mkdir -p "${pkgdir}"/opt/zextras/common/etc/java
+
+  cd "${srcdir}"
+  ./import-cacerts -f certdata.txt -o .
+  cp cacerts "${pkgdir}"/opt/zextras/common/etc/java
+}
+
+postinst() {
+  if [ "$1" = configure ]; then
+    /bin/chown zimbra:zimbra /opt/zextras/common/etc/java/cacerts
+    /bin/chmod 644 /opt/zextras/common/etc/java/cacerts
+    if [ "$2" != "" ]; then
+      if [ -x /opt/zextras/bin/zmcertmgr ]; then
+        # Run as zimbra, extract CA to /opt/zextras/conf/ca
+        /bin/su - zimbra -c '/opt/zextras/bin/zmcertmgr createca'
+        # Run as zimbra, update OpenJDK cacerts file with the CA stored in LDAP
+        /bin/su - zimbra -c '/opt/zextras/bin/zmcertmgr deployca --localonly'
+      fi
+    fi
+  fi
+  exit 0
+}

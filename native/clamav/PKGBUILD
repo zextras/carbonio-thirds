@@ -1,0 +1,79 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-clamav"
+pkgver="0.103.2"
+pkgrel="1"
+pkgdesc="Anti-virus toolkit for Unix"
+pkgdesclong=(
+  "Anti-virus toolkit for Unix"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends:apt=(
+  "libpcre2-posix0"
+  "carbonio-libmilter"
+  "carbonio-libxml2"
+  "carbonio-mta-base"
+  "carbonio-openssl"
+  "zlib1g"
+)
+makedepends:apt=(
+  "libncursesw5-dev"
+  "libpcre2-dev"
+  "zlib1g-dev"
+)
+depends:yum=(
+  "pcre2-devel"
+  "carbonio-libmilter"
+  "carbonio-libxml2"
+  "carbonio-mta-base"
+  "carbonio-openssl"
+  "zlib"
+)
+makedepends:yum=(
+  "ncurses-devel"
+  "zlib-devel"
+)
+section="utils"
+priority="optional"
+sources=(
+  "https://www.clamav.net/downloads/production/clamav-${pkgver}.tar.gz"
+)
+hashsums=(
+  "87d47c4529a57da0b47b3744a279996ca24fa74ce10d7e27a53c19c1e13098af680e0e48ed767122bb2bbd3f927302451da84ccf51a933e7e3556ef43cbe9f45"
+)
+
+build() {
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib"
+  export CFLAGS="-O2"
+  export CPPFLAGS="-I/opt/zextras/common/include"
+  cd "${srcdir}/clamav-${pkgver}"
+
+  ./configure \
+    --prefix=/opt/zextras/common \
+    --libdir=/opt/zextras/common/lib \
+    --with-libcurl=/opt/zextras/common \
+    --with-libmilter=/opt/zextras/common \
+    --with-openssl=/opt/zextras/common \
+    --with-xml=/opt/zextras/common \
+    --with-user=zimbra \
+    --with-group=zimbra \
+    --with-included-ltdl \
+    --disable-clamav \
+    --enable-milter
+  make -j16
+}
+
+package() {
+  cd "${srcdir}/clamav-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+
+  find "${pkgdir}" -name '*.a' -delete
+  find "${pkgdir}" -name '*.la' -delete
+
+  rm -rf "${pkgdir}"/usr/lib/systemd
+  rm -rf "${pkgdir}"/opt/zextras/common/bin/clamav-config
+}

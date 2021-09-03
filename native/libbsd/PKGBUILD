@@ -1,0 +1,51 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-libbsd"
+pkgver="0.10.0"
+pkgrel="1"
+pkgdesc="Provides useful functions commonly found on BSD systems like strlcpy()"
+pkgdesclong=(
+  "Provides useful functions commonly found on BSD systems like strlcpy()"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends:apt=(
+  "carbonio-base"
+  "libc6"
+)
+depends:yum=(
+  "carbonio-base"
+  "glibc"
+)
+section="libs"
+priority="important"
+sources=(
+  "https://libbsd.freedesktop.org/releases/libbsd-${pkgver}.tar.xz"
+)
+hashsums=(
+  "ead96d240d02faa5b921c0aa50c812b5"
+)
+
+build() {
+  cd "${srcdir}/libbsd-${pkgver}"
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
+  export CFLAGS="-fPIC -D_REENTRANT"
+  export CXXFLAGS="-D_REENTRANT"
+
+  ./configure \
+    --prefix=/opt/zextras/common \
+    --disable-static
+  make -j16
+}
+
+package() {
+  cd "${srcdir}/libbsd-${pkgver}"
+
+  make DESTDIR="${pkgdir}" install
+  rm -rf "${pkgdir}"/opt/zextras/common/lib/*.a
+  rm -rf "${pkgdir}"/opt/zextras/common/lib/*.la
+  rm -rf "${pkgdir}"/opt/zextras/common/share/man/
+}

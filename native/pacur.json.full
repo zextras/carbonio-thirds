@@ -1,0 +1,512 @@
+{
+    "name": "Zextras Server",
+    "description": "This is the manifest to build third-party packages",
+    "build_dir": "/tmp/",
+    "output": "/media",
+    "projects": [
+        {
+            "name": "base",
+            "install": true
+        },
+        {
+            "name": "openssl",
+            "install": true
+        },
+        {
+            "name": "libxml2",
+            "install": true
+        },
+        {
+            "name": "libtool",
+            "install": true
+        },
+        {
+            "name": "libbsd",
+            "install": true
+        },
+        {
+            "name": "libevent",
+            "install": true
+        },
+        {
+            "name": "libsodium",
+            "install": true
+        },
+        {
+            "name": "libart",
+            "install": true
+        },
+        {
+            "name": "libpng",
+            "install": true
+        },
+        {
+            "name": "freetype",
+            "install": true
+        },
+        {
+            "name": "gperftools",
+            "install": true
+        },
+        {
+            "name": "rsync",
+            "install": true
+        },
+        {
+            "name": "altermime",
+            "install": true
+        },
+        {
+            "name": "bdb",
+            "install": true
+        },
+        {
+            "name": "amavis-logwatch"
+        },
+        {
+            "name": "postfix-logwatch"
+        },
+        {
+            "name": "amavisd"
+        },
+        {
+            "name": "openjdk"
+        },
+        {
+            "name": "apr",
+            "install": true
+        },
+        {
+            "name": "aspell",
+            "install": true
+        },
+        {
+            "name": "aspell-ar"
+        },
+        {
+            "name": "aspell-da"
+        },
+        {
+            "name": "aspell-de"
+        },
+        {
+            "name": "aspell-en",
+            "install": true
+        },
+        {
+            "name": "aspell-es"
+        },
+        {
+            "name": "aspell-fr"
+        },
+        {
+            "name": "aspell-hi"
+        },
+        {
+            "name": "aspell-hu"
+        },
+        {
+            "name": "aspell-it"
+        },
+        {
+            "name": "aspell-nl"
+        },
+        {
+            "name": "aspell-pl"
+        },
+        {
+            "name": "aspell-pt-br"
+        },
+        {
+            "name": "aspell-ru"
+        },
+        {
+            "name": "aspell-sv"
+        },
+        {
+            "name": "aspell-server",
+            "install": true
+        },
+        {
+            "name": "apr-util",
+            "install": true
+        },
+        {
+            "name": "httpd",
+            "install": true
+        },
+        {
+            "name": "php"
+        },
+        {
+            "name": "heimdal",
+            "install": true
+        },        
+        {
+            "name": "curl",
+            "install": true
+        },
+        {
+            "name": "jemalloc",
+            "install": true
+        },
+        {
+            "name": "mariadb",
+            "install": true
+        },
+        {
+            "name": "cyrus-sasl"
+        },
+        {
+            "name": "openldap"
+        },
+        {
+            "name": "clamav"
+        },
+        {
+            "name": "clamav-db"
+        },
+        {
+            "name": "postfix"
+        },
+        {
+            "name": "rrdtool"
+        },
+        {
+            "name": "net-snmp"
+        },
+        {
+            "name": "memcached"
+        },
+        {
+            "name": "nginx"
+        },
+        {
+            "name": "unbound"
+        },
+        {
+            "name": "opendkim"
+        },
+        {
+            "name": "zeromq"
+        },
+        {
+            "name": "crypt-openssl-random"
+        },
+        {
+            "name": "crypt-openssl-rsa"
+        },
+        {
+            "name": "net-cidr"
+        },
+        {
+            "name": "socket-linux"
+        },
+        {
+            "name": "net-libidn"
+        },
+        {
+            "name": "math-bigint"
+        },
+        {
+            "name": "file-libmagic"
+        },
+        {
+            "name": "convert-asn1"
+        },
+        {
+            "name": "socket"
+        },
+        {
+            "name": "io-socket-inet6"
+        },
+        {
+            "name": "io-socket-ip"
+        },
+        {
+            "name": "net-ssleay"
+        },
+        {
+            "name": "net-ldap"
+        },
+        {
+            "name": "net-server"
+        },
+        {
+            "name": "zmq-constants"
+        },
+        {
+            "name": "zmq-libzmq3"
+        },
+        {
+            "name": "mozilla-ca"
+        },
+        {
+            "name": "io-socket-ssl"
+        },
+        {
+            "name": "dbi"
+        },
+        {
+            "name": "html-parser"
+        },
+        {
+            "name": "parent"
+        },
+        {
+            "name": "uri"
+        },
+        {
+            "name": "net-http"
+        },
+        {
+            "name": "lwp-mediatypes"
+        },
+        {
+            "name": "encode-locale"
+        },
+        {
+            "name": "http-date"
+        },
+        {
+            "name": "io-html"
+        },
+        {
+            "name": "compress-raw-bzip2"
+        },
+        {
+            "name": "compress-raw-zlib"
+        },
+        {
+            "name": "io-compress"
+        },
+        {
+            "name": "http-message"
+        },
+        {
+            "name": "http-negotiate"
+        },
+        {
+            "name": "file-listing"
+        },
+        {
+            "name": "http-daemon"
+        },
+        {
+            "name": "http-cookies"
+        },
+        {
+            "name": "www-robotrules"
+        },
+        {
+            "name": "libwww"
+        },
+        {
+            "name": "lwp-protocol-https"
+        },
+        {
+            "name": "io-stringy"
+        },
+        {
+            "name": "timedate"
+        },
+        {
+            "name": "mailtools"
+        },
+        {
+            "name": "mime-types"
+        },
+        {
+            "name": "email-date-format"
+        },
+        {
+            "name": "mime-lite"
+        },
+        {
+            "name": "convert-binhex"
+        },
+        {
+            "name": "mime-tools"
+        },
+        {
+            "name": "io-sessiondata"
+        },
+        {
+            "name": "json-pp"
+        },
+        {
+            "name": "exporter-tiny"
+        },
+        {
+            "name": "list-moreutils"
+        },
+        {
+            "name": "config-inifiles"
+        },
+        {
+            "name": "carp-clan"
+        },
+        {
+            "name": "bit-vector"
+        },
+        {
+            "name": "date-calc"
+        },
+        {
+            "name": "date-manip"
+        },
+        {
+            "name": "unix-syslog"
+        },
+        {
+            "name": "digest-sha1"
+        },
+        {
+            "name": "digest-hmac"
+        },
+        {
+            "name": "convert-tnef"
+        },
+        {
+            "name": "canary-stability"
+        },
+        {
+            "name": "convert-uulib"
+        },
+        {
+            "name": "file-tail"
+        },
+        {
+            "name": "file-grep"
+        },
+        {
+            "name": "data-uuid"
+        },
+        {
+            "name": "crypt-saltedhash"
+        },
+        {
+            "name": "archive-zip"
+        },
+        {
+            "name": "error"
+        },
+        {
+            "name": "xml-parser"
+        },
+        {
+            "name": "xml-sax-base"
+        },
+        {
+            "name": "xml-namespacesupport"
+        },
+        {
+            "name": "xml-sax"
+        },
+        {
+            "name": "xml-sax-expat"
+        },
+        {
+            "name": "xml-simple"
+        },
+        {
+            "name": "netaddr-ip"
+        },
+        {
+            "name": "net-dns"
+        },
+        {
+            "name": "mail-dkim"
+        },
+        {
+            "name": "net-dns-resolver-programmable"
+        },
+        {
+            "name": "geography-countries"
+        },
+        {
+            "name": "ip-country"
+        },
+        {
+            "name": "dbd-sqlite"
+        },
+        {
+            "name": "filesys-df"
+        },
+        {
+            "name": "encode-detect"
+        },
+        {
+            "name": "unix-getrusage"
+        },
+        {
+            "name": "class-inspector"
+        },
+        {
+            "name": "task-weaken"
+        },
+        {
+            "name": "xml-parser-lite"
+        },
+        {
+            "name": "soap-lite"
+        },
+        {
+            "name": "term-readkey"
+        },
+        {
+            "name": "net-cidr-lite"
+        },
+        {
+            "name": "cache-fastmmap"
+        },
+        {
+            "name": "proc-processtable"
+        },
+        {
+            "name": "net-ldapapi"
+        },
+        {
+            "name": "berkeleydb"
+        },
+        {
+            "name": "db-file"
+        },
+        {
+            "name": "dbd-mysql"
+        },
+        {
+            "name": "mail-spf"
+        },
+        {
+            "name": "mail-spamassassin"
+        },
+        {
+            "name": "swatchdog"
+        },
+        {
+            "name": "innotop"
+        },
+        {
+            "name": "bundle"
+        },
+        {
+            "name": "pflogsumm"
+        },
+        {
+            "name": "prepflog"
+        },
+        {
+            "name": "cluebringer"
+        },
+        {
+            "name": "spamassassin-rules"
+        },
+        {
+            "name": "jetty-distribution"
+        },
+        {
+            "name": "pax"
+        }
+    ]
+}

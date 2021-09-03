@@ -1,0 +1,60 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-perl-dbi"
+pkgver="1.643"
+pkgrel="1"
+pkgdesc="Database independent interface for Perl"
+pkgdesclong=(
+  "Database independent interface for Perl"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends=(
+  "carbonio-perl-socket"
+  "carbonio-perl-base"
+)
+section="libs"
+priority="important"
+sources=(
+  "https://cpan.metacpan.org/authors/id/T/TI/TIMB/DBI-${pkgver}.tar.gz"
+)
+hashsums=(
+  "SKIP"
+)
+
+build() {
+  cd "${srcdir}/DBI-${pkgver}"
+  rm lib/DBD/Gofer/Transport/corostream.pm
+  sed -i -e '/^lib\/DBD\/Gofer\/Transport\/corostream.pm$/d' MANIFEST
+  # Remove RPC::Pl* reverse dependencies due to security concerns,
+  # CVE-2013-7284, bug #1051110
+  for F in lib/Bundle/DBI.pm lib/DBD/Proxy.pm lib/DBI/ProxyServer.pm \
+    dbiproxy.PL t/80proxy.t; do
+    rm "$F"
+    sed -i -e '\|^'"$F"'|d' MANIFEST
+  done
+  sed -i -e 's/"dbiproxy$ext_pl",//' Makefile.PL
+  # Remove Win32 specific files to avoid unwanted dependencies
+  for F in lib/DBI/W32ODBC.pm lib/Win32/DBIODBC.pm; do
+    rm "$F"
+    sed -i -e '\|^'"$F"'|d' MANIFEST
+  done
+  sed -i "/RPC/d" Makefile.PL META.yml META.json
+
+  perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
+    INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
+    LIB=/opt/zextras/common/lib/perl5 LIBS="-L/opt/zextras/common/lib -lssl -lcrypto" INC="-I/opt/zextras/common/include"
+  make
+}
+
+package() {
+  cd "${srcdir}/DBI-${pkgver}"
+  make install DESTDIR="${pkgdir}"
+  cp -r blib/arch/auto/DBI \
+    "${pkgdir}"/opt/zextras/common/include
+  find "${pkgdir}" -name '.packlist' -delete
+  find "${pkgdir}" -name '*.pod' -delete
+}

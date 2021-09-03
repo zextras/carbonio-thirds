@@ -1,0 +1,47 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-perl-dbd-mysql"
+pkgver="4.050"
+pkgrel="1"
+pkgdesc="Perl/CPAN DBD::mysql module for interacting with MySQL via DBD"
+pkgdesclong=(
+  "Perl/CPAN DBD::mysql module for interacting with MySQL via DBD"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends=(
+  "carbonio-perl-base"
+)
+makedepends:apt=(
+  "libdevel-checklib-perl"
+)
+makedepends:yum=(
+  "perl-Devel-CheckLib"
+)
+section="libs"
+priority="important"
+sources=(
+  "https://cpan.metacpan.org/authors/id/D/DV/DVEEDEN/DBD-mysql-${pkgver}.tar.gz"
+)
+hashsums=(
+  "SKIP"
+)
+
+build() {
+  cd "${srcdir}/DBD-mysql-${pkgver}"
+    perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
+    INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
+    LIB=/opt/zextras/common/lib/perl5 --ssl --nocatchstderr --mysql_config=/opt/zextras/common/bin/mysql_config \
+    LIBS="-L/opt/zextras/common/lib -lmysqlclient -lpthread -lz -lm -lrt -lssl -lcrypto -ldl"
+  make
+}
+
+package() {
+  cd "${srcdir}/DBD-mysql-${pkgver}"
+  make install DESTDIR="${pkgdir}"
+  find "${pkgdir}" -name '.packlist' -delete
+  find "${pkgdir}" -name '*.pod' -delete
+}

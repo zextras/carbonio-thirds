@@ -1,0 +1,50 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-perl-net-libidn"
+pkgver="0.12"
+pkgrel="1"
+pkgdesc="Perl bindings for GNU Libidn"
+pkgdesclong=(
+  "Perl bindings for GNU Libidn"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends:apt=(
+  "libidn11"
+  "carbonio-perl-base"
+)
+makedepends:apt=(
+  "libidn11-dev"
+)
+depends:yum=(
+  "libidn"
+  "carbonio-perl-base"
+)
+makedepends:yum=(
+  "libidn-devel"
+)
+section="libs"
+priority="important"
+sources=(
+  "https://cpan.metacpan.org/authors/id/T/TH/THOR/Net-LibIDN-${pkgver}.tar.gz"
+)
+hashsums=(
+  "SKIP"
+)
+
+build() {
+  cd "${srcdir}/Net-LibIDN-${pkgver}"
+  perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
+    LIB=/opt/zextras/common/lib/perl5 --with-libidn=/usr/lib
+  make
+}
+
+package() {
+  cd "${srcdir}/Net-LibIDN-${pkgver}"
+  make install DESTDIR="${pkgdir}"
+  find "${pkgdir}" -name '.packlist' -delete
+  find "${pkgdir}" -name '*.pod' -delete
+}

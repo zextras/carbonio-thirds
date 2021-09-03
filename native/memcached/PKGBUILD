@@ -1,0 +1,52 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-memcached"
+pkgver="1.6.9"
+pkgrel="1"
+pkgdesc="Distributed memory object caching system"
+pkgdesclong=(
+  "Distributed memory object caching system"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends:apt=(
+  "carbonio-libevent"
+  "carbonio-memcached-base"
+)
+makedepends:apt=(
+  "pkg-config"
+)
+depends:yum=(
+  "carbonio-libevent"
+  "carbonio-memcached-base"
+)
+makedepends:yum=(
+  "pkgconfig"
+)
+section="utils"
+priority="optional"
+sources=(
+  "https://www.memcached.org/files/memcached-${pkgver}.tar.gz"
+)
+hashsums=(
+  "2169225aefe6bd7481d919ae3ef95ed85d2ed595f49daceeb13d2dc268097d4aee98cf604824fca103efcdffa7461bb26814209906a5dabf1a5d30af43f6a66c"
+)
+
+build() {
+
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
+  export CFLAGS="-O2" 
+  export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
+
+  cd "${srcdir}/memcached-${pkgver}"
+  ./configure --prefix=/opt/zextras/common
+  make -j16
+}
+
+package() {
+  cd "${srcdir}/memcached-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+}

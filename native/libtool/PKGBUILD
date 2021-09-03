@@ -1,0 +1,46 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-libtool"
+pkgver="2.4.6"
+pkgrel="1"
+pkgdesc="A generic library support script"
+pkgdesclong=(
+  "A generic library support script"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends:apt=(
+  "carbonio-ldap-base"
+)
+depends:yum=(
+  "carbonio-ldap-base"
+)
+section="libs"
+priority="important"
+sources=(
+  "https://ftpmirror.gnu.org/libtool/libtool-${pkgver}.tar.gz"
+)
+hashsums=(
+  "e3bd4d5d3d025a36c21dd6af7ea818a2afcd4dfc1ea5a17b39d7854bcd0c06e3"
+)
+
+build() {
+  cd "${srcdir}/libtool-${pkgver}"
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
+  export CFLAGS="-O2"
+  ./configure --prefix=/opt/zextras/common \
+    --disable-static \
+    --datarootdir=/opt/zextras/common/share
+  make -j16
+}
+
+package() {
+  cd "${srcdir}/libtool-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  rm -rf "${pkgdir}"/opt/zextras/common/share
+  rm -rf "${pkgdir}"/opt/zextras/common/bin
+  rm -rf "${pkgdir}"/opt/zextras/common/lib/*.la
+}

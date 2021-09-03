@@ -1,0 +1,39 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-perl-io-socket-ip"
+pkgver="0.41"
+pkgrel="1"
+pkgdesc="Family-neutral IP socket supporting both IPv4 and IPv6"
+pkgdesclong=(
+  "Family-neutral IP socket supporting both IPv4 and IPv6"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends=(
+  "carbonio-perl-base"
+  "carbonio-perl-socket"
+)
+section="libs"
+priority="important"
+sources=(
+  "https://cpan.metacpan.org/authors/id/P/PE/PEVANS/IO-Socket-IP-${pkgver}.tar.gz"
+)
+hashsums=(
+  "SKIP"
+)
+
+build() {
+  cd "${srcdir}/IO-Socket-IP-${pkgver}"
+    perl -I /opt/zextras/common/lib/perl5 Build.PL INSTALL_BASE=/opt/zextras/common \
+    INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
+    LIB=/opt/zextras/common/lib/perl5
+}
+
+package() {
+  cd "${srcdir}/IO-Socket-IP-${pkgver}"
+  mkdir -p "${pkgdir}"/opt/zextras/common/lib
+  cp -r lib "${pkgdir}"/opt/zextras/common/lib/perl5
+}

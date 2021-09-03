@@ -1,0 +1,51 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-openssl"
+pkgver="1.1.1l"
+pkgrel="1"
+pkgdesc="Zextras's Secure Socket Layer build"
+pkgdesclong=(
+  "The Zextras OpenSSL build allows for secure communication between various processes."
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends=(
+  "carbonio-base"
+)
+section="libs"
+priority="important"
+sources=(
+  "https://www.openssl.org/source/openssl-${pkgver}.tar.gz"
+)
+hashsums=(
+  "0b7a3e5e59c34827fe0c3a74b7ec8baef302b98fa80088d7f9153aa16fa76bd1"
+)
+
+build() {
+  cd "${srcdir}/openssl-${pkgver}"
+  ./Configure no-idea enable-ec_nistp_64_gcc_128 no-mdc2 no-rc5 no-ssl2 \
+    no-hw \
+    no-tests \
+    shared \
+    no-ssl3-method \
+    linux-x86_64 \
+    -O2 -DOPENSSL_NO_HEARTBEATS \
+    --prefix=/opt/zextras/common \
+    --libdir=lib \
+    --openssldir=/opt/zextras/common/etc/ssl
+  LD_RUN_PATH=/opt/zextras/common/lib make depend
+  LD_RUN_PATH=/opt/zextras/common/lib make all
+}
+
+package() {
+  cd "${srcdir}/openssl-${pkgver}"
+  LD_RUN_PATH=/opt/zextras/common/lib \
+    MANDIR="/opt/zextras/common/share/man" \
+    LIBS="" \
+    make DESTDIR="${pkgdir}" install_sw install_ssldirs
+  rm "${pkgdir}"/opt/zextras/common/lib/*.a
+  # rm -rf "${pkgdir}"/opt/zextras/common/include
+}

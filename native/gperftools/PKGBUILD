@@ -1,0 +1,45 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-gperftools"
+pkgver="2.9.1"
+pkgrel="1"
+pkgdesc="Fast, multi-threaded malloc and nifty performance analysis tools"
+pkgdesclong=(
+  "Fast, multi-threaded malloc and nifty performance analysis tools"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends=(
+  "carbonio-base"
+)
+section="libs"
+priority="important"
+sources=(
+  "https://github.com/gperftools/gperftools/releases/download/gperftools-${pkgver}/gperftools-${pkgver}.tar.gz"
+)
+hashsums=(
+  "ea566e528605befb830671e359118c2da718f721c27225cbbc93858c7520fee3"
+)
+
+build() {
+  cd "${srcdir}/gperftools-${pkgver}"
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
+  export CFLAGS="-O2"
+  ./configure --prefix=/opt/zextras/common \
+    --enable-minimal \
+    --disable-static \
+    --enable-frame-pointers
+  make -j16
+}
+
+package() {
+  cd "${srcdir}/gperftools-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  rm -rf "${pkgdir}"/opt/zextras/common/share
+  rm -rf "${pkgdir}"/opt/zextras/common/bin
+  rm -rf "${pkgdir}"/opt/zextras/common/lib/*.la
+}
+

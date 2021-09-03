@@ -1,0 +1,52 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-perl-encode-detect"
+pkgver="1.01"
+pkgrel="1"
+pkgdesc="An Encode::Encoding subclass that detects the encoding of data"
+pkgdesclong=(
+  "An Encode::Encoding subclass that detects the encoding of data"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends:apt=(
+ì  "carbonio-perl-base"
+)
+makedepends:apt=(
+  "libchardet-dev"
+  "libmodule-build-perl"
+)
+depends:yum=(
+  "uchardet"
+  "carbonio-perl-base"
+)
+makedepends:yum=(
+  "uchardet-devel"
+  "perl-Module-Build"
+)
+section="libs"
+priority="important"
+sources=(
+  "https://cpan.metacpan.org/authors/id/J/JG/JGMYERS/Encode-Detect-${pkgver}.tar.gz"
+)
+hashsums=(
+  "SKIP"
+)
+
+build() {
+  cd "${srcdir}/Encode-Detect-${pkgver}"
+    perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
+    INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
+    LIB=/opt/zextras/common/lib/perl5
+  make
+}
+
+package() {
+  cd "${srcdir}/Encode-Detect-${pkgver}"
+  make install DESTDIR="${pkgdir}"
+  find "${pkgdir}" -name '.packlist' -delete
+  find "${pkgdir}" -name '*.pod' -delete
+}

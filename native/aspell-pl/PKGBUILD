@@ -1,0 +1,42 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-aspell-pl"
+pkgver="20210105"
+pkgrel="1"
+pkgdesc="Polish dictionary for aspell"
+pkgdesclong=(
+  "Polish dictionary for aspell"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends=(
+  "carbonio-aspell"
+  "carbonio-spell-base"
+)
+section="utils"
+priority="optional"
+sources=(
+  "https://sources.archlinux.org/other/community/aspell-pl/sjp-aspell6-pl-6.0_${pkgver}-0.tar.bz2"
+)
+hashsums=(
+  "35ea5fd0611258f356a1a91140b6a838"
+)
+
+build() {
+  cd "${srcdir}/aspell6-pl-6.0_${pkgver}-0"
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
+  export CFLAGS="-O2"
+
+  ./configure \
+    --vars ASPELL=/opt/zextras/common/bin/aspell \
+    PREZIP=/opt/zextras/common/bin/prezip-bin
+  make
+}
+
+package() {
+  cd "${srcdir}/aspell6-pl-6.0_${pkgver}-0"
+  make DESTDIR="${pkgdir}" install
+}

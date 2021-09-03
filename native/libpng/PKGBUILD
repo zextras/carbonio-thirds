@@ -1,0 +1,54 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-libpng"
+pkgver="1.6.37"
+pkgrel="1"
+pkgdesc="A collection of routines used to create PNG format graphics files"
+pkgdesclong=(
+  "A collection of routines used to create PNG format graphics files"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends:apt=(
+  "carbonio-base"
+  "zlib1g"
+)
+depends:yum=(
+  "carbonio-base"
+  "zlib"
+)
+makedepends:apt=(
+  "zlib1g-dev"
+)
+makedepends:yum=(
+  "zlib-devel"
+)
+section="libs"
+priority="important"
+sources=("https://downloads.sourceforge.net/sourceforge/libpng/libpng-${pkgver}.tar.xz")
+hashsums=(
+  "ead96d240d02f505e70834d35383537b6491e7ae8641f1a4bed1876dbfe361201fc80868d88caaa5b921c0aa50c812b5"
+)
+
+build() {
+  cd "${srcdir}/libpng-${pkgver}"
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
+  export CFLAGS="-fPIC -D_REENTRANT"
+  export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
+  ./configure \
+    --prefix=/opt/zextras/common \
+    --disable-static
+  make -j16
+}
+
+package() {
+  cd "${srcdir}/libpng-${pkgver}"
+
+  make DESTDIR="${pkgdir}" install
+  rm -rf "${pkgdir}"/opt/zextras/common/lib/*.a
+  rm -rf "${pkgdir}"/opt/zextras/common/lib/*.la
+  rm -rf "${pkgdir}"/opt/zextras/common/share/man
+}

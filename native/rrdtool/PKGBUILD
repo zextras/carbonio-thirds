@@ -1,0 +1,57 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-rrdtool"
+pkgver="1.7.2"
+pkgrel="1"
+pkgdesc="Data logging and graphing application"
+pkgdesclong=(
+  "Data logging and graphing application"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends:apt=(
+  "carbonio-libart"
+  "carbonio-freetype"
+  "carbonio-libpng"
+  "carbonio-libxml2"
+)
+makedepends:apt=(
+  "libpcre3-dev"
+)
+depends:yum=(
+  "carbonio-libxml2"
+)
+makedepends:yum=(
+  "perl-core"
+  "perl-devel"
+  "zlib-devel"
+)
+section="utils"
+priority="optional"
+sources=(
+  "https://oss.oetiker.ch/rrdtool/pub/rrdtool-${pkgver}.tar.gz"
+)
+hashsums=(
+  "a199faeb7eff7cafc46fac253e682d833d08932f3db93a550a4a5af180ca58db"
+)
+
+build() {
+  cd "${srcdir}/rrdtool-${pkgver}"
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
+  export CFLAGS="-fPIC -O2"
+  export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
+
+  ./configure --prefix=/opt/zextras/common \
+    --disable-tcl --disable-ruby --disable-python \
+    --with-perl-options="INSTALL_BASE=/opt/zextras/common LIB=/opt/zextras/common/lib/perl5 \
+    LIBS='-L/opt/zextras/common/lib -lm -lpng -lz -lfreetype' INSTALLSITEMAN3DIR='/opt/zextras/common/share/man/man3'"
+  make
+}
+
+package() {
+  cd "${srcdir}/rrdtool-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+}

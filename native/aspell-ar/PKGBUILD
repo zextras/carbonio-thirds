@@ -1,0 +1,42 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-aspell-ar"
+pkgver="1.2"
+pkgrel="1"
+pkgdesc="Arabic dictionary for aspell"
+pkgdesclong=(
+  "Arabic dictionary for aspell"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends=(
+  "carbonio-aspell"
+  "carbonio-spell-base"
+)
+section="utils"
+priority="optional"
+sources=(
+  "https://ftp.gnu.org/gnu/aspell/dict/ar/aspell6-ar-${pkgver}-0.tar.bz2"
+)
+hashsums=(
+  "041ea24a82cdd6957040e2fb84262583bf46b3a8301283a75d257a7417207cab"
+)
+
+build() {
+  cd "${srcdir}/aspell6-ar-${pkgver}-0"
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
+  export CFLAGS="-O2"
+
+  ./configure \
+    --vars ASPELL=/opt/zextras/common/bin/aspell \
+    PREZIP=/opt/zextras/common/bin/prezip-bin
+  make
+}
+
+package() {
+  cd "${srcdir}/aspell6-ar-${pkgver}-0"
+  make DESTDIR="${pkgdir}" install
+}

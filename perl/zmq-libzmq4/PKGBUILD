@@ -1,0 +1,49 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-perl-zmq-libzmq4"
+pkgver="0.01"
+pkgrel="1"
+pkgdesc="A libzmq 4.x wrapper for Perl"
+pkgdesclong=(
+  "A libzmq 4.x wrapper for Perl"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends=(
+  "carbonio-zeromq"
+  "carbonio-perl-base"
+  "carbonio-perl-zmq-constants"
+)
+section="libs"
+priority="important"
+sources=(
+  "https://cpan.metacpan.org/authors/id/M/MO/MOSCONI/ZMQ-LibZMQ4-${pkgver}.tar.gz"
+)
+hashsums=(
+  "SKIP"
+)
+
+build() {
+  cd "${srcdir}/ZMQ-LibZMQ4-${pkgver}"
+  ZMQ_INCLUDES=/opt/zextras/common/include ZMQ_LIBS=/opt/zextras/common/lib ZMQ_H=/opt/zextras/common/include \
+      perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
+    INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
+    LIB=/opt/zextras/common/lib/perl5 LIBS="-L/opt/zextras/common/lib -lzmq" INC="-I/opt/zextras/common/include"
+  make
+}
+
+package() {
+  cd "${srcdir}/ZMQ-LibZMQ4-${pkgver}"
+  # HACK: avoid tests requiring Test::SharedFork, Test::Fatal, Test::Require, Test::More::subtest
+  rm -f t/104_ipc.t
+  rm -f t/001_context.t t/002_socket.t t/003_message.t t/005_poll.t t/006_anyevent.t
+  rm -f t/100_basic.t t/101_threads.t t/200_fork.t t/201_thread.t t/202_proxy.t
+  rm -f t/rt64944.t t/rt74653.t
+  make install DESTDIR="${pkgdir}"
+  find "${pkgdir}" -name '.packlist' -delete
+  find "${pkgdir}" -name '*.pod' -delete
+  rm -rf "${pkgdir}/opt/zextras/common/lib/perl5/$archname"/auto/*/*/.packlist
+}

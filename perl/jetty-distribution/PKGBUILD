@@ -1,0 +1,32 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-jetty-distribution"
+pkgver="9.4.18.v20190429"
+pkgrel="1"
+pkgdesc="A pure Java-based HTTP server and Java Servlet container"
+pkgdesclong=(
+  "A pure Java-based HTTP server and Java Servlet container"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends=(
+  "carbonio-jetty-distribution"
+)
+section="libs"
+priority="important"
+sources=(
+  "https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/${pkgver}/jetty-distribution-${pkgver}.tar.gz"
+)
+hashsums=(
+  "0fb8735b5d23d3ad7350c19fc1523cf7eda1936d2cee2d4f85edfb27b3d7eaf7"
+)
+
+package() {
+  cd "${srcdir}/jetty-distribution-${pkgver}"
+  # executables
+  mkdir -p "${pkgdir}/opt/zextras/common/jetty_home"
+  find -maxdepth 1 -mindepth 1 | grep -v -w -e debian -e rpm | xargs -r '-I{}' cp -a '{}' "${pkgdir}/opt/zextras/common/jetty_home"
+}

@@ -1,0 +1,42 @@
+--- Crypt-OpenSSL-RSA-0.31/Makefile.PL	2018-09-24 19:21:49.000000000 +0200
++++ Crypt-OpenSSL-RSA-0.31/Makefile.PL	2020-03-19 11:02:40.470755395 +0100
+@@ -3,11 +3,14 @@
+ 
+ use 5.006;
+ use ExtUtils::MakeMaker 6.48;
+-use Crypt::OpenSSL::Guess qw(openssl_inc_paths openssl_lib_paths);
+ 
+ # See lib/ExtUtils/MakeMaker.pm for details of how to influence
+ # the contents of the Makefile that is written.
+ 
++my $KERBEROS_INCLUDE = "/usr/kerberos/include";
++
++my $include = -d $KERBEROS_INCLUDE ? "-I${KERBEROS_INCLUDE}" : "";
++
+ WriteMakefile(
+     'NAME'             => 'Crypt::OpenSSL::RSA',
+     AUTHOR             => 'Ian Robertson <iroberts@cpan.org>',
+@@ -22,11 +25,11 @@
+         'Test::More'             => 0,
+     },
+     'OBJECT' => 'RSA.o',
+-    'LIBS'   => [openssl_lib_paths() . ' -lssl -lcrypto'],
++    'LIBS'    => ($^O eq 'MSWin32') ? ['-lssl32 -leay32'] : ['-lssl -lcrypto'],
+     'DEFINE' => '-DPERL5 -DOPENSSL_NO_KRB5',
+ 
+     # perl-5.8/gcc-3.2 needs -DPERL5, and redhat9 likes -DOPENSSL_NO_KRB5
+-    'INC' => openssl_inc_paths(),    # e.g., '-I/usr/include/other'
++    'INC'	=> $include,     # e.g., '-I/usr/include/other'
+ 
+     'dist'  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
+     'clean' => { FILES    => 'Crypt-OpenSSL-RSA-*' },
+@@ -38,9 +41,6 @@
+                 recommends => {
+                     'Crypt::OpenSSL::Bignum' => 0,
+                 },
+-                configure_requires => {
+-                    'Crypt::OpenSSL::Guess' => '0.11',
+-                },
+                 build_requires => {
+                     'Test' => 0,    # For testing
+                 },

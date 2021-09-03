@@ -1,0 +1,454 @@
+{
+    "name": "Zextras Server",
+    "description": "The test description",
+    "build_dir": "/tmp/",
+    "output": "/media",
+    "projects": [
+        {
+            "name": "base",
+            "install": true
+        },
+        {
+            "name": "icu",
+            "install": true
+        },
+
+        {
+            "name": "openssl",
+            "install": true
+        },
+        {
+            "name": "libxml2",
+            "install": true
+        },
+        {
+            "name": "libtool",
+            "install": true
+        },
+        {
+            "name": "libbsd",
+            "install": true
+        },
+        {
+            "name": "libevent",
+            "install": true
+        },
+        {
+            "name": "libsodium",
+            "install": true
+        },
+        {
+            "name": "libart",
+            "install": true
+        },
+        {
+            "name": "libpng",
+            "install": true
+        },
+        {
+            "name": "freetype",
+            "install": true
+        },
+        {
+            "name": "libmilter",
+            "install": true
+        },        
+        {
+            "name": "gperftools",
+            "install": true
+        },
+        {
+            "name": "rsync",
+            "install": true
+        },
+        {
+            "name": "altermime",
+            "install": true
+        },
+        {
+            "name": "bdb",
+            "install": true
+        },
+        {
+            "name": "amavis-logwatch"
+        },
+        {
+            "name": "postfix-logwatch"
+        },
+        {
+            "name": "amavisd"
+        },
+        {
+            "name": "openjdk"
+        },
+        {
+            "name": "krb5",
+            "install": true
+        },        
+        {
+            "name": "curl",
+            "install": true
+        },
+        {
+            "name": "jemalloc",
+            "install": true
+        },
+        {
+            "name": "zeromq",
+            "install": true
+        },
+        {
+            "name": "mariadb",
+            "install": true
+        },
+        {
+            "name": "cyrus-sasl",
+            "install": true
+        },
+        {
+            "name": "openldap",
+            "install": true
+        },
+        {
+            "name": "clamav"
+        },
+        {
+            "name": "postfix"
+        },
+        {
+            "name": "rrdtool"
+        },
+        {
+            "name": "net-snmp"
+        },
+        {
+            "name": "memcached"
+        },
+        {
+            "name": "nginx"
+        },
+        {
+            "name": "unbound",
+            "install": true
+        },
+        {
+            "name": "opendkim",
+            "install": true
+        },
+        {
+            "name": "perl-crypt-openssl-random"
+        },
+        {
+            "name": "perl-crypt-openssl-rsa"
+        },
+        {
+            "name": "perl-net-cidr"
+        },
+        {
+            "name": "perl-socket-linux"
+        },
+        {
+            "name": "perl-net-libidn"
+        },
+        {
+            "name": "perl-math-bigint"
+        },
+        {
+            "name": "perl-file-libmagic"
+        },
+        {
+            "name": "perl-convert-asn1"
+        },
+        {
+            "name": "perl-socket"
+        },
+        {
+            "name": "perl-io-socket-inet6"
+        },
+        {
+            "name": "perl-io-socket-ip"
+        },
+        {
+            "name": "perl-net-ssleay"
+        },
+        {
+            "name": "perl-net-ldap"
+        },
+        {
+            "name": "perl-net-server"
+        },
+        {
+            "name": "perl-zmq-constants",
+            "install": true
+        },
+        {
+            "name": "perl-zmq-libzmq4"
+        },
+        {
+            "name": "perl-mozilla-ca"
+        },
+        {
+            "name": "perl-io-socket-ssl"
+        },
+        {
+            "name": "perl-dbi"
+        },
+        {
+            "name": "perl-html-parser"
+        },
+        {
+            "name": "perl-parent"
+        },
+        {
+            "name": "perl-uri"
+        },
+        {
+            "name": "perl-net-http"
+        },
+        {
+            "name": "perl-lwp-mediatypes"
+        },
+        {
+            "name": "perl-encode-locale"
+        },
+        {
+            "name": "perl-http-date"
+        },
+        {
+            "name": "perl-io-html"
+        },
+        {
+            "name": "perl-compress-raw-bzip2"
+        },
+        {
+            "name": "perl-compress-raw-zlib"
+        },
+        {
+            "name": "perl-io-compress"
+        },
+        {
+            "name": "perl-http-message"
+        },
+        {
+            "name": "perl-http-negotiate"
+        },
+        {
+            "name": "perl-file-listing"
+        },
+        {
+            "name": "perl-http-daemon"
+        },
+        {
+            "name": "perl-http-cookies"
+        },
+        {
+            "name": "perl-www-robotrules"
+        },
+        {
+            "name": "perl-libwww"
+        },
+        {
+            "name": "perl-lwp-protocol-https"
+        },
+        {
+            "name": "perl-io-stringy"
+        },
+        {
+            "name": "perl-timedate"
+        },
+        {
+            "name": "perl-mailtools"
+        },
+        {
+            "name": "perl-mime-types"
+        },
+        {
+            "name": "perl-email-date-format"
+        },
+        {
+            "name": "perl-mime-lite"
+        },
+        {
+            "name": "perl-convert-binhex"
+        },
+        {
+            "name": "perl-mime-tools"
+        },
+        {
+            "name": "perl-io-sessiondata"
+        },
+        {
+            "name": "perl-json-pp"
+        },
+        {
+            "name": "perl-exporter-tiny"
+        },
+        {
+            "name": "perl-list-moreutils"
+        },
+        {
+            "name": "perl-config-inifiles"
+        },
+        {
+            "name": "perl-carp-clan"
+        },
+        {
+            "name": "perl-bit-vector"
+        },
+        {
+            "name": "perl-date-calc"
+        },
+        {
+            "name": "perl-date-manip"
+        },
+        {
+            "name": "perl-unix-syslog"
+        },
+        {
+            "name": "perl-digest-sha1"
+        },
+        {
+            "name": "perl-digest-hmac"
+        },
+        {
+            "name": "perl-convert-tnef"
+        },
+        {
+            "name": "perl-canary-stability",
+            "install": true
+        },
+        {
+            "name": "perl-convert-uulib"
+        },
+        {
+            "name": "perl-file-tail"
+        },
+        {
+            "name": "perl-file-grep"
+        },
+        {
+            "name": "perl-data-uuid"
+        },
+        {
+            "name": "perl-crypt-saltedhash"
+        },
+        {
+            "name": "perl-archive-zip"
+        },
+        {
+            "name": "perl-error"
+        },
+        {
+            "name": "perl-xml-parser"
+        },
+        {
+            "name": "perl-xml-sax-base",
+            "install": true
+        },
+        {
+            "name": "perl-xml-namespacesupport"
+        },
+        {
+            "name": "perl-xml-sax"
+        },
+        {
+            "name": "perl-xml-sax-expat"
+        },
+        {
+            "name": "perl-xml-simple"
+        },
+        {
+            "name": "perl-netaddr-ip"
+        },
+        {
+            "name": "perl-net-dns"
+        },
+        {
+            "name": "perl-mail-dkim"
+        },
+        {
+            "name": "perl-net-dns-resolver-programmable"
+        },
+        {
+            "name": "perl-geography-countries"
+        },
+        {
+            "name": "perl-ip-country"
+        },
+        {
+            "name": "perl-dbd-sqlite"
+        },
+        {
+            "name": "perl-filesys-df"
+        },
+        {
+            "name": "perl-encode-detect"
+        },
+        {
+            "name": "perl-unix-getrusage"
+        },
+        {
+            "name": "perl-class-inspector"
+        },
+        {
+            "name": "perl-task-weaken"
+        },
+        {
+            "name": "perl-xml-parser-lite"
+        },
+        {
+            "name": "perl-soap-lite"
+        },
+        {
+            "name": "perl-term-readkey"
+        },
+        {
+            "name": "perl-net-cidr-lite"
+        },
+        {
+            "name": "perl-cache-fastmmap"
+        },
+        {
+            "name": "perl-proc-processtable"
+        },
+        {
+            "name": "perl-net-ldapapi"
+        },
+        {
+            "name": "perl-berkeleydb"
+        },
+        {
+            "name": "perl-db-file"
+        },
+        {
+            "name": "perl-dbd-mysql"
+        },
+        {
+            "name": "perl-mail-spf"
+        },
+        {
+            "name": "perl-mail-spamassassin"
+        },
+        {
+            "name": "perl-swatchdog"
+        },
+        {
+            "name": "innotop"
+        },
+        {
+            "name": "pflogsumm"
+        },
+        {
+            "name": "prepflog"
+        },
+        {
+            "name": "policyd"
+        },
+        {
+            "name": "spamassassin-rules"
+        },
+        {
+            "name": "jetty-distribution"
+        }
+    ]
+}

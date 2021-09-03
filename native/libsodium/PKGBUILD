@@ -1,0 +1,45 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-libsodium"
+pkgver="1.0.18"
+pkgrel="1"
+pkgdesc="P(ortable|ackageable) NaCl-based crypto library"
+pkgdesclong=(
+  "P(ortable|ackageable) NaCl-based crypto library"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends:apt=(
+  "carbonio-base"
+)
+depends:yum=(
+  "carbonio-base"
+)
+section="libs"
+priority="important"
+sources=(
+  "https://download.libsodium.org/libsodium/releases/libsodium-${pkgver}.tar.gz"
+)
+hashsums=(
+  "6f504490b342a4f8a4c4a02fc9b866cbef8622d5df4e5452b46be121e46636c1"
+)
+
+build() {
+  cd "${srcdir}/libsodium-${pkgver}"
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
+  export CFLAGS="-O2"
+  export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
+
+  ./configure --prefix=/opt/zextras/common
+  make -j16
+}
+
+package() {
+  cd "${srcdir}/libsodium-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  rm -rf "${pkgdir}"/opt/zextras/common/lib/*.a
+  rm -rf "${pkgdir}"/opt/zextras/common/lib/*.la
+}

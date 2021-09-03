@@ -1,0 +1,42 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-amavisd"
+pkgver="2.12.1"
+pkgrel="1"
+pkgdesc="High-performance interface between mailer (MTA) and content checkers"
+pkgdesclong=(
+  "High-performance interface between mailer (MTA) and content checkers"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends=(
+  "perl"
+  "carbonio-mta-base"
+)
+section="utils"
+priority="optional"
+sources=(
+  "https://gitlab.com/amavis/amavis/-/archive/v${pkgver}/amavis-v${pkgver}.tar.bz2"
+  "socket_and_misc.patch"
+)
+hashsums=(
+  "0ea5d3ace8388c0b92d867f096f4b4015cc8f6cc34c5c15b7be0b1ecd65b5292"
+  "601a604c1ec7a5b62c71cde35af1ca13c3107e6d3d2a5ad202e0ca9f7cb0175a"
+)
+
+package() {
+  cd "${srcdir}/amavis-v${pkgver}"
+
+  patch -Np1 -i ../socket_and_misc.patch
+
+  mkdir -p "${pkgdir}/opt/zextras/common/sbin"
+  cp amavisd "${pkgdir}/opt/zextras/common/sbin"
+  cp amavisd-release "${pkgdir}/opt/zextras/common/sbin"
+  cp amavis-mc "${pkgdir}/opt/zextras/common/sbin"
+  cp amavis-services "${pkgdir}/opt/zextras/common/sbin"
+  cp amavisd-status "${pkgdir}/opt/zextras/common/sbin"
+  cp amavisd-snmp-subagent-zmq "${pkgdir}/opt/zextras/common/sbin"
+}

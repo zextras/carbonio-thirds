@@ -1,0 +1,46 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-aspell-nl"
+pkgver="0.50"
+pkgrel="1"
+pkgdesc="Dutch dictionary for aspell"
+pkgdesclong=(
+  "Dutch dictionary for aspell"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends=(
+  "carbonio-aspell"
+  "carbonio-spell-base"
+)
+section="utils"
+priority="optional"
+sources=(
+  "https://ftp.gnu.org/gnu/aspell/dict/nl/aspell-nl-${pkgver}-2.tar.bz2"
+  "aspell-nl.patch"
+)
+hashsums=(
+  "c3ef9fd7dc4c47d816eee9ef5149c76a"
+  "67be62ff7564dfa063eb563b90fe250ad9f0a1eb1cd82dec8be1c07fa709a12c"
+)
+
+build() {
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
+  export CFLAGS="-O2"
+  
+  cd "${srcdir}/aspell-nl-${pkgver}-2"
+
+  patch -Np1 -i ../aspell-nl.patch
+  ./configure \
+    --vars ASPELL=/opt/zextras/common/bin/aspell \
+    PREZIP=/opt/zextras/common/bin/prezip-bin
+  make
+}
+
+package() {
+  cd "${srcdir}/aspell-nl-${pkgver}-2"
+  make DESTDIR="${pkgdir}" install
+}

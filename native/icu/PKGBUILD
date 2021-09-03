@@ -1,0 +1,51 @@
+targets=(
+  ubuntu
+  centos
+)
+pkgname="carbonio-icu"
+pkgver="69.1"
+pkgrel="1"
+pkgdesc="International Components for Unicode library"
+pkgdesclong=(
+  "International Components for Unicode library"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends:apt=(
+  "libc6"
+  "bash"
+)
+depends:yum=(
+  "glibc"
+  "bash"
+)
+makedepends=(
+  "python3"
+)
+section="libs"
+priority="important"
+sources=(
+  "https://github.com/unicode-org/icu/releases/download/release-69-1/icu4c-69_1-src.tgz"
+)
+hashsums=(
+  "d4aeb781715144ea6e3c6b98df5bbe0490bfa3175221a1d667f3e6851b7bd4a638fa4a37d4a921ccb31f02b5d15a6dded9464d98051964a86f7b1cde0ff0aab7"
+)
+
+build() {
+  cd "${srcdir}/icu"
+  cd source
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
+  export CFLAGS="-O2"  
+  ./configure --prefix=/opt/zextras/common \
+    --sysconfdir=/opt/zextras/common/etc \
+    --sbindir=/opt/zextras/common/bin
+  make -j16
+}
+
+package() {
+  cd "${srcdir}/icu"
+  cd source
+  make -j1 DESTDIR="${pkgdir}" install
+  rm -rf "${pkgdir}/opt/zextras/common/share/man/"
+}

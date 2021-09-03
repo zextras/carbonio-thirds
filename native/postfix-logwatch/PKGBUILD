@@ -1,0 +1,45 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-postfix-logwatch"
+pkgver="1.40.03"
+pkgrel="1"
+pkgdesc="Best email money can buy"
+pkgdesclong=(
+  "Best email money can buy"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends=(
+  "carbonio-base"
+)
+section="utils"
+priority="optional"
+sources=(
+  "http://sourceforge.net/projects/logreporters/files/postfix-logwatch-${pkgver}.tgz"
+)
+hashsums=(
+  "SKIP"
+)
+
+build() {
+  cd "${srcdir}/postfix-logwatch-${pkgver}"
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
+  export CFLAGS="-O2"
+  make
+}
+package() {
+  cd "${srcdir}/postfix-logwatch-${pkgver}"
+  mkdir -p "${pkgdir}"/opt/zextras/common/bin
+  mkdir -p "${pkgdir}"/opt/zextras/common/etc
+  mkdir -p "${pkgdir}"/opt/zextras/common/share/man/man1
+  make install DESTDIR="${pkgdir}"
+  cp -f postfix-logwatch "${pkgdir}"/opt/zextras/common/bin
+  cp -f postfix-logwatch.conf "${pkgdir}"/opt/zextras/common/etc
+  cp -f postfix-logwatch.1 "${pkgdir}"/opt/zextras/common/share/man/man1
+  sed -i -e 's|/usr/local/etc|/opt/zextras/common/etc|' "${pkgdir}"/opt/zextras/common/bin/postfix-logwatch
+  sed -i -e 's|/usr/local/etc|/opt/zextras/common/etc|' -e 's|/usr/local/bin|/opt/zextras/common/bin|' "${pkgdir}"/opt/zextras/common/share/man/man1/postfix-logwatch.1
+  chmod 755 "${pkgdir}"/opt/zextras/common/bin/postfix-logwatch
+}

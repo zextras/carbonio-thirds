@@ -1,0 +1,104 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-nginx"
+pkgver="1.20.0"
+pkgrel="1"
+pkgdesc="Lightweight HTTP server and IMAP/POP3 proxy server"
+pkgdesclong=(
+  "Lightweight HTTP server and IMAP/POP3 proxy server"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends:apt=(
+  "libpcre3"
+  "zlib1g"
+  "carbonio-cyrus-sasl"
+  "carbonio-proxy-base"
+  "carbonio-openssl"
+)
+makedepends:apt=(
+  "libpcre3-dev"
+  "zlib1g-dev"
+)
+depends:yum=(
+  "pcre"
+  "zlib"
+  "carbonio-cyrus-sasl"
+  "carbonio-proxy-base"
+  "carbonio-openssl"
+)
+makedepends:yum=(
+  "pcre-devel"
+  "zlib-devel"
+)
+section="utils"
+priority="optional"
+sources=(
+  "https://github.com/zimbra/nginx/archive/a4e9579a80f5b24621cd95968235ac3e1807b865.tar.gz"
+  "https://github.com/nviennot/nginx-tcp-keepalive/archive/19755fc0e22aa7d7ac2198f78b297951d31ea1dc.tar.gz"
+  "modules.tar.gz"
+)
+hashsums=(
+  "c1371d5b5d669cd840c5cb7055f48dd5d3bbcdbdc3919151c69d023eed65f95a"
+  "8b09b8eefb13d298f865ccb3563f9e2b808f7f5467b261532c47f0a2bddf2685"
+  "b8d1b9c577453d195505c8e4cd195420d5876d2a3dd81480821fdbe149f038b2"
+)
+
+build() {
+
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib"
+  export CFLAGS="-g -O2"
+
+  cd "${srcdir}/nginx-a4e9579a80f5b24621cd95968235ac3e1807b865"
+  cp -r ../modules zmmodules
+  cp -r ../nginx-tcp-keepalive* zmmodules/nginx-tcp-keepalive
+  ./auto/configure --prefix=/opt/zextras/common \
+  --with-cc-opt="-g -I/opt/zextras/common/include" \
+  --with-ld-opt="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib" \
+  --with-debug \
+  --with-ipv6 \
+  --with-http_ssl_module \
+  --with-http_stub_status_module \
+  --with-pcre \
+  --with-http_addition_module \
+  --with-http_auth_request_module \
+  --with-http_degradation_module \
+  --with-http_gunzip_module \
+  --with-http_gzip_static_module \
+  --with-http_secure_link_module \
+  --with-http_slice_module \
+  --with-http_ssl_module \
+  --with-http_stub_status_module \
+  --with-http_sub_module \
+  --with-http_v2_module \
+  --with-stream \
+  --with-stream_ssl_module \
+  --with-stream_ssl_preread_module \
+  --with-threads \
+  --with-mail \
+  --with-mail-sasl \
+  --with-mail_ssl_module \
+  --error-log-path=/opt/zextras/log/nginx.log \
+  --http-log-path=/opt/zextras/log/nginx.access.log \
+  --http-client-body-temp-path=/opt/zextras/data/tmp/nginx/client \
+  --http-proxy-temp-path=/opt/zextras/data/tmp/nginx/proxy \
+  --http-fastcgi-temp-path=/opt/zextras/data/tmp/nginx/fastcgi \
+  --without-http_scgi_module \
+  --without-http_uwsgi_module \
+  --add-module=zmmodules/nginx-tcp-keepalive \
+  --add-module=zmmodules/http/sso \
+  --add-module=zmmodules/http/upstreamzmauth \
+  --add-module=zmmodules/mail/zmauth \
+  --add-module=zmmodules/mail/throttle  
+  make -j16
+}
+
+package() {
+  cd "${srcdir}/nginx-a4e9579a80f5b24621cd95968235ac3e1807b865"
+  make DESTDIR="${pkgdir}" install
+  mkdir -p "${pkgdir}"/opt/zextras/data/nginx
+  mv "${pkgdir}"/opt/zextras/common/html "${pkgdir}"/opt/zextras/data/nginx/  
+}

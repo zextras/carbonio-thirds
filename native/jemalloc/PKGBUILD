@@ -1,0 +1,39 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-jemalloc"
+pkgver="5.2.1"
+pkgrel="1"
+pkgdesc="General-purpose scalable concurrent malloc implementation"
+pkgdesclong=(
+  "General-purpose scalable concurrent malloc implementation"
+)
+maintainer="Zextras <packages@zextras.com>"
+arch="amd64"
+license=("BSD")
+url="http://www.canonware.com/jemalloc/"
+depends:apt=(
+  "libgcc1"
+  "libc6"
+)
+section="utils"
+priority="optional"
+sources=("https://github.com/jemalloc/jemalloc/releases/download/${pkgver}/jemalloc-${pkgver}.tar.bz2")
+hashsums=("34330e5ce276099e2e8950d9335db5a875689a4c6a56751ef3b1d8c537f887f6")
+
+build() {
+  cd "jemalloc-${pkgver}"
+  ./configure \
+    --enable-autogen \
+    --prefix=/opt/zextras/common
+  make -j16
+}
+
+package() {
+  cd "jemalloc-${pkgver}"
+
+  make DESTDIR="${pkgdir}" install
+
+  find "${pkgdir}" -name '*.a' -delete
+}

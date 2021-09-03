@@ -1,0 +1,51 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-perl-xml-sax-expat"
+pkgver="0.51"
+pkgrel="1"
+pkgdesc="SAX2 Driver for Expat"
+pkgdesclong=(
+  "SAX2 Driver for Expat"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends:apt=(
+  "libexpat1"
+  "carbonio-perl-base"
+)
+depends:yum=(
+  "expat"
+  "carbonio-perl-base"
+)
+makedepends:apt=(
+  "libexpat1-dev"
+)
+makedepends:yum=(
+  "expat-devel"
+)
+section="libs"
+priority="important"
+sources=(
+  "https://cpan.metacpan.org/authors/id/B/BJ/BJOERN/XML-SAX-Expat-${pkgver}.tar.gz"
+)
+hashsums=(
+  "SKIP"
+)
+
+build() {
+  cd "${srcdir}/XML-SAX-Expat-${pkgver}"
+  perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
+    INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3
+  make
+}
+
+package() {
+  cd "${srcdir}/XML-SAX-Expat-${pkgver}"
+  PERL5LIB=/opt/zextras/common/lib/perl5:${pkgdir}/opt/zextras/common/lib/perl5 \
+  make install DESTDIR="${pkgdir}"
+  find "${pkgdir}" -name '.packlist' -delete
+  find "${pkgdir}" -name '*.pod' -delete
+}

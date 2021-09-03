@@ -1,0 +1,42 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-aspell-ru"
+pkgver="0.99f7"
+pkgrel="1"
+pkgdesc="Russian dictionary for aspell"
+pkgdesclong=(
+  "Russian dictionary for aspell"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends=(
+  "carbonio-aspell"
+  "carbonio-spell-base"
+)
+section="utils"
+priority="optional"
+sources=(
+  "https://ftp.gnu.org/gnu/aspell/dict/ru/aspell6-ru-${pkgver}-1.tar.bz2"
+)
+hashsums=(
+  "789fe15f5502b54008a41f2afb5635dcb7bb0a36e61b300ee48b2429c339793f5c4808d6063f13f1f8455ce251912433890e7d01ca59d8b0924ecd2987ceb430"
+)
+
+build() {
+  cd "${srcdir}/aspell6-ru-${pkgver}-1"
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
+  export CFLAGS="-O2"
+
+  ./configure \
+    --vars ASPELL=/opt/zextras/common/bin/aspell \
+    PREZIP=/opt/zextras/common/bin/prezip-bin
+  make
+}
+
+package() {
+  cd "${srcdir}/aspell6-ru-${pkgver}-1"
+  make DESTDIR="${pkgdir}" install
+}

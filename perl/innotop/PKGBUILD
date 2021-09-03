@@ -1,0 +1,42 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-innotop"
+pkgver="1.13.0"
+pkgrel="1"
+pkgdesc="Postfix log entry summarizer"
+pkgdesclong=(
+  "Postfix log entry summarizer"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends=(
+  "carbonio-perl-base"
+  "carbonio-perl-dbd-mysql"
+  "carbonio-perl-term-readkey"
+)
+section="libs"
+priority="important"
+sources=(
+  "https://github.com/innotop/innotop/archive/refs/tags/v${pkgver}.tar.gz"
+)
+hashsums=(
+  "6ec91568e32bda3126661523d9917c7fbbd4b9f85db79224c01b2a740727a65c"
+)
+
+build() {
+  cd "${srcdir}/innotop-${pkgver}"
+  perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
+    INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
+    LIB=/opt/zextras/common/lib/perl5 LIBS="-L/opt/zextras/common/lib -lssl -lcrypto" INC="-I/opt/zextras/common/include"
+  PERL5LIB=/opt/zextras/common/lib make
+}
+
+package() {
+  cd "${srcdir}/innotop-${pkgver}"
+  make install DESTDIR="${pkgdir}"
+  find "${pkgdir}" -name '.packlist' -delete
+  find "${pkgdir}" -name '*.pod' -delete
+}

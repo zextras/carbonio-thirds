@@ -1,0 +1,34 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-apache"
+pkgver="9.0.0p14"
+pkgrel="1"
+pkgdesc="Best email money can buy"
+pkgdesclong=(
+  "Best email money can buy"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends=(
+  "carbonio-apache-components"
+  "carbonio-core"
+)
+section="utils"
+priority="optional"
+sources=(
+  "/src/"
+)
+hashsums=(
+  "SKIP"
+)
+
+package() {
+  cd "${srcdir}"
+  install -D opt/zextras/conf/httpd.conf \
+    "${pkgdir}/opt/zextras/conf/httpd.conf"
+  install -D opt/zextras/conf/php.ini \
+    "${pkgdir}/opt/zextras/conf/php.ini"
+}

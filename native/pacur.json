@@ -1,0 +1,128 @@
+{
+    "name": "Zextras Server",
+    "description": "This is the manifest to build native third-party packages",
+    "build_dir": "/tmp/",
+    "output": "artifacts",
+    "projects": [
+        {
+            "name": "base",
+            "install": true
+        },
+        {
+            "name": "openssl",
+            "install": true
+        },
+        {
+            "name": "libxml2",
+            "install": true
+        },
+        {
+            "name": "libtool",
+            "install": true
+        },
+        {
+            "name": "libbsd",
+            "install": true
+        },
+        {
+            "name": "libevent",
+            "install": true
+        },
+        {
+            "name": "libsodium",
+            "install": true
+        },
+        {
+            "name": "libart",
+            "install": true
+        },
+        {
+            "name": "libpng",
+            "install": true
+        },
+        {
+            "name": "freetype",
+            "install": true
+        },
+        {
+            "name": "libmilter",
+            "install": true
+        },        
+        {
+            "name": "rsync",
+            "install": true
+        },
+        {
+            "name": "altermime",
+            "install": true
+        },
+        {
+            "name": "bdb",
+            "install": true
+        },
+        {
+            "name": "amavis-logwatch"
+        },
+        {
+            "name": "postfix-logwatch"
+        },
+        {
+            "name": "amavisd"
+        },
+        {
+            "name": "openjdk",
+            "install": true
+        },
+        {
+            "name": "krb5",
+            "install": true
+        },        
+        {
+            "name": "curl",
+            "install": true
+        },
+        {
+            "name": "jemalloc",
+            "install": true
+        },
+        {
+            "name": "zeromq",
+            "install": true
+        },
+        {
+            "name": "mariadb",
+            "install": true
+        },
+        {
+            "name": "cyrus-sasl",
+            "install": true
+        },
+        {
+            "name": "openldap",
+            "install": true
+        },
+        {
+            "name": "clamav"
+        },
+        {
+            "name": "postfix"
+        },
+        {
+            "name": "net-snmp"
+        },
+        {
+            "name": "memcached"
+        },
+        {
+            "name": "nginx"
+        },
+        {
+            "name": "unbound",
+            "install": true
+        },
+        {
+            "name": "opendkim",
+            "install": true
+        }
+    ]
+}

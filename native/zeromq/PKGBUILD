@@ -1,0 +1,63 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-zeromq"
+pkgver="4.3.4"
+pkgrel="1"
+pkgdesc="Fast messaging system built on sockets. C and C++ bindings. aka 0MQ, ZMQ."
+pkgdesclong=(
+  "Fast messaging system built on sockets. C and C++ bindings. aka 0MQ, ZMQ."
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends:ubuntu-bionic=(
+  "libpgm-5.2-0"
+  "libunwind8"
+  "carbonio-libsodium"
+  "carbonio-base"
+)
+makedepends:apt=(
+  "libunwind-dev"
+  "libpgm-dev"
+)
+depends:yum=(
+  "openpgm"
+  "carbonio-libsodium"
+  "carbonio-base"
+)
+makedepends:yum=(
+  "openpgm-devel"
+)
+section="utils"
+priority="optional"
+sources=(
+  "https://github.com/zeromq/libzmq/releases/download/v${pkgver}/zeromq-${pkgver}.tar.gz"
+)
+hashsums=(
+  "c593001a89f5a85dd2ddf564805deb860e02471171b3f204944857336295c3e5"
+)
+
+build() {
+  cd "${srcdir}/zeromq-${pkgver}"
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
+  export CFLAGS="-O2"
+  export CXXFLAGS="-O2"
+  export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
+
+  ./configure \
+    --prefix=/opt/zextras/common \
+	  --with-libsodium \
+    --with-pgm \
+    --disable-static \
+    --without-docs \
+    --without-documentation
+  make -j16
+}
+
+package() {
+  cd "${srcdir}/zeromq-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  rm -rf "${pkgdir}"/opt/zextras/common/lib/*.la
+}

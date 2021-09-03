@@ -1,0 +1,44 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-libmilter"
+pkgver="8.16.1"
+pkgrel="1"
+pkgdesc="Implementation of the sendmail Mail Filter API"
+pkgdesclong=(
+  "Implementation of the sendmail Mail Filter API"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends=(
+  "carbonio-base"
+)
+section="libs"
+priority="important"
+sources=(
+  "https://ftp.sendmail.org/sendmail.${pkgver}.tar.gz"
+  "site.config.m4"
+)
+hashsums=(
+  "7886d5dc4b436b86175f32b5b9c7305c80787749847e2909bf99123ecc4e64ba"
+  "9ea8ce8a8fc6179da65d0e9b7b6d7016d9a3f38070db4acce56d17a8d78ed3ad"
+)
+
+build() {
+  cd "${srcdir}/sendmail-${pkgver}"
+  cp ../site.config.m4 devtools/Site
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
+  export CFLAGS="-O2"
+  cd libmilter
+  ./Build
+}
+
+package() {
+  cd "${srcdir}/sendmail-${pkgver}"
+  cd libmilter
+  install -d "${pkgdir}/opt/zextras/common/lib"
+  install -d "${pkgdir}/opt/zextras/common/include"
+  ./Build DESTDIR="${pkgdir}" install
+}

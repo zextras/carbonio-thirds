@@ -1,0 +1,51 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-amavis-logwatch"
+pkgver="1.51.03"
+pkgrel="1"
+pkgdesc="An Amavisd log parser that produces summaries, details, and statistics regarding the operation of Amavisd"
+pkgdesclong=(
+  "An Amavisd log parser that produces summaries, details, and statistics regarding the operation of Amavisd"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends=(
+  "carbonio-base"
+)
+section="utils"
+priority="optional"
+sources=(
+  "http://sourceforge.net/projects/logreporters/files/amavis-logwatch-${pkgver}.tgz"
+)
+hashsums=(
+  "247f12646f834f6ed067d7aa79ef89f458284a6141391c3d96d6225bb1679c92"
+)
+
+build() {
+  cd "${srcdir}"
+  tar xvf *.tgz
+  cd "${srcdir}/amavis-logwatch-${pkgver}"
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
+  export CFLAGS="-O2"
+  make
+}
+
+package() {
+  cd "${srcdir}/amavis-logwatch-${pkgver}"
+
+  mkdir -p "${pkgdir}/opt/zextras/common/bin"
+  mkdir -p "${pkgdir}/opt/zextras/common/etc"
+  mkdir -p "${pkgdir}/opt/zextras/common/share/man/man1"
+  cp -f amavis-logwatch "${pkgdir}/opt/zextras/common/bin"
+  cp -f amavis-logwatch.conf "${pkgdir}/opt/zextras/common/etc"
+  cp -f amavis-logwatch.1 "${pkgdir}/opt/zextras/common/share/man/man1"
+  sed -i -e 's|/usr/local/etc|/opt/zextras/common/etc|' \
+    "${pkgdir}/opt/zextras/common/bin/amavis-logwatch"
+  sed -i -e 's|/usr/local/etc|/opt/zextras/common/etc|' \
+    -e 's|/usr/local/bin|/opt/zextras/common/bin|' \
+    "${pkgdir}/opt/zextras/common/share/man/man1/amavis-logwatch.1"
+  chmod 755 "${pkgdir}/opt/zextras/common/bin/amavis-logwatch"
+}

@@ -1,0 +1,39 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-perl-socket-linux"
+pkgver="0.01"
+pkgrel="1"
+pkgdesc="Socket constants defined in Linux <netinet/tcp.h>"
+pkgdesclong=(
+  "Socket constants defined in Linux <netinet/tcp.h>"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends=(
+  "carbonio-perl-base"
+)
+section="libs"
+priority="important"
+sources=(
+  "https://cpan.metacpan.org/authors/id/S/SA/SALVA/Socket-Linux-${pkgver}.tar.gz"
+)
+hashsums=(
+  "SKIP"
+)
+
+build() {
+  cd "${srcdir}/Socket-Linux-${pkgver}"
+  perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
+    INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3
+  make
+}
+
+package() {
+  cd "${srcdir}/Socket-Linux-${pkgver}"
+  make install DESTDIR="${pkgdir}"
+  find "${pkgdir}" -name '.packlist' -delete
+  find "${pkgdir}" -name '*.pod' -delete  
+}

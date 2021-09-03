@@ -1,0 +1,52 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-policyd"
+pkgver="2.0.14"
+pkgrel="1"
+pkgdesc="Multi-platform policy server for popular MTAs (aka ClueBringer)"
+pkgdesclong=(
+  "Multi-platform policy server for popular MTAs (aka ClueBringer)"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends=(
+  "carbonio-mta-base"
+  "carbonio-perl-base"
+  "carbonio-perl-cache-fastmmap"
+  "carbonio-perl-config-inifiles"
+  "carbonio-perl-dbi"
+  "carbonio-perl-dbd-sqlite"
+  "carbonio-perl-mail-spf"
+  "carbonio-perl-net-cidr"
+  "carbonio-perl-net-dns"
+  "carbonio-perl-net-server"
+  "carbonio-perl-timedate"
+
+)
+section="libs"
+priority="important"
+sources=(
+  "http://download.policyd.org/v${pkgver}/cluebringer-v${pkgver}.tar.xz"
+)
+hashsums=(
+  "e75cd25a836b316846f5ad8bf09a69a2"
+)
+
+package() {
+  cd "${srcdir}/cluebringer-v${pkgver}"
+  # executables
+  mkdir -p "${pkgdir}/opt/zextras/common/bin"
+  cp cbpadmin "${pkgdir}/opt/zextras/common/bin"
+  cp cbpolicyd "${pkgdir}/opt/zextras/common/bin"
+
+  # libs
+  mkdir -p "${pkgdir}/opt/zextras/common/lib/"
+  cp -R cbp "${pkgdir}/opt/zextras/common/lib/policyd-2.0"
+
+  # config file
+  install -Dm644 cluebringer.conf \
+    "${pkgdir}/opt/zextras/common/etc/cluebringer.conf"
+}

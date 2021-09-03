@@ -1,0 +1,69 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-php"
+pkgver="8.0.7"
+pkgrel="1"
+pkgdesc="A general-purpose scripting language that is especially suited to web development"
+pkgdesclong=(
+  "A general-purpose scripting language that is especially suited to web development"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends:apt=(
+  "libsqlite3"
+  "carbonio-httpd"
+  "carbonio-libxml2"
+  "carbonio-aspell"
+  "carbonio-spell-base"
+  "zlib1g"
+)
+makedepends:apt=(
+  "libsqlite3-dev"
+  "zlib1g-dev"
+)
+depends:yum=(
+  "libsqlite3x"
+  "carbonio-httpd"
+  "carbonio-libxml2"
+  "carbonio-aspell"
+  "carbonio-spell-base"
+  "zlib"
+)
+makedepends:yum=(
+  "libsqlite3x-devel" 
+  "zlib-devel"
+)
+section="utils"
+priority="optional"
+sources=(
+  "https://php.net/distributions/php-${pkgver}.tar.xz"
+)
+hashsums=(
+  "d5fc2e4fc780a32404d88c360e3e0009bc725d936459668e9c2ac992f2d83654"
+)
+
+build() {
+  cd "${srcdir}/php-${pkgver}"
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
+  export CFLAGS="-O2 -I/opt/zextras/common/include"
+  export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
+  ./configure --prefix=/opt/zextras/common \
+    --with-apxs2=/opt/zextras/common/bin/apxs \
+    --with-config-file-path=/opt/zextras/conf \
+    --with-pspell=/opt/zextras/common
+  sed -i.bak -e 's|SYSCONFDIR=\x27\x24\x28INSTALL_ROOT\x29OZC/conf\x27|SYSCONFDIR=\x27OZC/conf\x27|g' Makefile
+  make
+}
+
+package() {
+  cd "${srcdir}/php-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  rm -rf "${pkgdir}"/.channels
+  rm -rf "${pkgdir}"/.depdb
+  rm -rf "${pkgdir}"/.depdblock
+  rm -rf "${pkgdir}"/.filemap
+  rm -rf "${pkgdir}"/.lock
+}

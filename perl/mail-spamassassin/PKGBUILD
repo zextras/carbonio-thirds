@@ -1,0 +1,62 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-perl-mail-spamassassin"
+pkgver="3.4.6"
+pkgrel="1"
+pkgdesc="Spam detector and markup engine"
+pkgdesclong=(
+  "Spam detector and markup engine"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends=(
+  "carbonio-perl-base"
+  "carbonio-perl-digest-sha1"
+  "carbonio-perl-encode-detect"
+  "carbonio-perl-html-parser"
+  "carbonio-perl-io-compress"
+  "carbonio-perl-mail-dkim"
+  "carbonio-perl-mail-spf"
+  "carbonio-perl-net-cidr-lite"
+  "carbonio-perl-net-dns"
+  "carbonio-perl-netaddr-ip"
+)
+section="libs"
+priority="important"
+sources=(
+  "https://cpan.metacpan.org/authors/id/S/SI/SIDNEY/Mail-SpamAssassin-${pkgver}.tar.gz"
+)
+hashsums=(
+  "SKIP"
+)
+
+build() {
+  cd "${srcdir}/Mail-SpamAssassin-${pkgver}"
+  export PERL_USE_UNSAFE_INC=1
+  perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE="/opt/zextras/common" \
+    INSTALLSITEMAN1DIR="/opt/zextras/common/share/man/man1" INSTALLSITEMAN3DIR="/opt/zextras/common/share/man/man3" \
+    INSTALLMAN3DIR="/opt/zextras/common/share/man/man1" INSTALLVENDORMAN3DIR="/opt/zextras/common/share/man/man1" \
+    INSTALLMAN3DIR="/opt/zextras/common/share/man/man3" INSTALLVENDORMAN3DIR="/opt/zextras/common/share/man/man3" \
+    LIB="/opt/zextras/common/lib/perl5" \
+    CONTACT_ADDRESS="" \
+    ENABLE_SSL=yes PERL_TAINT=no
+  PERL5LIB="/opt/zextras/common/lib" \
+    make
+}
+
+package() {
+  cd "${srcdir}/Mail-SpamAssassin-${pkgver}"
+  PERL5LIB="/opt/zextras/common/lib" \
+    make install DESTDIR="${pkgdir}"
+  find "${pkgdir}" -name '.packlist' -delete
+  find "${pkgdir}" -name '*.pod' -delete
+  rm -rf "${pkgdir}"/opt/zextras/common/data/spamassassin/rules
+  sed -i -e 's/^#loadplugin Mail::SpamAssassin::Plugin::DCC/loadplugin Mail::SpamAssassin::Plugin::DCC/' \
+    "${pkgdir}"/opt/zextras/data/spamassassin/localrules/v310.pre
+  sed -i -e 's/^# loadplugin Mail::SpamAssassin::Plugin::Rule2XSBody/loadplugin Mail::SpamAssassin::Plugin::Rule2XSBody/' \
+    "${pkgdir}"/opt/zextras/data/spamassassin/localrules/v320.pre
+
+}

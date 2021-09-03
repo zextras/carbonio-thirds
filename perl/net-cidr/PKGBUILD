@@ -1,0 +1,39 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-perl-net-cidr"
+pkgver="0.21"
+pkgrel="1"
+pkgdesc="Manipulate IPv4/IPv6 netblocks in CIDR notation"
+pkgdesclong=(
+  "Manipulate IPv4/IPv6 netblocks in CIDR notation"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https://zextras.com"
+depends=(
+  "carbonio-perl-base"
+)
+section="libs"
+priority="important"
+sources=(
+  "https://cpan.metacpan.org/authors/id/M/MR/MRSAM/Net-CIDR-${pkgver}.tar.gz"
+)
+hashsums=(
+  "SKIP"
+)
+
+build() {
+  cd "${srcdir}/Net-CIDR-${pkgver}"
+  perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
+    INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3
+  make
+}
+
+package() {
+  cd "${srcdir}/Net-CIDR-${pkgver}"
+  make install DESTDIR="${pkgdir}"
+  find "${pkgdir}" -name '.packlist' -delete
+  find "${pkgdir}" -name '*.pod' -delete
+}
