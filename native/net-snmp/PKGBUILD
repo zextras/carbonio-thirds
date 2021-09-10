@@ -13,21 +13,17 @@ arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
 depends:apt=(
-  "carbonio-libart"
-  "carbonio-freetype"
-  "carbonio-libpng"
-  "carbonio-libxml2"
+  "carbonio-openssl"
 )
 makedepends:apt=(
   "libpcre3-dev"
 )
 depends:yum=(
-  "carbonio-libxml2"
+  "carbonio-openssl"
 )
 makedepends:yum=(
   "perl-core"
   "perl-devel"
-  "zlib-devel"
 )
 section="utils"
 priority="optional"
