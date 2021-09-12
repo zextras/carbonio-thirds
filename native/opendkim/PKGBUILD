@@ -82,7 +82,7 @@ build() {
     --with-lmdb=/opt/zextras/common \
     --with-libcurl=/opt/zextras/common \
     --with-db=/opt/zextras/common
-    grep -Rsni "\-Llib/lib" -l | xargs sed -i "s/Llib\/lib/L\/opt\/zimbra\/common\/lib/g"
+    grep -Rsni "\-Llib/lib" -l | xargs sed -i "s/Llib\/lib/L\/opt\/zextras\/common\/lib/g"
   make -j16
 }
 

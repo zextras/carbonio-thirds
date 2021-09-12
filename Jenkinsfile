@@ -48,7 +48,7 @@ pipeline {
                         }
                     }
                 }
-                // stage('Package Zimbra Centos') {
+                // stage('CentOS 8') {
                 //     agent {
                 //         node {
                 //             label 'pacur-agent-centos-8-v1'

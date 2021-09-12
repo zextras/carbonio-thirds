@@ -123,8 +123,8 @@ diff '--color=auto' -Naur a/amavis-mc b/amavis-mc
  
 -$daemon_user  = 'vscan';
 -$daemon_group = 'vscan';
-+$daemon_user  = 'zimbra';
-+$daemon_group = 'zimbra';
++$daemon_user  = 'zextras';
++$daemon_group = 'zextras';
  
 -$pid_file = '/var/amavis/amavis-mc.pid';
 +$pid_file = '/opt/zextras/log/amavis-mc.pid';

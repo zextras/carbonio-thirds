@@ -24,7 +24,7 @@ sources=(
 )
 hashsums=(
   "0ea5d3ace8388c0b92d867f096f4b4015cc8f6cc34c5c15b7be0b1ecd65b5292"
-  "601a604c1ec7a5b62c71cde35af1ca13c3107e6d3d2a5ad202e0ca9f7cb0175a"
+  "d8b9b44020b1ffd15675ab9d3d023761bc512ee88a36154a8671e4216e90bc59"
 )
 
 package() {

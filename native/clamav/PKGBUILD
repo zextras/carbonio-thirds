@@ -59,8 +59,8 @@ build() {
     --with-libmilter=/opt/zextras/common \
     --with-openssl=/opt/zextras/common \
     --with-xml=/opt/zextras/common \
-    --with-user=zimbra \
-    --with-group=zimbra \
+    --with-user=zextras \
+    --with-group=zextras \
     --with-included-ltdl \
     --disable-clamav \
     --enable-milter

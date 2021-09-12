@@ -69,14 +69,14 @@ package() {
 
 postinst() {
   if [ "$1" = configure ]; then
-    /bin/chown zimbra:zimbra /opt/zextras/common/etc/java/cacerts
+    /bin/chown zextras:zextras /opt/zextras/common/etc/java/cacerts
     /bin/chmod 644 /opt/zextras/common/etc/java/cacerts
     if [ "$2" != "" ]; then
       if [ -x /opt/zextras/bin/zmcertmgr ]; then
-        # Run as zimbra, extract CA to /opt/zextras/conf/ca
-        /bin/su - zimbra -c '/opt/zextras/bin/zmcertmgr createca'
-        # Run as zimbra, update OpenJDK cacerts file with the CA stored in LDAP
-        /bin/su - zimbra -c '/opt/zextras/bin/zmcertmgr deployca --localonly'
+        # Run as zextras, extract CA to /opt/zextras/conf/ca
+        /bin/su - zextras -c '/opt/zextras/bin/zmcertmgr createca'
+        # Run as zextras, update OpenJDK cacerts file with the CA stored in LDAP
+        /bin/su - zextras -c '/opt/zextras/bin/zmcertmgr deployca --localonly'
       fi
     fi
   fi

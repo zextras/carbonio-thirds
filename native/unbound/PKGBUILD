@@ -46,7 +46,7 @@ build() {
   ./configure --prefix=/opt/zextras/common \
     --with-libevent=/opt/zextras/common \
     --with-ssl=/opt/zextras/common \
-    --with-username=zimbra \
+    --with-username=zextras \
     --with-conf-file=/opt/zextras/conf/unbound.conf \
     --with-pidfile=/opt/zextras/log/unbound.pid \
     --with-chroot-dir=/opt/zextras
