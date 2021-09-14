@@ -65,6 +65,10 @@
             "install": true
         },
         {
+            "name": "zmq-libzmq3",
+            "install": true
+        },
+        {
             "name": "mozilla-ca",
             "install": true
         },
@@ -382,6 +386,9 @@
         {
             "name": "mail-spf",
             "install": true
+        },
+        {
+            "name": "mail-spamassassin"
         },
         {
             "name": "swatchdog",

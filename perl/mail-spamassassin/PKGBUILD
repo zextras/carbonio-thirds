@@ -35,21 +35,22 @@ hashsums=(
 
 build() {
   cd "${srcdir}/Mail-SpamAssassin-${pkgver}"
-  export PERL_USE_UNSAFE_INC=1
   perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE="/opt/zextras/common" \
     INSTALLSITEMAN1DIR="/opt/zextras/common/share/man/man1" INSTALLSITEMAN3DIR="/opt/zextras/common/share/man/man3" \
     INSTALLMAN3DIR="/opt/zextras/common/share/man/man1" INSTALLVENDORMAN3DIR="/opt/zextras/common/share/man/man1" \
     INSTALLMAN3DIR="/opt/zextras/common/share/man/man3" INSTALLVENDORMAN3DIR="/opt/zextras/common/share/man/man3" \
-    LIB="/opt/zextras/common/lib/perl5" \
-    CONTACT_ADDRESS="" \
-    ENABLE_SSL=yes PERL_TAINT=no
-  PERL5LIB="/opt/zextras/common/lib" \
+    LIB="/opt/zextras/common/lib/perl5" DATADIR="/opt/zimbra/data/spamassassin/rules" \
+    CONFDIR="/opt/zextras/data/spamassassin/localrules" \
+    DATADIR="/opt/zextras/data/spamassassin/rules" \
+    LOCALSTATEDIR="/opt/zextras/data/spamassassin/state" \
+    CONTACT_ADDRESS=""
+  PERL5LIB="/opt/zextras/common/lib/perl5" \
     make
 }
 
 package() {
   cd "${srcdir}/Mail-SpamAssassin-${pkgver}"
-  PERL5LIB="/opt/zextras/common/lib" \
+  PERL5LIB="/opt/zextras/common/lib/perl5" \
     make install DESTDIR="${pkgdir}"
   find "${pkgdir}" -name '.packlist' -delete
   find "${pkgdir}" -name '*.pod' -delete
@@ -58,5 +59,8 @@ package() {
     "${pkgdir}"/opt/zextras/data/spamassassin/localrules/v310.pre
   sed -i -e 's/^# loadplugin Mail::SpamAssassin::Plugin::Rule2XSBody/loadplugin Mail::SpamAssassin::Plugin::Rule2XSBody/' \
     "${pkgdir}"/opt/zextras/data/spamassassin/localrules/v320.pre
+}
 
+postinst() {
+  chown -R zextras:zextras /opt/zextras/data/spamassassin
 }

@@ -48,7 +48,7 @@ build() {
 
   ./configure \
     --prefix=/opt/zextras/common \
-	  --with-libsodium \
+    --with-libsodium \
     --with-pgm \
     --disable-static \
     --without-docs \

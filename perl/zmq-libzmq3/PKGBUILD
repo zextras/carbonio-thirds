@@ -2,12 +2,12 @@ targets=(
   "centos"
   "ubuntu"
 )
-pkgname="carbonio-perl-zmq-libzmq4"
-pkgver="0.01"
+pkgname="carbonio-perl-zmq-libzmq3"
+pkgver="1.19"
 pkgrel="1"
-pkgdesc="A libzmq 4.x wrapper for Perl"
+pkgdesc="A libzmq 3.x wrapper for Perl"
 pkgdesclong=(
-  "A libzmq 4.x wrapper for Perl"
+  "A libzmq 3.x wrapper for Perl"
 )
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
@@ -20,23 +20,25 @@ depends=(
 section="libs"
 priority="important"
 sources=(
-  "https://cpan.metacpan.org/authors/id/M/MO/MOSCONI/ZMQ-LibZMQ4-${pkgver}.tar.gz"
+  "https://cpan.metacpan.org/authors/id/D/DM/DMAKI/ZMQ-LibZMQ3-${pkgver}.tar.gz"
+  "zmq-libzmq4-bug-122932-with-dot.patch"
 )
 hashsums=(
   "SKIP"
+  "7ad0cab2b694192b99690f254c83e6bfedc849a02d2e16192d1e7580d4aebd87"
 )
 
 build() {
-  cd "${srcdir}/ZMQ-LibZMQ4-${pkgver}"
+  cd "${srcdir}/ZMQ-LibZMQ3-${pkgver}"
+  patch -Np1 -i ../zmq-libzmq4-bug-122932-with-dot.patch
   ZMQ_INCLUDES=/opt/zextras/common/include ZMQ_LIBS=/opt/zextras/common/lib ZMQ_H=/opt/zextras/common/include \
-      perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
+    perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
     INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
-    LIB=/opt/zextras/common/lib/perl5 LIBS="-L/opt/zextras/common/lib -lzmq" INC="-I/opt/zextras/common/include"
-  make
+    LIB=/opt/zextras/common/lib/perl5 LIBS="-L/opt/zextras/common/lib -lzmq" INC="-I/opt/zextras/common/include -I."
 }
 
 package() {
-  cd "${srcdir}/ZMQ-LibZMQ4-${pkgver}"
+  cd "${srcdir}/ZMQ-LibZMQ3-${pkgver}"
   # HACK: avoid tests requiring Test::SharedFork, Test::Fatal, Test::Require, Test::More::subtest
   rm -f t/104_ipc.t
   rm -f t/001_context.t t/002_socket.t t/003_message.t t/005_poll.t t/006_anyevent.t
@@ -45,5 +47,4 @@ package() {
   make install DESTDIR="${pkgdir}"
   find "${pkgdir}" -name '.packlist' -delete
   find "${pkgdir}" -name '*.pod' -delete
-  rm -rf "${pkgdir}/opt/zextras/common/lib/perl5/$archname"/auto/*/*/.packlist
 }

@@ -123,6 +123,10 @@
         {
             "name": "opendkim",
             "install": true
+        },
+        {
+            "name": "zeromq",
+            "install": true
         }
     ]
 }

@@ -23,7 +23,7 @@ sources=(
   "socket_and_misc.patch"
 )
 hashsums=(
-  "0ea5d3ace8388c0b92d867f096f4b4015cc8f6cc34c5c15b7be0b1ecd65b5292"
+  "8d6687a5b46722aa45544b1a573736df2e414dca8e5908a0fdbc2404abd1d8b3"
   "d8b9b44020b1ffd15675ab9d3d023761bc512ee88a36154a8671e4216e90bc59"
 )
 

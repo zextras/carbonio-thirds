@@ -182,7 +182,7 @@
             "install": true
         },
         {
-            "name": "perl-zmq-libzmq4"
+            "name": "perl-zmq-libzmq3"
         },
         {
             "name": "perl-mozilla-ca"
