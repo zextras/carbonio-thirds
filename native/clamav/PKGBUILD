@@ -3,7 +3,7 @@ targets=(
   "ubuntu"
 )
 pkgname="carbonio-clamav"
-pkgver="0.103.2"
+pkgver="0.103.3"
 pkgrel="1"
 pkgdesc="Anti-virus toolkit for Unix"
 pkgdesclong=(
