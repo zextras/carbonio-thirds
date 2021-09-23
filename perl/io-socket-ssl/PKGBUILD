@@ -3,7 +3,7 @@ targets=(
   "ubuntu"
 )
 pkgname="carbonio-perl-io-socket-ssl"
-pkgver="2.071"
+pkgver="2.072"
 pkgrel="1"
 pkgdesc="SSL sockets with IO::Socket interface"
 pkgdesclong=(
