@@ -3,7 +3,7 @@ targets=(
   "ubuntu"
 )
 pkgname="carbonio-libmilter"
-pkgver="8.16.1"
+pkgver="8.17.1"
 pkgrel="1"
 pkgdesc="Implementation of the sendmail Mail Filter API"
 pkgdesclong=(
@@ -22,7 +22,7 @@ sources=(
   "site.config.m4"
 )
 hashsums=(
-  "7886d5dc4b436b86175f32b5b9c7305c80787749847e2909bf99123ecc4e64ba"
+  "4cbbc2bb536a48ea27994721e9dfefff7739ef1c825bbc0397202e600d8dad8f9a2572a777204693cf9630f767865d50566f0827be6b52be41c1e25532cb394c"
   "9ea8ce8a8fc6179da65d0e9b7b6d7016d9a3f38070db4acce56d17a8d78ed3ad"
 )
 
