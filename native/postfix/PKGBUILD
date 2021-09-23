@@ -3,7 +3,7 @@ targets=(
   "ubuntu"
 )
 pkgname="carbonio-postfix"
-pkgver="3.6.1"
+pkgver="3.6.2"
 pkgrel="1"
 pkgdesc="Fast, easy to administer, secure mail server"
 pkgdesclong=(
@@ -45,7 +45,7 @@ sources=(
   "carbonio-postfix.patch"
 )
 hashsums=(
-  "6f83a6aa55bd442fe005b35c7470483ff5ba6781121f783b07ef454580354fc5c85d0d5106936810d6bef0f5592937f0863eec3b82e138caac7694e2a3bb7bc3"
+  "464ce9ec77e637ede91123472a0383b2bfda52102f9e9852c7191016d4fda2e14f302f2db9793887c182688c2a14dde6eeda728523196a627a8028f99555a4d9"
   "99848c9a8baf69649ba9dcb3e9bcee1e203733ffab6a0d5f9a60746ebd033765"
 )
 
