@@ -3,7 +3,7 @@ targets=(
   "ubuntu"
 )
 pkgname="carbonio-memcached"
-pkgver="1.6.9"
+pkgver="1.6.10"
 pkgrel="1"
 pkgdesc="Distributed memory object caching system"
 pkgdesclong=(
@@ -32,7 +32,7 @@ sources=(
   "https://www.memcached.org/files/memcached-${pkgver}.tar.gz"
 )
 hashsums=(
-  "2169225aefe6bd7481d919ae3ef95ed85d2ed595f49daceeb13d2dc268097d4aee98cf604824fca103efcdffa7461bb26814209906a5dabf1a5d30af43f6a66c"
+  "46d41c87afd0fb3a15bd418d757a25f93bee7d052653a488b4bc29a795826b9c238590cd9ee602ca4e5f645ece74685c644a9bb12bb58ff79b098c4fcf5b3835"
 )
 
 build() {
