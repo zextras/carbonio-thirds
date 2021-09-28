@@ -22,4 +22,13 @@ priority="important"
 
 package() {
   mkdir -p "${pkgdir}/opt/zextras/data/spamassassin/rules"
+  /opt/zextras/common/bin/sa-update \
+    --nogpg \
+    --updatedir="${pkgdir}/opt/zextras/data/spamassassin/rules"
+
+  cp "${pkgdir}"/opt/zextras/data/spamassassin/rules/updates_spamassassin_org/* \
+    "${pkgdir}"/opt/zextras/data/spamassassin/rules
+
+  rm -rf "${pkgdir}/opt/zextras/data/spamassassin/rules/updates_spamassassin_org" \
+    "${pkgdir}/opt/zextras/data/spamassassin/rules/user_prefs.template"
 }

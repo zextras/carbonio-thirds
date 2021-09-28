@@ -54,13 +54,11 @@ package() {
     make install DESTDIR="${pkgdir}"
   find "${pkgdir}" -name '.packlist' -delete
   find "${pkgdir}" -name '*.pod' -delete
-  rm -rf "${pkgdir}"/opt/zextras/common/data/spamassassin/rules
+  rm -rf "${pkgdir}"/opt/zextras/common/data/spamassassin/rules \
+    "${pkgdir}"/opt/zextras/data/spamassassin/rules/*
+
   sed -i -e 's/^#loadplugin Mail::SpamAssassin::Plugin::DCC/loadplugin Mail::SpamAssassin::Plugin::DCC/' \
     "${pkgdir}"/opt/zextras/data/spamassassin/localrules/v310.pre
   sed -i -e 's/^# loadplugin Mail::SpamAssassin::Plugin::Rule2XSBody/loadplugin Mail::SpamAssassin::Plugin::Rule2XSBody/' \
     "${pkgdir}"/opt/zextras/data/spamassassin/localrules/v320.pre
-}
-
-postinst() {
-  chown -R zextras:zextras /opt/zextras/data/spamassassin
 }

@@ -388,7 +388,8 @@
             "install": true
         },
         {
-            "name": "mail-spamassassin"
+            "name": "mail-spamassassin",
+            "install": true
         },
         {
             "name": "swatchdog",
