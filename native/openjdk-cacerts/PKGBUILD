@@ -1,0 +1,107 @@
+targets=(
+  "centos"
+  "ubuntu"
+)
+pkgname="carbonio-openjdk-cacerts"
+pkgver="1.0.5"
+pkgrel="1"
+pkgdesc="CA Certs keystore for OpenJDK"
+pkgdesclong=(
+  "CA Certs keystore for OpenJDK"
+)
+arch="amd64"
+maintainer="Zextras <packages@zextras.com"
+url="https:/zextras.com"
+depends=(
+  "carbonio-base"
+  "carbonio-openjdk"
+)
+section="utils"
+priority="optional"
+sources=(
+  "https://hg.mozilla.org/mozilla-central/raw-file/tip/security/nss/lib/ckfw/builtins/certdata.txt"
+  "import-cacerts"
+)
+hashsums=(
+  "SKIP"
+  "00b2547118007f255c87b3fd3c2a9ccd855a9a6e69c6faff442ad5d05f7cf5d8"
+)
+
+package() {
+  mkdir -p "${pkgdir}"/opt/zextras/common/etc/java
+
+  cd "${srcdir}"
+  ./import-cacerts -f certdata.txt -o \
+    "${pkgdir}"/opt/zextras/common/etc/java
+}
+
+preinst:apt() {
+  if [ "$1" = upgrade ]; then
+    if [ x"$2" != "x" ]; then
+      mkdir -p /opt/zextras/.saveconfig/carbonio-openjdk-cacerts-$2
+      cacerts=$(mktemp --tmpdir=/opt/zextras/.saveconfig/carbonio-openjdk-cacerts-$2 cacerts.XXXXXX 2>/dev/null)
+      cp /opt/zextras/common/etc/java/cacerts $cacerts
+    fi
+  fi
+  exit 0
+}
+
+postinst:apt() {
+  if [ "$1" = configure ]; then
+    chown zextras:zextras /opt/zextras/common/etc/java/cacerts
+    chmod 644 /opt/zextras/common/etc/java/cacerts
+    if [ "$2" != "" ]; then
+      if [ -x /opt/zextras/bin/zmcertmgr ]; then
+        # Run as zextras, extract CA to /opt/zextras/conf/ca
+        su - zextras -c '/opt/zextras/bin/zmcertmgr createca'
+        # Run as zextras, update OpenJDK cacerts file with the CA stored in LDAP
+        su - zextras -c '/opt/zextras/bin/zmcertmgr deployca --localonly'
+        for dir in /opt/zextras/.saveconfig/carbonio-openjdk-cacerts-1.0.[5-6]*; do
+          if [ -d "$dir" ]; then
+            chown zextras:zextras $dir/cacerts.*
+            chmod 644 $dir/cacerts.*
+            for cert in $(/opt/zextras/common/bin/keytool -list -keystore $dir/cacerts.* -storepass changeit | grep trustedCertEntry | grep -v 'openjdk-cacerts/build/ubuntu' | grep -v 'tmp/rhel' | grep -Eo "^[^,]*"); do
+              /opt/zextras/common/bin/keytool -exportcert -keystore $dir/cacerts.* -storepass changeit -alias $cert -file $dir/${cert}.crt
+              chown zextras:zextras $dir/${cert}.crt
+              su - zextras -c "/opt/zextras/bin/zmcertmgr addcacert $dir/${cert}.crt"
+            done
+          fi
+        done
+      fi
+    fi
+  fi
+  exit 0
+}
+
+preinst:rpm() {
+  if [ "$1" -ge "2" ]; then
+    cver=$(rpm -q --queryformat='%%{version}-%%{release}' carbonio-openjdk-cacerts)
+    mkdir -p /opt/zextras/.saveconfig/carbonio-openjdk-cacerts-${cver}
+    cacerts=$(mktemp --tmpdir=/opt/zextras/.saveconfig/carbonio-openjdk-cacerts-${cver} cacerts.XXXXXX)
+    cp /opt/zextras/common/etc/java/cacerts $cacerts
+  fi
+}
+
+postinst:rpm() {
+  chown zextras:zextras /opt/zextras/common/etc/java/cacerts
+  chmod 644 /opt/zextras/common/etc/java/cacerts
+  if [ "$1" -ge "2" ]; then
+    if [ -x /opt/zextras/bin/zmcertmgr ]; then
+      # Run as zextras, extract CA to /opt/zextras/conf/ca
+      su - zextras -c '/opt/zextras/bin/zmcertmgr createca'
+      # Run as zextras, update OpenJDK cacerts file with the CA stored in LDAP
+      su - zextras -c '/opt/zextras/bin/zmcertmgr deployca --localonly'
+      for dir in /opt/zextras/.saveconfig/carbonio-openjdk-cacerts-1.0.[5-6]*; do
+        if [ -d "$dir" ]; then
+          chown zextras:zextras $dir/cacerts.*
+          chmod 644 $dir/cacerts.*
+          for cert in $(/opt/zextras/common/bin/keytool -list -keystore $dir/cacerts.* -storepass changeit | grep trustedCertEntry | grep -v 'openjdk-cacerts/build/ubuntu' | grep -v 'tmp/rhel' | grep -v 'openjdk-cacerts/build/rhel' | grep -Eo "^[^,]*"); do
+            /opt/zextras/common/bin/keytool -exportcert -keystore $dir/cacerts.* -storepass changeit -alias $cert -file $dir/${cert}.crt
+            chown zextras:zextras $dir/${cert}.crt
+            su - zextras -c "/opt/zextras/bin/zmcertmgr addcacert $dir/${cert}.crt"
+          done
+        fi
+      done
+    fi
+  fi
+}

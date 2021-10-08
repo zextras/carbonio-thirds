@@ -93,7 +93,7 @@ rmdir($tmpdir) or die "Unable to remove $tmpdir: $!\n";
 my @dercerts = glob("$tmpd/*.der");
 foreach my $cert (@dercerts) {
   chomp($cert);
-  qx(/opt/zextras/common/bin/keytool -noprompt -import -alias $cert -keystore $outdir/zextras-openjdk-cacerts/cacerts -storepass 'changeit' -file $cert >/dev/null 2>&1);
+  qx(/opt/zextras/common/bin/keytool -noprompt -import -alias $cert -keystore $outdir/cacerts -storepass 'changeit' -file $cert >/dev/null 2>&1);
   unlink($cert);
 }
 rmdir($tmpd) or die "Unable to remove $tmpd: $!\n";

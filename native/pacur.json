@@ -74,6 +74,9 @@
             "install": true
         },
         {
+            "name": "openjdk-cacerts"
+        },
+        {
             "name": "krb5",
             "install": true
         },        
