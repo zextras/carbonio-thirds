@@ -40,10 +40,7 @@ build() {
 
   ./configure \
     --prefix=/opt/zextras/common \
-    --libexecdir=/opt/zextras/common/libexec \
-    --sysconfdir=/opt/zextras/common/etc \
-    --localstatedir=/var/lib/openldap \
-    --sbindir=/opt/zextras/common/bin \
+    --localstatedir=/opt/zextras/data/ldap/state \
     --disable-hdb \
     --disable-ndb \
     --disable-perl \
@@ -61,7 +58,6 @@ build() {
     --with-cyrus-sasl \
     --with-threads \
     --with-tls=openssl \
-    --localstatedir=/opt/zextras/data/ldap/state \
     --enable-crypt
 
   LD_RUN_PATH=/opt/zextras/common/lib make depend
