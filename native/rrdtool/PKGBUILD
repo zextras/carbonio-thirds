@@ -17,14 +17,18 @@ depends:apt=(
   "carbonio-freetype"
   "carbonio-libpng"
   "carbonio-libxml2"
+  "libpango-1.0-0"
 )
 makedepends:apt=(
+  "libpango1.0-dev"
   "libpcre3-dev"
 )
 depends:yum=(
   "carbonio-libxml2"
+  "pango"
 )
 makedepends:yum=(
+  "pango-devel"
   "perl-core"
   "perl-devel"
   "zlib-devel"
@@ -54,4 +58,8 @@ build() {
 package() {
   cd "${srcdir}/rrdtool-${pkgver}"
   make DESTDIR="${pkgdir}" install
+  rm -rf "${pkgdir}"/opt/zextras/common/lib/*.a
+  rm -rf "${pkgdir}"/opt/zextras/common/lib/*.la
+  find "${pkgdir}" -name '.packlist' -delete
+  find "${pkgdir}" -name '*.pod' -delete
 }

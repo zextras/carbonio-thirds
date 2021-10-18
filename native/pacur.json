@@ -111,6 +111,9 @@
             "name": "postfix"
         },
         {
+            "name": "rrdtool"
+        }, 
+        {
             "name": "net-snmp"
         },
         {
