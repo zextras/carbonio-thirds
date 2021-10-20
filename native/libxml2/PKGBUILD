@@ -61,4 +61,5 @@ package() {
   rm -f "${pkgdir}"/opt/zextras/common/bin/xml2-config
   rm -rf "${pkgdir}"/opt/zextras/common/lib/*.la
   rm -rf "${pkgdir}"/opt/zextras/common/share/man
+  rm -rf "${pkgdir}"/opt/zextras/common/share/gtk-doc
 }
