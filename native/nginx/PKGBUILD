@@ -13,6 +13,7 @@ arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
 depends:apt=(
+  "libbrotli1"
   "libpcre3"
   "zlib1g"
   "carbonio-cyrus-sasl"
@@ -20,10 +21,12 @@ depends:apt=(
   "carbonio-openssl"
 )
 makedepends:apt=(
+  "libbrotli-dev"
   "libpcre3-dev"
   "zlib1g-dev"
 )
 depends:yum=(
+  "brotli"
   "pcre"
   "zlib"
   "carbonio-cyrus-sasl"
@@ -31,6 +34,7 @@ depends:yum=(
   "carbonio-openssl"
 )
 makedepends:yum=(
+  "brotli-devel"
   "pcre-devel"
   "zlib-devel"
 )
@@ -39,11 +43,13 @@ priority="optional"
 sources=(
   "https://github.com/zimbra/nginx/archive/a4e9579a80f5b24621cd95968235ac3e1807b865.tar.gz"
   "https://github.com/nviennot/nginx-tcp-keepalive/archive/19755fc0e22aa7d7ac2198f78b297951d31ea1dc.tar.gz"
+  "https://github.com/google/ngx_brotli/archive/v1.0.0rc/ngx_brotli-1.0.0rc.tar.gz"
   "modules.tar.gz"
 )
 hashsums=(
   "c1371d5b5d669cd840c5cb7055f48dd5d3bbcdbdc3919151c69d023eed65f95a"
   "8b09b8eefb13d298f865ccb3563f9e2b808f7f5467b261532c47f0a2bddf2685"
+  "c85cdcfd76703c95aa4204ee4c2e619aa5b075cac18f428202f65552104add3b"
   "b8d1b9c577453d195505c8e4cd195420d5876d2a3dd81480821fdbe149f038b2"
 )
 
@@ -88,6 +94,7 @@ build() {
   --http-fastcgi-temp-path=/opt/zextras/data/tmp/nginx/fastcgi \
   --without-http_scgi_module \
   --without-http_uwsgi_module \
+  --add-module="${srcdir}"/ngx_brotli-1.0.0rc \
   --add-module=zmmodules/nginx-tcp-keepalive \
   --add-module=zmmodules/http/sso \
   --add-module=zmmodules/http/upstreamzmauth \
