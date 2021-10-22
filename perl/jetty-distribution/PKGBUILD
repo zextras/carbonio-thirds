@@ -3,7 +3,7 @@ targets=(
   "ubuntu"
 )
 pkgname="carbonio-jetty-distribution"
-pkgver="9.4.18.v20190429"
+pkgver="9.4.44.v20210927"
 pkgrel="1"
 pkgdesc="A pure Java-based HTTP server and Java Servlet container"
 pkgdesclong=(
@@ -21,7 +21,7 @@ sources=(
   "https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/${pkgver}/jetty-distribution-${pkgver}.tar.gz"
 )
 hashsums=(
-  "0fb8735b5d23d3ad7350c19fc1523cf7eda1936d2cee2d4f85edfb27b3d7eaf7"
+  "fdfd0d1e2732576c09246df8484ff7ed4aa4c84143927936934cb6b8e5194fa3"
 )
 
 package() {
