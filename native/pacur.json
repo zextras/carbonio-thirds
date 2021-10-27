@@ -9,6 +9,10 @@
             "install": true
         },
         {
+            "name": "icu",
+            "install": true
+        },
+        {
             "name": "openssl",
             "install": true
         },

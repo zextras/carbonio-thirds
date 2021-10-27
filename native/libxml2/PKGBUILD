@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-libxml2"
 pkgver="2.9.12"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="XML parsing library, version 2"
 pkgdesclong=(
   "XML parsing library, version 2"
@@ -14,10 +14,12 @@ maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
 depends:apt=(
   "carbonio-base"
+  "carbonio-icu"
   "zlib1g"
 )
 depends:yum=(
   "carbonio-base"
+  "carbonio-icu"
   "zlib"
 )
 makedepends:apt=(
