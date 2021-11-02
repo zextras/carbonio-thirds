@@ -16,7 +16,6 @@ depends=(
   "carbonio-cyrus-sasl"
   "carbonio-libtool"
   "carbonio-openssl"
-  "carbonio-base"
 )
 section="libs"
 priority="important"

@@ -14,14 +14,14 @@ maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
 depends:apt=(
   "libidn11"
-  "carbonio-perl-base"
+  "carbonio-perl"
 )
 makedepends:apt=(
   "libidn11-dev"
 )
 depends:yum=(
   "libidn"
-  "carbonio-perl-base"
+  "carbonio-perl"
 )
 makedepends:yum=(
   "libidn-devel"

@@ -13,7 +13,7 @@ arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
 depends=(
-  "carbonio-perl-base"
+  "carbonio-perl"
   "carbonio-openssl"
 )
 section="libs"

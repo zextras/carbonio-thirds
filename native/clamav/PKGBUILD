@@ -16,7 +16,7 @@ depends:apt=(
   "libpcre2-posix0"
   "carbonio-libmilter"
   "carbonio-libxml2"
-  "carbonio-mta-base"
+  "carbonio-mta"
   "carbonio-openssl"
   "zlib1g"
 )
@@ -29,7 +29,7 @@ depends:yum=(
   "pcre2-devel"
   "carbonio-libmilter"
   "carbonio-libxml2"
-  "carbonio-mta-base"
+  "carbonio-mta"
   "carbonio-openssl"
   "zlib"
 )

@@ -39,7 +39,7 @@ pipeline {
                         unstash 'project'
                         sh 'sudo pacur build ubuntu-bionic native'
                         sh 'sudo pacur build ubuntu-bionic perl'
-                        sh 'sudo rm artifacts/carbonio-base-dummy*.deb'
+                        sh 'sudo rm artifacts/carbonio-ce-dummy*.deb'
                         stash includes: 'artifacts/', name: 'artifacts-ubuntu-bionic'
                     }
                     post {
@@ -58,7 +58,7 @@ pipeline {
                 //         unstash 'project'
                 //         sh 'sudo pacur build centos-8 native'
                 //         sh 'sudo pacur build centos-8 perl'
-                //         sh 'sudo rm artifacts/carbonio-base-dummy*.rpm'
+                //         sh 'sudo rm artifacts/carbonio-ce-dummy*.rpm'
                 //         stash includes: 'artifacts/', name: 'artifacts-centos-8'
                 //     }
                 //     post {

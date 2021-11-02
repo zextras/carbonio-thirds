@@ -13,7 +13,7 @@ arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
 depends:apt=(
-ì  "carbonio-perl-base"
+ì  "carbonio-perl"
 )
 makedepends:apt=(
   "libchardet-dev"
@@ -21,7 +21,7 @@ makedepends:apt=(
 )
 depends:yum=(
   "uchardet"
-  "carbonio-perl-base"
+  "carbonio-perl"
 )
 makedepends:yum=(
   "uchardet-devel"

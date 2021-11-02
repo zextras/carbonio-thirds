@@ -14,11 +14,11 @@ maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
 depends:apt=(
   "libexpat1"
-  "carbonio-perl-base"
+  "carbonio-perl"
 )
 depends:yum=(
   "expat"
-  "carbonio-perl-base"
+  "carbonio-perl"
 )
 makedepends:apt=(
   "libexpat1-dev"

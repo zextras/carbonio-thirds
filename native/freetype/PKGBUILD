@@ -14,7 +14,6 @@ maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
 depends:apt=(
   "libbz2-1.0"
-  "carbonio-base"
   "zlib1g" 
 )
 makedepends:apt=(
@@ -23,7 +22,6 @@ makedepends:apt=(
 )
 depends:yum=(
   "bzip2"
-  "carbonio-base"
   "zlib"
 )
 makedepends:yum=(

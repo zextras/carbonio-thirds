@@ -12,9 +12,6 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https:/zextras.com"
-depends=(
-  "carbonio-base"
-)
 section="utils"
 priority="optional"
 sources=(

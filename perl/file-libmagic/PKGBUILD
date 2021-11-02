@@ -14,7 +14,7 @@ maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
 depends=(
   "libmagic1"
-  "carbonio-perl-base"
+  "carbonio-perl"
 )
 makedepends:apt=(
   "libmagic-dev"
@@ -22,7 +22,7 @@ makedepends:apt=(
 )
 depends:yum=(
   "file-libs"
-  "carbonio-perl-base"
+  "carbonio-perl"
 )
 makedepends:yum=(
   "file-devel"

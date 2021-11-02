@@ -19,7 +19,6 @@ depends:apt=(
   "libgnutlsxx28"
   "libpam0g"
   "libsnappy1v5"
-  "carbonio-base"
   "carbonio-jemalloc"
   "carbonio-curl"
   "carbonio-libxml2"
@@ -59,7 +58,6 @@ depends:yum=(
   "libzstd"
   "pam"
   "snappy"
-  "carbonio-base"
   "carbonio-jemalloc"
   "carbonio-openssl"
 )

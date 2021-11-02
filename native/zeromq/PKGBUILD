@@ -16,7 +16,6 @@ depends:ubuntu-bionic=(
   "libpgm-5.2-0"
   "libunwind8"
   "carbonio-libsodium"
-  "carbonio-base"
 )
 makedepends:apt=(
   "libunwind-dev"
@@ -25,7 +24,6 @@ makedepends:apt=(
 depends:yum=(
   "openpgm"
   "carbonio-libsodium"
-  "carbonio-base"
 )
 makedepends:yum=(
   "openpgm-devel"

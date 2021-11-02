@@ -14,7 +14,7 @@ maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
 depends=(
   "hashcat"
-  "carbonio-mta-base"
+  "carbonio-mta"
 )
 section="utils"
 priority="optional"

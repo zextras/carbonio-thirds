@@ -12,12 +12,6 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends:apt=(
-  "carbonio-ldap-base"
-)
-depends:yum=(
-  "carbonio-ldap-base"
-)
 section="libs"
 priority="important"
 sources=(

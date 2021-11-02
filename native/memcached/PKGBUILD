@@ -14,14 +14,12 @@ maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
 depends:apt=(
   "carbonio-libevent"
-  "carbonio-memcached-base"
 )
 makedepends:apt=(
   "pkg-config"
 )
 depends:yum=(
   "carbonio-libevent"
-  "carbonio-memcached-base"
 )
 makedepends:yum=(
   "pkgconfig"

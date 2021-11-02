@@ -14,7 +14,7 @@ maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
 depends=(
   "carbonio-bdb"
-  "carbonio-perl-base"
+  "carbonio-perl"
 )
 section="libs"
 priority="important"

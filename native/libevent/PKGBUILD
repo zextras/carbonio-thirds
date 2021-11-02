@@ -13,7 +13,6 @@ arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
 depends=(
-  "carbonio-memcached-base"
   "carbonio-openssl"
 )
 section="libs"

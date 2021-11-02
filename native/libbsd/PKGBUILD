@@ -13,11 +13,9 @@ arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
 depends:apt=(
-  "carbonio-base"
   "libc6"
 )
 depends:yum=(
-  "carbonio-base"
   "glibc"
 )
 section="libs"

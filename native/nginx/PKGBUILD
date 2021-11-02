@@ -17,7 +17,7 @@ depends:apt=(
   "libpcre3"
   "zlib1g"
   "carbonio-cyrus-sasl"
-  "carbonio-proxy-base"
+  "carbonio-proxy"
   "carbonio-openssl"
 )
 makedepends:apt=(
@@ -30,7 +30,7 @@ depends:yum=(
   "pcre"
   "zlib"
   "carbonio-cyrus-sasl"
-  "carbonio-proxy-base"
+  "carbonio-proxy"
   "carbonio-openssl"
 )
 makedepends:yum=(
