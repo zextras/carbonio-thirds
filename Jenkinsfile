@@ -97,6 +97,47 @@ pipeline {
                 }
             }
         }
+         stage('Upload & Promotion Config') {
+            when {
+                buildingTag()
+            }
+            steps {
+                unstash 'artifacts-ubuntu-bionic'
+                script {
+                    def server = Artifactory.server 'zextras-artifactory'
+                    def buildInfo
+                    def uploadSpec
+                    def config
+
+                    //ubuntu
+                    buildInfo = Artifactory.newBuildInfo()
+                    buildInfo.name += "-ubuntu"
+                    uploadSpec = """{
+                        "files": [
+                            {
+                                "pattern": "artifacts/*bionic*.deb",
+                                "target": "ubuntu-rc/pool/",
+                                "props": "deb.distribution=bionic;deb.component=main;deb.architecture=amd64"
+                            }
+                        ]
+                    }"""
+                    server.upload spec: uploadSpec, buildInfo: buildInfo, failNoOp: false
+                    config = [
+                            'buildName'          : buildInfo.name,
+                            'buildNumber'        : buildInfo.number,
+                            'sourceRepo'         : 'ubuntu-rc',
+                            'targetRepo'         : 'ubuntu-release',
+                            'comment'            : 'Do not change anything! Just press the button',
+                            'status'             : 'Released',
+                            'includeDependencies': false,
+                            'copy'               : true,
+                            'failFast'           : true
+                    ]
+                    Artifactory.addInteractivePromotion server: server, promotionConfig: config, displayName: "Ubuntu Promotion to Release"
+                    server.publishBuildInfo buildInfo
+                }
+            }
+        }
     }
 }
 
