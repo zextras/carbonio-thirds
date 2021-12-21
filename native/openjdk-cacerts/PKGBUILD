@@ -3,7 +3,7 @@ targets=(
   "ubuntu"
 )
 pkgname="carbonio-openjdk-cacerts"
-pkgver="1.0.5"
+pkgver="1.0.6"
 pkgrel="1"
 pkgdesc="CA Certs keystore for OpenJDK"
 pkgdesclong=(
@@ -18,16 +18,16 @@ depends=(
 section="utils"
 priority="optional"
 sources=(
-  "https://hg.mozilla.org/mozilla-central/raw-file/tip/security/nss/lib/ckfw/builtins/certdata.txt"
+  "https://hg.mozilla.org/projects/nss/raw-file/7554fb4e12af7abf01983826b4f8e12946661558/lib/ckfw/builtins/certdata.txt"
   "import-cacerts"
 )
 hashsums=(
-  "SKIP"
+  "187ef9dc231135324fe78830cf4462f1ecdeab3e6c9d5e38d623391e88dc5d3c"
   "00b2547118007f255c87b3fd3c2a9ccd855a9a6e69c6faff442ad5d05f7cf5d8"
 )
 
 package() {
-  mkdir -p "${pkgdir}"/opt/zextras/common/etc/java
+  mkdir -p "${pkgdir}/opt/zextras/common/etc/java"
 
   cd "${srcdir}"
   ./import-cacerts -f certdata.txt -o \
@@ -36,9 +36,9 @@ package() {
 
 preinst:apt() {
   if [ "$1" = upgrade ]; then
-    if [ x"$2" != "x" ]; then
-      mkdir -p /opt/zextras/.saveconfig/carbonio-openjdk-cacerts-$2
-      cacerts=$(mktemp --tmpdir=/opt/zextras/.saveconfig/carbonio-openjdk-cacerts-$2 cacerts.XXXXXX 2>/dev/null)
+    if [ x"${2%%-*}" != "x" ]; then
+      mkdir -p /opt/zextras/.saveconfig/carbonio-openjdk-cacerts-${2%%-*}
+      cacerts=$(mktemp --tmpdir=/opt/zextras/.saveconfig/carbonio-openjdk-cacerts-${2%%-*} cacerts.XXXXXX 2>/dev/null)
       cp /opt/zextras/common/etc/java/cacerts $cacerts
     fi
   fi
@@ -62,15 +62,20 @@ postinst:apt() {
       usermod -c "zextras user" zextras
     fi
 
+    if ! test -d /opt/zextras/conf/ca; then
+      mkdir /opt/zextras/conf/ca
+      chown -R zextras:zextras /opt/zextras/conf/ca
+    fi
+
     chown zextras:zextras /opt/zextras/common/etc/java/cacerts
     chmod 644 /opt/zextras/common/etc/java/cacerts
-    if [ "$2" != "" ]; then
+    if [ "${2%%-*}" != "" ]; then
       if [ -x /opt/zextras/bin/zmcertmgr ]; then
         # Run as zextras, extract CA to /opt/zextras/conf/ca
         su - zextras -c '/opt/zextras/bin/zmcertmgr createca'
         # Run as zextras, update OpenJDK cacerts file with the CA stored in LDAP
         su - zextras -c '/opt/zextras/bin/zmcertmgr deployca --localonly'
-        for dir in /opt/zextras/.saveconfig/carbonio-openjdk-cacerts-1.0.[5-6]*; do
+        for dir in /opt/zextras/.saveconfig/carbonio-openjdk-cacerts-${2%%-*}; do
           if [ -d "$dir" ]; then
             chown zextras:zextras $dir/cacerts.*
             chmod 644 $dir/cacerts.*
@@ -89,7 +94,7 @@ postinst:apt() {
 
 preinst:rpm() {
   if [ "$1" -ge "2" ]; then
-    cver=$(rpm -q --queryformat='%%{version}-%%{release}' carbonio-openjdk-cacerts)
+    cver=$(rpm -q --queryformat='%{version}' carbonio-openjdk-cacerts)
     mkdir -p /opt/zextras/.saveconfig/carbonio-openjdk-cacerts-${cver}
     cacerts=$(mktemp --tmpdir=/opt/zextras/.saveconfig/carbonio-openjdk-cacerts-${cver} cacerts.XXXXXX)
     cp /opt/zextras/common/etc/java/cacerts $cacerts
@@ -109,6 +114,11 @@ postinst:rpm() {
       --shell /bin/bash \
       zextras
     usermod -c "zextras user" zextras
+  fi
+
+  if ! test -d /opt/zextras/conf/ca; then
+    mkdir /opt/zextras/conf/ca
+    chown -R zextras:zextras /opt/zextras/conf/ca
   fi
 
   chown zextras:zextras /opt/zextras/common/etc/java/cacerts
