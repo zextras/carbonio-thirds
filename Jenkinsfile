@@ -37,6 +37,7 @@ pipeline {
                 unstash 'project'
                 sh 'sudo pacur build ubuntu-bionic native'
                 sh 'sudo pacur build ubuntu-bionic perl'
+                sh 'sudo rm artifacts/carbonio-ce-dummy*.deb'
                 stash includes: 'artifacts/', name: 'artifacts-ubuntu-bionic'
             }
             post {
@@ -55,6 +56,7 @@ pipeline {
                 unstash 'project'
                 sh 'sudo pacur build ubuntu-focal native'
                 sh 'sudo pacur build ubuntu-focal perl'
+                sh 'sudo rm artifacts/carbonio-ce-dummy*.deb'
                 stash includes: 'artifacts/', name: 'artifacts-ubuntu-focal'
             }
             post {
