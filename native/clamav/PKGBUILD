@@ -12,8 +12,16 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends:apt=(
+depends:bionic=(
   "libpcre2-posix0"
+  "carbonio-libmilter"
+  "carbonio-libxml2"
+  "carbonio-mta"
+  "carbonio-openssl"
+  "zlib1g"
+)
+depends:focal=(
+  "libpcre2-posix2"
   "carbonio-libmilter"
   "carbonio-libxml2"
   "carbonio-mta"
