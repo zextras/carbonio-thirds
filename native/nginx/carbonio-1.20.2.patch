@@ -1,24 +1,3 @@
-diff --git a/.gitignore b/.gitignore
-new file mode 100644
-index 00000000..8cf5b75c
---- /dev/null
-+++ b/.gitignore
-@@ -0,0 +1 @@
-+.vscode-ctags
-diff --git a/auto/cc/gcc b/auto/cc/gcc
-index a5c5c18f..1d287482 100644
---- a/auto/cc/gcc
-+++ b/auto/cc/gcc
-@@ -50,7 +50,8 @@ esac
- 
- #NGX_GCC_OPT="-O2"
- #NGX_GCC_OPT="-Os"
--NGX_GCC_OPT="-O"
-+#NGX_GCC_OPT="-O"
-+NGX_GCC_OPT="-O0"
- 
- #CFLAGS="$CFLAGS -fomit-frame-pointer"
- 
 diff --git a/auto/lib/conf b/auto/lib/conf
 index 2c7af104..d0f06c5b 100644
 --- a/auto/lib/conf

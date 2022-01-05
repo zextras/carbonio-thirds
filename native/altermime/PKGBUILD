@@ -34,7 +34,6 @@ build() {
   patch -Np0 -i "../altermime-0.3.10-fprintf-compiler-error.patch"
   patch -Np0 -i "../altermime-0.3.10-cflags.patch"
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
-  export CFLAGS="-O2"
   make
 }
 

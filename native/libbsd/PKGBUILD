@@ -31,7 +31,7 @@ build() {
   cd "${srcdir}/libbsd-${pkgver}"
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
   export CFLAGS="-fPIC -D_REENTRANT"
-  export CXXFLAGS="-D_REENTRANT"
+  export CXXFLAGS="${CFLAGS}"
 
   ./configure \
     --prefix=/opt/zextras/common \

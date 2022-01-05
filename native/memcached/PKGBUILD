@@ -36,7 +36,6 @@ hashsums=(
 build() {
 
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
-  export CFLAGS="-O2" 
   export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
 
   cd "${srcdir}/memcached-${pkgver}"

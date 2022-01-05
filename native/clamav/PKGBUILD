@@ -3,7 +3,7 @@ targets=(
   "ubuntu"
 )
 pkgname="carbonio-clamav"
-pkgver="0.103.3"
+pkgver="0.103.4"
 pkgrel="1"
 pkgdesc="Anti-virus toolkit for Unix"
 pkgdesclong=(
@@ -51,12 +51,11 @@ sources=(
   "https://www.clamav.net/downloads/production/clamav-${pkgver}.tar.gz"
 )
 hashsums=(
-  "87d47c4529a57da0b47b3744a279996ca24fa74ce10d7e27a53c19c1e13098af680e0e48ed767122bb2bbd3f927302451da84ccf51a933e7e3556ef43cbe9f45"
+  "def0ad15500fa6aff81d8e68b9f83aa75ee5b607a01335c1d26dbcc959932f85"
 )
 
 build() {
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib"
-  export CFLAGS="-O2"
   export CPPFLAGS="-I/opt/zextras/common/include"
   cd "${srcdir}/clamav-${pkgver}"
 

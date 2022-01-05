@@ -54,7 +54,6 @@ build() {
   patch -Np1 -i ../carbonio-postfix.patch
 
   make makefiles \
-	OPT="-O2" \
 	CCARGS='-DDEF_COMMAND_DIR=\"/opt/zextras/common/sbin\" \
 	-DDEF_DAEMON_DIR=\"/opt/zextras/common/libexec\" \
 	-DDEF_CONFIG_DIR=\"/opt/zextras/common/conf\" \
@@ -79,7 +78,7 @@ build() {
 	-lpcre -lldap -llber -llmdb -lmysqlclient -lsasl2 -lssl -lcrypto \
 	-L/usr/lib -lz -lm -lpthread' \
   SHLIB_RPATH="-Wl,-rpath,/opt/zextras/common/lib/postfix -Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib" \
-  OPT="-O2 -Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib"
+  OPT="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib"
   make -j16
 }
 

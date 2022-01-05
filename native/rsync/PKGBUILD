@@ -50,7 +50,7 @@ hashsums=(
 build() {
   cd "${srcdir}/rsync-${pkgver}"
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib -L/usr/lib/x86_64-linux-gnu -L/opt/zextras/common/lib"
-  export CFLAGS="-O2 -I/opt/zextras/common/include -I/usr/include"
+  export CFLAGS="-I/opt/zextras/common/include -I/usr/include"
   export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
 
   ./configure \

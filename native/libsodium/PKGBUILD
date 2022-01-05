@@ -24,7 +24,6 @@ hashsums=(
 build() {
   cd "${srcdir}/libsodium-${pkgver}"
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
-  export CFLAGS="-O2"
   export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
 
   ./configure --prefix=/opt/zextras/common

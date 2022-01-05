@@ -45,7 +45,7 @@ hashsums=(
 build() {
   cd "${srcdir}/rrdtool-${pkgver}"
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
-  export CFLAGS="-fPIC -O2"
+  export CFLAGS="-fPIC"
   export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
 
   ./configure --prefix=/opt/zextras/common \

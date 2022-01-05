@@ -36,7 +36,6 @@ build() {
   cd "${srcdir}/icu"
   cd source
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
-  export CFLAGS="-O2"  
   ./configure --prefix=/opt/zextras/common \
     --sysconfdir=/opt/zextras/common/etc \
     --sbindir=/opt/zextras/common/bin

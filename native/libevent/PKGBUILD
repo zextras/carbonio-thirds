@@ -27,7 +27,6 @@ hashsums=(
 build() {
   cd "${srcdir}/libevent-${pkgver}-stable"
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
-  export CFLAGS="-O2"
   export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
   ./configure --prefix=/opt/zextras/common
   make -j16

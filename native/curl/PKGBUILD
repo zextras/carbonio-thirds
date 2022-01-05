@@ -40,7 +40,6 @@ hashsums=(
 build() {
   cd "${srcdir}/curl-${pkgver}"
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
-  export CFLAGS="-O2"
   export CPPFLAGS="-I/opt/zextras/common/include"
 
   ./configure --prefix=/opt/zextras/common \

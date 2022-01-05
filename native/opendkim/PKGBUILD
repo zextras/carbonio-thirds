@@ -58,7 +58,6 @@ build() {
   mkdir -p lib/lib
   patch -Np1 -i ../openssl_1.1.0_compat.patch
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib"
-  export CFLAGS="-O2"
   export CPPFLAGS="-I/opt/zextras/common/include"
   autoreconf -i
   ./configure --prefix=/opt/zextras/common \

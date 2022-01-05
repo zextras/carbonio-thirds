@@ -27,7 +27,6 @@ build() {
   cd "${srcdir}/sendmail-${pkgver}"
   cp ../site.config.m4 devtools/Site
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
-  export CFLAGS="-O2"
   cd libmilter
   ./Build
 }

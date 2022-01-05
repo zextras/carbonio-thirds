@@ -52,13 +52,13 @@ hashsums=(
   "8b09b8eefb13d298f865ccb3563f9e2b808f7f5467b261532c47f0a2bddf2685"
   "c85cdcfd76703c95aa4204ee4c2e619aa5b075cac18f428202f65552104add3b"
   "b8d1b9c577453d195505c8e4cd195420d5876d2a3dd81480821fdbe149f038b2"
-  "d5a21f6a3ac3bc9076d91cbae31c4d41717d42724075898bac877d62fdbbf3cb"
+  "e77a1bf3adfac1a269fe5759c129ced8607a0283371b5c1c144684c8548b9d80"
 )
 
 build() {
 
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib"
-  export CFLAGS="-g -O2"
+  export CFLAGS="-g -O2 -fdebug-prefix-map=/etc=. -fstack-protector-strong"
 
   cd "${srcdir}/nginx-${pkgver}"
   patch -Np1 -i ../"carbonio-${pkgver}.patch"

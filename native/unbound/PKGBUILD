@@ -40,7 +40,6 @@ hashsums=(
 build() {
 
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib"
-  export CFLAGS="-g -O2"
 
   cd "${srcdir}/unbound-${pkgver}"
   ./configure --prefix=/opt/zextras/common \
