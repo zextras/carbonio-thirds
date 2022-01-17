@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-altermime"
 pkgver="0.3.10"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="MIME encoded email pack alteration tool"
 pkgdesclong=(
   "MIME encoded email pack alteration tool"
@@ -22,17 +22,21 @@ sources=(
   "https://pldaniels.com/altermime/altermime-${pkgver}.tar.gz"
   "altermime-0.3.10-fprintf-compiler-error.patch"
   "altermime-0.3.10-cflags.patch"
+  "altermime-disclaimers.patch"
 )
 hashsums=(
-  "aaf0ad8029958a2dc6da3abb4dc178c2"
-  "4b8ce1a5878e595db6fdec8bb2bc3871"
-  "194efdd0f1cc15e0b8a3f7bbf8b2acd3"
+  "8334da6b55d4a05dfe1492389dfe1f289953053a21773849b060d7c856ddc36e"
+  "2d9dadc9ccf529f1a778a3f21b315c96aa1e9c81dfacc9e4e705725682e581a0"
+  "21b1db5e5851453cd95cd8a69b9cd53cb5767a0e1408f232cb4a156e79731762"
+  "406e0481a01ffe1491e3b937626e92022013fe815194d88b143c7361abfc3fe0"
 )
 
 build() {
   cd "${srcdir}/altermime-${pkgver}"
   patch -Np0 -i "../altermime-0.3.10-fprintf-compiler-error.patch"
   patch -Np0 -i "../altermime-0.3.10-cflags.patch"
+  patch -Np1 -i "../altermime-disclaimers.patch"
+
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
   make
 }
