@@ -36,11 +36,9 @@ package() {
 
 preinst:apt() {
   if [ "$1" = upgrade ]; then
-    if [ x"${2%%-*}" != "x" ]; then
-      mkdir -p /opt/zextras/.saveconfig/carbonio-openjdk-cacerts-${2%%-*}
-      cacerts=$(mktemp --tmpdir=/opt/zextras/.saveconfig/carbonio-openjdk-cacerts-${2%%-*} cacerts.XXXXXX 2>/dev/null)
+      mkdir -p /opt/zextras/.saveconfig/carbonio-openjdk-cacerts
+      cacerts=$(mktemp --tmpdir=/opt/zextras/.saveconfig/carbonio-openjdk-cacerts cacerts.XXXXXX 2>/dev/null)
       cp /opt/zextras/common/etc/java/cacerts $cacerts
-    fi
   fi
   exit 0
 }
@@ -94,9 +92,8 @@ postinst:apt() {
 
 preinst:yum() {
   if [ "$1" -ge "2" ]; then
-    cver=$(rpm -q --queryformat='%{version}' carbonio-openjdk-cacerts)
-    mkdir -p /opt/zextras/.saveconfig/carbonio-openjdk-cacerts-${cver}
-    cacerts=$(mktemp --tmpdir=/opt/zextras/.saveconfig/carbonio-openjdk-cacerts-${cver} cacerts.XXXXXX)
+    mkdir -p /opt/zextras/.saveconfig/carbonio-openjdk-cacerts
+    cacerts=$(mktemp --tmpdir=/opt/zextras/.saveconfig/carbonio-openjdk-cacerts cacerts.XXXXXX)
     cp /opt/zextras/common/etc/java/cacerts $cacerts
   fi
 }
@@ -129,7 +126,7 @@ postinst:yum() {
       su - zextras -c '/opt/zextras/bin/zmcertmgr createca'
       # Run as zextras, update OpenJDK cacerts file with the CA stored in LDAP
       su - zextras -c '/opt/zextras/bin/zmcertmgr deployca --localonly'
-      for dir in /opt/zextras/.saveconfig/carbonio-openjdk-cacerts-1.0.[5-6]*; do
+      for dir in /opt/zextras/.saveconfig/carbonio-openjdk-cacerts; do
         if [ -d "$dir" ]; then
           chown zextras:zextras $dir/cacerts.*
           chmod 644 $dir/cacerts.*
