@@ -3,7 +3,7 @@ targets=(
   "ubuntu"
 )
 pkgname="carbonio-amavisd"
-pkgver="2.12.1"
+pkgver="2.12.2"
 pkgrel="1"
 pkgdesc="High-performance interface between mailer (MTA) and content checkers"
 pkgdesclong=(
@@ -23,8 +23,8 @@ sources=(
   "socket_and_misc.patch"
 )
 hashsums=(
-  "8d6687a5b46722aa45544b1a573736df2e414dca8e5908a0fdbc2404abd1d8b3"
-  "d8b9b44020b1ffd15675ab9d3d023761bc512ee88a36154a8671e4216e90bc59"
+  "9db619010a310351c57ff18385cf06dd6e06160412d3e530f3fe9b1ba219e457"
+  "3a3a2658b61ca83a81966c408f24331835a3fc6ba6b34d3ffd22baf940cb6d27"
 )
 
 package() {
@@ -38,5 +38,4 @@ package() {
   cp amavis-mc "${pkgdir}/opt/zextras/common/sbin"
   cp amavis-services "${pkgdir}/opt/zextras/common/sbin"
   cp amavisd-status "${pkgdir}/opt/zextras/common/sbin"
-  cp amavisd-snmp-subagent-zmq "${pkgdir}/opt/zextras/common/sbin"
 }
