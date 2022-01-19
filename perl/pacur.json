@@ -61,14 +61,6 @@
             "install": true
         },
         {
-            "name": "zmq-constants",
-            "install": true
-        },
-        {
-            "name": "zmq-libzmq3",
-            "install": true
-        },
-        {
             "name": "mozilla-ca",
             "install": true
         },

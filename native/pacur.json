@@ -93,10 +93,6 @@
             "install": true
         },
         {
-            "name": "zeromq",
-            "install": true
-        },
-        {
             "name": "mariadb",
             "install": true
         },

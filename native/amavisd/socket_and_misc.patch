@@ -5,7 +5,7 @@ diff '--color=auto' -Naur a/amavisd b/amavisd
  ### #!/usr/bin/perl -d:NYTProf
  ###   NYTPROF=start=no:addpid=1:forkdepth=1 amavisd -m 5 foreground
  
-+use lib $ENV{PERL5LIB} =~ /([^:]+)/g; # Untaint PERL5LIB so Zimbra's modules can be used
++use lib $ENV{PERL5LIB} =~ /([^:]+)/g; # Untaint PERL5LIB so modules can be used
 +
  #------------------------------------------------------------------------------
  # This is amavisd-new.
@@ -84,17 +84,6 @@ diff '--color=auto' -Naur a/amavisd-release b/amavisd-release
  
  ### END OF USER CONFIGURABLE
  }
-diff '--color=auto' -Naur a/amavisd-snmp-subagent-zmq b/amavisd-snmp-subagent-zmq
---- a/amavisd-snmp-subagent-zmq	2021-07-25 22:19:38.382179519 +0200
-+++ b/amavisd-snmp-subagent-zmq	2021-07-25 22:19:56.887897741 +0200
-@@ -48,6 +48,7 @@
- use warnings;
- use warnings FATAL => qw(utf8 void);
- no warnings 'uninitialized';
-+use lib "/opt/zextras/common/lib/perl5";
- 
- use Errno qw(ESRCH ENOENT EACCES EEXIST);
- use POSIX ();
 diff '--color=auto' -Naur a/amavisd-status b/amavisd-status
 --- a/amavisd-status	2021-07-25 22:19:38.382179519 +0200
 +++ b/amavisd-status	2021-07-25 22:19:56.887897741 +0200
@@ -138,24 +127,3 @@ diff '--color=auto' -Naur a/amavis-mc b/amavis-mc
  
  @services = (
    { cmd => 'amavis-services msg-forwarder' },
-diff '--color=auto' -Naur a/amavis-services b/amavis-services
---- a/amavis-services	2021-07-25 22:19:38.380179550 +0200
-+++ b/amavis-services	2021-07-25 22:21:02.921950302 +0200
-@@ -48,6 +48,7 @@
- no warnings 'uninitialized';
- 
- use vars qw($VERSION);  $VERSION = 2.011002;
-+use lib "/opt/zextras/common/lib/perl5";
- 
- use Errno qw(ESRCH ENOENT);
- use POSIX qw(strftime);
-@@ -75,7 +76,8 @@
- 
- # A socket to which amavisd child processes report their data.
- # should match one of the sockets in @zmq_sockets in amavisd.conf
--$inner_sock_specs = "ipc://$MYHOME/amavisd-zmq.sock";
-+#$inner_sock_specs = "ipc://$MYHOME/amavisd-zmq.sock";
-+$inner_sock_specs = ( "ipc:///opt/zextras/data/tmp/amavisd-zmq.sock" );
- 
- # A socket to which we forward summarized amavisd data.
- # should match a socket of the same name in amavis-status
