@@ -3,8 +3,8 @@ targets=(
   "ubuntu"
 )
 pkgname="carbonio-clamav"
-pkgver="0.103.4"
-pkgrel="2"
+pkgver="0.103.5"
+pkgrel="1"
 pkgdesc="Anti-virus toolkit for Unix"
 pkgdesclong=(
   "Anti-virus toolkit for Unix"
@@ -21,6 +21,7 @@ depends=(
   "zlib1g"
 )
 makedepends:apt=(
+  "alien"
   "libncursesw5-dev"
   "libpcre2-dev"
   "zlib1g-dev"
@@ -34,6 +35,7 @@ depends:yum=(
   "zlib"
 )
 makedepends:yum=(
+  "alien"
   "ncurses-devel"
   "pcre2-devel"
   "zlib-devel"
@@ -42,9 +44,11 @@ section="utils"
 priority="optional"
 sources=(
   "https://www.clamav.net/downloads/production/clamav-${pkgver}.tar.gz"
+  "https://download-ib01.fedoraproject.org/pub/fedora/linux/updates/35/Everything/x86_64/Packages/c/clamav-data-0.103.5-1.fc35.noarch.rpm"
 )
 hashsums=(
-  "def0ad15500fa6aff81d8e68b9f83aa75ee5b607a01335c1d26dbcc959932f85"
+  "1e74b1e1d2a8a9056449c313f48a6983b9d5ba0d6fb5ef0b2be6ad3c841a5426"
+  "72a6406087e9c7012a75f5d147e8e46497e73f5a3202853b66a0d15628fb408c"
 )
 
 build() {
@@ -68,8 +72,15 @@ build() {
 }
 
 package() {
+  cd "${srcdir}"
+  alien -t "clamav-data-${pkgver}"*.noarch.rpm
+
   cd "${srcdir}/clamav-${pkgver}"
   make DESTDIR="${pkgdir}" install
+
+  mkdir -p "${pkgdir}/opt/zextras/data/clamav/db"
+  tar -xvf "${srcdir}/clamav-data-${pkgver}.tgz" \
+    --strip-components=4 -C "${pkgdir}/opt/zextras/data/clamav/db"
 
   find "${pkgdir}" -name '*.a' -delete
   find "${pkgdir}" -name '*.la' -delete
