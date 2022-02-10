@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-rrdtool"
 pkgver="1.7.2"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Data logging and graphing application"
 pkgdesclong=(
   "Data logging and graphing application"
@@ -36,14 +36,16 @@ makedepends:yum=(
 section="utils"
 priority="optional"
 sources=(
-  "https://oss.oetiker.ch/rrdtool/pub/rrdtool-${pkgver}.tar.gz"
+#   "https://oss.oetiker.ch/rrdtool/pub/rrdtool-${pkgver}.tar.gz"
+    "https://oss.oetiker.ch/rrdtool/pub/rrdtool-1.2.30.tar.gz"
 )
 hashsums=(
-  "a199faeb7eff7cafc46fac253e682d833d08932f3db93a550a4a5af180ca58db"
+  "3190efea410a6dd035799717948b2df09910f608d72d23ee81adad4cd0184ae9"
 )
 
 build() {
-  cd "${srcdir}/rrdtool-${pkgver}"
+  #cd "${srcdir}/rrdtool-${pkgver}"
+  cd "${srcdir}/rrdtool-1.2.30"
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
   export CFLAGS="-fPIC"
   export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
@@ -56,7 +58,8 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/rrdtool-${pkgver}"
+  #cd "${srcdir}/rrdtool-${pkgver}"
+  cd "${srcdir}/rrdtool-1.2.30"
   make DESTDIR="${pkgdir}" install
   rm -rf "${pkgdir}"/opt/zextras/common/lib/*.a
   rm -rf "${pkgdir}"/opt/zextras/common/lib/*.la
