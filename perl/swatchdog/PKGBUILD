@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-swatchdog"
 pkgver="3.2.4"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="The active log file monitoring tool"
 pkgdesclong=(
   "The active log file monitoring tool"
@@ -13,7 +13,6 @@ arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
 depends=(
-  "carbonio-perl"
   "carbonio-perl-date-calc"
   "carbonio-perl-date-manip"
   "carbonio-perl-file-tail"

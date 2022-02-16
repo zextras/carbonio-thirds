@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-openjdk-cacerts"
 pkgver="1.0.6"
-pkgrel="2"
+pkgrel="3"
 pkgdesc="CA Certs keystore for OpenJDK"
 pkgdesclong=(
   "CA Certs keystore for OpenJDK"
@@ -32,111 +32,4 @@ package() {
   cd "${srcdir}"
   ./import-cacerts -f certdata.txt -o \
     "${pkgdir}"/opt/zextras/common/etc/java
-}
-
-preinst:apt() {
-  if [ "$1" = upgrade ]; then
-      mkdir -p /opt/zextras/.saveconfig/carbonio-openjdk-cacerts
-      cacerts=$(mktemp --tmpdir=/opt/zextras/.saveconfig/carbonio-openjdk-cacerts cacerts.XXXXXX 2>/dev/null)
-      cp /opt/zextras/common/etc/java/cacerts $cacerts
-  fi
-  exit 0
-}
-
-postinst:apt() {
-  if [ "$1" = configure ]; then
-    # creating zextras group if it isn't already there
-    if ! getent group zextras >/dev/null; then
-      addgroup --system --force-badname --quiet zextras
-    fi
-
-    # creating zextras user if it isn't already there
-    if ! getent passwd zextras >/dev/null; then
-      adduser --system --force-badname --quiet \
-        --ingroup zextras \
-        --home /opt/zextras \
-        --shell /bin/bash \
-        zextras
-      usermod -c "zextras user" zextras
-    fi
-
-    if ! test -d /opt/zextras/conf/ca; then
-      mkdir /opt/zextras/conf/ca
-      chown -R zextras:zextras /opt/zextras/conf/ca
-    fi
-
-    chown zextras:zextras /opt/zextras/common/etc/java/cacerts
-    chmod 644 /opt/zextras/common/etc/java/cacerts
-    if [ "${2%%-*}" != "" ]; then
-      if [ -x /opt/zextras/bin/zmcertmgr ]; then
-        # Run as zextras, extract CA to /opt/zextras/conf/ca
-        su - zextras -c '/opt/zextras/bin/zmcertmgr createca'
-        # Run as zextras, update OpenJDK cacerts file with the CA stored in LDAP
-        su - zextras -c '/opt/zextras/bin/zmcertmgr deployca --localonly'
-        for dir in /opt/zextras/.saveconfig/carbonio-openjdk-cacerts-${2%%-*}; do
-          if [ -d "$dir" ]; then
-            chown zextras:zextras $dir/cacerts.*
-            chmod 644 $dir/cacerts.*
-            for cert in $(/opt/zextras/common/bin/keytool -list -keystore $dir/cacerts.* -storepass changeit | grep trustedCertEntry | grep -v 'openjdk-cacerts/build/ubuntu' | grep -v 'tmp/rhel' | grep -Eo "^[^,]*"); do
-              /opt/zextras/common/bin/keytool -exportcert -keystore $dir/cacerts.* -storepass changeit -alias $cert -file $dir/${cert}.crt
-              chown zextras:zextras $dir/${cert}.crt
-              su - zextras -c "/opt/zextras/bin/zmcertmgr addcacert $dir/${cert}.crt"
-            done
-          fi
-        done
-      fi
-    fi
-  fi
-  exit 0
-}
-
-preinst:yum() {
-  if [ "$1" -ge "2" ]; then
-    mkdir -p /opt/zextras/.saveconfig/carbonio-openjdk-cacerts
-    cacerts=$(mktemp --tmpdir=/opt/zextras/.saveconfig/carbonio-openjdk-cacerts cacerts.XXXXXX)
-    cp /opt/zextras/common/etc/java/cacerts $cacerts
-  fi
-}
-
-postinst:yum() {
-  # creating zextras group if it isn't already there
-  if ! getent group zextras >/dev/null; then
-    addgroup --system --force-badname --quiet zextras
-  fi
-  # creating zextras user if it isn't already there
-  if ! getent passwd zextras >/dev/null; then
-    adduser --system --force-badname --quiet \
-      --ingroup zextras \
-      --home /opt/zextras \
-      --shell /bin/bash \
-      zextras
-    usermod -c "zextras user" zextras
-  fi
-
-  if ! test -d /opt/zextras/conf/ca; then
-    mkdir /opt/zextras/conf/ca
-    chown -R zextras:zextras /opt/zextras/conf/ca
-  fi
-
-  chown zextras:zextras /opt/zextras/common/etc/java/cacerts
-  chmod 644 /opt/zextras/common/etc/java/cacerts
-  if [ "$1" -ge "2" ]; then
-    if [ -x /opt/zextras/bin/zmcertmgr ]; then
-      # Run as zextras, extract CA to /opt/zextras/conf/ca
-      su - zextras -c '/opt/zextras/bin/zmcertmgr createca'
-      # Run as zextras, update OpenJDK cacerts file with the CA stored in LDAP
-      su - zextras -c '/opt/zextras/bin/zmcertmgr deployca --localonly'
-      for dir in /opt/zextras/.saveconfig/carbonio-openjdk-cacerts; do
-        if [ -d "$dir" ]; then
-          chown zextras:zextras $dir/cacerts.*
-          chmod 644 $dir/cacerts.*
-          for cert in $(/opt/zextras/common/bin/keytool -list -keystore $dir/cacerts.* -storepass changeit | grep trustedCertEntry | grep -v 'openjdk-cacerts/build/ubuntu' | grep -v 'tmp/rhel' | grep -v 'openjdk-cacerts/build/rhel' | grep -Eo "^[^,]*"); do
-            /opt/zextras/common/bin/keytool -exportcert -keystore $dir/cacerts.* -storepass changeit -alias $cert -file $dir/${cert}.crt
-            chown zextras:zextras $dir/${cert}.crt
-            su - zextras -c "/opt/zextras/bin/zmcertmgr addcacert $dir/${cert}.crt"
-          done
-        fi
-      done
-    fi
-  fi
 }

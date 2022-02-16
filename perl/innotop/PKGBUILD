@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-innotop"
 pkgver="1.13.0"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Postfix log entry summarizer"
 pkgdesclong=(
   "Postfix log entry summarizer"
@@ -12,10 +12,16 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
   "carbonio-perl-dbd-mysql"
   "carbonio-perl-term-readkey"
+  "perl"
+)
+depends:yum=(
+  "carbonio-perl-dbd-mysql"
+  "carbonio-perl-term-readkey"
+  "perl"
+  "perl-core"
 )
 section="libs"
 priority="important"

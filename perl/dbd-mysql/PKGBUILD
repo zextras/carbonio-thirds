@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-dbd-mysql"
 pkgver="4.050"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Perl/CPAN DBD::mysql module for interacting with MySQL via DBD"
 pkgdesclong=(
   "Perl/CPAN DBD::mysql module for interacting with MySQL via DBD"
@@ -12,8 +12,16 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "carbonio-mariadb"
+  "carbonio-perl-dbi"
+  "perl"
+)
+depends:yum=(
+  "carbonio-mariadb"
+  "carbonio-perl-dbi"
+  "perl-core"
+  "perl"
 )
 makedepends:apt=(
   "libdevel-checklib-perl"

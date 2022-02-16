@@ -1,409 +1,374 @@
 {
-    "name": "Zextras Server",
-    "description": "This is the manifest to build perl third-party packages",
-    "build_dir": "/tmp/",
-    "output": "artifacts",
-    "projects": [
-        {
-            "name": "crypt-openssl-random",
-            "install": true
-        },
-        {
-            "name": "crypt-openssl-rsa",
-            "install": true
-        },
-        {
-            "name": "net-cidr",
-            "install": true
-        },
-        {
-            "name": "socket-linux",
-            "install": true
-        },
-        {
-            "name": "net-libidn",
-            "install": true
-        },
-        {
-            "name": "math-bigint",
-            "install": true
-        },
-        {
-            "name": "file-libmagic",
-            "install": true
-        },
-        {
-            "name": "convert-asn1",
-            "install": true
-        },
-        {
-            "name": "socket",
-            "install": true
-        },
-        {
-            "name": "io-socket-inet6",
-            "install": true
-        },
-        {
-            "name": "io-socket-ip",
-            "install": true
-        },
-        {
-            "name": "net-ssleay",
-            "install": true
-        },
-        {
-            "name": "net-ldap",
-            "install": true
-        },
-        {
-            "name": "net-server",
-            "install": true
-        },
-        {
-            "name": "mozilla-ca",
-            "install": true
-        },
-        {
-            "name": "io-socket-ssl",
-            "install": true
-        },
-        {
-            "name": "dbi",
-            "install": true
-        },
-        {
-            "name": "html-parser",
-            "install": true
-        },
-        {
-            "name": "parent",
-            "install": true
-        },
-        {
-            "name": "uri",
-            "install": true
-        },
-        {
-            "name": "net-http",
-            "install": true
-        },
-        {
-            "name": "lwp-mediatypes",
-            "install": true
-        },
-        {
-            "name": "encode-locale",
-            "install": true
-        },
-        {
-            "name": "http-date",
-            "install": true
-        },
-        {
-            "name": "io-html",
-            "install": true
-        },
-        {
-            "name": "compress-raw-bzip2",
-            "install": true
-        },
-        {
-            "name": "compress-raw-zlib",
-            "install": true
-        },
-        {
-            "name": "io-compress",
-            "install": true
-        },
-        {
-            "name": "http-message",
-            "install": true
-        },
-        {
-            "name": "http-negotiate",
-            "install": true
-        },
-        {
-            "name": "file-listing",
-            "install": true
-        },
-        {
-            "name": "http-daemon",
-            "install": true
-        },
-        {
-            "name": "http-cookies",
-            "install": true
-        },
-        {
-            "name": "www-robotrules",
-            "install": true
-        },
-        {
-            "name": "libwww",
-            "install": true
-        },
-        {
-            "name": "lwp-protocol-https",
-            "install": true
-        },
-        {
-            "name": "io-stringy",
-            "install": true
-        },
-        {
-            "name": "timedate",
-            "install": true
-        },
-        {
-            "name": "mailtools",
-            "install": true
-        },
-        {
-            "name": "mime-types",
-            "install": true
-        },
-        {
-            "name": "email-date-format",
-            "install": true
-        },
-        {
-            "name": "mime-lite",
-            "install": true
-        },
-        {
-            "name": "convert-binhex",
-            "install": true
-        },
-        {
-            "name": "mime-tools",
-            "install": true
-        },
-        {
-            "name": "io-sessiondata",
-            "install": true
-        },
-        {
-            "name": "json-pp",
-            "install": true
-        },
-        {
-            "name": "exporter-tiny",
-            "install": true
-        },
-        {
-            "name": "list-moreutils",
-            "install": true
-        },
-        {
-            "name": "config-inifiles",
-            "install": true
-        },
-        {
-            "name": "carp-clan",
-            "install": true
-        },
-        {
-            "name": "bit-vector",
-            "install": true
-        },
-        {
-            "name": "date-calc",
-            "install": true
-        },
-        {
-            "name": "date-manip",
-            "install": true
-        },
-        {
-            "name": "unix-syslog",
-            "install": true
-        },
-        {
-            "name": "digest-sha1",
-            "install": true
-        },
-        {
-            "name": "digest-hmac",
-            "install": true
-        },
-        {
-            "name": "convert-tnef"
-        },
-        {
-            "name": "canary-stability",
-            "install": true
-        },
-        {
-            "name": "convert-uulib",
-            "install": true
-        },
-        {
-            "name": "file-tail",
-            "install": true
-        },
-        {
-            "name": "file-grep",
-            "install": true
-        },
-        {
-            "name": "data-uuid",
-            "install": true
-        },
-        {
-            "name": "crypt-saltedhash",
-            "install": true
-        },
-        {
-            "name": "archive-zip",
-            "install": true
-        },
-        {
-            "name": "error",
-            "install": true
-        },
-        {
-            "name": "xml-parser",
-            "install": true
-        },
-        {
-            "name": "xml-sax-base",
-            "install": true
-        },
-        {
-            "name": "xml-namespacesupport",
-            "install": true
-        },
-        {
-            "name": "xml-sax",
-            "install": true
-        },
-        {
-            "name": "xml-sax-expat",
-            "install": true
-        },
-        {
-            "name": "xml-simple",
-            "install": true
-        },
-        {
-            "name": "netaddr-ip",
-            "install": true
-        },
-        {
-            "name": "net-dns",
-            "install": true
-        },
-        {
-            "name": "mail-dkim",
-            "install": true
-        },
-        {
-            "name": "net-dns-resolver-programmable",
-            "install": true
-        },
-        {
-            "name": "geography-countries",
-            "install": true
-        },
-        {
-            "name": "ip-country",
-            "install": true
-        },
-        {
-            "name": "dbd-sqlite",
-            "install": true
-        },
-        {
-            "name": "filesys-df",
-            "install": true
-        },
-        {
-            "name": "encode-detect",
-            "install": true
-        },
-        {
-            "name": "unix-getrusage",
-            "install": true
-        },
-        {
-            "name": "class-inspector",
-            "install": true
-        },
-        {
-            "name": "task-weaken",
-            "install": true
-        },
-        {
-            "name": "xml-parser-lite",
-            "install": true
-        },
-        {
-            "name": "soap-lite",
-            "install": true
-        },
-        {
-            "name": "term-readkey",
-            "install": true
-        },
-        {
-            "name": "net-cidr-lite",
-            "install": true
-        },
-        {
-            "name": "cache-fastmmap",
-            "install": true
-        },
-        {
-            "name": "proc-processtable",
-            "install": true
-        },
-        {
-            "name": "net-ldapapi",
-            "install": true
-        },
-        {
-            "name": "berkeleydb",
-            "install": true
-        },
-        {
-            "name": "db-file",
-            "install": true
-        },
-        {
-            "name": "dbd-mysql",
-            "install": true
-        },
-        {
-            "name": "mail-spf",
-            "install": true
-        },
-        {
-            "name": "mail-spamassassin",
-            "install": true
-        },
-        {
-            "name": "swatchdog",
-            "install": true
-        },
-        {
-            "name": "innotop"
-        },
-        {
-            "name": "pflogsumm"
-        },
-        {
-            "name": "prepflog"
-        },
-        {
-            "name": "policyd"
-        },
-        {
-            "name": "spamassassin-rules"
-        },
-        {
-            "name": "jetty-distribution"
-        }
-    ]
+  "name": "Zextras Server",
+  "description": "This is the manifest to build perl third-party packages",
+  "build_dir": "/tmp/",
+  "output": "artifacts",
+  "projects": [
+    {
+      "name": "crypt-openssl-random",
+      "install": true
+    },
+    {
+      "name": "crypt-openssl-rsa",
+      "install": true
+    },
+    {
+      "name": "net-cidr",
+      "install": true
+    },
+    {
+      "name": "net-libidn",
+      "install": true
+    },
+    {
+      "name": "math-bigint",
+      "install": true
+    },
+    {
+      "name": "file-libmagic",
+      "install": true
+    },
+    {
+      "name": "convert-asn1",
+      "install": true
+    },
+    {
+      "name": "socket",
+      "install": true
+    },
+    {
+      "name": "io-socket-inet6",
+      "install": true
+    },
+    {
+      "name": "io-socket-ip",
+      "install": true
+    },
+    {
+      "name": "net-ssleay",
+      "install": true
+    },
+    {
+      "name": "net-ldap",
+      "install": true
+    },
+    {
+      "name": "net-server",
+      "install": true
+    },
+    {
+      "name": "mozilla-ca",
+      "install": true
+    },
+    {
+      "name": "parent",
+      "install": true
+    },
+    {
+      "name": "uri",
+      "install": true
+    },
+    {
+      "name": "io-socket-ssl",
+      "install": true
+    },
+    {
+      "name": "dbi",
+      "install": true
+    },
+    {
+      "name": "compress-raw-bzip2",
+      "install": true
+    },
+    {
+      "name": "compress-raw-zlib",
+      "install": true
+    },
+    {
+      "name": "io-compress",
+      "install": true
+    },
+    {
+      "name": "lwp-mediatypes",
+      "install": true
+    },
+    {
+      "name": "encode-locale",
+      "install": true
+    },
+    {
+      "name": "timedate",
+      "install": true
+    },
+    {
+      "name": "http-date",
+      "install": true
+    },
+    {
+      "name": "io-html",
+      "install": true
+    },
+    {
+      "name": "http-message",
+      "install": true
+    },
+    {
+      "name": "html-parser",
+      "install": true
+    },
+    {
+      "name": "net-http",
+      "install": true
+    },
+
+    {
+      "name": "http-negotiate",
+      "install": true
+    },
+    {
+      "name": "file-listing",
+      "install": true
+    },
+    {
+      "name": "http-daemon",
+      "install": true
+    },
+    {
+      "name": "http-cookies",
+      "install": true
+    },
+    {
+      "name": "www-robotrules",
+      "install": true
+    },
+    {
+      "name": "libwww",
+      "install": true
+    },
+    {
+      "name": "lwp-protocol-https",
+      "install": true
+    },
+    {
+      "name": "io-stringy",
+      "install": true
+    },
+    {
+      "name": "mailtools",
+      "install": true
+    },
+    {
+      "name": "mime-types",
+      "install": true
+    },
+    {
+      "name": "email-date-format",
+      "install": true
+    },
+    {
+      "name": "convert-binhex",
+      "install": true
+    },
+    {
+      "name": "mime-tools",
+      "install": true
+    },
+    {
+      "name": "json-pp",
+      "install": true
+    },
+    {
+      "name": "exporter-tiny",
+      "install": true
+    },
+    {
+      "name": "list-moreutils",
+      "install": true
+    },
+    {
+      "name": "config-inifiles",
+      "install": true
+    },
+    {
+      "name": "carp-clan",
+      "install": true
+    },
+    {
+      "name": "bit-vector",
+      "install": true
+    },
+    {
+      "name": "date-calc",
+      "install": true
+    },
+    {
+      "name": "date-manip",
+      "install": true
+    },
+    {
+      "name": "unix-syslog",
+      "install": true
+    },
+    {
+      "name": "digest-sha1",
+      "install": true
+    },
+    {
+      "name": "digest-hmac",
+      "install": true
+    },
+    {
+      "name": "convert-tnef"
+    },
+    {
+      "name": "canary-stability",
+      "install": true
+    },
+    {
+      "name": "convert-uulib",
+      "install": true
+    },
+    {
+      "name": "file-tail",
+      "install": true
+    },
+    {
+      "name": "file-grep",
+      "install": true
+    },
+    {
+      "name": "data-uuid",
+      "install": true
+    },
+    {
+      "name": "crypt-saltedhash",
+      "install": true
+    },
+    {
+      "name": "archive-zip",
+      "install": true
+    },
+    {
+      "name": "error",
+      "install": true
+    },
+    {
+      "name": "xml-parser",
+      "install": true
+    },
+    {
+      "name": "xml-sax-base",
+      "install": true
+    },
+    {
+      "name": "xml-namespacesupport",
+      "install": true
+    },
+    {
+      "name": "xml-sax",
+      "install": true
+    },
+    {
+      "name": "xml-sax-expat",
+      "install": true
+    },
+    {
+      "name": "xml-simple",
+      "install": true
+    },
+    {
+      "name": "netaddr-ip",
+      "install": true
+    },
+    {
+      "name": "net-dns",
+      "install": true
+    },
+    {
+      "name": "mail-dkim",
+      "install": true
+    },
+    {
+      "name": "net-dns-resolver-programmable",
+      "install": true
+    },
+    {
+      "name": "geography-countries",
+      "install": true
+    },
+    {
+      "name": "ip-country",
+      "install": true
+    },
+    {
+      "name": "dbd-sqlite",
+      "install": true
+    },
+    {
+      "name": "filesys-df",
+      "install": true
+    },
+    {
+      "name": "unix-getrusage",
+      "install": true
+    },
+    {
+      "name": "xml-parser-lite",
+      "install": true
+    },
+    {
+      "name": "term-readkey",
+      "install": true
+    },
+    {
+      "name": "net-cidr-lite",
+      "install": true
+    },
+    {
+      "name": "cache-fastmmap",
+      "install": true
+    },
+    {
+      "name": "berkeleydb",
+      "install": true
+    },
+    {
+      "name": "db-file",
+      "install": true
+    },
+    {
+      "name": "dbd-mysql",
+      "install": true
+    },
+    {
+      "name": "mail-spf",
+      "install": true
+    },
+    {
+      "name": "mail-spamassassin",
+      "install": true
+    },
+    {
+      "name": "swatchdog",
+      "install": true
+    },
+    {
+      "name": "innotop"
+    },
+    {
+      "name": "pflogsumm"
+    },
+    {
+      "name": "prepflog"
+    },
+    {
+      "name": "policyd"
+    },
+    {
+      "name": "spamassassin-rules"
+    },
+    {
+      "name": "jetty-distribution"
+    }
+  ]
 }

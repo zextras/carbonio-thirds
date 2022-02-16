@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-dbd-sqlite"
 pkgver="1.66"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Self-contained RDBMS in a DBI Driver"
 pkgdesclong=(
   "Self-contained RDBMS in a DBI Driver"
@@ -12,8 +12,14 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "carbonio-perl-dbi"
+  "perl"
+)
+depends:yum=(
+  "carbonio-perl-dbi"
+  "perl-core"
+  "perl"
 )
 makedepends:apt=(
   "libsqlite3-dev"

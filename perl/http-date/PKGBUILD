@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-http-date"
 pkgver="6.05"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="HTTP::Date - date conversion routines"
 pkgdesclong=(
   "HTTP::Date - date conversion routines"
@@ -12,8 +12,14 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "carbonio-perl-timedate"
+  "perl"
+)
+depends:yum=(
+  "carbonio-perl-timedate"
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

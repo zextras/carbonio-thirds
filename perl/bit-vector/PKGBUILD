@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-bit-vector"
 pkgver="7.4"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Efficient bit vector, set of integers and big int math library"
 pkgdesclong=(
   "Efficient bit vector, set of integers and big int math library"
@@ -12,8 +12,14 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "carbonio-perl-carp-clan"
+  "perl"
+)
+depends:yum=(
+  "carbonio-perl-carp-clan"
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

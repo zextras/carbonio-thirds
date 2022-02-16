@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-net-libidn"
 pkgver="0.12"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Perl bindings for GNU Libidn"
 pkgdesclong=(
   "Perl bindings for GNU Libidn"
@@ -14,14 +14,15 @@ maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
 depends:apt=(
   "libidn11"
-  "carbonio-perl"
-)
-makedepends:apt=(
-  "libidn11-dev"
+  "perl"
 )
 depends:yum=(
   "libidn"
-  "carbonio-perl"
+  "perl-core"
+  "perl"
+)
+makedepends:apt=(
+  "libidn11-dev"
 )
 makedepends:yum=(
   "libidn-devel"

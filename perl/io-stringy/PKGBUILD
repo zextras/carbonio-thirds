@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-io-stringy"
 pkgver="2.113"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="I/O on in-core objects like strings and arrays"
 pkgdesclong=(
   "I/O on in-core objects like strings and arrays"
@@ -12,8 +12,12 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "perl"
+)
+depends:yum=(
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

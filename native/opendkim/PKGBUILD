@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-opendkim"
 pkgver="2.10.3"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="An open source implementation of the DKIM sender authentication system. Based on a fork of dkim-milter"
 pkgdesclong=(
   "An open source implementation of the DKIM sender authentication system. Based on a fork of dkim-milter"
@@ -17,7 +17,6 @@ depends:apt=(
   "carbonio-bdb"
   "carbonio-libbsd"
   "carbonio-libmilter"
-  "carbonio-mta"
   "carbonio-openldap"
   "carbonio-openssl"
   "carbonio-unbound"
@@ -32,7 +31,6 @@ depends:yum=(
   "carbonio-bdb"
   "carbonio-libbsd"
   "carbonio-libmilter"
-  "carbonio-mta"
   "carbonio-openldap"
   "carbonio-openssl"
   "carbonio-unbound"

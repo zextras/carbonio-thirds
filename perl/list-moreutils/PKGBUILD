@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-list-moreutils"
 pkgver="0.430"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Provide the stuff missing in List::Util"
 pkgdesclong=(
   "Provide the stuff missing in List::Util"
@@ -12,8 +12,14 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "carbonio-perl-exporter-tiny"
+  "perl"
+)
+depends:yum=(
+  "carbonio-perl-exporter-tiny"
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

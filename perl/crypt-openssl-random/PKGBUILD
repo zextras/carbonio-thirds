@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-crypt-openssl-random"
 pkgver="0.15"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="OpenSSL/LibreSSL pseudo-random number generator access"
 pkgdesclong=(
   "OpenSSL/LibreSSL pseudo-random number generator access"
@@ -12,9 +12,14 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "carbonio-openssl"  
+  "perl"
+)
+depends:yum=(
   "carbonio-openssl"
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

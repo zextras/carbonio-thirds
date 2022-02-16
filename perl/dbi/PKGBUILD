@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-dbi"
 pkgver="1.643"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Database independent interface for Perl"
 pkgdesclong=(
   "Database independent interface for Perl"
@@ -12,9 +12,14 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
+depends:apt=(
   "carbonio-perl-socket"
-  "carbonio-perl"
+  "perl"
+)
+depends:yum=(
+  "carbonio-perl-socket"
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

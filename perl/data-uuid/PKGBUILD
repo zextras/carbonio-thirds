@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-data-uuid"
 pkgver="1.226"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Globally/Universally Unique Identifiers (GUIDs/UUIDs)"
 pkgdesclong=(
   "Globally/Universally Unique Identifiers (GUIDs/UUIDs)"
@@ -12,8 +12,12 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "perl"
+)
+depends:yum=(
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

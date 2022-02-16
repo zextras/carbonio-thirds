@@ -4,16 +4,22 @@ targets=(
 )
 pkgname="carbonio-perl-www-robotrules"
 pkgver="6.02"
-pkgrel="1"
-pkgdesc="HTTP cookie jars"
+pkgrel="2"
+pkgdesc="Database of robots.txt-derived permissions"
 pkgdesclong=(
-  "HTTP cookie jars"
+  "Database of robots.txt-derived permissions"
 )
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "carbonio-perl-uri"
+  "perl"
+)
+depends:yum=(
+  "carbonio-perl-uri"
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

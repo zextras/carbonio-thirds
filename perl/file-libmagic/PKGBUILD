@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-file-libmagic"
 pkgver="1.23"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Determine MIME types of data or files using libmagic"
 pkgdesclong=(
   "Determine MIME types of data or files using libmagic"
@@ -12,9 +12,9 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
+depends:apt=(
   "libmagic1"
-  "carbonio-perl"
+  "perl"
 )
 makedepends:apt=(
   "libmagic-dev"
@@ -22,7 +22,8 @@ makedepends:apt=(
 )
 depends:yum=(
   "file-libs"
-  "carbonio-perl"
+  "perl"
+  "perl-core"
 )
 makedepends:yum=(
   "file-devel"

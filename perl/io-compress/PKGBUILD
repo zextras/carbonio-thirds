@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-io-compress"
 pkgver="2.102"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Low-Level Interface to compression libraries"
 pkgdesclong=(
   "Low-Level Interface to compression libraries"
@@ -12,8 +12,16 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "carbonio-perl-compress-raw-bzip2"
+  "carbonio-perl-compress-raw-zlib"
+  "perl"
+)
+depends:yum=(
+  "carbonio-perl-compress-raw-bzip2"
+  "carbonio-perl-compress-raw-zlib"
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

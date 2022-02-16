@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-file-grep"
 pkgver="0.02"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Find matches to a pattern in a series of files and related functions"
 pkgdesclong=(
   "Find matches to a pattern in a series of files and related functions"
@@ -12,8 +12,12 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "perl"
+)
+depends:yum=(
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

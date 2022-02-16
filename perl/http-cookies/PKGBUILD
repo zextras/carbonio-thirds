@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-http-cookies"
 pkgver="6.10"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="HTTP cookie jars"
 pkgdesclong=(
   "HTTP cookie jars"
@@ -12,8 +12,18 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "carbonio-perl-http-date"
+  "carbonio-perl-http-message"
+  "carbonio-perl-math-bigint"
+  "perl"
+)
+depends:yum=(
+  "carbonio-perl-http-date"
+  "carbonio-perl-http-message"
+  "carbonio-perl-math-bigint"
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

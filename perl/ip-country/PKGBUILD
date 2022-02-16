@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-ip-country"
 pkgver="2.28"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Fast lookup of country codes from IP addresses"
 pkgdesclong=(
   "Fast lookup of country codes from IP addresses"
@@ -12,8 +12,16 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "carbonio-perl-geography-countries"
+  "carbonio-perl-socket"
+  "perl"
+)
+depends:yum=(
+  "carbonio-perl-geography-countries"
+  "carbonio-perl-socket"
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

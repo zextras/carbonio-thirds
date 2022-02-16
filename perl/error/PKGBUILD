@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-error"
 pkgver="0.17029"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Error/exception handling in an OO-ish way"
 pkgdesclong=(
   "Error/exception handling in an OO-ish way"
@@ -12,8 +12,12 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "perl"
+)
+depends:yum=(
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

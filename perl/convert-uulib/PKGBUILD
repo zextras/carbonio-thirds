@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-convert-uulib"
 pkgver="1.8"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Decode uu/xx/b64/mime/yenc/etc-encoded data from a massive number of files"
 pkgdesclong=(
   "Decode uu/xx/b64/mime/yenc/etc-encoded data from a massive number of files"
@@ -12,9 +12,14 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
   "carbonio-perl-canary-stability"
+  "perl"
+)
+depends:yum=(
+  "carbonio-perl-canary-stability"
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

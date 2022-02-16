@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-geography-countries"
 pkgver="2009041301"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="2-letter, 3-letter, and numerical codes for countries"
 pkgdesclong=(
   "2-letter, 3-letter, and numerical codes for countries"
@@ -12,8 +12,12 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "perl"
+)
+depends:yum=(
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

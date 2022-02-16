@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-parent"
 pkgver="0.238"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Establish an ISA relationship with base classes at compile time"
 pkgdesclong=(
   "Establish an ISA relationship with base classes at compile time"
@@ -12,8 +12,12 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "perl"
+)
+depends:yum=(
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

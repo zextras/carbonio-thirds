@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-json-pp"
 pkgver="4.06"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="JSON::XS compatible pure-Perl module"
 pkgdesclong=(
   "JSON::XS compatible pure-Perl module"
@@ -12,8 +12,14 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "carbonio-perl-math-bigint"
+  "perl"
+)
+depends:yum=(
+  "carbonio-perl-math-bigint"
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-http-message"
 pkgver="6.32"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="HTTP style message"
 pkgdesclong=(
   "HTTP style message"
@@ -12,8 +12,24 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "carbonio-perl-encode-locale"
+  "carbonio-perl-http-date"
+  "carbonio-perl-io-compress"
+  "carbonio-perl-io-html"
+  "carbonio-perl-lwp-mediatypes"
+  "carbonio-perl-uri"
+  "perl"
+)
+depends:yum=(
+  "carbonio-perl-encode-locale"
+  "carbonio-perl-http-date"
+  "carbonio-perl-io-compress"
+  "carbonio-perl-io-html"
+  "carbonio-perl-lwp-mediatypes"
+  "carbonio-perl-uri"
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

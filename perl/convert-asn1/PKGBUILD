@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-convert-asn1"
 pkgver="0.31"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="ASN.1 Encode/Decode library"
 pkgdesclong=(
   "ASN.1 Encode/Decode library"
@@ -12,8 +12,14 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "carbonio-perl-math-bigint"
+  "perl"
+)
+depends:yum=(
+  "carbonio-perl-math-bigint"
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

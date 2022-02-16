@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-archive-zip"
 pkgver="1.68"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Provide an interface to ZIP archive files"
 pkgdesclong=(
   "Provide an interface to ZIP archive files"
@@ -12,8 +12,14 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "carbonio-perl-compress-raw-zlib"
+  "perl"
+)
+depends:yum=(
+  "carbonio-perl-compress-raw-zlib"
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

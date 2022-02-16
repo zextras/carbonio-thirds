@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-mail-spamassassin"
 pkgver="3.4.6"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Spam detector and markup engine"
 pkgdesclong=(
   "Spam detector and markup engine"
@@ -13,16 +13,17 @@ arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
 depends=(
-  "carbonio-perl"
-  "carbonio-perl-digest-sha1"
-  "carbonio-perl-encode-detect"
-  "carbonio-perl-html-parser"
-  "carbonio-perl-io-compress"
+  "carbonio-openssl"
+  "carbonio-perl-http-message"
+  "carbonio-perl-io-socket-inet6"
+  "carbonio-perl-io-socket-ip"
+  "carbonio-perl-io-socket-ssl"
+  "carbonio-perl-ip-country"
+  "carbonio-perl-libwww"
   "carbonio-perl-mail-dkim"
   "carbonio-perl-mail-spf"
-  "carbonio-perl-net-cidr-lite"
   "carbonio-perl-net-dns"
-  "carbonio-perl-netaddr-ip"
+  "carbonio-perl-net-http"
 )
 section="libs"
 priority="important"
@@ -59,6 +60,6 @@ package() {
 
   sed -i -e 's/^#loadplugin Mail::SpamAssassin::Plugin::DCC/loadplugin Mail::SpamAssassin::Plugin::DCC/' \
     "${pkgdir}"/opt/zextras/data/spamassassin/localrules/v310.pre
-  sed -i -e 's/^# loadplugin Mail::SpamAssassin::Plugin::Rule2XSBody/loadplugin Mail::SpamAssassin::Plugin::Rule2XSBody/' \
+  sed -i -e 's/^#loadplugin Mail::SpamAssassin::Plugin::Rule2XSBody/loadplugin Mail::SpamAssassin::Plugin::Rule2XSBody/' \
     "${pkgdir}"/opt/zextras/data/spamassassin/localrules/v320.pre
 }

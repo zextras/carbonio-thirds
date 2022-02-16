@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-libwww"
 pkgver="6.55"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="The World-Wide Web library for Perl"
 pkgdesclong=(
   "The World-Wide Web library for Perl"
@@ -12,8 +12,34 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "carbonio-perl-encode-locale"
+  "carbonio-perl-file-listing"
+  "carbonio-perl-html-parser"
+  "carbonio-perl-http-cookies"
+  "carbonio-perl-http-daemon"
+  "carbonio-perl-http-date"
+  "carbonio-perl-http-negotiate"
+  "carbonio-perl-lwp-mediatypes"
+  "carbonio-perl-net-http"
+  "carbonio-perl-uri"
+  "carbonio-perl-www-robotrules"
+  "perl"
+)
+depends:yum=(
+  "carbonio-perl-encode-locale"
+  "carbonio-perl-file-listing"
+  "carbonio-perl-html-parser"
+  "carbonio-perl-http-cookies"
+  "carbonio-perl-http-daemon"
+  "carbonio-perl-http-date"
+  "carbonio-perl-http-negotiate"
+  "carbonio-perl-lwp-mediatypes"
+  "carbonio-perl-net-http"
+  "carbonio-perl-uri"
+  "carbonio-perl-www-robotrules"
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-net-ldap"
 pkgver="0.68"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Lightweight Directory Access Protocol"
 pkgdesclong=(
   "Lightweight Directory Access Protocol"
@@ -12,9 +12,14 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-openldap"
-  "carbonio-perl"
+depends:apt=(
+  "carbonio-perl-convert-asn1"
+  "perl"
+)
+depends:yum=(
+  "carbonio-perl-convert-asn1"
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

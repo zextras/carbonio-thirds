@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-uri"
 pkgver="5.09"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Uniform Resource Identifiers (absolute and relative)"
 pkgdesclong=(
   "Uniform Resource Identifiers (absolute and relative)"
@@ -12,8 +12,14 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "carbonio-perl-parent"
+  "perl"
+)
+depends:yum=(
+  "carbonio-perl-parent"
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

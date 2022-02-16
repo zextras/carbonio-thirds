@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-netaddr-ip"
 pkgver="4.079"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Manages IPv4 and IPv6 addresses and subnets"
 pkgdesclong=(
   "Manages IPv4 and IPv6 addresses and subnets"
@@ -12,8 +12,12 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "perl"
+)
+depends:yum=(
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

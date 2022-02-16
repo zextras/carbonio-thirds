@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-mail-spf"
 pkgver="2.9.0"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="An object-oriented implementation of Sender Policy Framework"
 pkgdesclong=(
   "An object-oriented implementation of Sender Policy Framework"
@@ -12,8 +12,22 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "carbonio-perl-error"
+  "carbonio-perl-net-dns"
+  "carbonio-perl-net-dns-resolver-programmable"
+  "carbonio-perl-netaddr-ip"
+  "carbonio-perl-uri"
+  "perl"
+)
+depends:yum=(
+  "carbonio-perl-error"
+  "carbonio-perl-net-dns"
+  "carbonio-perl-net-dns-resolver-programmable"
+  "carbonio-perl-netaddr-ip"
+  "carbonio-perl-uri"
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

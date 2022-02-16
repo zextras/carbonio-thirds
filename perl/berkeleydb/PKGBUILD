@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-berkeleydb"
 pkgver="0.64"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Perl5 Module Supporting LDAP API"
 pkgdesclong=(
   "Perl5 Module Supporting LDAP API"
@@ -12,9 +12,14 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
+depends:apt=(
   "carbonio-bdb"
-  "carbonio-perl"
+  "perl"
+)
+depends:yum=(
+  "carbonio-bdb"
+  "perl"
+  "perl-core"
 )
 section="libs"
 priority="important"

@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-mime-tools"
 pkgver="5.509"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Modules for parsing (and creating!) MIME entities"
 pkgdesclong=(
   "Modules for parsing (and creating!) MIME entities"
@@ -12,8 +12,18 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "carbonio-perl-convert-binhex"
+  "carbonio-perl-io-stringy"
+  "carbonio-perl-mailtools"
+  "perl"
+)
+depends:yum=(
+  "carbonio-perl-convert-binhex"
+  "carbonio-perl-io-stringy"
+  "carbonio-perl-mailtools"
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

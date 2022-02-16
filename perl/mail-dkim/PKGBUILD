@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-mail-dkim"
 pkgver="1.20200907"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Signs/verifies Internet mail with DKIM/DomainKey signatures"
 pkgdesclong=(
   "Signs/verifies Internet mail with DKIM/DomainKey signatures"
@@ -12,9 +12,20 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
+depends:apt=(
+  "carbonio-perl-crypt-openssl-rsa"
+  "carbonio-perl-mailtools"
+  "carbonio-perl-net-dns"
   "carbonio-opendkim"
-  "carbonio-perl"
+  "perl"
+)
+depends:yum=(
+  "carbonio-perl-crypt-openssl-rsa"
+  "carbonio-perl-mailtools"
+  "carbonio-perl-net-dns"
+  "carbonio-opendkim"
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

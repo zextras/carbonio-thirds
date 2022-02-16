@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-clamav"
 pkgver="0.103.5"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Anti-virus toolkit for Unix"
 pkgdesclong=(
   "Anti-virus toolkit for Unix"
@@ -13,6 +13,7 @@ arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
 depends=(
+  "carbonio-curl"
   "carbonio-libmilter"
   "carbonio-libxml2"
   "carbonio-mta"
@@ -27,9 +28,9 @@ makedepends:apt=(
   "zlib1g-dev"
 )
 depends:yum=(
+  "carbonio-curl"
   "carbonio-libmilter"
   "carbonio-libxml2"
-  "carbonio-mta"
   "carbonio-openssl"
   "pcre2"
   "zlib"

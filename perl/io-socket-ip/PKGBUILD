@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-io-socket-ip"
 pkgver="0.41"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Family-neutral IP socket supporting both IPv4 and IPv6"
 pkgdesclong=(
   "Family-neutral IP socket supporting both IPv4 and IPv6"
@@ -12,9 +12,14 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
   "carbonio-perl-socket"
+  "perl"
+)
+depends:yum=(
+  "carbonio-perl-socket"
+  "perl"
+  "perl-core"
 )
 section="libs"
 priority="important"

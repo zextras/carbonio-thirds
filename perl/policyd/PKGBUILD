@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-policyd"
 pkgver="2.0.14"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Multi-platform policy server for popular MTAs (aka ClueBringer)"
 pkgdesclong=(
   "Multi-platform policy server for popular MTAs (aka ClueBringer)"
@@ -12,19 +12,28 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-mta"
-  "carbonio-perl"
+depends:apt=(
   "carbonio-perl-cache-fastmmap"
   "carbonio-perl-config-inifiles"
   "carbonio-perl-dbi"
-  "carbonio-perl-dbd-sqlite"
   "carbonio-perl-mail-spf"
   "carbonio-perl-net-cidr"
   "carbonio-perl-net-dns"
   "carbonio-perl-net-server"
   "carbonio-perl-timedate"
-
+  "perl"
+)
+depends:yum=(
+  "carbonio-perl-cache-fastmmap"
+  "carbonio-perl-config-inifiles"
+  "carbonio-perl-dbi"
+  "carbonio-perl-mail-spf"
+  "carbonio-perl-net-cidr"
+  "carbonio-perl-net-dns"
+  "carbonio-perl-net-server"
+  "carbonio-perl-timedate"
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

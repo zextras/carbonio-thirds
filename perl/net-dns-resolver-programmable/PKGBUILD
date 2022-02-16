@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-net-dns-resolver-programmable"
 pkgver="0.009"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Programmable DNS resolver class for offline emulation of DNS"
 pkgdesclong=(
   "Programmable DNS resolver class for offline emulation of DNS"
@@ -12,8 +12,14 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "carbonio-perl-net-dns"
+  "perl"
+)
+depends:yum=(
+  "carbonio-perl-net-dns"
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

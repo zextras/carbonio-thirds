@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-lwp-protocol-https"
 pkgver="6.10"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Provide https support for LWP::UserAgent"
 pkgdesclong=(
   "Provide https support for LWP::UserAgent"
@@ -12,8 +12,18 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "carbonio-perl-io-socket-ssl"
+  "carbonio-perl-libwww"
+  "carbonio-perl-net-http"
+  "perl"
+)
+depends:yum=(
+  "carbonio-perl-io-socket-ssl"
+  "carbonio-perl-libwww"
+  "carbonio-perl-net-http"
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

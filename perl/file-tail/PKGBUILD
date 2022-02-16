@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-file-tail"
 pkgver="1.3"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Perl extension for reading from continously updated files"
 pkgdesclong=(
   "Perl extension for reading from continously updated files"
@@ -12,8 +12,12 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "perl"
+)
+depends:yum=(
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

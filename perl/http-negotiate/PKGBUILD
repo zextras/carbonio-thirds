@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-http-negotiate"
 pkgver="6.01"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="A complete implementation of the HTTP content negotiation algorithm"
 pkgdesclong=(
   "A complete implementation of the HTTP content negotiation algorithm"
@@ -12,8 +12,14 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "carbonio-perl-http-message"
+  "perl"
+)
+depends:yum=(
+  "carbonio-perl-http-message"
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

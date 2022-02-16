@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-socket"
 pkgver="2.032"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Networking constants and support functions"
 pkgdesclong=(
   "Networking constants and support functions"
@@ -12,8 +12,12 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "perl"
+)
+depends:yum=(
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

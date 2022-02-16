@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-io-socket-ssl"
 pkgver="2.072"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="SSL sockets with IO::Socket interface"
 pkgdesclong=(
   "SSL sockets with IO::Socket interface"
@@ -12,9 +12,20 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
+depends:apt=(
   "carbonio-perl-socket"
-  "carbonio-perl"
+  "carbonio-perl-io-socket-ip"
+  "carbonio-perl-net-ssleay"
+  "carbonio-perl-uri"
+  "perl"
+)
+depends:yum=(
+  "carbonio-perl-socket"
+  "carbonio-perl-io-socket-ip"
+  "carbonio-perl-net-ssleay"
+  "carbonio-perl-uri"
+  "perl"
+  "perl-core"
 )
 section="libs"
 priority="important"

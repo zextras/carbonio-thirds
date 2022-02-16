@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-net-ldapapi"
 pkgver="3.0.7"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Perl5 Module Supporting LDAP API"
 pkgdesclong=(
   "Perl5 Module Supporting LDAP API"
@@ -12,8 +12,14 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "carbonio-perl-convert-asn1"
+  "perl"
+)
+depends:yum=(
+  "carbonio-perl-convert-asn1"
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

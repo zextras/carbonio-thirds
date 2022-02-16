@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-jetty-distribution"
 pkgver="9.4.44.v20210927"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="A pure Java-based HTTP server and Java Servlet container"
 pkgdesclong=(
   "A pure Java-based HTTP server and Java Servlet container"
@@ -13,7 +13,7 @@ arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
 depends=(
-  "carbonio-jetty-distribution"
+  "carbonio-openjdk"
 )
 section="libs"
 priority="important"

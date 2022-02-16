@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-xml-sax-expat"
 pkgver="0.51"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="SAX2 Driver for Expat"
 pkgdesclong=(
   "SAX2 Driver for Expat"
@@ -13,12 +13,19 @@ arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
 depends:apt=(
+  "carbonio-perl-xml-namespacesupport"
+  "carbonio-perl-xml-parser"
+  "carbonio-perl-xml-sax"
   "libexpat1"
-  "carbonio-perl"
+  "perl"
 )
 depends:yum=(
+  "carbonio-perl-xml-namespacesupport"
+  "carbonio-perl-xml-parser"
+  "carbonio-perl-xml-sax"
   "expat"
-  "carbonio-perl"
+  "perl"
+  "perl-core"
 )
 makedepends:apt=(
   "libexpat1-dev"

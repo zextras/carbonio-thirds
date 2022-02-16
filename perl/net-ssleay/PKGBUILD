@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-net-ssleay"
 pkgver="1.90"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Perl extension for using OpenSSL"
 pkgdesclong=(
   "Perl extension for using OpenSSL"
@@ -12,9 +12,14 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
+depends:apt=(
   "carbonio-openssl"
-  "carbonio-perl"
+  "perl"
+)
+depends:yum=(
+  "carbonio-openssl"
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

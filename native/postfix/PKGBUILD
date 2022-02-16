@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-postfix"
 pkgver="3.6.3"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Fast, easy to administer, secure mail server"
 pkgdesclong=(
   "Fast, easy to administer, secure mail server"
@@ -19,7 +19,6 @@ depends:apt=(
   "carbonio-cyrus-sasl"
   "carbonio-openssl"
   "carbonio-mariadb"
-  "carbonio-mta"
 )
 makedepends:apt=(
   "libc6-dev"
@@ -32,7 +31,6 @@ depends:yum=(
   "carbonio-cyrus-sasl"
   "carbonio-openssl"
   "carbonio-mariadb"
-  "carbonio-mta"
 )
 makedepends:yum=(
   "libnsl2-devel"

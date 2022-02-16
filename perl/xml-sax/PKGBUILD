@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-xml-sax"
 pkgver="1.02"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Simple API for XML"
 pkgdesclong=(
   "Simple API for XML"
@@ -12,10 +12,16 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
   "carbonio-perl-xml-namespacesupport"
   "carbonio-perl-xml-sax-base"
+  "perl"
+)
+depends:yum=(
+  "carbonio-perl-xml-namespacesupport"
+  "carbonio-perl-xml-sax-base"
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

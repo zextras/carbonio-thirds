@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-net-dns"
 pkgver="1.31"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Perl Interface to the Domain Name System"
 pkgdesclong=(
   "Perl Interface to the Domain Name System"
@@ -12,8 +12,16 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "carbonio-perl-digest-hmac"
+  "carbonio-perl-io-socket-inet6"
+  "perl"
+)
+depends:yum=(
+  "carbonio-perl-digest-hmac"
+  "carbonio-perl-io-socket-inet6"
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

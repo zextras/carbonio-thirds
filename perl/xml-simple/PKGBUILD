@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-xml-simple"
 pkgver="2.25"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="An API for simple XML files"
 pkgdesclong=(
   "An API for simple XML files"
@@ -13,14 +13,17 @@ arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
 depends:apt=(
-  "libexpat1"
-  "carbonio-perl"
   "carbonio-perl-dbi"
+  "carbonio-perl-xml-sax-expat"
+  "libexpat1"
+  "perl"
 )
 depends:yum=(
-  "expat"
-  "carbonio-perl"
   "carbonio-perl-dbi"
+  "carbonio-perl-xml-sax-expat"
+  "expat"
+  "perl-core"
+  "perl"
 )
 makedepends:apt=(
   "libexpat1-dev"

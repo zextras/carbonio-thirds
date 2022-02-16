@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-math-bigint"
 pkgver="1.999818"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Arbitrary size integer/float math package"
 pkgdesclong=(
   "Arbitrary size integer/float math package"
@@ -12,8 +12,12 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "perl"
+)
+depends:yum=(
+  "perl-core"
+  "perl"
 )
 makedepends:apt=(
   "libconfig-autoconf-perl"

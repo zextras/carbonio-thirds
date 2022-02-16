@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-http-daemon"
 pkgver="6.12"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="A simple http server class"
 pkgdesclong=(
   "A simple http server class"
@@ -12,8 +12,20 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "carbonio-perl-http-date"
+  "carbonio-perl-http-message"
+  "carbonio-perl-io-socket-ip"
+  "carbonio-perl-lwp-mediatypes"
+  "perl"
+)
+depends:yum=(
+  "carbonio-perl-http-date"
+  "carbonio-perl-http-message"
+  "carbonio-perl-io-socket-ip"
+  "carbonio-perl-lwp-mediatypes"
+  "perl-core"
+  "perl"
 )
 makedepends:apt=(
   "libmodule-build-tiny-perl"

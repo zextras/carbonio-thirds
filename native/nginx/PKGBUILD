@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-nginx"
 pkgver="1.20.2"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Lightweight HTTP server and IMAP/POP3 proxy server"
 pkgdesclong=(
   "Lightweight HTTP server and IMAP/POP3 proxy server"
@@ -17,7 +17,6 @@ depends:apt=(
   "libpcre3"
   "zlib1g"
   "carbonio-cyrus-sasl"
-  "carbonio-proxy"
   "carbonio-openssl"
 )
 makedepends:apt=(
@@ -30,7 +29,6 @@ depends:yum=(
   "pcre"
   "zlib"
   "carbonio-cyrus-sasl"
-  "carbonio-proxy"
   "carbonio-openssl"
 )
 makedepends:yum=(

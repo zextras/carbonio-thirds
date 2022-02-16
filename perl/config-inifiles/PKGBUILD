@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-config-inifiles"
 pkgver="3.000003"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="A module for reading .ini-style configuration files."
 pkgdesclong=(
   "A module for reading .ini-style configuration files."
@@ -12,8 +12,12 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "perl"
+)
+depends:yum=(
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

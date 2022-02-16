@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-lwp-mediatypes"
 pkgver="6.04"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Guess media type for a file or a URL"
 pkgdesclong=(
   "Guess media type for a file or a URL"
@@ -12,8 +12,12 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "perl"
+)
+depends:yum=(
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

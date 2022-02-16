@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-email-date-format"
 pkgver="1.005"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Produce RFC 2822 date strings"
 pkgdesclong=(
   "Produce RFC 2822 date strings"
@@ -12,8 +12,14 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "carbonio-perl-email-date-format"
+  "perl"
+)
+depends:yum=(
+  "carbonio-perl-email-date-format"
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"

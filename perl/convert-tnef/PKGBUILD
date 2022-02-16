@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-convert-tnef"
 pkgver="0.18"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Perl module to read TNEF files"
 pkgdesclong=(
   "Perl module to read TNEF files"
@@ -12,8 +12,16 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "carbonio-perl"
+depends:apt=(
+  "carbonio-perl-io-stringy"
+  "carbonio-perl-mime-tools"
+  "perl"
+)
+depends:yum=(
+  "carbonio-perl-io-stringy"
+  "carbonio-perl-mime-tools"
+  "perl-core"
+  "perl"
 )
 section="libs"
 priority="important"
