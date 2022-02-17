@@ -53,8 +53,7 @@
       "install": true
     },
     {
-      "name": "net-server",
-      "install": true
+      "name": "net-server"
     },
     {
       "name": "mozilla-ca",

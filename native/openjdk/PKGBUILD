@@ -17,11 +17,11 @@ priority="optional"
 sources=(
   "https:/download.java.net/java/GA/jdk${pkgver}/d4173c853231432d94f001e99d882ca7/8/GPL/openjdk-${pkgver}_linux-x64_bin.tar.gz"
 )
+provides:yum=(
+  "libjli.so()(64bit)"
+)
 hashsums=(
   "acc7a6aabced44e62ec3b83e3b5959df2b1aa6b3d610d58ee45f0c21a7821a71"
-  "SKIP"
-  "00b2547118007f255c87b3fd3c2a9ccd855a9a6e69c6faff442ad5d05f7cf5d8"
-  "09754edeef3ef6906c67e7ed4d41d9c32bdd840f10f45748b215d050fe198db8"
 )
 
 package() {

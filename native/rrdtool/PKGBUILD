@@ -61,6 +61,7 @@ package() {
   #cd "${srcdir}/rrdtool-${pkgver}"
   cd "${srcdir}/rrdtool-1.2.30"
   make DESTDIR="${pkgdir}" install
+  rm -rf "${pkgdir}"/opt/zextras/common/share/rrdtool/examples
   rm -rf "${pkgdir}"/opt/zextras/common/lib/*.a
   rm -rf "${pkgdir}"/opt/zextras/common/lib/*.la
   find "${pkgdir}" -name '.packlist' -delete

@@ -23,6 +23,12 @@ depends:yum=(
   "perl-core"
   "perl"
 )
+provides:yum=(
+  "perl(XML::SAX::PurePerl::DTDDecls)"
+  "perl(XML::SAX::PurePerl::DocType)"
+  "perl(XML::SAX::PurePerl::EncodingDetect)"
+  "perl(XML::SAX::PurePerl::XMLDecl)"
+)
 section="libs"
 priority="important"
 sources=(

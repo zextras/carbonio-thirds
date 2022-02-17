@@ -5,6 +5,10 @@
   "output": "artifacts",
   "projects": [
     {
+      "name": "openjdk",
+      "install": true
+    },
+    {
       "name": "icu",
       "install": true
     },
@@ -68,10 +72,6 @@
     },
     {
       "name": "amavisd"
-    },
-    {
-      "name": "openjdk",
-      "install": true
     },
     {
       "name": "openjdk-cacerts"

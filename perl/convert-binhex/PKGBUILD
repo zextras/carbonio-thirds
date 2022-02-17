@@ -5,9 +5,9 @@ targets=(
 pkgname="carbonio-perl-convert-binhex"
 pkgver="1.125"
 pkgrel="2"
-pkgdesc="Low-calorie MIME generator"
+pkgdesc="Perl module to extract data from Macintosh BinHex files"
 pkgdesclong=(
-  "Low-calorie MIME generator"
+  "Perl module to extract data from Macintosh BinHex files"
 )
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
@@ -18,6 +18,9 @@ depends:apt=(
 depends:yum=(
   "perl-core"
   "perl"
+)
+provides:yum=(
+  "perl(Mac::Files)"
 )
 section="libs"
 priority="important"

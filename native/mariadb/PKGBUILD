@@ -87,7 +87,7 @@ build() {
 
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib"
   export CFLAGS="-fno-omit-frame-pointer -pipe -Wall -Wno-uninitialized -DNDEBUG -I/opt/zextras/common/include -I/usr/include" 
-  export CXXFLAGS="${CFLAGS}" 
+  export CXXFLAGS="-fno-omit-frame-pointer -pipe -Wall -Wno-uninitialized -DNDEBUG -I/opt/zextras/common/include -I/usr/include" 
   export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
 
   cd "${srcdir}/mariadb-${pkgver}"

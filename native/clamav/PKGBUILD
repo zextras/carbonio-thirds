@@ -12,11 +12,10 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
+depends:apt=(
   "carbonio-curl"
   "carbonio-libmilter"
   "carbonio-libxml2"
-  "carbonio-mta"
   "carbonio-openssl"
   "libpcre2-8-0"
   "zlib1g"

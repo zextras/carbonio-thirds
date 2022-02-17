@@ -27,6 +27,10 @@ depends:yum=(
   "perl-core"
   "perl"
 )
+provides:yum=(
+  "perl(Mail::AuthenticationResults::Header::AuthServID)"
+  "perl(Mail::AuthenticationResults::Parser)"
+)
 section="libs"
 priority="important"
 sources=(
