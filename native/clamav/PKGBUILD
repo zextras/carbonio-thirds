@@ -85,6 +85,6 @@ package() {
   find "${pkgdir}" -name '*.a' -delete
   find "${pkgdir}" -name '*.la' -delete
 
-  rm -rf "${pkgdir}"/usr/lib/systemd
+  rm -rf "${pkgdir}"/usr
   rm -rf "${pkgdir}"/opt/zextras/common/bin/clamav-config
 }

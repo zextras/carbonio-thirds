@@ -23,6 +23,9 @@ depends:yum=(
   "perl"
   "perl-core"
 )
+provides:yum=(
+  "/bin/perl"	
+)
 section="libs"
 priority="important"
 sources=(

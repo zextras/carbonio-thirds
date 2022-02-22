@@ -21,6 +21,9 @@ depends:yum=(
   "perl-core"
   "perl"
 )
+provides:yum=(
+  "perl(Net::LDAPapi)"
+)
 section="libs"
 priority="important"
 sources=(
