@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-altermime"
 pkgver="0.3.10"
-pkgrel="3"
+pkgrel="4"
 pkgdesc="MIME encoded email pack alteration tool"
 pkgdesclong=(
   "MIME encoded email pack alteration tool"
@@ -12,9 +12,6 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends=(
-  "hashcat"
-)
 section="utils"
 priority="optional"
 sources=(
