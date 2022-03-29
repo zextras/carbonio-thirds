@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-mail-spamassassin"
 pkgver="3.4.6"
-pkgrel="2"
+pkgrel="3"
 pkgdesc="Spam detector and markup engine"
 pkgdesclong=(
   "Spam detector and markup engine"
@@ -24,6 +24,9 @@ depends=(
   "carbonio-perl-mail-spf"
   "carbonio-perl-net-dns"
   "carbonio-perl-net-http"
+)
+provides:yum=(
+  "perl(BSD::Resource)"
 )
 section="libs"
 priority="important"
