@@ -37,7 +37,7 @@ section="utils"
 priority="optional"
 sources=(
 #   "https://oss.oetiker.ch/rrdtool/pub/rrdtool-${pkgver}.tar.gz"
-    "https://oss.oetiker.ch/rrdtool/pub/rrdtool-1.2.30.tar.gz"
+    "https://oss.oetiker.ch/rrdtool/pub/archive/rrdtool-1.2.30.tar.gz"
 )
 hashsums=(
   "3190efea410a6dd035799717948b2df09910f608d72d23ee81adad4cd0184ae9"
