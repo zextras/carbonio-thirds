@@ -66,24 +66,6 @@ pipeline {
                 }
             }
         }
-        stage('Ubuntu 18') {
-            agent {
-                node {
-                    label 'pacur-agent-ubuntu-18.04-v1'
-                }
-            }
-            steps {
-                unstash 'project'
-                sh 'sudo pacur build ubuntu-bionic native'
-                sh 'sudo pacur build ubuntu-bionic perl'
-                stash includes: 'artifacts/', name: 'artifacts-ubuntu-bionic'
-            }
-            post {
-                always {
-                    archiveArtifacts artifacts: 'artifacts/*.deb', fingerprint: true
-                }
-            }
-        }
         stage('Upload To Playground') {
             when {
                 anyOf {
@@ -93,7 +75,6 @@ pipeline {
             steps {
                 unstash 'artifacts-ubuntu-focal'
                 unstash 'artifacts-rocky-8'
-                unstash 'artifacts-ubuntu-bionic'
 
                 script {
                     def server = Artifactory.server 'zextras-artifactory'
@@ -102,11 +83,6 @@ pipeline {
                     buildInfo = Artifactory.newBuildInfo()
                     uploadSpec = '''{
                         "files": [
-                            {
-                                "pattern": "artifacts/*bionic*.deb",
-                                "target": "ubuntu-playground/pool/",
-                                "props": "deb.distribution=bionic;deb.component=main;deb.architecture=amd64"
-                            },
                             {
                                 "pattern": "artifacts/*focal*.deb",
                                 "target": "ubuntu-playground/pool/",
@@ -748,7 +724,6 @@ pipeline {
                 buildingTag()
             }
             steps {
-                unstash 'artifacts-ubuntu-bionic'
                 unstash 'artifacts-ubuntu-focal'
                 unstash 'artifacts-rocky-8'
                 script {
@@ -762,11 +737,6 @@ pipeline {
                     buildInfo.name += '-ubuntu'
                     uploadSpec = '''{
                         "files": [
-                            {
-                                "pattern": "artifacts/*bionic*.deb",
-                                "target": "ubuntu-rc/pool/",
-                                "props": "deb.distribution=bionic;deb.component=main;deb.architecture=amd64"
-                            },
                             {
                                 "pattern": "artifacts/*focal*.deb",
                                 "target": "ubuntu-rc/pool/",
