@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-nginx"
 pkgver="1.20.2"
-pkgrel="2"
+pkgrel="3"
 pkgdesc="Lightweight HTTP server and IMAP/POP3 proxy server"
 pkgdesclong=(
   "Lightweight HTTP server and IMAP/POP3 proxy server"
@@ -44,6 +44,7 @@ sources=(
   "https://github.com/google/ngx_brotli/archive/v1.0.0rc/ngx_brotli-1.0.0rc.tar.gz"
   "modules.tar.gz"
   "carbonio-${pkgver}.patch"
+  "CVE-2022-27924.patch"
 )
 hashsums=(
   "958876757782190a1653e14dc26dfc7ba263de310e04c113e11e97d1bef45a42"
@@ -51,6 +52,7 @@ hashsums=(
   "c85cdcfd76703c95aa4204ee4c2e619aa5b075cac18f428202f65552104add3b"
   "b8d1b9c577453d195505c8e4cd195420d5876d2a3dd81480821fdbe149f038b2"
   "e77a1bf3adfac1a269fe5759c129ced8607a0283371b5c1c144684c8548b9d80"
+  "6fda55b0899af642d4958b953c1b680bb3d0b0b95fe8cdff93103088aa263f80"
 )
 
 build() {
@@ -60,6 +62,8 @@ build() {
 
   cd "${srcdir}/nginx-${pkgver}"
   patch -Np1 -i ../"carbonio-${pkgver}.patch"
+  patch -Np1 -i ../CVE-2022-27924.patch
+
   cp -r ../modules zmmodules
   cp -r ../nginx-tcp-keepalive* zmmodules/nginx-tcp-keepalive
   ./configure --prefix=/opt/zextras/common \
