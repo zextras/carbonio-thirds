@@ -3,7 +3,7 @@ targets=(
   "ubuntu"
 )
 pkgname="carbonio-jetty-distribution"
-pkgver="9.4.44.v20210927"
+pkgver="9.4.48.v20220622"
 pkgrel="2"
 pkgdesc="A pure Java-based HTTP server and Java Servlet container"
 pkgdesclong=(
