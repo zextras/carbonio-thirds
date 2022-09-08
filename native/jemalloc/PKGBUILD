@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-jemalloc"
 pkgver="5.3.0"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="General-purpose scalable concurrent malloc implementation"
 pkgdesclong=(
   "General-purpose scalable concurrent malloc implementation"
@@ -34,6 +34,5 @@ package() {
   cd "jemalloc-${pkgver}"
 
   make DESTDIR="${pkgdir}" install
-
-  find "${pkgdir}" -name '*.a' -delete
+  chmod 644 "${pkgdir}/opt/zextras/common/lib/libjemalloc_pic.a"
 }
