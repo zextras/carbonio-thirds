@@ -3,15 +3,16 @@ targets=(
   "ubuntu"
 )
 pkgname="carbonio-perl-libwww"
-pkgver="6.55"
-pkgrel="2"
+pkgver="6.67"
+pkgrel="1"
 pkgdesc="The World-Wide Web library for Perl"
 pkgdesclong=(
   "The World-Wide Web library for Perl"
 )
 arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
+license=("GPL")
 depends:apt=(
   "carbonio-perl-encode-locale"
   "carbonio-perl-file-listing"
@@ -24,6 +25,7 @@ depends:apt=(
   "carbonio-perl-net-http"
   "carbonio-perl-uri"
   "carbonio-perl-www-robotrules"
+  "libtry-tiny-perl"
   "perl"
 )
 depends:yum=(
@@ -39,6 +41,7 @@ depends:yum=(
   "carbonio-perl-uri"
   "carbonio-perl-www-robotrules"
   "perl-core"
+  "perl-Try-Tiny"
   "perl"
 )
 section="libs"
