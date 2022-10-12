@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-policyd"
 pkgver="2.0.14"
-pkgrel="2"
+pkgrel="3"
 pkgdesc="Multi-platform policy server for popular MTAs (aka ClueBringer)"
 pkgdesclong=(
   "Multi-platform policy server for popular MTAs (aka ClueBringer)"
@@ -39,23 +39,73 @@ section="libs"
 priority="important"
 sources=(
   "http://download.policyd.org/v${pkgver}/cluebringer-v${pkgver}.tar.xz"
+  "carbonio-policyd.patch"
 )
 hashsums=(
-  "e75cd25a836b316846f5ad8bf09a69a2"
+  "85e59a231bcac2b9d193198da4a07eae2e397ba441278454b92329283939b6bc"
+  "fe0b8c1a4e502d2c72c2b253ba45bd536e0c20e21d83a7cee28de5e196d467dd"
 )
 
 package() {
   cd "${srcdir}/cluebringer-v${pkgver}"
+
+  # carbonio custom patch for policyd
+  patch -Np1 -i ../carbonio-policyd.patch
+
   # executables
   mkdir -p "${pkgdir}/opt/zextras/common/bin"
   cp cbpadmin "${pkgdir}/opt/zextras/common/bin"
   cp cbpolicyd "${pkgdir}/opt/zextras/common/bin"
 
   # libs
-  mkdir -p "${pkgdir}/opt/zextras/common/lib/"
-  cp -R cbp "${pkgdir}/opt/zextras/common/lib/policyd-2.0"
+  mkdir -p "${pkgdir}/opt/zextras/common/lib/policyd-2.1"
+  cp -r cbp "${pkgdir}/opt/zextras/common/lib/policyd-2.1"
 
   # config file
   install -Dm644 cluebringer.conf \
-    "${pkgdir}/opt/zextras/common/etc/cluebringer.conf"
+    "${pkgdir}/opt/zextras/conf/cbpolicyd.conf"
+
+  mkdir -p "${pkgdir}/opt/zextras/common/share"
+  cp -r contrib "${pkgdir}/opt/zextras/common/share"
+  cp -r database "${pkgdir}/opt/zextras/common/share"
+  cp -r webui "${pkgdir}/opt/zextras/common/share"
+
+}
+
+postinst:apt() {
+  if [ "$1" = "configure" ]; then
+    # creating zextras group if it isn't already there
+    if ! getent group zextras >/dev/null; then
+      addgroup --system --force-badname --quiet zextras
+    fi
+    # creating zextras user if it isn't already there
+    if ! getent passwd zextras >/dev/null; then
+      adduser --system --force-badname --quiet \
+        --ingroup zextras \
+        --home /opt/zextras \
+        --shell /bin/bash \
+        zextras
+      usermod -c "zextras user" zextras
+    fi
+  fi
+
+  chown zextras:zextras /opt/zextras/data/cbpolicyd
+}
+
+postinst:yum() {
+  # creating zextras group if it isn't already there
+  if ! getent group zextras >/dev/null; then
+    groupadd --system zextras >/dev/null
+  fi
+  # creating zextras user if it isn't already there
+  if ! getent passwd zextras >/dev/null; then
+    useradd --system \
+      -g zextras \
+      -d /opt/zextras \
+      --shell /bin/bash \
+      zextras >/dev/null
+    usermod -c "zextras user" zextras
+  fi
+
+  chown zextras:zextras /opt/zextras/data/cbpolicyd
 }
