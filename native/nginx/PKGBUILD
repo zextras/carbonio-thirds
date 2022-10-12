@@ -4,14 +4,15 @@ targets=(
 )
 pkgname="carbonio-nginx"
 pkgver="1.20.2"
-pkgrel="3"
+pkgrel="4"
 pkgdesc="Lightweight HTTP server and IMAP/POP3 proxy server"
 pkgdesclong=(
   "Lightweight HTTP server and IMAP/POP3 proxy server"
 )
 arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
+license=("CUSTOM")
 depends:apt=(
   "libbrotli1"
   "libpcre3"
@@ -113,4 +114,43 @@ package() {
   make DESTDIR="${pkgdir}" install
   mkdir -p "${pkgdir}"/opt/zextras/data/nginx
   mv "${pkgdir}"/opt/zextras/common/html "${pkgdir}"/opt/zextras/data/nginx/  
+}
+
+postinst:apt() {
+  if [ "$1" = "configure" ]; then
+    # creating zextras group if it isn't already there
+    if ! getent group zextras >/dev/null; then
+      addgroup --system --force-badname --quiet zextras
+    fi
+
+    # creating zextras user if it isn't already there
+    if ! getent passwd zextras >/dev/null; then
+      adduser --system --force-badname --quiet \
+        --ingroup zextras \
+        --home /opt/zextras \
+        --shell /bin/bash \
+        zextras
+      usermod -c "zextras user" zextras
+    fi
+  fi
+
+  chown zextras:zextras /opt/zextras/log
+}
+
+postinst:yum() {
+  # creating zextras group if it isn't already there
+  if ! getent group zextras >/dev/null; then
+    groupadd --system zextras >/dev/null
+  fi
+  # creating zextras user if it isn't already there
+  if ! getent passwd zextras >/dev/null; then
+    useradd --system \
+      -g zextras \
+      -d /opt/zextras \
+      --shell /bin/bash \
+      zextras >/dev/null
+    usermod -c "zextras user" zextras
+  fi
+
+  chown zextras:zextras /opt/zextras/log
 }
