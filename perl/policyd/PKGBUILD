@@ -89,7 +89,8 @@ postinst:apt() {
     fi
   fi
 
-  chown zextras:zextras /opt/zextras/data/cbpolicyd
+  mkdir -p /opt/zextras/data/cbpolicyd
+  chown -R zextras:zextras /opt/zextras/data/cbpolicyd
 }
 
 postinst:yum() {
@@ -107,5 +108,6 @@ postinst:yum() {
     usermod -c "zextras user" zextras
   fi
 
-  chown zextras:zextras /opt/zextras/data/cbpolicyd
+  mkdir -p /opt/zextras/data/cbpolicyd
+  chown -R zextras:zextras /opt/zextras/data/cbpolicyd
 }
