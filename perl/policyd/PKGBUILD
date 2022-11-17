@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-policyd"
 pkgver="2.0.14"
-pkgrel="3"
+pkgrel="4"
 pkgdesc="Multi-platform policy server for popular MTAs (aka ClueBringer)"
 pkgdesclong=(
   "Multi-platform policy server for popular MTAs (aka ClueBringer)"
