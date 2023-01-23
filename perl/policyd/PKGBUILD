@@ -3,8 +3,8 @@ targets=(
   "ubuntu"
 )
 pkgname="carbonio-policyd"
-pkgver="2.0.14"
-pkgrel="4"
+pkgver="2.1.0.0"
+pkgrel="1"
 pkgdesc="Multi-platform policy server for popular MTAs (aka ClueBringer)"
 pkgdesclong=(
   "Multi-platform policy server for popular MTAs (aka ClueBringer)"
@@ -15,17 +15,20 @@ url="https://zextras.com"
 depends:apt=(
   "carbonio-perl-cache-fastmmap"
   "carbonio-perl-config-inifiles"
+  "carbonio-perl-dbd-sqlite"
   "carbonio-perl-dbi"
   "carbonio-perl-mail-spf"
   "carbonio-perl-net-cidr"
   "carbonio-perl-net-dns"
   "carbonio-perl-net-server"
   "carbonio-perl-timedate"
+  "libsocket6-perl"
   "perl"
 )
 depends:yum=(
   "carbonio-perl-cache-fastmmap"
   "carbonio-perl-config-inifiles"
+  "carbonio-perl-dbd-sqlite"
   "carbonio-perl-dbi"
   "carbonio-perl-mail-spf"
   "carbonio-perl-net-cidr"
@@ -33,21 +36,33 @@ depends:yum=(
   "carbonio-perl-net-server"
   "carbonio-perl-timedate"
   "perl-core"
+  "perl-Socket6"
   "perl"
 )
 section="libs"
 priority="important"
 sources=(
-  "http://download.policyd.org/v${pkgver}/cluebringer-v${pkgver}.tar.xz"
   "carbonio-policyd.patch"
 )
 hashsums=(
-  "85e59a231bcac2b9d193198da4a07eae2e397ba441278454b92329283939b6bc"
-  "fe0b8c1a4e502d2c72c2b253ba45bd536e0c20e21d83a7cee28de5e196d467dd"
+  "6fe53e6077c95a45f6fd5adffa8369b3f6fc0c1debe85c78240d4e45d483a6c6"
 )
 
 package() {
-  cd "${srcdir}/cluebringer-v${pkgver}"
+  cd "${srcdir}"
+  git clone https://gitlab.linux.community/policyd/policyd/
+
+  cd policyd
+  git reset --hard cf484f1b93cf9965886cc89d33bdeee9c26426cb
+
+  ./update-git-modules
+  rm -rf .git awitpt/.git
+  rm -rf awitpt/CPAN* awitpt/doxygen awitpt/SOAP
+  mv -f awitpt/awitpt/db awitpt/
+  mv -f awitpt/awitpt/cache.pm awitpt/
+  mv -f awitpt/awitpt/netip.pm awitpt/
+  rm -rf awitpt/awitpt
+  rm -rf debian
 
   # carbonio custom patch for policyd
   patch -Np1 -i ../carbonio-policyd.patch
@@ -60,10 +75,7 @@ package() {
   # libs
   mkdir -p "${pkgdir}/opt/zextras/common/lib/policyd-2.1"
   cp -r cbp "${pkgdir}/opt/zextras/common/lib/policyd-2.1"
-
-  # config file
-  install -Dm644 cluebringer.conf \
-    "${pkgdir}/opt/zextras/conf/cbpolicyd.conf"
+  cp -r awitpt "${pkgdir}/opt/zextras/common/lib/policyd-2.1"
 
   mkdir -p "${pkgdir}/opt/zextras/common/share"
   cp -r contrib "${pkgdir}/opt/zextras/common/share"
