@@ -1,52 +1,55 @@
-diff -Naur a/cbpadmin b/cbpadmin
---- a/cbpadmin	2013-10-26 18:53:14.000000000 +0000
-+++ b/cbpadmin	2022-10-12 11:31:06.054900559 +0000
-@@ -22,7 +22,7 @@
+diff '--color=auto' -Naur a/cbpadmin b/cbpadmin
+--- a/cbpadmin	2023-01-20 17:05:35.983820680 +0100
++++ b/cbpadmin	2023-01-20 17:06:40.585974185 +0100
+@@ -21,8 +21,7 @@
+ use strict;
  use warnings;
  
- 
--use lib('/usr/local/lib/policyd-2.0','/usr/lib/policyd-2.0');
-+use lib('/opt/zextras/common/lib/policyd-2.1','/opt/zextras/common/lib/perl5');
+-
+-use lib('/usr/local/lib/cbpolicyd-2.1','/usr/lib/cbpolicyd-2.1','/usr/lib64/cbpolicyd-2.1','awitpt');
++use lib('/opt/zextras/common/lib/cpolicyd-2.1','/opt/zextras/common/lib/perl5');
  
  use Config::IniFiles;
  use Getopt::Long;
-@@ -52,7 +52,7 @@
+@@ -52,7 +51,7 @@
  
  # Set defaults
  my $cfg;
--$cfg->{'config_file'} = "/etc/cluebringer.conf";
+-$cfg->{'config_file'} = "/etc/cbpolicyd/cluebringer.conf";
 +$cfg->{'config_file'} = "/opt/zextras/conf/cbpolicyd.conf";
  
  # Check if we must override
  if (defined($opts{'config'}) && $opts{'config'} ne "") {
-diff -Naur a/cbpolicyd b/cbpolicyd
---- a/cbpolicyd	2013-10-26 18:53:14.000000000 +0000
-+++ b/cbpolicyd	2022-10-12 11:31:14.887926386 +0000
-@@ -22,7 +22,7 @@
+diff '--color=auto' -Naur a/cbpolicyd b/cbpolicyd
+--- a/cbpolicyd	2023-01-20 17:05:35.983820680 +0100
++++ b/cbpolicyd	2023-01-20 17:08:04.482162528 +0100
+@@ -22,8 +22,7 @@
  use strict;
  use warnings;
  
--use lib('/usr/local/lib/policyd-2.0','/usr/lib/policyd-2.0','/usr/lib64/policyd-2.0');
-+use lib('/opt/zextras/common/lib/policyd-2.1','/opt/zextras/common/lib/perl5');
+-use lib('/usr/local/lib/cbpolicyd-2.1','/usr/lib/cbpolicyd-2.1',
+-		'/usr/lib64/cbpolicyd-2.1','awitpt');
++use lib('/opt/zextras/common/lib/policyd-2.1','/opt/zextras/common/lib/perl5','awitpt');
  
  package cbp;
  
-@@ -53,15 +53,15 @@
- 
+@@ -58,16 +57,16 @@
+ 	return if (@_);
  
  	# Set defaults
--	$cfg->{'config_file'} = "/etc/cluebringer.conf";
+-	$cfg->{'config_file'} = "/etc/cbpolicyd/cluebringer.conf";
 +	$cfg->{'config_file'} = "/opt/zextras/conf/cbpolicyd.conf";
+ 	$cfg->{'cache_file'} = '/var/run/cbpolicyd/cache';
+ 	$cfg->{'track_sessions'} = 0;
  
- 	$server->{'timeout'} = 120;
  	$server->{'timeout_idle'} = 1015;
  	$server->{'timeout_busy'} = 115;
  	$server->{'background'} = "yes";
--	$server->{'pid_file'} = "/var/run/cbpolicyd.pid";
+-	$server->{'pid_file'} = "/var/run/cbpolicyd/cbpolicyd.pid";
 +	$server->{'pid_file'} = "/opt/zextras/log/cbpolicyd.pid";
  	$server->{'log_level'} = 2;
--	$server->{'log_file'} = "/var/log/cbpolicyd.log";
+-	$server->{'log_file'} = "/var/log/cbpolicyd/cbpolicyd.log";
 +	$server->{'log_file'} = "/opt/zextras/log/cbpolicyd.log";
  
+ 	$server->{'proto'} = "tcp";
  	$server->{'host'} = "*";
- 	$server->{'port'} = 10031;
