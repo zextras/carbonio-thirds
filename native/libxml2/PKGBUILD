@@ -32,14 +32,14 @@ makedepends:yum=(
 section="libs"
 priority="important"
 sources=(
-  "https://gitlab.gnome.org/GNOME/libxml2/-/archive/v${pkgver}/libxml2-v${pkgver}.tar.gz"
+  "https://github.com/GNOME/libxml2/archive/refs/tags/v${pkgver}.tar.gz"
 )
 hashsums=(
-  "98bfa7a9a5e2a75638422050740448ee9f02bf4dc2075c9822d7747d5ff9e617"
+  "8a4ddd706419c210b30b8978a51388937fd9362c34fc9a3d69e4fcc6f8055ee0"
 )
 
 build() {
-  cd "${srcdir}/libxml2-v${pkgver}"
+  cd "${srcdir}/libxml2-${pkgver}"
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
   export CFLAGS="-I/opt/zextras/common/include"
   export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
@@ -56,7 +56,7 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/libxml2-v${pkgver}"
+  cd "${srcdir}/libxml2-${pkgver}"
   make DESTDIR="${pkgdir}" install
   rm -f "${pkgdir}"/opt/zextras/common/bin/xml2-config
   rm -rf "${pkgdir}"/opt/zextras/common/lib/*.la
