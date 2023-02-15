@@ -37,18 +37,6 @@
       "install": true
     },
     {
-      "name": "libart",
-      "install": true
-    },
-    {
-      "name": "libpng",
-      "install": true
-    },
-    {
-      "name": "freetype",
-      "install": true
-    },
-    {
       "name": "libmilter",
       "install": true
     },
@@ -63,12 +51,6 @@
     {
       "name": "bdb",
       "install": true
-    },
-    {
-      "name": "amavis-logwatch"
-    },
-    {
-      "name": "postfix-logwatch"
     },
     {
       "name": "amavisd"
@@ -105,9 +87,6 @@
     },
     {
       "name": "postfix"
-    },
-    {
-      "name": "rrdtool"
     },
     {
       "name": "memcached"

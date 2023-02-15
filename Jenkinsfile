@@ -99,11 +99,6 @@ pipeline {
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
                             },
                             {
-                                "pattern": "artifacts/(carbonio-amavis-logwatch)-(*).rpm",
-                                "target": "centos8-playground/zextras/{1}/{1}-{2}.rpm",
-                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
-                            },
-                            {
                                 "pattern": "artifacts/(carbonio-bdb)-(*).rpm",
                                 "target": "centos8-playground/zextras/{1}/{1}-{2}.rpm",
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
@@ -124,11 +119,6 @@ pipeline {
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
                             },
                             {
-                                "pattern": "artifacts/(carbonio-freetype)-(*).rpm",
-                                "target": "centos8-playground/zextras/{1}/{1}-{2}.rpm",
-                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
-                            },
-                            {
                                 "pattern": "artifacts/(carbonio-icu)-(*).rpm",
                                 "target": "centos8-playground/zextras/{1}/{1}-{2}.rpm",
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
@@ -140,11 +130,6 @@ pipeline {
                             },
                             {
                                 "pattern": "artifacts/(carbonio-krb5)-(*).rpm",
-                                "target": "centos8-playground/zextras/{1}/{1}-{2}.rpm",
-                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
-                            },
-                            {
-                                "pattern": "artifacts/(carbonio-libart)-(*).rpm",
                                 "target": "centos8-playground/zextras/{1}/{1}-{2}.rpm",
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
                             },
@@ -225,16 +210,6 @@ pipeline {
                             },
                             {
                                 "pattern": "artifacts/(carbonio-postfix)-(*).rpm",
-                                "target": "centos8-playground/zextras/{1}/{1}-{2}.rpm",
-                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
-                            },
-                            {
-                                "pattern": "artifacts/(carbonio-postfix-logwatch)-(*).rpm",
-                                "target": "centos8-playground/zextras/{1}/{1}-{2}.rpm",
-                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
-                            },
-                            {
-                                "pattern": "artifacts/(carbonio-rrdtool)-(*).rpm",
                                 "target": "centos8-playground/zextras/{1}/{1}-{2}.rpm",
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
                             },
@@ -339,11 +314,6 @@ pipeline {
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
                             },
                             {
-                                "pattern": "artifacts/(carbonio-perl-date-manip)-(*).rpm",
-                                "target": "centos8-playground/zextras/{1}/{1}-{2}.rpm",
-                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
-                            },
-                            {
                                 "pattern": "artifacts/(carbonio-perl-dbd-mysql)-(*).rpm",
                                 "target": "centos8-playground/zextras/{1}/{1}-{2}.rpm",
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
@@ -410,11 +380,6 @@ pipeline {
                             },
                             {
                                 "pattern": "artifacts/(carbonio-perl-filesys-df)-(*).rpm",
-                                "target": "centos8-playground/zextras/{1}/{1}-{2}.rpm",
-                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
-                            },
-                            {
-                                "pattern": "artifacts/(carbonio-perl-file-tail)-(*).rpm",
                                 "target": "centos8-playground/zextras/{1}/{1}-{2}.rpm",
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
                             },
@@ -629,22 +594,12 @@ pipeline {
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
                             },
                             {
-                                "pattern": "artifacts/(carbonio-prepflog)-(*).rpm",
-                                "target": "centos8-playground/zextras/{1}/{1}-{2}.rpm",
-                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
-                            },
-                            {
                                 "pattern": "artifacts/(carbonio-perl-socket)-(*).rpm",
                                 "target": "centos8-playground/zextras/{1}/{1}-{2}.rpm",
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
                             },
                             {
                                 "pattern": "artifacts/(carbonio-spamassassin-rules)-(*).rpm",
-                                "target": "centos8-playground/zextras/{1}/{1}-{2}.rpm",
-                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
-                            },
-                            {
-                                "pattern": "artifacts/(carbonio-perl-swatchdog)-(*).rpm",
                                 "target": "centos8-playground/zextras/{1}/{1}-{2}.rpm",
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
                             },
@@ -794,11 +749,6 @@ pipeline {
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
                             },
                             {
-                                "pattern": "artifacts/(carbonio-amavis-logwatch)-(*).rpm",
-                                "target": "centos8-rc/zextras/{1}/{1}-{2}.rpm",
-                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
-                            },
-                            {
                                 "pattern": "artifacts/(carbonio-bdb)-(*).rpm",
                                 "target": "centos8-rc/zextras/{1}/{1}-{2}.rpm",
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
@@ -819,11 +769,6 @@ pipeline {
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
                             },
                             {
-                                "pattern": "artifacts/(carbonio-freetype)-(*).rpm",
-                                "target": "centos8-rc/zextras/{1}/{1}-{2}.rpm",
-                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
-                            },
-                            {
                                 "pattern": "artifacts/(carbonio-icu)-(*).rpm",
                                 "target": "centos8-rc/zextras/{1}/{1}-{2}.rpm",
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
@@ -835,11 +780,6 @@ pipeline {
                             },
                             {
                                 "pattern": "artifacts/(carbonio-krb5)-(*).rpm",
-                                "target": "centos8-rc/zextras/{1}/{1}-{2}.rpm",
-                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
-                            },
-                            {
-                                "pattern": "artifacts/(carbonio-libart)-(*).rpm",
                                 "target": "centos8-rc/zextras/{1}/{1}-{2}.rpm",
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
                             },
@@ -920,16 +860,6 @@ pipeline {
                             },
                             {
                                 "pattern": "artifacts/(carbonio-postfix)-(*).rpm",
-                                "target": "centos8-rc/zextras/{1}/{1}-{2}.rpm",
-                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
-                            },
-                            {
-                                "pattern": "artifacts/(carbonio-postfix-logwatch)-(*).rpm",
-                                "target": "centos8-rc/zextras/{1}/{1}-{2}.rpm",
-                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
-                            },
-                            {
-                                "pattern": "artifacts/(carbonio-rrdtool)-(*).rpm",
                                 "target": "centos8-rc/zextras/{1}/{1}-{2}.rpm",
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
                             },
@@ -1034,11 +964,6 @@ pipeline {
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
                             },
                             {
-                                "pattern": "artifacts/(carbonio-perl-date-manip)-(*).rpm",
-                                "target": "centos8-rc/zextras/{1}/{1}-{2}.rpm",
-                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
-                            },
-                            {
                                 "pattern": "artifacts/(carbonio-perl-dbd-mysql)-(*).rpm",
                                 "target": "centos8-rc/zextras/{1}/{1}-{2}.rpm",
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
@@ -1105,11 +1030,6 @@ pipeline {
                             },
                             {
                                 "pattern": "artifacts/(carbonio-perl-filesys-df)-(*).rpm",
-                                "target": "centos8-rc/zextras/{1}/{1}-{2}.rpm",
-                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
-                            },
-                            {
-                                "pattern": "artifacts/(carbonio-perl-file-tail)-(*).rpm",
                                 "target": "centos8-rc/zextras/{1}/{1}-{2}.rpm",
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
                             },
@@ -1324,22 +1244,12 @@ pipeline {
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
                             },
                             {
-                                "pattern": "artifacts/(carbonio-prepflog)-(*).rpm",
-                                "target": "centos8-rc/zextras/{1}/{1}-{2}.rpm",
-                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
-                            },
-                            {
                                 "pattern": "artifacts/(carbonio-perl-socket)-(*).rpm",
                                 "target": "centos8-rc/zextras/{1}/{1}-{2}.rpm",
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
                             },
                             {
                                 "pattern": "artifacts/(carbonio-spamassassin-rules)-(*).rpm",
-                                "target": "centos8-rc/zextras/{1}/{1}-{2}.rpm",
-                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
-                            },
-                            {
-                                "pattern": "artifacts/(carbonio-perl-swatchdog)-(*).rpm",
                                 "target": "centos8-rc/zextras/{1}/{1}-{2}.rpm",
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
                             },

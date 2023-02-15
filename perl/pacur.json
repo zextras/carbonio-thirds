@@ -201,10 +201,6 @@
       "install": true
     },
     {
-      "name": "date-manip",
-      "install": true
-    },
-    {
       "name": "unix-syslog",
       "install": true
     },
@@ -225,10 +221,6 @@
     },
     {
       "name": "convert-uulib",
-      "install": true
-    },
-    {
-      "name": "file-tail",
       "install": true
     },
     {
@@ -348,17 +340,10 @@
       "install": true
     },
     {
-      "name": "swatchdog",
-      "install": true
-    },
-    {
       "name": "innotop"
     },
     {
       "name": "pflogsumm"
-    },
-    {
-      "name": "prepflog"
     },
     {
       "name": "policyd"
