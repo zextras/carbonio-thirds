@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-openldap"
 pkgver="2.4.59"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Lightweight Directory Access Protocol (LDAP) library"
 pkgdesclong=(
   "Lightweight Directory Access Protocol (LDAP) library"
@@ -22,18 +22,21 @@ priority="important"
 sources=(
   "https://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-${pkgver}.tgz"
   "carbonio-openldap.patch"
+  "carbonio-argon2-make.patch"
 )
 hashsums=(
   "99f37d6747d88206c470067eda624d5e48c1011e943ec0ab217bae8712e22f34"
   "9d9460e24b582685d02f707248840ff19231e2cf1b8ba84fccf5b29438c768e8"
+  "152fbbca7fd1ec92c1ee5c20f4a06e62bb276e2d6f83e2946fbafea6dc6e8ed5"
 )
 
 build() {
   cd "${srcdir}/openldap-${pkgver}"
   patch -Np1 -i ../carbonio-openldap.patch
+  patch -Np1 -i ../carbonio-argon2-make.patch
 
   export LDFLAGS="-L/opt/zextras/common/lib -Wl,-rpath,/opt/zextras/common/lib"
-  export CFLAGS="-O0 -D_REENTRANT"
+  export CFLAGS="-D_REENTRANT"
   export CPPFLAGS="-I/opt/zextras/common/include"
   export PATH=/opt/zextras/common/bin:$PATH
 
@@ -56,22 +59,26 @@ build() {
     --enable-spasswd \
     --with-cyrus-sasl \
     --with-threads \
-    --with-tls=openssl \
-    --enable-crypt
+    --with-tls=openssl
 
   LD_RUN_PATH=/opt/zextras/common/lib make depend
   LD_RUN_PATH=/opt/zextras/common/lib make DEFINES="-DCHECK_CSN -DSLAP_SCHEMA_EXPOSE"
   make -C libraries/liblmdb prefix=/opt/zextras/common
   make -C contrib/slapd-modules/noopsrch prefix=/opt/zextras/common
+  make -C contrib/slapd-modules/passwd/argon2 prefix=/opt/zextras/common
   make -C contrib/slapd-modules/passwd/sha2 prefix=/opt/zextras/common
 }
 
 package() {
   cd "${srcdir}/openldap-${pkgver}"
+
   make install DESTDIR="${pkgdir}" STRIP=""
+
   make -C libraries/liblmdb install prefix=/opt/zextras/common DESTDIR="${pkgdir}"
-  make -C contrib/slapd-modules/passwd/sha2 install prefix=/opt/zextras/common DESTDIR="${pkgdir}"
   make -C contrib/slapd-modules/noopsrch install prefix=/opt/zextras/common DESTDIR="${pkgdir}"
+  make -C contrib/slapd-modules/passwd/argon2 install prefix=/opt/zextras/common DESTDIR="${pkgdir}"
+  make -C contrib/slapd-modules/passwd/sha2 install prefix=/opt/zextras/common DESTDIR="${pkgdir}"
+
   ln -s /opt/zextras/common/lib/liblber.so \
     "${pkgdir}"/opt/zextras/common/lib/liblber.so.2
   ln -s /opt/zextras/common/lib/libldap.so \
