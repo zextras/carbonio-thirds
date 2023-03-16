@@ -3,7 +3,7 @@ targets=(
   "ubuntu"
 )
 pkgname="carbonio-clamav"
-pkgver="0.103.7"
+pkgver="0.103.8"
 pkgrel="1"
 pkgdesc="Anti-virus toolkit for Unix"
 pkgdesclong=(
@@ -44,10 +44,10 @@ section="utils"
 priority="optional"
 sources=(
   "https://www.clamav.net/downloads/production/clamav-${pkgver}.tar.gz"
-  "https://download-ib01.fedoraproject.org/pub/fedora/linux/updates/36/Everything/x86_64/Packages/c/clamav-data-${pkgver}-1.fc36.noarch.rpm"
+  "https://download-ib01.fedoraproject.org/pub/fedora/linux/updates/37/Everything/x86_64/Packages/c/clamav-data-${pkgver}-3.fc37.noarch.rpm"
 )
 hashsums=(
-  "1e34c31f600cb3b5bd1bf76690590cdeebe9409b330959b1c0f77d421bb17e50"
+  "6f49da6ee927936de13d359e559d3944248e3a257d40b80b6c99ebe6fe8c8c3f"
   "skip"
 )
 
