@@ -1,0 +1,10 @@
+{
+  "Kind": "service-intentions",
+  "Name": "carbonio-clamav",
+  "Sources": [
+    {
+      "Name": "carbonio-mta",
+      "Action": "allow"
+    }
+  ]
+}
