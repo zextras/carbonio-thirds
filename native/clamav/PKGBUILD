@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-clamav"
 pkgver="0.103.8"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Anti-virus toolkit for Unix"
 pkgdesclong=(
   "Anti-virus toolkit for Unix"
@@ -45,9 +45,23 @@ priority="optional"
 sources=(
   "https://www.clamav.net/downloads/production/clamav-${pkgver}.tar.gz"
   "https://download-ib01.fedoraproject.org/pub/fedora/linux/updates/37/Everything/x86_64/Packages/c/clamav-data-${pkgver}-3.fc37.noarch.rpm"
+  "carbonio-clamav"
+  "carbonio-clamav-setup.sh"
+  "carbonio-clamav-sidecar.service"
+  "carbonio-clamav.hcl"
+  "intentions.json"
+  "policies.json"
+  "service-protocol.json"
 )
 hashsums=(
   "6f49da6ee927936de13d359e559d3944248e3a257d40b80b6c99ebe6fe8c8c3f"
+  "skip"
+  "skip"
+  "skip"
+  "skip"
+  "skip"
+  "skip"
+  "skip"
   "skip"
 )
 
@@ -87,4 +101,60 @@ package() {
 
   rm -rf "${pkgdir}"/usr
   rm -rf "${pkgdir}"/opt/zextras/common/bin/clamav-config
+
+# start install carbonio-clamav consul registration artifacts
+  install -D -m 755 "${srcdir}/carbonio-clamav" \
+    "${pkgdir}/usr/bin/carbonio-clamav"
+
+  install -D -m 644 "${srcdir}/carbonio-clamav-sidecar.service" \
+    "${pkgdir}/lib/systemd/system/carbonio-clamav-sidecar.service"
+
+  install -D -m 644 "${srcdir}/policies.json" \
+    "${pkgdir}/etc/carbonio/clamav/service-discover/policies.json"
+
+  install -D -m 644 "${srcdir}/carbonio-clamav.hcl" \
+    "${pkgdir}/etc/zextras/service-discover/carbonio-clamav.hcl"
+
+  install -D -m 644 "${srcdir}/intentions.json" \
+    "${pkgdir}/etc/carbonio/clamav/service-discover/intentions.json"
+
+  install -D -m 644 "${srcdir}/service-protocol.json" \
+    "${pkgdir}/etc/carbonio/clamav/service-discover/service-protocol.json"
+
+  install -D -m 755 "${srcdir}/carbonio-clamav-setup.sh" \
+    "${pkgdir}/etc/zextras/pending-setups.d/carbonio-clamav-setup.sh"
+# end install carbonio-clamav consul registration artifacts
+}
+
+postinst() {
+  # ClamAV consul registration
+  getent group 'carbonio-clamav' >/dev/null ||
+    groupadd -r 'carbonio-clamav'
+  getent passwd 'carbonio-clamav' >/dev/null ||
+    useradd -r -M -g 'carbonio-clamav' -s /sbin/nologin 'carbonio-clamav'
+
+  if [ -d /run/systemd/system ]; then
+    systemctl daemon-reload >/dev/null 2>&1 || :
+    systemctl enable carbonio-clamav-sidecar.service >/dev/null 2>&1 || :
+  fi
+
+  echo "======================================================"
+  echo "Carbonio ClamAV installed successfully!"
+  echo "You must run pending-setups to configure it correctly."
+  echo "======================================================"
+}
+
+prerm() {
+  if [ -d /run/systemd/system ]; then
+    systemctl --no-reload disable carbonio-clamav-sidecar.service >/dev/null 2>&1 || :
+    systemctl stop carbonio-clamav-sidecar.service >/dev/null 2>&1 || :
+  fi
+}
+
+postrm() {
+  rm -f /etc/carbonio/clamav/service-discover/token
+
+  if [ -d /run/systemd/system ]; then
+    systemctl daemon-reload >/dev/null 2>&1 || :
+  fi
 }
