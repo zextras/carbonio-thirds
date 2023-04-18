@@ -69,6 +69,7 @@ build() {
     --enable-rpath \
     --with-openssl=/opt/zextras/common \
     --with-milter=/opt/zextras/common \
+    --without-unbound \
     --with-libevent=/opt/zextras/common/lib \
     --with-sql-backend=/opt/zextras/common \
     --with-openldap=/opt/zextras/common \
