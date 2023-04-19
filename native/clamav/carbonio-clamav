@@ -1,5 +1,6 @@
 #!/bin/bash
 SERVICE="clamav"
+SERVICE_COMMON_NAME="Carbonio ${SERVICE}"
 SERVICE_NAME="carbonio-${SERVICE}"
 SERVICE_USER="carbonio-${SERVICE}"
 SERVICE_GROUP="carbonio-${SERVICE}"
@@ -44,7 +45,7 @@ if [[ "$?" != "0" ]]; then
     fi
 fi
 
-trap 'echo Script for ${SERVICE} terminated with error' EXIT
+trap 'echo Script for ${SERVICE_COMMON_NAME} terminated with error' EXIT
 set -e
 # Declare the service as http
 consul config write ${SERVICE_BASE_DIR}/service-protocol.json
