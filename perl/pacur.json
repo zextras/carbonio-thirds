@@ -201,6 +201,10 @@
       "install": true
     },
     {
+      "name": "date-manip",
+      "install": true
+    },
+    {
       "name": "unix-syslog",
       "install": true
     },
