@@ -95,10 +95,6 @@
       "name": "nginx"
     },
     {
-      "name": "unbound",
-      "install": true
-    },
-    {
       "name": "opendkim",
       "install": true
     }
