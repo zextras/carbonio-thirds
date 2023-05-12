@@ -19,7 +19,6 @@ depends:apt=(
   "carbonio-libmilter"
   "carbonio-openldap"
   "carbonio-openssl"
-  "carbonio-unbound"
   "zlib1g"
 )
 makedepends:apt=(
@@ -33,7 +32,6 @@ depends:yum=(
   "carbonio-libmilter"
   "carbonio-openldap"
   "carbonio-openssl"
-  "carbonio-unbound"
   "zlib"
 )
 makedepends:yum=(
@@ -71,7 +69,6 @@ build() {
     --enable-rpath \
     --with-openssl=/opt/zextras/common \
     --with-milter=/opt/zextras/common \
-    --with-unbound=/opt/zextras/common \
     --with-libevent=/opt/zextras/common/lib \
     --with-sql-backend=/opt/zextras/common \
     --with-openldap=/opt/zextras/common \
