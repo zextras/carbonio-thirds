@@ -3,8 +3,8 @@ targets=(
   "ubuntu"
 )
 pkgname="carbonio-clamav"
-pkgver="0.103.8"
-pkgrel="2"
+pkgver="1.1.0"
+pkgrel="1"
 pkgdesc="Anti-virus toolkit for Unix"
 pkgdesclong=(
   "Anti-virus toolkit for Unix"
@@ -17,11 +17,15 @@ depends:apt=(
   "carbonio-libmilter"
   "carbonio-libxml2"
   "carbonio-openssl"
+  "libjson-c4"
   "libpcre2-8-0"
   "zlib1g"
 )
 makedepends:apt=(
   "alien"
+  "cargo"
+  "check"
+  "libjson-c-dev"
   "libncursesw5-dev"
   "libpcre2-dev"
   "zlib1g-dev"
@@ -31,11 +35,15 @@ depends:yum=(
   "carbonio-libmilter"
   "carbonio-libxml2"
   "carbonio-openssl"
+  "json-c"
   "pcre2"
   "zlib"
 )
 makedepends:yum=(
   "alien"
+  "cargo"
+  "check-devel"
+  "json-c-devel"
   "ncurses-devel"
   "pcre2-devel"
   "zlib-devel"
@@ -44,7 +52,7 @@ section="utils"
 priority="optional"
 sources=(
   "https://www.clamav.net/downloads/production/clamav-${pkgver}.tar.gz"
-  "https://download-ib01.fedoraproject.org/pub/fedora/linux/updates/37/Everything/x86_64/Packages/c/clamav-data-${pkgver}-3.fc37.noarch.rpm"
+  "https://dl.fedoraproject.org/pub/fedora/linux/development/rawhide/Everything/aarch64/os/Packages/c/clamav-data-1.0.1-4.fc39.noarch.rpm"
   "carbonio-clamav"
   "carbonio-clamav-setup.sh"
   "carbonio-clamav-sidecar.service"
@@ -54,8 +62,8 @@ sources=(
   "service-protocol.json"
 )
 hashsums=(
-  "6f49da6ee927936de13d359e559d3944248e3a257d40b80b6c99ebe6fe8c8c3f"
-  "skip"
+  "a30020d99cd467fa5ea0efbd6f4f182efebf62a9fc62fc4a3a7b2cc3f55e6b74"
+  "d5290e6ca19714f205bd0fdfbf2acb1cfb0c73097f8cb3b822e0dbe2d8985dad"
   "skip"
   "skip"
   "skip"
@@ -69,40 +77,38 @@ build() {
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib"
   export CPPFLAGS="-I/opt/zextras/common/include"
   cd "${srcdir}/clamav-${pkgver}"
+  cmake . \
+    -DCMAKE_INSTALL_PREFIX=/opt/zextras/common \
+    -DCLAMAV_USER=zextras \
+    -DCLAMAV_GROUP=zextras \
+    -DENABLE_MILTER=true
 
-  ./configure \
-    --prefix=/opt/zextras/common \
-    --libdir=/opt/zextras/common/lib \
-    --with-libcurl=/opt/zextras/common \
-    --with-libmilter=/opt/zextras/common \
-    --with-openssl=/opt/zextras/common \
-    --with-xml=/opt/zextras/common \
-    --with-user=zextras \
-    --with-group=zextras \
-    --with-included-ltdl \
-    --disable-clamav \
-    --enable-milter
   make -j16
 }
 
 package() {
   cd "${srcdir}"
-  alien -t "clamav-data-${pkgver}"*.noarch.rpm
+  alien -t clamav-data-*.noarch.rpm
 
   cd "${srcdir}/clamav-${pkgver}"
   make DESTDIR="${pkgdir}" install
 
   mkdir -p "${pkgdir}/opt/zextras/data/clamav/db"
-  tar -xvf "${srcdir}/clamav-data-${pkgver}.tgz" \
-    --strip-components=4 -C "${pkgdir}/opt/zextras/data/clamav/db"
+  tar -xvf "${srcdir}"/clamav-data-*.tgz \
+    --strip-components=4 \
+    -C "${pkgdir}/opt/zextras/data/clamav/db"
 
   find "${pkgdir}" -name '*.a' -delete
   find "${pkgdir}" -name '*.la' -delete
 
   rm -rf "${pkgdir}"/usr
   rm -rf "${pkgdir}"/opt/zextras/common/bin/clamav-config
+  if [ -d "${pkgdir}/opt/zextras/common/lib64" ]; then
+    mv "${pkgdir}/opt/zextras/common/lib64" \
+      "${pkgdir}/opt/zextras/common/lib"
+  fi
 
-# start install carbonio-clamav consul registration artifacts
+  # start install carbonio-clamav consul registration artifacts
   install -D -m 755 "${srcdir}/carbonio-clamav" \
     "${pkgdir}/usr/bin/carbonio-clamav"
 
@@ -123,7 +129,7 @@ package() {
 
   install -D -m 755 "${srcdir}/carbonio-clamav-setup.sh" \
     "${pkgdir}/etc/zextras/pending-setups.d/carbonio-clamav-setup.sh"
-# end install carbonio-clamav consul registration artifacts
+  # end install carbonio-clamav consul registration artifacts
 }
 
 postinst() {
