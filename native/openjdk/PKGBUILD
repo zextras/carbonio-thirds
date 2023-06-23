@@ -3,11 +3,11 @@ targets=(
   "ubuntu"
 )
 pkgname="carbonio-openjdk"
-pkgver="13.0.2"
+pkgver="17.0.7"
 pkgrel="1"
-pkgdesc="OpenJDK Java 13 development kit"
+pkgdesc="OpenJDK Java 17 development kit"
 pkgdesclong=(
-  "OpenJDK Java 13 development kit"
+  "OpenJDK Java 17 development kit"
 )
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
@@ -15,27 +15,25 @@ url="https:/zextras.com"
 section="utils"
 priority="optional"
 sources=(
-  "https:/download.java.net/java/GA/jdk${pkgver}/d4173c853231432d94f001e99d882ca7/8/GPL/openjdk-${pkgver}_linux-x64_bin.tar.gz"
+  "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-${pkgver}%2B7/OpenJDK17U-jdk_x64_linux_hotspot_${pkgver}_7.tar.gz"
 )
 provides:yum=(
   "libjli.so()(64bit)"
 )
 hashsums=(
-  "acc7a6aabced44e62ec3b83e3b5959df2b1aa6b3d610d58ee45f0c21a7821a71"
+  "e9458b38e97358850902c2936a1bb5f35f6cffc59da9fcd28c63eab8dbbfbc3b"
 )
 
 package() {
   cd "${srcdir}"
   mkdir -p "${pkgdir}"/opt/zextras/common/bin
   mkdir -p "${pkgdir}"/opt/zextras/common/lib/jvm
-  cp -r "jdk-${pkgver}" "${pkgdir}"/opt/zextras/common/lib/jvm/java
+  cp -r "jdk-${pkgver}"* "${pkgdir}"/opt/zextras/common/lib/jvm/java
   cd "${pkgdir}"/opt/zextras/common/lib/jvm/java
   mv include/linux/* include
   rm -rf include/linux
   rm -rf lib/src.zip
-  rm -rf ../legal
-  rm -rf demo
-  rm -rf sample
+  rm -rf legal
   chmod 644 lib/ct.sym
 
   cd lib/security
