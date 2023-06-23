@@ -1,93 +1,42 @@
-diff '--color=auto' -Naur a/amavisd b/amavisd
---- a/amavisd	2021-07-25 22:19:38.381179535 +0200
-+++ b/amavisd	2021-07-25 22:19:56.886897756 +0200
-@@ -4,6 +4,8 @@
+diff '--color=auto' -Naur a/bin/amavisd b/bin/amavisd
+--- a/bin/amavisd	2023-06-23 02:03:02.901025744 +0200
++++ b/bin/amavisd	2023-06-23 02:08:30.372325895 +0200
+@@ -4,6 +4,7 @@
+ ### profiling:
  ### #!/usr/bin/perl -d:NYTProf
  ###   NYTPROF=start=no:addpid=1:forkdepth=1 amavisd -m 5 foreground
++use lib $ENV{PERL5LIB} =~ /([^:]+)/g; # Untaint PERL5LIB so Zextras's modules can be used
  
-+use lib $ENV{PERL5LIB} =~ /([^:]+)/g; # Untaint PERL5LIB so modules can be used
-+
  #------------------------------------------------------------------------------
- # This is amavisd-new.
- # It is an interface between a message transfer agent (MTA) and virus
-@@ -5680,6 +5682,9 @@
-     my(@dkeys); my $d = $domain;
-     for (;;) {            # (@).sub.example.com (@).example.com (@).com (@).
-       push(@dkeys, $prepend_to_domain.'.'.$d);
-+      if ($d ne '') {
-+        push(@dkeys, $d);
-+      }
-       last  if $d eq '';
-       $d = ($d =~ /^([^.]*)\.(.*)\z/s) ? $2 : '';
-     }
-@@ -12488,7 +12493,7 @@
-     P => sub {$MSGINFO->partition_tag}, # SQL partition tag
-     partition_tag => sub {$MSGINFO->partition_tag},  # synonym for %P
-     q => sub { my $q = $MSGINFO->quarantined_to;
--               $q && [map { my $m=$_; $m=~s{^\Q$QUARANTINEDIR\E/}{}; $m } @$q];
-+               $q && [map { my($m)=$_; $m=~s{^\Q$QUARANTINEDIR\E/}{}; $m=~s/^march.*\.archive$//; $m } @$q];
-              },  # list of quarantine mailboxes
-     v => sub { !defined $av_output ? undef     # anti-virus scanner output
-                  : [split(/[ \t]*\r?\n/, $av_output)]},
-@@ -12938,7 +12943,7 @@
-           sort map { my $s = $_; $s =~ s/\.pm\z//; $s =~ s{/}{::}g; $s }
-                grep(/\.pm\z/, keys %INC)) {
-     next  if !grep($_ eq $m, qw(Amavis::Conf
--      Archive::Tar Archive::Zip Compress::Zlib Compress::Raw::Zlib
-+      Archive::Zip Compress::Zlib Compress::Raw::Zlib
-       Convert::TNEF Convert::UUlib File::LibMagic
-       MIME::Entity MIME::Parser MIME::Tools Mail::Header Mail::Internet
-       Digest::MD5 Digest::SHA Digest::SHA1 Crypt::OpenSSL::RSA
-@@ -17995,6 +18000,15 @@
-     }
-   }  # endfor per_recip_data
- 
-+  if (defined($qar_method) && $qar_method ne '') {  # archiving quarantine on sender
-+    my($sender) = $msginfo->sender;
-+    if ($sender ne '') {
-+      my($q) = lookup(0,$sender,@{ca('archive_quarantine_to_maps')});
-+      $q = $sender  if $q ne '' && $qar_method =~ /^bsmtp:/i;  # orig.recip
-+      push(@q_tuples, [$qar_method,$q,'Arch'])  if defined $q && $q ne '';
-+    }
-+  }
-+
-   if ($ccat == CC_SPAM) {
-     my $sqbsm = ca('spam_quarantine_bysender_to_maps');
-     if (@$sqbsm) {  # by-sender spam quarantine (hardly useful, rarely used)
-@@ -19036,7 +19050,7 @@
-   push(@{/^no_conf_file_writable_check\z/ ? \@known : \@unknown}, $_)
-     for grep($i_know_what_i_am_doing{$_}, keys %i_know_what_i_am_doing);
-   $unknown[0] = 'unknown: ' . $unknown[0]  if @unknown;
--  warn sprintf("I know what I'm doing: %s\n", join(', ',@known,@unknown));
-+  #warn sprintf("I know what I'm doing: %s\n", join(', ',@known,@unknown));
- }
- 
- # deal with debugging early, based on a command line arg
-@@ -32389,7 +32403,7 @@
-   $retval;
- }
- 
--# DROPED SUPPORT for Archive::Tar; main drawback of this module is: it either
-+# DROPPED SUPPORT for Archive::Tar; main drawback of this module is: it either
- # loads an entire tar into memory (horrors!), or when using extract_archive()
- # it does not relativize absolute paths (which makes it possible to store
- # members in any directory writable by uid), and does not provide a way to
-diff '--color=auto' -Naur a/amavisd-release b/amavisd-release
---- a/amavisd-release	2021-07-25 22:19:38.382179519 +0200
-+++ b/amavisd-release	2021-07-25 22:22:14.742012864 +0200
-@@ -87,7 +87,7 @@
+ # This is amavis.
+diff '--color=auto' -Naur a/bin/amavisd-release b/bin/amavisd-release
+--- a/bin/amavisd-release	2023-06-23 02:03:02.901025744 +0200
++++ b/bin/amavisd-release	2023-06-23 02:07:38.852199415 +0200
+@@ -88,7 +88,8 @@
    $log_level = 1;
  # $socketname = '127.0.0.1:9998';
  # $socketname = '[::1]:9998';
 -  $socketname = '/var/amavis/amavisd.sock';
++# $socketname = '/var/amavis/amavisd.sock';
 +  $socketname = '/opt/zextras/data/amavisd/amavisd.sock';
  
  ### END OF USER CONFIGURABLE
  }
-diff '--color=auto' -Naur a/amavisd-status b/amavisd-status
---- a/amavisd-status	2021-07-25 22:19:38.382179519 +0200
-+++ b/amavisd-status	2021-07-25 22:19:56.887897741 +0200
-@@ -47,6 +47,7 @@
+diff '--color=auto' -Naur a/bin/amavisd-snmp-subagent-zmq b/bin/amavisd-snmp-subagent-zmq
+--- a/bin/amavisd-snmp-subagent-zmq	2023-06-23 02:03:02.901025744 +0200
++++ b/bin/amavisd-snmp-subagent-zmq	2023-06-23 02:07:26.670170595 +0200
+@@ -49,6 +49,7 @@
+ use warnings;
+ use warnings FATAL => qw(utf8 void);
+ no warnings 'uninitialized';
++use lib "/opt/zextras/common/lib/perl5";
+ 
+ use Errno qw(ESRCH ENOENT EACCES EEXIST);
+ use POSIX ();
+diff '--color=auto' -Naur a/bin/amavisd-status b/bin/amavisd-status
+--- a/bin/amavisd-status	2023-06-23 02:03:02.902359087 +0200
++++ b/bin/amavisd-status	2023-06-23 02:07:26.670170595 +0200
+@@ -48,6 +48,7 @@
  use warnings;
  use warnings FATAL => qw(utf8 void);
  no warnings 'uninitialized';
@@ -95,10 +44,10 @@ diff '--color=auto' -Naur a/amavisd-status b/amavisd-status
  
  use Errno qw(ESRCH ENOENT);
  use POSIX qw(strftime);
-diff '--color=auto' -Naur a/amavis-mc b/amavis-mc
---- a/amavis-mc	2021-07-25 22:19:38.380179550 +0200
-+++ b/amavis-mc	2021-07-25 22:19:56.879897862 +0200
-@@ -47,6 +47,7 @@
+diff '--color=auto' -Naur a/bin/amavis-mc b/bin/amavis-mc
+--- a/bin/amavis-mc	2023-06-23 02:03:02.901025744 +0200
++++ b/bin/amavis-mc	2023-06-23 02:08:25.645882060 +0200
+@@ -48,6 +48,7 @@
  use warnings;
  use warnings FATAL => qw(utf8 void);
  no warnings 'uninitialized';
@@ -106,14 +55,14 @@ diff '--color=auto' -Naur a/amavis-mc b/amavis-mc
  
  use vars qw($VERSION);  $VERSION = 2.008002;
  
-@@ -70,16 +71,16 @@
+@@ -73,16 +74,16 @@
  
  ### USER CONFIGURABLE:
  
--$daemon_user  = 'vscan';
--$daemon_group = 'vscan';
-+$daemon_user  = 'zextras';
-+$daemon_group = 'zextras';
+-$daemon_user   = 'vscan';
+-@daemon_groups = 'vscan';
++$daemon_user   = 'zextras';
++@daemon_groups = 'zextras';
  
 -$pid_file = '/var/amavis/amavis-mc.pid';
 +$pid_file = '/opt/zextras/log/amavis-mc.pid';
@@ -127,3 +76,82 @@ diff '--color=auto' -Naur a/amavis-mc b/amavis-mc
  
  @services = (
    { cmd => 'amavis-services msg-forwarder' },
+diff '--color=auto' -Naur a/bin/amavis-services b/bin/amavis-services
+--- a/bin/amavis-services	2023-06-23 02:03:02.901025744 +0200
++++ b/bin/amavis-services	2023-06-23 02:07:43.965269399 +0200
+@@ -49,6 +49,7 @@
+ no warnings 'uninitialized';
+ 
+ use vars qw($VERSION);  $VERSION = 2.011002;
++use lib "/opt/zextras/common/lib/perl5";
+ 
+ use Errno qw(ESRCH ENOENT);
+ use POSIX qw(strftime);
+@@ -76,7 +77,8 @@
+ 
+ # A socket to which amavisd child processes report their data.
+ # should match one of the sockets in @zmq_sockets in amavisd.conf
+-$inner_sock_specs = "ipc://$MYHOME/amavisd-zmq.sock";
++#$inner_sock_specs = "ipc://$MYHOME/amavisd-zmq.sock";
++$inner_sock_specs = ( "ipc:///opt/zextras/data/tmp/amavisd-zmq.sock" );
+ 
+ # A socket to which we forward summarized amavisd data.
+ # should match a socket of the same name in amavis-status
+diff '--color=auto' -Naur a/lib/Amavis/Unpackers.pm b/lib/Amavis/Unpackers.pm
+--- a/lib/Amavis/Unpackers.pm	2023-06-23 02:03:02.906359115 +0200
++++ b/lib/Amavis/Unpackers.pm	2023-06-23 02:08:30.373659166 +0200
+@@ -784,7 +784,7 @@
+   $retval;
+ }
+ 
+-# DROPED SUPPORT for Archive::Tar; main drawback of this module is: it either
++# DROPPED SUPPORT for Archive::Tar; main drawback of this module is: it either
+ # loads an entire tar into memory (horrors!), or when using extract_archive()
+ # it does not relativize absolute paths (which makes it possible to store
+ # members in any directory writable by uid), and does not provide a way to
+diff '--color=auto' -Naur a/lib/Amavis.pm b/lib/Amavis.pm
+--- a/lib/Amavis.pm	2023-06-23 02:03:02.902359087 +0200
++++ b/lib/Amavis.pm	2023-06-23 02:08:30.374992437 +0200
+@@ -443,7 +443,7 @@
+     P => sub {$MSGINFO->partition_tag}, # SQL partition tag
+     partition_tag => sub {$MSGINFO->partition_tag},  # synonym for %P
+     q => sub { my $q = $MSGINFO->quarantined_to;
+-               $q && [map { my $m=$_; $m=~s{^\Q$QUARANTINEDIR\E/}{}; $m } @$q];
++               $q && [map { my($m)=$_; $m=~s{^\Q$QUARANTINEDIR\E/}{}; $m=~s/^march.*\.archive$//; $m } @$q];
+              },  # list of quarantine mailboxes
+     v => sub { !defined $av_output ? undef     # anti-virus scanner output
+                  : [split(/[ \t]*\r?\n/, $av_output)]},
+@@ -889,7 +889,7 @@
+           sort map { my $s = $_; $s =~ s/\.pm\z//; $s =~ s{/}{::}g; $s }
+                grep(/\.pm\z/, keys %INC)) {
+     next  if !grep($_ eq $m, qw(Amavis::Conf
+-      Archive::Tar Archive::Zip Compress::Zlib Compress::Raw::Zlib
++      Archive::Zip Compress::Zlib Compress::Raw::Zlib
+       Convert::TNEF Convert::UUlib File::LibMagic
+       MIME::Entity MIME::Parser MIME::Tools Mail::Header Mail::Internet
+       Digest::MD5 Digest::SHA Digest::SHA1 Crypt::OpenSSL::RSA
+@@ -5968,6 +5968,15 @@
+     }
+   }  # endfor per_recip_data
+ 
++  if (defined($qar_method) && $qar_method ne '') {  # archiving quarantine on sender
++	my($sender) = $msginfo->sender;
++	if ($sender ne '') {
++		my($q) = lookup(0,$sender,@{ca('archive_quarantine_to_maps')});
++		$q = $sender  if $q ne '' && $qar_method =~ /^bsmtp:/i;  # orig.recip
++		push(@q_tuples, [$qar_method,$q,'Arch'])  if defined $q && $q ne '';
++	}
++  }
++
+   if ($ccat == CC_SPAM) {
+     my $sqbsm = ca('spam_quarantine_bysender_to_maps');
+     if (@$sqbsm) {  # by-sender spam quarantine (hardly useful, rarely used)
+@@ -7007,7 +7016,7 @@
+   push(@{/^no_conf_file_writable_check\z/ ? \@known : \@unknown}, $_)
+     for grep($i_know_what_i_am_doing{$_}, keys %i_know_what_i_am_doing);
+   $unknown[0] = 'unknown: ' . $unknown[0]  if @unknown;
+-  warn sprintf("I know what I'm doing: %s\n", join(', ',@known,@unknown));
++  #warn sprintf("I know what I'm doing: %s\n", join(', ',@known,@unknown));
+ }
+ 
+ # deal with debugging early, based on a command line arg
