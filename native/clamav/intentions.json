@@ -5,6 +5,10 @@
     {
       "Name": "carbonio-mta",
       "Action": "allow"
+    },
+    {
+      "Name": "carbonio-mailbox",
+      "Action": "allow"
     }
   ]
 }
