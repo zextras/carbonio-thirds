@@ -3,8 +3,8 @@ targets=(
   "ubuntu"
 )
 pkgname="carbonio-nginx"
-pkgver="1.24.0"
-pkgrel="1"
+pkgver="1.20.2"
+pkgrel="4"
 pkgdesc="Lightweight HTTP server and IMAP/POP3 proxy server"
 pkgdesclong=(
   "Lightweight HTTP server and IMAP/POP3 proxy server"
@@ -45,14 +45,15 @@ sources=(
   "https://github.com/google/ngx_brotli/archive/v1.0.0rc/ngx_brotli-1.0.0rc.tar.gz"
   "modules.tar.gz"
   "carbonio-${pkgver}.patch"
+  "CVE-2022-27924.patch"
 )
 hashsums=(
-  "77a2541637b92a621e3ee76776c8b7b40cf6d707e69ba53a940283e30ff2f55d"
+  "958876757782190a1653e14dc26dfc7ba263de310e04c113e11e97d1bef45a42"
   "8b09b8eefb13d298f865ccb3563f9e2b808f7f5467b261532c47f0a2bddf2685"
   "c85cdcfd76703c95aa4204ee4c2e619aa5b075cac18f428202f65552104add3b"
   "b8d1b9c577453d195505c8e4cd195420d5876d2a3dd81480821fdbe149f038b2"
-  "6ad6e961a62d20c3de164ef1b478f7317f28be434e23a136caab783580e52041"
-  "2a7cf5e56b28fa4229c85120593982b88638daeec4a3729acc00a4fe581292aa"
+  "e77a1bf3adfac1a269fe5759c129ced8607a0283371b5c1c144684c8548b9d80"
+  "6fda55b0899af642d4958b953c1b680bb3d0b0b95fe8cdff93103088aa263f80"
 )
 
 build() {
@@ -62,12 +63,15 @@ build() {
 
   cd "${srcdir}/nginx-${pkgver}"
   patch -Np1 -i ../"carbonio-${pkgver}.patch"
+  patch -Np1 -i ../CVE-2022-27924.patch
 
   cp -r ../modules zmmodules
   cp -r ../nginx-tcp-keepalive* zmmodules/nginx-tcp-keepalive
   ./configure --prefix=/opt/zextras/common \
   --with-cc-opt="-g -I/opt/zextras/common/include" \
   --with-ld-opt="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib" \
+  --with-debug \
+  --with-ipv6 \
   --with-http_ssl_module \
   --with-http_stub_status_module \
   --with-pcre \
