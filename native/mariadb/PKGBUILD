@@ -3,8 +3,8 @@ targets=(
   "ubuntu"
 )
 pkgname="carbonio-mariadb"
-pkgver="10.1.48"
-pkgrel="2"
+pkgver="10.4.30"
+pkgrel="1"
 pkgdesc="Fast SQL database server, derived from MySQL"
 pkgdesclong=(
   "Fast SQL database server, derived from MySQL"
@@ -79,10 +79,10 @@ makedepends:yum=(
 section="utils"
 priority="optional"
 sources=(
-  "https://archive.mariadb.org//mariadb-${pkgver}/source/mariadb-${pkgver}.tar.gz"
+  "https://mirror.digitalnova.at/mariadb//mariadb-${pkgver}/source/mariadb-${pkgver}.tar.gz"
 )
 hashsums=(
-  "069d58b1e2c06bb1e6c31249eda34138f41fb8ae3dec7ecaeba8035812c87cf9"
+  "fcbbda671c6c784c03150262623f0d81894c911533e7c3c276f256f2fa12100c"
 )
 
 build() {
