@@ -3,7 +3,7 @@ targets=(
   "ubuntu"
 )
 pkgname="carbonio-mariadb"
-pkgver="10.4.30"
+pkgver="10.4.31"
 pkgrel="1"
 pkgdesc="Fast SQL database server, derived from MySQL"
 pkgdesclong=(
@@ -82,7 +82,7 @@ sources=(
   "https://mirror.digitalnova.at/mariadb//mariadb-${pkgver}/source/mariadb-${pkgver}.tar.gz"
 )
 hashsums=(
-  "fcbbda671c6c784c03150262623f0d81894c911533e7c3c276f256f2fa12100c"
+  "52abf5434c6a42e0a048a63ab99a3898fb7fca1580fadd7a61bd0e9ce9b85054"
 )
 
 build() {
@@ -95,18 +95,26 @@ build() {
   cd "${srcdir}/mariadb-${pkgver}"
   cmake . \
     -DBUILD_CONFIG=mysql_release \
-    -Wno-dev \
-    -DCOMPILATION_COMMENT="Zextras MariaDB binary distribution" \
     -DCMAKE_BUILD_WITH_INSTALL_RPATH=FALSE  \
     -DCMAKE_INSTALL_PREFIX="/opt/zextras/common" \
     -DCMAKE_INSTALL_RPATH="/opt/zextras/common/lib" \
     -DCMAKE_PREFIX_PATH="/opt/zextras/common" \
     -DCMAKE_SKIP_BUILD_RPATH=FALSE \
-    -DINSTALL_SYSCONFDIR=/opt/zextras/conf \
+    -DCOMPILATION_COMMENT="Zextras MariaDB binary distribution" \
+    -DCURL_INCLUDE_DIR=/opt/zextras/common/include \
+    -DCURL_LIBRARY=/opt/zextras/common/lib \
+    -DINSTALL_DOCDIR=share/mysql/docs \
+    -DINSTALL_DOCREADMEDIR=share/mysql/docs \
+    -DINSTALL_INFODIR=share/mysql/docs \
     -DINSTALL_MANDIR=share/man \
-    -DWITH_EMBEDDED_SERVER=OFF \
-    -DWITH_FAST_MUTEXES=ON \
-    -DENABLED_LOCAL_INFILE=ON \
+    -DINSTALL_MYSQLSHAREDIR=share/mysql \
+    -DINSTALL_SBINDIR=sbin \
+    -DINSTALL_SCRIPTDIR=share/mysql/scripts \
+    -DINSTALL_SHAREDIR=share/mysql \
+    -DINSTALL_SYSCONFDIR=/opt/zextras/conf \
+    -DINSTALL_UNIX_ADDRDIR=/opt/zextras/data/tmp/mysql/mysql.sock \
+    -DLIBXML2_INCLUDE_DIR=/opt/zextras/common/include/libxml2 \
+    -DLIBXML2_LIBRARY=/opt/zextras/common/lib \
     -DPLUGIN_ARCHIVE=NO \
     -DPLUGIN_ARIA=NO \
     -DPLUGIN_BLACKHOLE=NO \
@@ -118,30 +126,15 @@ build() {
     -DPLUGIN_SPHINX=NO \
     -DPLUGIN_SPIDER=NO \
     -DPLUGIN_TOKUDB=NO \
-    -DINSTALL_DOCDIR=share/mysql/docs \
-    -DINSTALL_DOCREADMEDIR=share/mysql/docs \
-    -DINSTALL_INFODIR=share/mysql/docs \
-    -DINSTALL_MYSQLSHAREDIR=share/mysql \
-    -DINSTALL_PLUGINDIR=lib/plugin \
-    -DINSTALL_SHAREDIR=share/mysql \
-    -DINSTALL_SBINDIR=sbin \
-    -DINSTALL_SCRIPTDIR=share/mysql/scripts \
-    -DINSTALL_UNIX_ADDRDIR=/opt/zextras/data/tmp/mysql/mysql.sock \
-    -DDEFAULT_CHARSET=utf8mb4 \
-    -DDEFAULT_COLLATION=utf8mb4_unicode_ci \
-    -DENABLED_LOCAL_INFILE=ON \
-    -DWITH_EXTRA_CHARSETS=complex \
+    -DPYTHON_SHEBANG=/usr/bin/python3 \
+    -DWITH_EMBEDDED_SERVER=OFF \
+    -DWITH_FAST_MUTEXES=ON \
     -DWITH_JEMALLOC=ON \
-    -DWITH_LIBWRAP=OFF \
     -DWITH_PCRE=system \
-    -DWITH_READLINE=ON \
     -DWITH_SSL=yes \
     -DWITH_UNIT_TESTS=OFF \
     -DWITH_ZLIB=system \
-    -DLIBXML2_INCLUDE_DIR=/opt/zextras/common/include/libxml2 \
-    -DLIBXML2_LIBRARY=/opt/zextras/common/lib \
-    -DCURL_INCLUDE_DIR=/opt/zextras/common/include \
-    -DCURL_LIBRARY=/opt/zextras/common/lib
+    -Wno-dev
   make depend -j16
   make -j16
 }
