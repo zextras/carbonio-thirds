@@ -4,7 +4,7 @@ targets=(
 )
 pkgname="carbonio-perl-mail-spamassassin"
 pkgver="3.4.6"
-pkgrel="3"
+pkgrel="4"
 pkgdesc="Spam detector and markup engine"
 pkgdesclong=(
   "Spam detector and markup engine"
@@ -43,7 +43,7 @@ build() {
     INSTALLSITEMAN1DIR="/opt/zextras/common/share/man/man1" INSTALLSITEMAN3DIR="/opt/zextras/common/share/man/man3" \
     INSTALLMAN3DIR="/opt/zextras/common/share/man/man1" INSTALLVENDORMAN3DIR="/opt/zextras/common/share/man/man1" \
     INSTALLMAN3DIR="/opt/zextras/common/share/man/man3" INSTALLVENDORMAN3DIR="/opt/zextras/common/share/man/man3" \
-    LIB="/opt/zextras/common/lib/perl5" DATADIR="/opt/zimbra/data/spamassassin/rules" \
+    LIB="/opt/zextras/common/lib/perl5" DATADIR="/opt/zextras/data/spamassassin/rules" \
     CONFDIR="/opt/zextras/data/spamassassin/localrules" \
     DATADIR="/opt/zextras/data/spamassassin/rules" \
     LOCALSTATEDIR="/opt/zextras/data/spamassassin/state" \
