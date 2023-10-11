@@ -12,6 +12,9 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
+makedepends:yum=(
+  "perl-FindBin"
+)
 section="libs"
 priority="important"
 sources=(
