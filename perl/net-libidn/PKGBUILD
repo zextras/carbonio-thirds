@@ -12,8 +12,12 @@ pkgdesclong=(
 arch="amd64"
 maintainer="Zextras <packages@zextras.com"
 url="https://zextras.com"
-depends:apt=(
+depends:ubuntu-focal=(
   "libidn11"
+  "perl"
+)
+depends:ubuntu-jammy=(
+  "libidn12"
   "perl"
 )
 depends:yum=(
