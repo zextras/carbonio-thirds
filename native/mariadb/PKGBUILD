@@ -1,18 +1,11 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-mariadb"
 pkgver="10.1.48"
 pkgrel="2"
 pkgdesc="Fast SQL database server, derived from MySQL"
-pkgdesclong=(
-  "Fast SQL database server, derived from MySQL"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "libaio1"
   "libbz2-1.0"
   "libcrack2"
@@ -25,7 +18,7 @@ depends:apt=(
   "carbonio-libxml2"
   "carbonio-openssl"
 )
-makedepends:apt=(
+makedepends__apt=(
   "bison"
   "cmake"
   "cracklib-runtime"
@@ -52,7 +45,7 @@ makedepends:apt=(
   "libzstd-dev"
   "zlib1g-dev"
 )
-depends:yum=(
+depends__yum=(
   "cracklib"
   "bzip2"
   "libaio"
@@ -63,7 +56,7 @@ depends:yum=(
   "carbonio-jemalloc"
   "carbonio-openssl"
 )
-makedepends:yum=(
+makedepends__yum=(
   "bison"
   "bzip2-devel"
   "cmake"
@@ -78,35 +71,41 @@ makedepends:yum=(
 )
 section="utils"
 priority="optional"
-sources=(
+source=(
   "https://archive.mariadb.org//mariadb-${pkgver}/source/mariadb-${pkgver}.tar.gz"
 )
-hashsums=(
-  "069d58b1e2c06bb1e6c31249eda34138f41fb8ae3dec7ecaeba8035812c87cf9"
-)
+sha256sums=('069d58b1e2c06bb1e6c31249eda34138f41fb8ae3dec7ecaeba8035812c87cf9')
 
 build() {
 
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib"
-  export CFLAGS="-fno-omit-frame-pointer -pipe -Wall -Wno-uninitialized -DNDEBUG -I/opt/zextras/common/include -I/usr/include" 
-  export CXXFLAGS="-fno-omit-frame-pointer -pipe -Wall -Wno-uninitialized -DNDEBUG -I/opt/zextras/common/include -I/usr/include" 
+  export CFLAGS="-fno-omit-frame-pointer -pipe -Wall -Wno-uninitialized -DNDEBUG -I/opt/zextras/common/include -I/usr/include"
+  export CXXFLAGS="-fno-omit-frame-pointer -pipe -Wall -Wno-uninitialized -DNDEBUG -I/opt/zextras/common/include -I/usr/include"
   export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
 
   cd "${srcdir}/mariadb-${pkgver}"
   cmake . \
     -DBUILD_CONFIG=mysql_release \
-    -Wno-dev \
-    -DCOMPILATION_COMMENT="Zextras MariaDB binary distribution" \
-    -DCMAKE_BUILD_WITH_INSTALL_RPATH=FALSE  \
+    -DCMAKE_BUILD_WITH_INSTALL_RPATH=FALSE \
     -DCMAKE_INSTALL_PREFIX="/opt/zextras/common" \
     -DCMAKE_INSTALL_RPATH="/opt/zextras/common/lib" \
     -DCMAKE_PREFIX_PATH="/opt/zextras/common" \
     -DCMAKE_SKIP_BUILD_RPATH=FALSE \
-    -DINSTALL_SYSCONFDIR=/opt/zextras/conf \
+    -DCOMPILATION_COMMENT="Zextras MariaDB binary distribution" \
+    -DCURL_INCLUDE_DIR=/opt/zextras/common/include \
+    -DCURL_LIBRARY=/opt/zextras/common/lib \
+    -DINSTALL_DOCDIR=share/mysql/docs \
+    -DINSTALL_DOCREADMEDIR=share/mysql/docs \
+    -DINSTALL_INFODIR=share/mysql/docs \
     -DINSTALL_MANDIR=share/man \
-    -DWITH_EMBEDDED_SERVER=OFF \
-    -DWITH_FAST_MUTEXES=ON \
-    -DENABLED_LOCAL_INFILE=ON \
+    -DINSTALL_MYSQLSHAREDIR=share/mysql \
+    -DINSTALL_SBINDIR=sbin \
+    -DINSTALL_SCRIPTDIR=share/mysql/scripts \
+    -DINSTALL_SHAREDIR=share/mysql \
+    -DINSTALL_SYSCONFDIR=/opt/zextras/conf \
+    -DINSTALL_UNIX_ADDRDIR=/opt/zextras/data/tmp/mysql/mysql.sock \
+    -DLIBXML2_INCLUDE_DIR=/opt/zextras/common/include/libxml2 \
+    -DLIBXML2_LIBRARY=/opt/zextras/common/lib \
     -DPLUGIN_ARCHIVE=NO \
     -DPLUGIN_ARIA=NO \
     -DPLUGIN_BLACKHOLE=NO \
@@ -118,30 +117,15 @@ build() {
     -DPLUGIN_SPHINX=NO \
     -DPLUGIN_SPIDER=NO \
     -DPLUGIN_TOKUDB=NO \
-    -DINSTALL_DOCDIR=share/mysql/docs \
-    -DINSTALL_DOCREADMEDIR=share/mysql/docs \
-    -DINSTALL_INFODIR=share/mysql/docs \
-    -DINSTALL_MYSQLSHAREDIR=share/mysql \
-    -DINSTALL_PLUGINDIR=lib/plugin \
-    -DINSTALL_SHAREDIR=share/mysql \
-    -DINSTALL_SBINDIR=sbin \
-    -DINSTALL_SCRIPTDIR=share/mysql/scripts \
-    -DINSTALL_UNIX_ADDRDIR=/opt/zextras/data/tmp/mysql/mysql.sock \
-    -DDEFAULT_CHARSET=utf8mb4 \
-    -DDEFAULT_COLLATION=utf8mb4_unicode_ci \
-    -DENABLED_LOCAL_INFILE=ON \
-    -DWITH_EXTRA_CHARSETS=complex \
+    -DPYTHON_SHEBANG=/usr/bin/python3 \
+    -DWITH_EMBEDDED_SERVER=OFF \
+    -DWITH_FAST_MUTEXES=ON \
     -DWITH_JEMALLOC=ON \
-    -DWITH_LIBWRAP=OFF \
     -DWITH_PCRE=system \
-    -DWITH_READLINE=ON \
     -DWITH_SSL=yes \
     -DWITH_UNIT_TESTS=OFF \
     -DWITH_ZLIB=system \
-    -DLIBXML2_INCLUDE_DIR=/opt/zextras/common/include/libxml2 \
-    -DLIBXML2_LIBRARY=/opt/zextras/common/lib \
-    -DCURL_INCLUDE_DIR=/opt/zextras/common/include \
-    -DCURL_LIBRARY=/opt/zextras/common/lib
+    -Wno-dev
   make depend -j16
   make -j16
 }
@@ -157,8 +141,12 @@ package() {
   rm -f "${pkgdir}"/opt/zextras/common/sbin/rcmysql
   rm -f "${pkgdir}"/opt/zextras/common/lib/libmysqlclient_r.so.18
   rm -f "${pkgdir}"/opt/zextras/common/lib/libmysqlclient_r.so.18.0.0
-  cd "${pkgdir}"/opt/zextras/common/lib && \
-  ln -s libmysqlclient.so.18.0.0 libmysqlclient_r.so.18.0.0 && \
-  ln -s libmysqlclient.so.18 libmysqlclient_r.so.18
+
+  cd "${pkgdir}"/opt/zextras/common/lib
+  ln -s libmysqlclient.so.18.0.0 \
+    libmysqlclient_r.so.18.0.0
+  ln -s libmysqlclient.so.18 \
+    libmysqlclient_r.so.18
+
   rm -rf "${pkgdir}"/opt/zextras/common/lib/*.a
 }

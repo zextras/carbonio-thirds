@@ -11,7 +11,7 @@ pipeline {
     }
     agent {
         node {
-            label 'base-agent-v1'
+            label 'base-agent-v2'
         }
     }
     environment {
@@ -21,7 +21,7 @@ pipeline {
         stage('Checkout & Stash') {
             agent {
                 node {
-                    label 'base-agent-v1'
+                    label 'base-agent-v2'
                 }
             }
             steps {
@@ -40,6 +40,25 @@ pipeline {
                 sh 'sudo pacur build ubuntu-focal native'
                 sh 'sudo pacur build ubuntu-focal perl'
                 stash includes: 'artifacts/', name: 'artifacts-ubuntu-focal'
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'artifacts/*.deb',
+                    fingerprint: true
+                }
+            }
+        }
+        stage('Ubuntu 22') {
+            agent {
+                node {
+                    label 'pacur-agent-ubuntu-22.04-v1'
+                }
+            }
+            steps {
+                unstash 'project'
+                sh 'sudo pacur build ubuntu-jammy native'
+                sh 'sudo pacur build ubuntu-jammy perl'
+                stash includes: 'artifacts/', name: 'artifacts-ubuntu-jammy'
             }
             post {
                 always {
@@ -74,6 +93,7 @@ pipeline {
             }
             steps {
                 unstash 'artifacts-ubuntu-focal'
+                unstash 'artifacts-ubuntu-jammy'
                 unstash 'artifacts-rocky-8'
 
                 script {
@@ -87,6 +107,11 @@ pipeline {
                                 "pattern": "artifacts/*focal*.deb",
                                 "target": "ubuntu-playground/pool/",
                                 "props": "deb.distribution=focal;deb.component=main;deb.architecture=amd64"
+                            },
+                            {
+                                "pattern": "artifacts/*jammy*.deb",
+                                "target": "ubuntu-playground/pool/",
+                                "props": "deb.distribution=jammy;deb.component=main;deb.architecture=amd64"
                             },
                             {
                                 "pattern": "artifacts/(carbonio-altermime)-(*).rpm",
@@ -680,7 +705,9 @@ pipeline {
             }
             steps {
                 unstash 'artifacts-ubuntu-focal'
+                unstash 'artifacts-ubuntu-jammy'
                 unstash 'artifacts-rocky-8'
+
                 script {
                     def server = Artifactory.server 'zextras-artifactory'
                     def buildInfo
@@ -696,6 +723,11 @@ pipeline {
                                 "pattern": "artifacts/*focal*.deb",
                                 "target": "ubuntu-rc/pool/",
                                 "props": "deb.distribution=focal;deb.component=main;deb.architecture=amd64"
+                            },
+                            {
+                                "pattern": "artifacts/*jammy*.deb",
+                                "target": "ubuntu-rc/pool/",
+                                "props": "deb.distribution=jammy;deb.component=main;deb.architecture=amd64"
                             }
                         ]
                     }'''
