@@ -1,32 +1,23 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-crypt-saltedhash"
 pkgver="0.09"
 pkgrel="2"
 pkgdesc="Perl interface to functions that assist in working with salted hashes"
-pkgdesclong=(
-  "Perl interface to functions that assist in working with salted hashes"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "perl-core"
   "perl"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/G/GS/GSHANK/Crypt-SaltedHash-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('1d1d2eb2bc2ee9bc4b9fde6909cb8b1abfeced7e75b16e8a23312ff354cc8438')
 
 build() {
   cd "${srcdir}/Crypt-SaltedHash-${pkgver}"

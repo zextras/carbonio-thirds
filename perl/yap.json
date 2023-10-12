@@ -1,7 +1,7 @@
 {
   "name": "Zextras Server",
   "description": "This is the manifest to build perl third-party packages",
-  "build_dir": "/tmp/",
+  "buildDir": "/tmp/",
   "output": "artifacts",
   "projects": [
     {

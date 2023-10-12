@@ -1,22 +1,15 @@
-targets=(
-  ubuntu
-  centos
-)
 pkgname="carbonio-icu"
 pkgver="69.1"
 pkgrel="1"
 pkgdesc="International Components for Unicode library"
-pkgdesclong=(
-  "International Components for Unicode library"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "libc6"
   "bash"
 )
-depends:yum=(
+depends__yum=(
   "glibc"
   "bash"
 )
@@ -25,12 +18,10 @@ makedepends=(
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://github.com/unicode-org/icu/releases/download/release-69-1/icu4c-69_1-src.tgz"
 )
-hashsums=(
-  "d4aeb781715144ea6e3c6b98df5bbe0490bfa3175221a1d667f3e6851b7bd4a638fa4a37d4a921ccb31f02b5d15a6dded9464d98051964a86f7b1cde0ff0aab7"
-)
+sha256sums=('4cba7b7acd1d3c42c44bb0c14be6637098c7faf2b330ce876bc5f3b915d09745')
 
 build() {
   cd "${srcdir}/icu"

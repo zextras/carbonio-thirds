@@ -1,25 +1,18 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-mail-dkim"
 pkgver="1.20200907"
 pkgrel="2"
 pkgdesc="Signs/verifies Internet mail with DKIM/DomainKey signatures"
-pkgdesclong=(
-  "Signs/verifies Internet mail with DKIM/DomainKey signatures"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-perl-crypt-openssl-rsa"
   "carbonio-perl-mailtools"
   "carbonio-perl-net-dns"
   "carbonio-opendkim"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-perl-crypt-openssl-rsa"
   "carbonio-perl-mailtools"
   "carbonio-perl-net-dns"
@@ -27,18 +20,16 @@ depends:yum=(
   "perl-core"
   "perl"
 )
-provides:yum=(
+provides__yum=(
   "perl(Mail::AuthenticationResults::Header::AuthServID)"
   "perl(Mail::AuthenticationResults::Parser)"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/M/MB/MBRADSHAW/Mail-DKIM-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('abff11bd0977b9b8c3b2c3fc2a0dbdd2d38da249568698710fec1002d4251bf5')
 
 build() {
   cd "${srcdir}/Mail-DKIM-${pkgver}"

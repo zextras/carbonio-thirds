@@ -1,32 +1,23 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-digest-hmac"
 pkgver="1.04"
 pkgrel="2"
 pkgdesc="Keyed-Hashing for Message Authentication"
-pkgdesclong=(
-  "Keyed-Hashing for Message Authentication"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "perl-core"
   "perl"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/A/AR/ARODLAND/Digest-HMAC-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('d6bc8156aa275c44d794b7c18f44cdac4a58140245c959e6b19b2c3838b08ed4')
 
 build() {
   cd "${srcdir}/Digest-HMAC-${pkgver}"

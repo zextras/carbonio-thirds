@@ -1,29 +1,25 @@
 targets=(
   "ubuntu"
   "rocky"
-)
-pkgname="carbonio-jemalloc"
+) pkgname="carbonio-jemalloc"
 pkgver="5.3.0"
 pkgrel="2"
 pkgdesc="General-purpose scalable concurrent malloc implementation"
-pkgdesclong=(
-  "General-purpose scalable concurrent malloc implementation"
-)
-arch="amd64"
+arch=('x86_64')
 license=("BSD")
 section="mail"
 priority="extra"
-maintainer="Zextras <packages@zextras.com"
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "libgcc1"
   "libc6"
 )
-sources=("https://github.com/jemalloc/jemalloc/releases/download/${pkgver}/jemalloc-${pkgver}.tar.bz2")
-hashsums=("2db82d1e7119df3e71b7640219b6dfe84789bc0537983c3b7ac4f7189aecfeaa")
+source=("https://github.com/jemalloc/jemalloc/releases/download/${pkgver}/jemalloc-${pkgver}.tar.bz2")
+sha256sums=('2db82d1e7119df3e71b7640219b6dfe84789bc0537983c3b7ac4f7189aecfeaa')
 
 build() {
-  cd "jemalloc-${pkgver}"
+  cd "${srcdir}/jemalloc-${pkgver}"
   ./configure \
     --enable-autogen \
     --prefix=/opt/zextras/common
@@ -31,7 +27,7 @@ build() {
 }
 
 package() {
-  cd "jemalloc-${pkgver}"
+  cd "${srcdir}/jemalloc-${pkgver}"
 
   make DESTDIR="${pkgdir}" install
   chmod 644 "${pkgdir}/opt/zextras/common/lib/libjemalloc_pic.a"

@@ -1,18 +1,11 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-mail-spf"
 pkgver="2.9.0"
 pkgrel="2"
 pkgdesc="An object-oriented implementation of Sender Policy Framework"
-pkgdesclong=(
-  "An object-oriented implementation of Sender Policy Framework"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-perl-error"
   "carbonio-perl-net-dns"
   "carbonio-perl-net-dns-resolver-programmable"
@@ -20,7 +13,7 @@ depends:apt=(
   "carbonio-perl-uri"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-perl-error"
   "carbonio-perl-net-dns"
   "carbonio-perl-net-dns-resolver-programmable"
@@ -31,12 +24,10 @@ depends:yum=(
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/J/JM/JMEHNLE/mail-spf/Mail-SPF-v${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('61cb5915f1c7acc7a931ffc1bfc1291bdfac555e2a46eb2391b995ea9ecb6162')
 
 build() {
   cd "${srcdir}/Mail-SPF-v${pkgver}"

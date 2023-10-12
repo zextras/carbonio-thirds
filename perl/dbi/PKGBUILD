@@ -1,34 +1,25 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-dbi"
 pkgver="1.643"
 pkgrel="2"
 pkgdesc="Database independent interface for Perl"
-pkgdesclong=(
-  "Database independent interface for Perl"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-perl-socket"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-perl-socket"
   "perl-core"
   "perl"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/T/TI/TIMB/DBI-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('8a2b993db560a2c373c174ee976a51027dd780ec766ae17620c20393d2e836fa')
 
 build() {
   cd "${srcdir}/DBI-${pkgver}"

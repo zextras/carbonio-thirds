@@ -1,40 +1,31 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-math-bigint"
 pkgver="1.999818"
 pkgrel="2"
 pkgdesc="Arbitrary size integer/float math package"
-pkgdesclong=(
-  "Arbitrary size integer/float math package"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "perl-core"
   "perl"
 )
-makedepends:apt=(
+makedepends__apt=(
   "libconfig-autoconf-perl"
   "libtest-simple-perl"
 )
-makedepends:yum=(
+makedepends__yum=(
   "perl-Config-AutoConf"
   "perl-Test-Simple"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/P/PJ/PJACKLAM/Math-BigInt-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('b27634356ce2af9b7c0123ac8395a89a32fb15aeae82fcd39de8156cad278c15')
 
 build() {
   cd "${srcdir}/Math-BigInt-${pkgver}"
@@ -48,5 +39,5 @@ package() {
   cd "${srcdir}/Math-BigInt-${pkgver}"
   make install DESTDIR="${pkgdir}"
   find "${pkgdir}" -name '.packlist' -delete
-  find "${pkgdir}" -name '*.pod' -delete  
+  find "${pkgdir}" -name '*.pod' -delete
 }

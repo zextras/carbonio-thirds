@@ -1,36 +1,27 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-date-calc"
 pkgver="6.4"
 pkgrel="2"
 pkgdesc="Gregorian calendar date calculations"
-pkgdesclong=(
-  "Gregorian calendar date calculations"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "perl-core"
   "perl"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/S/ST/STBEY/Date-Calc-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('7ce137b2e797b7c0901f3adf1a05a19343356cd1f04676aa1c56a9f624f859ad')
 
 build() {
   cd "${srcdir}/Date-Calc-${pkgver}"
-    perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
+  perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
     INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
     LIB=/opt/zextras/common/lib/perl5
   make

@@ -1,7 +1,7 @@
 {
   "name": "Zextras Server",
   "description": "This is the manifest to build native third-party packages",
-  "build_dir": "/tmp/",
+  "buildDir": "/tmp/",
   "output": "artifacts",
   "projects": [
     {
@@ -18,10 +18,6 @@
     },
     {
       "name": "libxml2",
-      "install": true
-    },
-    {
-      "name": "libtool",
       "install": true
     },
     {

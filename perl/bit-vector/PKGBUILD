@@ -1,38 +1,29 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-bit-vector"
 pkgver="7.4"
 pkgrel="2"
 pkgdesc="Efficient bit vector, set of integers and big int math library"
-pkgdesclong=(
-  "Efficient bit vector, set of integers and big int math library"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-perl-carp-clan"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-perl-carp-clan"
   "perl-core"
   "perl"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/S/ST/STBEY/Bit-Vector-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('3c6daa671fecfbc35f92a9385b563d65f50dfc6bdc8b4805f9ef46c0d035a926')
 
 build() {
   cd "${srcdir}/Bit-Vector-${pkgver}"
-    perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
+  perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
     INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
     LIB=/opt/zextras/common/lib/perl5
   make
