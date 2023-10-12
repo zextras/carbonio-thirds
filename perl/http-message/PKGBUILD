@@ -1,18 +1,11 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-http-message"
 pkgver="6.32"
 pkgrel="2"
 pkgdesc="HTTP style message"
-pkgdesclong=(
-  "HTTP style message"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-perl-encode-locale"
   "carbonio-perl-http-date"
   "carbonio-perl-io-compress"
@@ -21,7 +14,7 @@ depends:apt=(
   "carbonio-perl-uri"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-perl-encode-locale"
   "carbonio-perl-http-date"
   "carbonio-perl-io-compress"
@@ -33,12 +26,10 @@ depends:yum=(
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/HTTP-Message-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('ac32960ce01a3ae4a950666736f2bd633fb694c60ad545adaad9cb5fe5c12278')
 
 build() {
   cd "${srcdir}/HTTP-Message-${pkgver}"

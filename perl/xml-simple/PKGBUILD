@@ -1,44 +1,35 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-xml-simple"
 pkgver="2.25"
 pkgrel="2"
 pkgdesc="An API for simple XML files"
-pkgdesclong=(
-  "An API for simple XML files"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-perl-dbi"
   "carbonio-perl-xml-sax-expat"
   "libexpat1"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-perl-dbi"
   "carbonio-perl-xml-sax-expat"
   "expat"
   "perl-core"
   "perl"
 )
-makedepends:apt=(
+makedepends__apt=(
   "libexpat1-dev"
 )
-makedepends:yum=(
+makedepends__yum=(
   "expat-devel"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/G/GR/GRANTM/XML-Simple-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('531fddaebea2416743eb5c4fdfab028f502123d9a220405a4100e68fc480dbf8')
 
 build() {
   cd "${srcdir}/XML-Simple-${pkgver}"
@@ -52,5 +43,5 @@ package() {
   cd "${srcdir}/XML-Simple-${pkgver}"
   make install DESTDIR="${pkgdir}"
   find "${pkgdir}" -name '.packlist' -delete
-  find "${pkgdir}" -name '*.pod' -delete  
+  find "${pkgdir}" -name '*.pod' -delete
 }

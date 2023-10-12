@@ -1,40 +1,31 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-dbd-sqlite"
 pkgver="1.66"
 pkgrel="2"
 pkgdesc="Self-contained RDBMS in a DBI Driver"
-pkgdesclong=(
-  "Self-contained RDBMS in a DBI Driver"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-perl-dbi"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-perl-dbi"
   "perl-core"
   "perl"
 )
-makedepends:apt=(
+makedepends__apt=(
   "libsqlite3-dev"
 )
-makedepends:yum=(
+makedepends__yum=(
   "sqlite-devel"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/I/IS/ISHIGAKI/DBD-SQLite-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('89e75dff9f66c273e0e459d51f151f88960eb7d82e2821e6902f18688ba592fe')
 
 build() {
   cd "${srcdir}/DBD-SQLite-${pkgver}"

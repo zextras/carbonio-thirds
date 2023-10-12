@@ -1,28 +1,19 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-pflogsumm"
 pkgver="1.1.5"
 pkgrel="1"
 pkgdesc="Postfix log entry summarizer"
-pkgdesclong=(
-  "Postfix log entry summarizer"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
 depends=(
   "carbonio-perl-date-calc"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://jimsun.linxnet.com/downloads/pflogsumm-${pkgver}.tar.gz"
 )
-hashsums=(
-  "da6443679117de5109fd7d65fe915286c20ad1ecee63fe07d8cdddd0b75fe466"
-)
+sha256sums=('da6443679117de5109fd7d65fe915286c20ad1ecee63fe07d8cdddd0b75fe466')
 
 package() {
   cd "${srcdir}/pflogsumm-${pkgver}"

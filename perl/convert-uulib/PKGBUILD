@@ -1,23 +1,16 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-convert-uulib"
 pkgver="1.8"
 pkgrel="3"
 pkgdesc="Decode uu/xx/b64/mime/yenc/etc-encoded data from a massive number of files"
-pkgdesclong=(
-  "Decode uu/xx/b64/mime/yenc/etc-encoded data from a massive number of files"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-perl-canary-stability"
   "libcommon-sense-perl"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-perl-canary-stability"
   "perl-common-sense"
   "perl-core"
@@ -25,16 +18,14 @@ depends:yum=(
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/M/ML/MLEHMANN/Convert-UUlib-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('98c314c50fb15bf53f89fcfe47ecaaf2b7bd3a87573638916c8a04cde9a8db3c')
 
 build() {
   cd "${srcdir}/Convert-UUlib-${pkgver}"
-    perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
+  perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
     INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
     LIB=/opt/zextras/common/lib/perl5
   make

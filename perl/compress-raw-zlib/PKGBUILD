@@ -1,36 +1,27 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-compress-raw-zlib"
 pkgver="2.101"
 pkgrel="2"
 pkgdesc="Low-Level Interface to zlib compression library"
-pkgdesclong=(
-  "Low-Level Interface to zlib compression library"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "perl-core"
   "perl"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/P/PM/PMQS/Compress-Raw-Zlib-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('9d1b9515e8277c1b007e33fad1fd0f18717d56bf647e3794d61289c45b1aabb2')
 
 build() {
   cd "${srcdir}/Compress-Raw-Zlib-${pkgver}"
-    perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
+  perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
     INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
     LIB=/opt/zextras/common/lib/perl5
   make

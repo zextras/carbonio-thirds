@@ -1,19 +1,12 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-libwww"
 pkgver="6.67"
 pkgrel="1"
 pkgdesc="The World-Wide Web library for Perl"
-pkgdesclong=(
-  "The World-Wide Web library for Perl"
-)
-arch="amd64"
+arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
 license=("GPL")
-depends:apt=(
+depends__apt=(
   "carbonio-perl-encode-locale"
   "carbonio-perl-file-listing"
   "carbonio-perl-html-parser"
@@ -28,7 +21,7 @@ depends:apt=(
   "libtry-tiny-perl"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-perl-encode-locale"
   "carbonio-perl-file-listing"
   "carbonio-perl-html-parser"
@@ -46,12 +39,10 @@ depends:yum=(
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/libwww-perl-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('96eec40a3fd0aa1bd834117be5eb21c438f73094d861a1a7e5774f0b1226b723')
 
 build() {
   cd "${srcdir}/libwww-perl-${pkgver}"

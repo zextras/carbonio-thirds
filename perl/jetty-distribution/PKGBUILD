@@ -1,28 +1,19 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-jetty-distribution"
 pkgver="9.4.48.v20220622"
 pkgrel="2"
 pkgdesc="A pure Java-based HTTP server and Java Servlet container"
-pkgdesclong=(
-  "A pure Java-based HTTP server and Java Servlet container"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
 depends=(
   "carbonio-openjdk"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/${pkgver}/jetty-distribution-${pkgver}.tar.gz"
 )
-hashsums=(
-  "fdfd0d1e2732576c09246df8484ff7ed4aa4c84143927936934cb6b8e5194fa3"
-)
+sha256sums=('50d6eccd349d2e671bfea710cee833911287eb706fe1d39503eab76fc6fc1a0c')
 
 package() {
   cd "${srcdir}/jetty-distribution-${pkgver}"

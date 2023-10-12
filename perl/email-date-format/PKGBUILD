@@ -1,34 +1,25 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-email-date-format"
 pkgver="1.005"
 pkgrel="2"
 pkgdesc="Produce RFC 2822 date strings"
-pkgdesclong=(
-  "Produce RFC 2822 date strings"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-perl-email-date-format"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-perl-email-date-format"
   "perl-core"
   "perl"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/R/RJ/RJBS/Email-Date-Format-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('579c617e303b9d874411c7b61b46b59d36f815718625074ae6832e7bb9db5104')
 
 build() {
   cd "${srcdir}/Email-Date-Format-${pkgver}"

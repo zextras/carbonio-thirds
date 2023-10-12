@@ -1,18 +1,11 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-postfix"
 pkgver="3.8.0"
 pkgrel="1"
 pkgdesc="Fast, easy to administer, secure mail server"
-pkgdesclong=(
-  "Fast, easy to administer, secure mail server"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "libc6"
   "libpcre3"
   "carbonio-openldap"
@@ -20,11 +13,11 @@ depends:apt=(
   "carbonio-openssl"
   "carbonio-mariadb"
 )
-makedepends:apt=(
+makedepends__apt=(
   "libc6-dev"
   "libpcre3-dev"
 )
-depends:yum=(
+depends__yum=(
   "libnsl2"
   "pcre"
   "carbonio-openldap"
@@ -32,58 +25,68 @@ depends:yum=(
   "carbonio-openssl"
   "carbonio-mariadb"
 )
-makedepends:yum=(
+makedepends__yum=(
   "libnsl2-devel"
   "pcre-devel"
 )
 section="utils"
 priority="optional"
-sources=(
+source=(
   "https://de.postfix.org/ftpmirror/official/postfix-${pkgver}.tar.gz"
   "carbonio-postfix.patch"
 )
-hashsums=(
-  "a3ad8029bd2c6b0c576477a0f77bf9d2c0b761cbaa0efbfef47969efea6eade9"
-  "ac6ee12cd854444610320fa75143d65b0e55aeff0bc8d25b4547ed1d30a5f3a2"
-)
+sha256sums=('a3ad8029bd2c6b0c576477a0f77bf9d2c0b761cbaa0efbfef47969efea6eade9'
+  'ac6ee12cd854444610320fa75143d65b0e55aeff0bc8d25b4547ed1d30a5f3a2')
 
 build() {
   cd "${srcdir}/postfix-${pkgver}"
-  patch -Np1 -i ../carbonio-postfix.patch
+  patch -Np1 -i "${srcdir}/carbonio-postfix.patch"
 
   make makefiles \
-	CCARGS='-DDEF_COMMAND_DIR=\"/opt/zextras/common/sbin\" \
-	-DDEF_DAEMON_DIR=\"/opt/zextras/common/libexec\" \
-	-DDEF_CONFIG_DIR=\"/opt/zextras/common/conf\" \
-	-DDEF_QUEUE_DIR=\"/opt/zextras/data/postfix/spool\" \
-	-DDEF_SENDMAIL_PATH=\"/opt/zextras/common/sbin/sendmail\" \
-	-DDEF_NEWALIAS_PATH=\"/opt/zextras/common/sbin/newaliases\" \
-	-DDEF_MAILQ_PATH=\"/opt/zextras/common/sbin/mailq\" \
-	-DDEF_MANPAGE_DIR=\"/opt/zextras/common/share/man\" \
-	-DDEF_HTML_DIR=\"no\" \
-	-DDEF_README_DIR=\"no\" \
-	-DDEF_DB_TYPE=\"lmdb\" \
-	-DDEF_DATA_DIR=\"/opt/zextras/data/postfix/data\" \
-	-DUSE_SASL_AUTH -DUSE_CYRUS_SASL \
-	-DHAS_LMDB -DNO_DB \
-	-DHAS_LDAP -DHAS_MYSQL -DUSE_TLS -DHAS_PCRE -I/usr/include/pcre \
-	-DUSE_LDAP_SASL \
-	-I/opt/zextras/common/include \
-	-I/opt/zextras/common/include/mysql \
-	-I/opt/zextras/common/include/sasl \
-	-I/usr/include' \
-	AUXLIBS='-L/opt/zextras/common/lib \
+    command_directory=/opt/zextras/common/sbin \
+    daemon_directory=/opt/zextras/common/libexec \
+    config_directory=/opt/zextras/common/conf \
+    queue_directory=/opt/zextras/data/postfix/spool \
+    sendmail_path=/opt/zextras/common/sbin/sendmail \
+    newalias_path=/opt/zextras/common/sbin/newaliases \
+    mailq_path=/opt/zextras/common/sbin/mailq \
+    manpage_directory=/opt/zextras/common/share/man \
+    html_directory=no \
+    readme_directory=no \
+    default_database_type=lmdb \
+    data_directory=/opt/zextras/data/postfix/data \
+    CCARGS='\
+  -DHAS_LDAP \
+  -DHAS_MYSQL \
+  -DNO_DB \
+  -DUSE_CYRUS_SASL-DHAS_LMDB \
+  -DUSE_LDAP_SASL \
+  -DUSE_SASL_AUTH \
+  -DUSE_TLS -DHAS_PCRE \
+  -I/opt/zextras/common/include \
+  -I/opt/zextras/common/include/mysql \
+  -I/opt/zextras/common/include/sasl \
+  -I/usr/include \
+  -I/usr/include/pcre' \
+    AUXLIBS='\
+  -L/opt/zextras/common/lib \
 	-lpcre -lldap -llber -llmdb -lmysqlclient -lsasl2 -lssl -lcrypto \
 	-L/usr/lib -lz -lm -lpthread' \
-  SHLIB_RPATH="-Wl,-rpath,/opt/zextras/common/lib/postfix -Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib" \
-  OPT="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib"
+    SHLIB_RPATH='\
+  -Wl,-rpath,/opt/zextras/common/lib/postfix \
+  -Wl,-rpath,/opt/zextras/common/lib \
+  -L/opt/zextras/common/lib' \
+    OPT='\
+  -Wl,-rpath,/opt/zextras/common/lib \
+  -L/opt/zextras/common/lib'
+
   make -j16
 }
 
 package() {
   cd "${srcdir}/postfix-${pkgver}"
   sh postfix-install -non-interactive-package install_root="${pkgdir}"
-  sed  -e 's|postconf|/opt/zextras/common/sbin/postconf|' auxiliary/qshape/qshape.pl > "${pkgdir}"/opt/zextras/common/sbin/qshape.pl
+  sed -e 's|postconf|/opt/zextras/common/sbin/postconf|' auxiliary/qshape/qshape.pl >"${pkgdir}"/opt/zextras/common/sbin/qshape.pl
   chmod a+rx "${pkgdir}"/opt/zextras/common/sbin/qshape.pl
   cd "${pkgdir}"/opt/zextras/common/sbin
   rm -f newaliases

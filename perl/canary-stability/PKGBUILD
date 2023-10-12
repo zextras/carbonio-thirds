@@ -1,36 +1,27 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-canary-stability"
 pkgver="2013"
 pkgrel="2"
 pkgdesc="Canary to check perl compatibility for schmorp's modules"
-pkgdesclong=(
-  "Canary to check perl compatibility for schmorp's modules"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "perl-core"
   "perl"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/M/ML/MLEHMANN/Canary-Stability-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('a5c91c62cf95fcb868f60eab5c832908f6905221013fea2bce3ff57046d7b6ea')
 
 build() {
   cd "${srcdir}/Canary-Stability-${pkgver}"
-    perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
+  perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
     INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
     LIB=/opt/zextras/common/lib/perl5
   make

@@ -1,40 +1,31 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-net-server"
 pkgver="2.010"
 pkgrel="2"
 pkgdesc="Extensible, general Perl server engine"
-pkgdesclong=(
-  "Extensible, general Perl server engine"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-perl-socket"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-perl-socket"
   "perl-core"
   "perl"
 )
-makedepends:apt=(
+makedepends__apt=(
   "libmodule-install-perl"
 )
-makedepends:yum=(
+makedepends__yum=(
   "perl-Module-Install"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/R/RH/RHANDOM/Net-Server-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('95fc380abc32eaef84406ecc4b01612c7215f6375318fdb95901be1babd1a6e1')
 
 build() {
   cd "${srcdir}/Net-Server-${pkgver}"

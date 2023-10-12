@@ -1,23 +1,16 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-html-parser"
 pkgver="3.76"
 pkgrel="2"
 pkgdesc="HTML parser class"
-pkgdesclong=(
-  "HTML parser class"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-perl-http-message"
   "carbonio-perl-uri"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-perl-http-message"
   "carbonio-perl-uri"
   "perl-core"
@@ -25,12 +18,10 @@ depends:yum=(
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/HTML-Parser-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('64d9e2eb2b420f1492da01ec0e6976363245b4be9290f03f10b7d2cb63fa2f61')
 
 build() {
   cd "${srcdir}/HTML-Parser-${pkgver}"

@@ -1,49 +1,39 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-libxml2"
 pkgver="2.9.12"
 pkgrel="2"
 pkgdesc="XML parsing library, version 2"
-pkgdesclong=(
-  "XML parsing library, version 2"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-icu"
   "zlib1g"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-icu"
   "zlib"
 )
-makedepends:apt=(
+makedepends__apt=(
   "autoconf"
-  "libtool"
   "pkg-config"
   "zlib1g-dev"
 )
-makedepends:yum=(
+makedepends__yum=(
   "zlib-devel"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://github.com/GNOME/libxml2/archive/refs/tags/v${pkgver}.tar.gz"
 )
-hashsums=(
-  "8a4ddd706419c210b30b8978a51388937fd9362c34fc9a3d69e4fcc6f8055ee0"
-)
+sha256sums=('8a4ddd706419c210b30b8978a51388937fd9362c34fc9a3d69e4fcc6f8055ee0')
 
 build() {
   cd "${srcdir}/libxml2-${pkgver}"
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
   export CFLAGS="-I/opt/zextras/common/include"
   export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
-  
+
   autoreconf -fiv
   ./configure \
     --prefix=/opt/zextras/common \

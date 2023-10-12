@@ -1,34 +1,25 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-xml-parser"
 pkgver="2.46"
 pkgrel="2"
 pkgdesc="A perl module for parsing XML documents"
-pkgdesclong=(
-  "A perl module for parsing XML documents"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-perl-libwww"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-perl-libwww"
   "perl-core"
   "perl"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/T/TO/TODDR/XML-Parser-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('d331332491c51cccfb4cb94ffc44f9cd73378e618498d4a37df9e043661c515d')
 
 build() {
   cd "${srcdir}/XML-Parser-${pkgver}"
@@ -42,5 +33,5 @@ package() {
   cd "${srcdir}/XML-Parser-${pkgver}"
   make install DESTDIR="${pkgdir}"
   find "${pkgdir}" -name '.packlist' -delete
-  find "${pkgdir}" -name '*.pod' -delete  
+  find "${pkgdir}" -name '*.pod' -delete
 }
