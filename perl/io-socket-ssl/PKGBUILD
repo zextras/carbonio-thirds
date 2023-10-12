@@ -1,25 +1,18 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-io-socket-ssl"
 pkgver="2.072"
 pkgrel="2"
 pkgdesc="SSL sockets with IO::Socket interface"
-pkgdesclong=(
-  "SSL sockets with IO::Socket interface"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-perl-socket"
   "carbonio-perl-io-socket-ip"
   "carbonio-perl-net-ssleay"
   "carbonio-perl-uri"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-perl-socket"
   "carbonio-perl-io-socket-ip"
   "carbonio-perl-net-ssleay"
@@ -29,12 +22,10 @@ depends:yum=(
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/S/SU/SULLR/IO-Socket-SSL-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('b5bee81db3905a9069340a450a48e1e1b32dec4ede0064f5703bafb9a707b89d')
 
 build() {
   cd "${srcdir}/IO-Socket-SSL-${pkgver}"

@@ -1,37 +1,28 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-net-ldap"
 pkgver="0.68"
 pkgrel="2"
 pkgdesc="Lightweight Directory Access Protocol"
-pkgdesclong=(
-  "Lightweight Directory Access Protocol"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-perl-convert-asn1"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-perl-convert-asn1"
   "perl-core"
   "perl"
 )
-provides:yum=(
+provides__yum=(
   "perl(Net::LDAPapi)"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/M/MA/MARSCHAP/perl-ldap-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('e2f389fe3e7a9e4b61488692919ad723b98f3b479b5288f610daa8c27995b351')
 
 build() {
   cd "${srcdir}/perl-ldap-${pkgver}"

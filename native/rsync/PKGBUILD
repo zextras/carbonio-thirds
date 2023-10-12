@@ -1,37 +1,30 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-rsync"
 pkgver="3.2.3"
 pkgrel="1"
 pkgdesc="A fast and versatile file copying tool for remote and local files"
-pkgdesclong=(
-  "A fast and versatile file copying tool for remote and local files"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "libattr1"
   "libacl1"
   "libc6"
   "libpopt0"
 )
-makedepends:apt=(
+makedepends__apt=(
   "libacl1-dev"
   "libattr1-dev"
   "liblz4-dev"
   "libxxhash-dev"
 )
-depends:yum=(
+depends__yum=(
   "libacl"
   "libattr"
   "lz4"
   "popt"
   "xxhash"
 )
-makedepends:yum=(
+makedepends__yum=(
   "libacl-devel"
   "libattr-devel"
   "lz4-devel"
@@ -40,12 +33,10 @@ makedepends:yum=(
 )
 section="utils"
 priority="optional"
-sources=(
+source=(
   "https://download.samba.org/pub/rsync/src/rsync-${pkgver}.tar.gz"
 )
-hashsums=(
-  "becc3c504ceea499f4167a260040ccf4d9f2ef9499ad5683c179a697146ce50e"
-)
+sha256sums=('becc3c504ceea499f4167a260040ccf4d9f2ef9499ad5683c179a697146ce50e')
 
 build() {
   cd "${srcdir}/rsync-${pkgver}"
@@ -55,11 +46,11 @@ build() {
 
   ./configure \
     --prefix=/opt/zextras/common \
-	  --disable-debug \
+    --disable-debug \
     --disable-simd \
     --disable-zstd \
     --with-included-popt=no \
-	  --with-included-zlib=no \
+    --with-included-zlib=no \
     --localstatedir=/opt/zextras/data/tmp
   make -j16
 }

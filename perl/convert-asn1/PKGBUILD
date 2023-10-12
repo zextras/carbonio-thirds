@@ -1,38 +1,29 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-convert-asn1"
 pkgver="0.31"
 pkgrel="2"
 pkgdesc="ASN.1 Encode/Decode library"
-pkgdesclong=(
-  "ASN.1 Encode/Decode library"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-perl-math-bigint"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-perl-math-bigint"
   "perl-core"
   "perl"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/T/TI/TIMLEGGE/Convert-ASN1-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('6fe4c1ba744c3a8212bf2c9b2703d93530acc153435cf2f93633540b439fbbeb')
 
 build() {
   cd "${srcdir}/Convert-ASN1-${pkgver}"
-    perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
+  perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
     INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
     LIB=/opt/zextras/common/lib/perl5
   make

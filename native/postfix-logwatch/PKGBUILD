@@ -1,25 +1,16 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-postfix-logwatch"
 pkgver="1.40.03"
 pkgrel="1"
 pkgdesc="Best email money can buy"
-pkgdesclong=(
-  "Best email money can buy"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
 section="utils"
 priority="optional"
-sources=(
+source=(
   "http://sourceforge.net/projects/logreporters/files/postfix-logwatch-${pkgver}.tgz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('c9aae87471554bb93c9d91bd2df3999ce3fae19f75ffd43fdee3f8552232c748')
 
 build() {
   cd "${srcdir}/postfix-logwatch-${pkgver}"

@@ -1,22 +1,15 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-spamassassin-rules"
 pkgver="1.0"
 pkgrel="2"
 pkgdesc="Base class SAX Drivers and Filters"
-pkgdesclong=(
-  "Base class SAX Drivers and Filters"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-perl-mail-spamassassin"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-perl-mail-spamassassin"
   "perl"
   "perl-core"

@@ -1,38 +1,29 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-io-socket-ip"
 pkgver="0.41"
 pkgrel="2"
 pkgdesc="Family-neutral IP socket supporting both IPv4 and IPv6"
-pkgdesclong=(
-  "Family-neutral IP socket supporting both IPv4 and IPv6"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-perl-socket"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-perl-socket"
   "perl"
   "perl-core"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/P/PE/PEVANS/IO-Socket-IP-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('849a45a238f8392588b97722c850382c4e6d157cd08a822ddcb9073c73bf1446')
 
 build() {
   cd "${srcdir}/IO-Socket-IP-${pkgver}"
-    perl -I /opt/zextras/common/lib/perl5 Build.PL INSTALL_BASE=/opt/zextras/common \
+  perl -I /opt/zextras/common/lib/perl5 Build.PL INSTALL_BASE=/opt/zextras/common \
     INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
     LIB=/opt/zextras/common/lib/perl5
 }

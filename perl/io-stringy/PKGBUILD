@@ -1,32 +1,23 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-io-stringy"
 pkgver="2.113"
 pkgrel="2"
 pkgdesc="I/O on in-core objects like strings and arrays"
-pkgdesclong=(
-  "I/O on in-core objects like strings and arrays"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "perl-core"
   "perl"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/C/CA/CAPOEIRAB/IO-Stringy-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('51220fcaf9f66a639b69d251d7b0757bf4202f4f9debd45bdd341a6aca62fe4e')
 
 build() {
   cd "${srcdir}/IO-Stringy-${pkgver}"

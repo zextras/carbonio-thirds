@@ -1,42 +1,33 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-file-libmagic"
 pkgver="1.23"
 pkgrel="2"
 pkgdesc="Determine MIME types of data or files using libmagic"
-pkgdesclong=(
-  "Determine MIME types of data or files using libmagic"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "libmagic1"
   "perl"
 )
-makedepends:apt=(
+makedepends__apt=(
   "libmagic-dev"
   "libmodule-build-perl"
 )
-depends:yum=(
+depends__yum=(
   "file-libs"
   "perl"
   "perl-core"
 )
-makedepends:yum=(
+makedepends__yum=(
   "file-devel"
   "perl-Module-Build"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/D/DR/DROLSKY/File-LibMagic-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('52e6b1dc7cb2d87a4cdf439ba145e0b9e8cf28cc26a48a3cf9977c83463967ee')
 
 build() {
   cd "${srcdir}/File-LibMagic-${pkgver}"
@@ -50,5 +41,5 @@ package() {
   cd "${srcdir}/File-LibMagic-${pkgver}"
   make install DESTDIR="${pkgdir}"
   find "${pkgdir}" -name '.packlist' -delete
-  find "${pkgdir}" -name '*.pod' -delete  
+  find "${pkgdir}" -name '*.pod' -delete
 }

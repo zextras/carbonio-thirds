@@ -1,34 +1,25 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-net-ssleay"
 pkgver="1.90"
 pkgrel="2"
 pkgdesc="Perl extension for using OpenSSL"
-pkgdesclong=(
-  "Perl extension for using OpenSSL"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-openssl"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-openssl"
   "perl-core"
   "perl"
 )
 section="libs"
 priority="important"
-sources=(
-"https://cpan.metacpan.org/authors/id/C/CH/CHRISN/Net-SSLeay-${pkgver}.tar.gz"
+source=(
+  "https://cpan.metacpan.org/authors/id/C/CH/CHRISN/Net-SSLeay-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('f8696cfaca98234679efeedc288a9398fcf77176f1f515dbc589ada7c650dc93')
 
 build() {
   cd "${srcdir}/Net-SSLeay-${pkgver}"

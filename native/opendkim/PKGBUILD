@@ -1,18 +1,11 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-opendkim"
 pkgver="2.10.3"
 pkgrel="2"
 pkgdesc="An open source implementation of the DKIM sender authentication system. Based on a fork of dkim-milter"
-pkgdesclong=(
-  "An open source implementation of the DKIM sender authentication system. Based on a fork of dkim-milter"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-cyrus-sasl"
   "carbonio-bdb"
   "carbonio-libbsd"
@@ -21,11 +14,11 @@ depends:apt=(
   "carbonio-openssl"
   "zlib1g"
 )
-makedepends:apt=(
+makedepends__apt=(
   "autoconf"
   "zlib1g-dev"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-cyrus-sasl"
   "carbonio-bdb"
   "carbonio-libbsd"
@@ -34,28 +27,27 @@ depends:yum=(
   "carbonio-openssl"
   "zlib"
 )
-makedepends:yum=(
+makedepends__yum=(
   "autoconf"
   "zlib-devel"
 )
 section="utils"
 priority="optional"
-sources=(
+source=(
   "https://downloads.sourceforge.net/project/opendkim/opendkim-${pkgver}.tar.gz"
   "openssl_1.1.0_compat.patch"
 )
-hashsums=(
-  "43a0ba57bf942095fe159d0748d8933c6b1dd1117caf0273fa9a0003215e681b"
-  "5095a7516493af08396060852851231c9b1cba5ee00493f810f0dfc9a69f8dfe"
-)
+sha256sums=('43a0ba57bf942095fe159d0748d8933c6b1dd1117caf0273fa9a0003215e681b'
+  '64d46209f4086c85eccfe09924856514e2150b79e54bad801a57def6e200d73e')
 
 build() {
   cd "${srcdir}/opendkim-${pkgver}"
   mkdir -p lib/lib
-  patch -Np1 -i ../openssl_1.1.0_compat.patch
+  patch -Np1 -i "${srcdir}/openssl_1.1.0_compat.patch"
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib"
   export CPPFLAGS="-I/opt/zextras/common/include"
-  autoreconf -i
+  
+  autoreconf -fiv
   ./configure --prefix=/opt/zextras/common \
     --enable-query_cache \
     --enable-poll \
@@ -76,7 +68,7 @@ build() {
     --with-lmdb=/opt/zextras/common \
     --with-libcurl=/opt/zextras/common \
     --with-db=/opt/zextras/common
-    grep -Rsni "\-Llib/lib" -l | xargs sed -i "s/Llib\/lib/L\/opt\/zextras\/common\/lib/g"
+  grep -Rsni "\-Llib/lib" -l | xargs sed -i "s/Llib\/lib/L\/opt\/zextras\/common\/lib/g"
   make -j16
 }
 
