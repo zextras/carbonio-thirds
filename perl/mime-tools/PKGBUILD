@@ -1,24 +1,17 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-mime-tools"
 pkgver="5.509"
 pkgrel="2"
 pkgdesc="Modules for parsing (and creating!) MIME entities"
-pkgdesclong=(
-  "Modules for parsing (and creating!) MIME entities"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-perl-convert-binhex"
   "carbonio-perl-io-stringy"
   "carbonio-perl-mailtools"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-perl-convert-binhex"
   "carbonio-perl-io-stringy"
   "carbonio-perl-mailtools"
@@ -27,12 +20,10 @@ depends:yum=(
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/D/DS/DSKOLL/MIME-tools-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('64579f0c923d81d9a2194586e47c3475519e2646e4b5c102a8920759facf6973')
 
 build() {
   cd "${srcdir}/MIME-tools-${pkgver}"

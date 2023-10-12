@@ -1,32 +1,23 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-timedate"
 pkgver="2.33"
 pkgrel="2"
 pkgdesc="Date formatting subroutines"
-pkgdesclong=(
-  "Date formatting subroutines"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "perl-core"
   "perl"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/A/AT/ATOOMIC/TimeDate-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('c0b69c4b039de6f501b0d9f13ec58c86b040c1f7e9b27ef249651c143d605eb2')
 
 build() {
   cd "${srcdir}/TimeDate-${pkgver}"

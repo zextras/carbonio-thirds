@@ -1,23 +1,16 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-convert-tnef"
 pkgver="0.18"
 pkgrel="2"
 pkgdesc="Perl module to read TNEF files"
-pkgdesclong=(
-  "Perl module to read TNEF files"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-perl-io-stringy"
   "carbonio-perl-mime-tools"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-perl-io-stringy"
   "carbonio-perl-mime-tools"
   "perl-core"
@@ -25,18 +18,16 @@ depends:yum=(
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/D/DO/DOUGW/Convert-TNEF-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('9df692e7e90536c28edea2c09ec4c45ac49af789fb2863248cc723210c785403')
 
 build() {
   cd "${srcdir}/Convert-TNEF-${pkgver}"
-    perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
+  perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
     INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
-    LIB=/opt/zextras/common/lib/perl5 
+    LIB=/opt/zextras/common/lib/perl5
   make
 }
 

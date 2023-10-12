@@ -1,41 +1,32 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-curl"
 pkgver="7.79.1"
 pkgrel="1"
 pkgdesc="An URL retrieval utility and library"
-pkgdesclong=(
-  "An URL retrieval utility and library"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-krb5"
   "carbonio-openssl"
   "zlib1g"
 )
-makedepends:apt=(
+makedepends__apt=(
   "zlib1g-dev"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-krb5"
   "carbonio-openssl"
   "zlib"
 )
-makedepends:yum=(
+makedepends__yum=(
   "zlib-devel"
 )
 section="utils"
 priority="optional"
-sources=(
+source=(
   "https://curl.haxx.se/download/curl-${pkgver}.tar.gz"
 )
-hashsums=(
-  "0f9546285bef741f69d25f20bcd5b961d29fc88084d9f3ebe0c66a6674f4c69a531b41f8e3cc57474f528abdd90aa7981e653c339c5e8383353c36a82efaafc4"
-)
+sha256sums=('370b11201349816287fb0ccc995e420277fbfcaf76206e309b3f60f0eda090c2')
 
 build() {
   cd "${srcdir}/curl-${pkgver}"

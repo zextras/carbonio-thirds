@@ -1,40 +1,31 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-db-file"
 pkgver="1.856"
 pkgrel="2"
 pkgdesc="Perl5 access to Berkeley DB version 2.x"
-pkgdesclong=(
-  "Perl5 access to Berkeley DB version 2.x"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-bdb"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-bdb"
   "perl-core"
   "perl"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/P/PM/PMQS/DB_File-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('cdf9ba922fe39159d36b73f9fb815f5eaa375f3a3e4dc4de78e053b444cd66a9')
 
 build() {
   cd "${srcdir}/DB_File-${pkgver}"
   export DB_FILE_LIB="/opt/zextras/common/lib"
-  export DB_FILE_INCLUDE="/opt/zextras/common/include"  
-    perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
+  export DB_FILE_INCLUDE="/opt/zextras/common/include"
+  perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
     INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
     LIB=/opt/zextras/common/lib/perl5
   LD_RUN_PATH="/opt/zextras/common/lib" PERL5LIB="/opt/zextras/common/lib/perl5" make

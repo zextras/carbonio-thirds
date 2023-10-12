@@ -1,23 +1,16 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-ip-country"
 pkgver="2.28"
 pkgrel="2"
 pkgdesc="Fast lookup of country codes from IP addresses"
-pkgdesclong=(
-  "Fast lookup of country codes from IP addresses"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-perl-geography-countries"
   "carbonio-perl-socket"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-perl-geography-countries"
   "carbonio-perl-socket"
   "perl-core"
@@ -25,12 +18,10 @@ depends:yum=(
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/N/NW/NWETTERS/IP-Country-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('88db833a5ab22ed06cb53d6f205725e3b5371b254596053738885e91fa105f75')
 
 build() {
   cd "${srcdir}/IP-Country-${pkgver}"

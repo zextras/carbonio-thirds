@@ -1,32 +1,23 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-socket"
 pkgver="2.032"
 pkgrel="2"
 pkgdesc="Networking constants and support functions"
-pkgdesclong=(
-  "Networking constants and support functions"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "perl-core"
   "perl"
 )
 section="libs"
 priority="important"
-sources=(
-"https://cpan.metacpan.org/authors/id/P/PE/PEVANS/Socket-${pkgver}.tar.gz"
+source=(
+  "https://cpan.metacpan.org/authors/id/P/PE/PEVANS/Socket-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('20ecb6ad469f4a13c5c7a891abfa12a3cecfdeccc7140ad57b05be12815dd517')
 
 build() {
   cd "${srcdir}/Socket-${pkgver}"

@@ -1,16 +1,9 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-amavisd"
 pkgver="2.12.2"
 pkgrel="2"
 pkgdesc="High-performance interface between mailer (MTA) and content checkers"
-pkgdesclong=(
-  "High-performance interface between mailer (MTA) and content checkers"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
 depends=(
   "carbonio-perl-archive-zip"
@@ -37,19 +30,17 @@ depends=(
 )
 section="utils"
 priority="optional"
-sources=(
+source=(
   "https://gitlab.com/amavis/amavis/-/archive/v${pkgver}/amavis-v${pkgver}.tar.bz2"
   "socket_and_misc.patch"
 )
-hashsums=(
-  "9db619010a310351c57ff18385cf06dd6e06160412d3e530f3fe9b1ba219e457"
-  "3a3a2658b61ca83a81966c408f24331835a3fc6ba6b34d3ffd22baf940cb6d27"
-)
+sha256sums=('9db619010a310351c57ff18385cf06dd6e06160412d3e530f3fe9b1ba219e457'
+  '205e91c5c5cdbbae0f5861836655bf13c2ed8816f4289affce89c924303b38f4')
 
 package() {
   cd "${srcdir}/amavis-v${pkgver}"
 
-  patch -Np1 -i ../socket_and_misc.patch
+  patch -Np1 -i "${srcdir}/socket_and_misc.patch"
 
   mkdir -p "${pkgdir}/opt/zextras/common/sbin"
   cp amavisd "${pkgdir}/opt/zextras/common/sbin"

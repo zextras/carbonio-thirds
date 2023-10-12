@@ -1,34 +1,25 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-json-pp"
 pkgver="4.06"
 pkgrel="2"
 pkgdesc="JSON::XS compatible pure-Perl module"
-pkgdesclong=(
-  "JSON::XS compatible pure-Perl module"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-perl-math-bigint"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-perl-math-bigint"
   "perl-core"
   "perl"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/I/IS/ISHIGAKI/JSON-PP-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('70c4ca2e05dc156de2303765174e45b91c637de6601a70db5eef45e30abad27a')
 
 build() {
   cd "${srcdir}/JSON-PP-${pkgver}"

@@ -1,32 +1,23 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-net-http"
 pkgver="6.21"
 pkgrel="2"
 pkgdesc="Low-level HTTP connection"
-pkgdesclong=(
-  "Low-level HTTP connection"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "perl-core"
   "perl"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/Net-HTTP-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('375aa35b76be99f06464089174d66ac76f78ce83a5c92a907bbfab18b099eec4')
 
 build() {
   cd "${srcdir}/Net-HTTP-${pkgver}"

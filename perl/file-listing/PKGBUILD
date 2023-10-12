@@ -1,34 +1,25 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-file-listing"
 pkgver="6.14"
 pkgrel="2"
 pkgdesc="Parse directory listing"
-pkgdesclong=(
-  "Parse directory listing"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-perl-http-date"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-perl-http-date"
   "perl-core"
   "perl"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/P/PL/PLICEASE/File-Listing-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('15b3a4871e23164a36f226381b74d450af41f12cc94985f592a669fcac7b48ff')
 
 build() {
   cd "${srcdir}/File-Listing-${pkgver}"

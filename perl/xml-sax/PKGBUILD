@@ -1,29 +1,22 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-xml-sax"
 pkgver="1.02"
 pkgrel="2"
 pkgdesc="Simple API for XML"
-pkgdesclong=(
-  "Simple API for XML"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-perl-xml-namespacesupport"
   "carbonio-perl-xml-sax-base"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-perl-xml-namespacesupport"
   "carbonio-perl-xml-sax-base"
   "perl-core"
   "perl"
 )
-provides:yum=(
+provides__yum=(
   "perl(XML::SAX::PurePerl::DTDDecls)"
   "perl(XML::SAX::PurePerl::DocType)"
   "perl(XML::SAX::PurePerl::EncodingDetect)"
@@ -31,12 +24,10 @@ provides:yum=(
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/G/GR/GRANTM/XML-SAX-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('4506c387043aa6a77b455f00f57409f3720aa7e553495ab2535263b4ed1ea12a')
 
 build() {
   cd "${srcdir}/XML-SAX-${pkgver}"

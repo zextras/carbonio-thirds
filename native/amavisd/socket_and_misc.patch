@@ -1,6 +1,6 @@
 diff '--color=auto' -Naur a/amavisd b/amavisd
---- a/amavisd	2021-07-25 22:19:38.381179535 +0200
-+++ b/amavisd	2021-07-25 22:19:56.886897756 +0200
+--- a/amavisd	2023-10-12 21:12:37.934615627 +0200
++++ b/amavisd	2023-10-12 21:12:42.990522560 +0200
 @@ -4,6 +4,8 @@
  ### #!/usr/bin/perl -d:NYTProf
  ###   NYTPROF=start=no:addpid=1:forkdepth=1 amavisd -m 5 foreground
@@ -10,7 +10,7 @@ diff '--color=auto' -Naur a/amavisd b/amavisd
  #------------------------------------------------------------------------------
  # This is amavisd-new.
  # It is an interface between a message transfer agent (MTA) and virus
-@@ -5680,6 +5682,9 @@
+@@ -5684,6 +5686,9 @@
      my(@dkeys); my $d = $domain;
      for (;;) {            # (@).sub.example.com (@).example.com (@).com (@).
        push(@dkeys, $prepend_to_domain.'.'.$d);
@@ -20,7 +20,7 @@ diff '--color=auto' -Naur a/amavisd b/amavisd
        last  if $d eq '';
        $d = ($d =~ /^([^.]*)\.(.*)\z/s) ? $2 : '';
      }
-@@ -12488,7 +12493,7 @@
+@@ -12513,7 +12518,7 @@
      P => sub {$MSGINFO->partition_tag}, # SQL partition tag
      partition_tag => sub {$MSGINFO->partition_tag},  # synonym for %P
      q => sub { my $q = $MSGINFO->quarantined_to;
@@ -29,7 +29,7 @@ diff '--color=auto' -Naur a/amavisd b/amavisd
               },  # list of quarantine mailboxes
      v => sub { !defined $av_output ? undef     # anti-virus scanner output
                   : [split(/[ \t]*\r?\n/, $av_output)]},
-@@ -12938,7 +12943,7 @@
+@@ -12963,7 +12968,7 @@
            sort map { my $s = $_; $s =~ s/\.pm\z//; $s =~ s{/}{::}g; $s }
                 grep(/\.pm\z/, keys %INC)) {
      next  if !grep($_ eq $m, qw(Amavis::Conf
@@ -38,7 +38,7 @@ diff '--color=auto' -Naur a/amavisd b/amavisd
        Convert::TNEF Convert::UUlib File::LibMagic
        MIME::Entity MIME::Parser MIME::Tools Mail::Header Mail::Internet
        Digest::MD5 Digest::SHA Digest::SHA1 Crypt::OpenSSL::RSA
-@@ -17995,6 +18000,15 @@
+@@ -18020,6 +18025,15 @@
      }
    }  # endfor per_recip_data
  
@@ -54,7 +54,7 @@ diff '--color=auto' -Naur a/amavisd b/amavisd
    if ($ccat == CC_SPAM) {
      my $sqbsm = ca('spam_quarantine_bysender_to_maps');
      if (@$sqbsm) {  # by-sender spam quarantine (hardly useful, rarely used)
-@@ -19036,7 +19050,7 @@
+@@ -19089,7 +19103,7 @@
    push(@{/^no_conf_file_writable_check\z/ ? \@known : \@unknown}, $_)
      for grep($i_know_what_i_am_doing{$_}, keys %i_know_what_i_am_doing);
    $unknown[0] = 'unknown: ' . $unknown[0]  if @unknown;
@@ -63,7 +63,7 @@ diff '--color=auto' -Naur a/amavisd b/amavisd
  }
  
  # deal with debugging early, based on a command line arg
-@@ -32389,7 +32403,7 @@
+@@ -32445,7 +32459,7 @@
    $retval;
  }
  
@@ -73,8 +73,8 @@ diff '--color=auto' -Naur a/amavisd b/amavisd
  # it does not relativize absolute paths (which makes it possible to store
  # members in any directory writable by uid), and does not provide a way to
 diff '--color=auto' -Naur a/amavisd-release b/amavisd-release
---- a/amavisd-release	2021-07-25 22:19:38.382179519 +0200
-+++ b/amavisd-release	2021-07-25 22:22:14.742012864 +0200
+--- a/amavisd-release	2023-10-12 21:12:37.935615608 +0200
++++ b/amavisd-release	2023-10-12 21:12:43.023521955 +0200
 @@ -87,7 +87,7 @@
    $log_level = 1;
  # $socketname = '127.0.0.1:9998';
@@ -85,8 +85,8 @@ diff '--color=auto' -Naur a/amavisd-release b/amavisd-release
  ### END OF USER CONFIGURABLE
  }
 diff '--color=auto' -Naur a/amavisd-status b/amavisd-status
---- a/amavisd-status	2021-07-25 22:19:38.382179519 +0200
-+++ b/amavisd-status	2021-07-25 22:19:56.887897741 +0200
+--- a/amavisd-status	2023-10-12 21:12:37.936615590 +0200
++++ b/amavisd-status	2023-10-12 21:12:43.023521955 +0200
 @@ -47,6 +47,7 @@
  use warnings;
  use warnings FATAL => qw(utf8 void);
@@ -96,8 +96,8 @@ diff '--color=auto' -Naur a/amavisd-status b/amavisd-status
  use Errno qw(ESRCH ENOENT);
  use POSIX qw(strftime);
 diff '--color=auto' -Naur a/amavis-mc b/amavis-mc
---- a/amavis-mc	2021-07-25 22:19:38.380179550 +0200
-+++ b/amavis-mc	2021-07-25 22:19:56.879897862 +0200
+--- a/amavis-mc	2023-10-12 21:12:37.932615664 +0200
++++ b/amavis-mc	2023-10-12 21:12:43.024521937 +0200
 @@ -47,6 +47,7 @@
  use warnings;
  use warnings FATAL => qw(utf8 void);
