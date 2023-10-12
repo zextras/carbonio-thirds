@@ -1,32 +1,23 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-file-grep"
 pkgver="0.02"
 pkgrel="2"
 pkgdesc="Find matches to a pattern in a series of files and related functions"
-pkgdesclong=(
-  "Find matches to a pattern in a series of files and related functions"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "perl-core"
   "perl"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/M/MN/MNEYLON/File-Grep-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('462e15274eb6278521407ea302d9eea7252cd44cab2382871f7de833d5f85632')
 
 build() {
   cd "${srcdir}/File-Grep-${pkgver}"

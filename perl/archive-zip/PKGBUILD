@@ -1,40 +1,31 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-archive-zip"
 pkgver="1.68"
 pkgrel="2"
 pkgdesc="Provide an interface to ZIP archive files"
-pkgdesclong=(
-  "Provide an interface to ZIP archive files"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-perl-compress-raw-zlib"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-perl-compress-raw-zlib"
   "perl-core"
   "perl"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/P/PH/PHRED/Archive-Zip-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('984e185d785baf6129c6e75f8eb44411745ac00bf6122fb1c8e822a3861ec650')
 
 build() {
   cd "${srcdir}/Archive-Zip-${pkgver}"
   perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
     INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
-    LIB=/opt/zextras/common/lib/perl5 
+    LIB=/opt/zextras/common/lib/perl5
   make
 }
 

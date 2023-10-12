@@ -1,41 +1,32 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-http-cookies"
 pkgver="6.10"
 pkgrel="2"
 pkgdesc="HTTP cookie jars"
-pkgdesclong=(
-  "HTTP cookie jars"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-perl-http-date"
   "carbonio-perl-http-message"
   "carbonio-perl-math-bigint"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-perl-http-date"
   "carbonio-perl-http-message"
   "carbonio-perl-math-bigint"
   "perl-core"
   "perl"
 )
-provides:yum=(
+provides__yum=(
   "perl(Win32)"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/HTTP-Cookies-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('e36f36633c5ce6b5e4b876ffcf74787cc5efe0736dd7f487bdd73c14f0bd7007')
 
 build() {
   cd "${srcdir}/HTTP-Cookies-${pkgver}"

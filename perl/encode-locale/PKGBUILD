@@ -1,32 +1,23 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-encode-locale"
 pkgver="1.05"
 pkgrel="2"
 pkgdesc="Determine the locale encoding"
-pkgdesclong=(
-  "Determine the locale encoding"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "perl-core"
   "perl"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/G/GA/GAAS/Encode-Locale-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('176fa02771f542a4efb1dbc2a4c928e8f4391bf4078473bd6040d8f11adb0ec1')
 
 build() {
   cd "${srcdir}/Encode-Locale-${pkgver}"

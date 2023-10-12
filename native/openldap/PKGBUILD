@@ -1,45 +1,42 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-openldap"
 pkgver="2.4.59"
 pkgrel="3"
 pkgdesc="Lightweight Directory Access Protocol (LDAP) library"
-pkgdesclong=(
-  "Lightweight Directory Access Protocol (LDAP) library"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
 depends=(
   "carbonio-cyrus-sasl"
   "carbonio-libsodium"
-  "carbonio-libtool"
   "carbonio-openssl"
+)
+makedepends__apt=(
+  "libtool"
+)
+makedepends__yum=(
+  "libtool"
+  "libtool-ltdl-devel"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-${pkgver}.tgz"
   "carbonio-openldap.patch"
   "carbonio-argon2-make.patch"
 )
-hashsums=(
-  "99f37d6747d88206c470067eda624d5e48c1011e943ec0ab217bae8712e22f34"
-  "9d9460e24b582685d02f707248840ff19231e2cf1b8ba84fccf5b29438c768e8"
-  "152fbbca7fd1ec92c1ee5c20f4a06e62bb276e2d6f83e2946fbafea6dc6e8ed5"
-)
+sha256sums=('99f37d6747d88206c470067eda624d5e48c1011e943ec0ab217bae8712e22f34'
+  '9d9460e24b582685d02f707248840ff19231e2cf1b8ba84fccf5b29438c768e8'
+  '152fbbca7fd1ec92c1ee5c20f4a06e62bb276e2d6f83e2946fbafea6dc6e8ed5')
 
 build() {
   cd "${srcdir}/openldap-${pkgver}"
-  patch -Np1 -i ../carbonio-openldap.patch
-  patch -Np1 -i ../carbonio-argon2-make.patch
+  patch -Np1 -i "${srcdir}/carbonio-openldap.patch"
+  patch -Np1 -i "${srcdir}/carbonio-argon2-make.patch"
 
   export LDFLAGS="-L/opt/zextras/common/lib -Wl,-rpath,/opt/zextras/common/lib"
   export CFLAGS="-D_REENTRANT"
   export CPPFLAGS="-I/opt/zextras/common/include"
-  export PATH=/opt/zextras/common/bin:$PATH
+  export PATH="/opt/zextras/common/bin:/usr/bin"
 
   ./configure \
     --prefix=/opt/zextras/common \

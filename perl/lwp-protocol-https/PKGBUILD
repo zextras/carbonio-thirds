@@ -1,24 +1,17 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-lwp-protocol-https"
 pkgver="6.10"
 pkgrel="2"
 pkgdesc="Provide https support for LWP::UserAgent"
-pkgdesclong=(
-  "Provide https support for LWP::UserAgent"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-perl-io-socket-ssl"
   "carbonio-perl-libwww"
   "carbonio-perl-net-http"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-perl-io-socket-ssl"
   "carbonio-perl-libwww"
   "carbonio-perl-net-http"
@@ -27,12 +20,10 @@ depends:yum=(
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/LWP-Protocol-https-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('cecfc31fe2d4fc854cac47fce13d3a502e8fdfe60c5bc1c09535743185f2a86c')
 
 build() {
   cd "${srcdir}/LWP-Protocol-https-${pkgver}"

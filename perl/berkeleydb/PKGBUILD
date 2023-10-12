@@ -1,34 +1,25 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-berkeleydb"
 pkgver="0.64"
 pkgrel="2"
 pkgdesc="Perl5 Module Supporting LDAP API"
-pkgdesclong=(
-  "Perl5 Module Supporting LDAP API"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-bdb"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-bdb"
   "perl"
   "perl-core"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/P/PM/PMQS/BerkeleyDB-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('535c85e8549c1ac43a20160fdc02f0a400614156fd76157fff28aa33fda3744b')
 
 build() {
   cd "${srcdir}/BerkeleyDB-${pkgver}"

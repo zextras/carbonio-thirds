@@ -1,18 +1,11 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-policyd"
 pkgver="2.1.0.0"
 pkgrel="1"
 pkgdesc="Multi-platform policy server for popular MTAs (aka ClueBringer)"
-pkgdesclong=(
-  "Multi-platform policy server for popular MTAs (aka ClueBringer)"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-perl-cache-fastmmap"
   "carbonio-perl-config-inifiles"
   "carbonio-perl-dbd-sqlite"
@@ -25,7 +18,7 @@ depends:apt=(
   "libsocket6-perl"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-perl-cache-fastmmap"
   "carbonio-perl-config-inifiles"
   "carbonio-perl-dbd-sqlite"
@@ -39,20 +32,20 @@ depends:yum=(
   "perl-Socket6"
   "perl"
 )
+makedepends=(
+  "git"
+)
 section="libs"
 priority="important"
-sources=(
+source=(
+  "git+https://gitlab.linux.community/policyd/policyd"
   "carbonio-policyd.patch"
 )
-hashsums=(
-  "6fe53e6077c95a45f6fd5adffa8369b3f6fc0c1debe85c78240d4e45d483a6c6"
-)
+sha256sums=('SKIP'
+  '6fe53e6077c95a45f6fd5adffa8369b3f6fc0c1debe85c78240d4e45d483a6c6')
 
 package() {
-  cd "${srcdir}"
-  git clone https://gitlab.linux.community/policyd/policyd/
-
-  cd policyd
+  cd "${srcdir}/policyd"
   git reset --hard cf484f1b93cf9965886cc89d33bdeee9c26426cb
 
   ./update-git-modules
@@ -65,7 +58,7 @@ package() {
   rm -rf debian
 
   # carbonio custom patch for policyd
-  patch -Np1 -i ../carbonio-policyd.patch
+  patch -Np1 -i "${srcdir}/carbonio-policyd.patch"
 
   # executables
   mkdir -p "${pkgdir}/opt/zextras/common/bin"

@@ -1,32 +1,23 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-xml-namespacesupport"
 pkgver="1.12"
 pkgrel="2"
 pkgdesc="A simple generic namespace processor"
-pkgdesclong=(
-  "A simple generic namespace processor"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "perl-core"
   "perl"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/P/PE/PERIGRIN/XML-NamespaceSupport-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('47e995859f8dd0413aa3f22d350c4a62da652e854267aa0586ae544ae2bae5ef')
 
 build() {
   cd "${srcdir}/XML-NamespaceSupport-${pkgver}"

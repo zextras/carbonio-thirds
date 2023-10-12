@@ -1,36 +1,27 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-cache-fastmmap"
 pkgver="1.56"
 pkgrel="2"
 pkgdesc="Uses an mmap'ed file to act as a shared memory interprocess cache"
-pkgdesclong=(
-  "Uses an mmap'ed file to act as a shared memory interprocess cache"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "perl-core"
   "perl"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/R/RO/ROBM/Cache-FastMmap-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('8becaf0dacc876e9f60f4737104b79fd4e343d6fd984cef7d7a6dd14516b2159')
 
 build() {
   cd "${srcdir}/Cache-FastMmap-${pkgver}"
-    perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
+  perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
     INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
     LIB=/opt/zextras/common/lib/Perl5
   make

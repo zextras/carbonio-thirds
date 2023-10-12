@@ -1,28 +1,22 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-openssl"
 pkgver="1.1.1v"
 pkgrel="1"
 pkgdesc="Zextras's Secure Socket Layer build"
-pkgdesclong=(
-  "The Zextras OpenSSL build allows for secure communication between various processes."
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-makedepends:yum=(
-  "perl-FindBin"
+makedepends__apt=(
+  "perl"
+)
+makedepends__yum=(
+  "perl"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://www.openssl.org/source/openssl-${pkgver}.tar.gz"
 )
-hashsums=(
-  "d6697e2871e77238460402e9362d47d18382b15ef9f246aba6c7bd780d38a6b0"
-)
+sha256sums=('d6697e2871e77238460402e9362d47d18382b15ef9f246aba6c7bd780d38a6b0')
 
 build() {
   cd "${srcdir}/openssl-${pkgver}"

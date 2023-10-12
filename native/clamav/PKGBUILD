@@ -1,18 +1,11 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-clamav"
 pkgver="1.0.3"
 pkgrel="1"
 pkgdesc="Anti-virus toolkit for Unix"
-pkgdesclong=(
-  "Anti-virus toolkit for Unix"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-curl"
   "carbonio-libmilter"
   "carbonio-libxml2"
@@ -21,7 +14,7 @@ depends:apt=(
   "libpcre2-8-0"
   "zlib1g"
 )
-makedepends:apt=(
+makedepends__apt=(
   "alien"
   "cargo"
   "check"
@@ -30,7 +23,7 @@ makedepends:apt=(
   "libpcre2-dev"
   "zlib1g-dev"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-curl"
   "carbonio-libmilter"
   "carbonio-libxml2"
@@ -39,7 +32,7 @@ depends:yum=(
   "pcre2"
   "zlib"
 )
-makedepends:yum=(
+makedepends__yum=(
   "alien"
   "cargo"
   "check-devel"
@@ -50,7 +43,7 @@ makedepends:yum=(
 )
 section="utils"
 priority="optional"
-sources=(
+source=(
   "https://www.clamav.net/downloads/production/clamav-${pkgver}.tar.gz"
   "https://dl.fedoraproject.org/pub/fedora/linux/development/rawhide/Everything/x86_64/os/Packages/c/clamav-data-1.0.2-1.fc40.noarch.rpm"
   "carbonio-clamav"
@@ -61,17 +54,15 @@ sources=(
   "policies.json"
   "service-protocol.json"
 )
-hashsums=(
-  "8779458dc31fdee1232eb8986f092d25568b39f5d337c0cbcd9c1abb5dc2886b"
-  "522db0c722122fc8dfab9d84e7169906edc6f638c0efc13e331606f48fcd0a57"
-  "skip"
-  "skip"
-  "skip"
-  "skip"
-  "skip"
-  "skip"
-  "skip"
-)
+sha256sums=('8779458dc31fdee1232eb8986f092d25568b39f5d337c0cbcd9c1abb5dc2886b'
+  '522db0c722122fc8dfab9d84e7169906edc6f638c0efc13e331606f48fcd0a57'
+  '02a31b416f396e2fa8061283a73e9962d2c13f62d4a7e8338c9dd8f2cfed7b77'
+  'cc36d9357d4434ff290e46a713da8246420750a5fafdf148ce0787b531a093a5'
+  '9cb7401ccec50e4b28b87624c3185966366bd0f439e7ede40a1aff23812ffa45'
+  'f1c8019e1b180d2ac4843fc88fe3456463f728146d3a6a9922a8cb4e4512363b'
+  'df54edd32986b4213a09069681741ba7533dc40a034a6a2b080cdf380a69fb05'
+  'd67bb7f9d98ccb033f632621accf3d8a3391aa3955074af958c0def644be0ef5'
+  '6c1f94857671bd044fe4dac20df1f927629c50bfbb0aa9991e6de1a73d1791a0')
 
 build() {
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib"

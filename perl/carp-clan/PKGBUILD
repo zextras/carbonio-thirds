@@ -1,32 +1,23 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-carp-clan"
 pkgver="6.08"
 pkgrel="2"
 pkgdesc="Report errors from perspective of caller of a clan of modules"
-pkgdesclong=(
-  "Report errors from perspective of caller of a clan of modules"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "perl-core"
   "perl"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/E/ET/ETHER/Carp-Clan-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('c75f92e34422cc5a65ab05d155842b701452434e9aefb649d6e2289c47ef6708')
 
 build() {
   cd "${srcdir}/Carp-Clan-${pkgver}"

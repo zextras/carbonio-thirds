@@ -1,33 +1,24 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-bdb"
 pkgver="5.3.28"
 pkgrel="1"
 pkgdesc="The Berkeley DB embedded database system"
-pkgdesclong=(
-  "The Berkeley DB embedded database system"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
 section="utils"
 priority="optional"
-sources=(
+source=(
   "https://download.oracle.com/berkeley-db/db-${pkgver}.tar.gz"
   "atomic.patch"
 )
-hashsums=(
-  "fa3f8a41ad5101f43d08bc0efb6241c9b6fc1ae9"
-  "ba0e2b4f53e9cb0ec58f60a979b53b8567b4565f0384886196f1fc1ef111d151"
-)
+sha256sums=('e0a992d740709892e81f9d93f06daf305cf73fb81b545afe72478043172c3628'
+  'ba0e2b4f53e9cb0ec58f60a979b53b8567b4565f0384886196f1fc1ef111d151')
 
 build() {
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
   export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
   cd "${srcdir}/db-${pkgver}"
-  patch -p0 -i ../atomic.patch
+  patch -p0 -i "${srcdir}/atomic.patch"
 
   cd build_unix
 

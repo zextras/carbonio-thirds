@@ -1,16 +1,9 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-mail-spamassassin"
 pkgver="3.4.6"
 pkgrel="4"
 pkgdesc="Spam detector and markup engine"
-pkgdesclong=(
-  "Spam detector and markup engine"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
 depends=(
   "carbonio-openssl"
@@ -25,17 +18,15 @@ depends=(
   "carbonio-perl-net-dns"
   "carbonio-perl-net-http"
 )
-provides:yum=(
+provides__yum=(
   "perl(BSD::Resource)"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/S/SI/SIDNEY/Mail-SpamAssassin-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('500c7e2a7cdf3aa4dd822d97aaff2ab22235a60cf17a68ab817861d215a4e568')
 
 build() {
   cd "${srcdir}/Mail-SpamAssassin-${pkgver}"

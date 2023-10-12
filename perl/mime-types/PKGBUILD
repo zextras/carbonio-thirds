@@ -1,32 +1,23 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-mime-types"
 pkgver="2.21"
 pkgrel="2"
 pkgdesc="Definition of MIME types"
-pkgdesclong=(
-  "Definition of MIME types"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "perl-core"
   "perl"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/M/MA/MARKOV/MIME-Types-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('0086454aec7144ddcaf842ec88e01d7fc27a61091454eb8f6f8afd568da68dd7')
 
 build() {
   cd "${srcdir}/MIME-Types-${pkgver}"

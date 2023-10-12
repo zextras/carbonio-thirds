@@ -1,32 +1,23 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-net-cidr"
 pkgver="0.21"
 pkgrel="2"
 pkgdesc="Manipulate IPv4/IPv6 netblocks in CIDR notation"
-pkgdesclong=(
-  "Manipulate IPv4/IPv6 netblocks in CIDR notation"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "perl-core"
   "perl"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/M/MR/MRSAM/Net-CIDR-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('30f303c0735948da33370decc7e87cfa68bc430aa44b81d18f8d823b6d1abfbf')
 
 build() {
   cd "${srcdir}/Net-CIDR-${pkgver}"

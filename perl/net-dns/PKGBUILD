@@ -1,39 +1,30 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-net-dns"
 pkgver="1.31"
 pkgrel="2"
 pkgdesc="Perl Interface to the Domain Name System"
-pkgdesclong=(
-  "Perl Interface to the Domain Name System"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-perl-digest-hmac"
   "carbonio-perl-io-socket-inet6"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-perl-digest-hmac"
   "carbonio-perl-io-socket-inet6"
   "perl-core"
   "perl"
 )
-provides:yum=(
+provides__yum=(
   "perl(OS_CONF)"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/N/NL/NLNETLABS/Net-DNS-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('00024a8e371605c6d8422a27a0a87af8b7cf66f26502102e68ddd4baf7cfc615')
 
 build() {
   cd "${srcdir}/Net-DNS-${pkgver}"

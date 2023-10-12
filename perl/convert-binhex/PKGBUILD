@@ -1,39 +1,30 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-convert-binhex"
 pkgver="1.125"
 pkgrel="2"
 pkgdesc="Perl module to extract data from Macintosh BinHex files"
-pkgdesclong=(
-  "Perl module to extract data from Macintosh BinHex files"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "perl-core"
   "perl"
 )
-provides:yum=(
+provides__yum=(
   "perl(Mac::Files)"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/S/ST/STEPHEN/Convert-BinHex-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('513591b4be46bd7eb91e83197721b4a045a9753a3dd2f11de82c9d3013226397')
 
 build() {
   cd "${srcdir}/Convert-BinHex-${pkgver}"
-    perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
+  perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
     INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
     LIB=/opt/zextras/common/lib/perl5
   make

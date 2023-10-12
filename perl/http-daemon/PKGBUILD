@@ -1,25 +1,18 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-http-daemon"
 pkgver="6.12"
 pkgrel="2"
 pkgdesc="A simple http server class"
-pkgdesclong=(
-  "A simple http server class"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-perl-http-date"
   "carbonio-perl-http-message"
   "carbonio-perl-io-socket-ip"
   "carbonio-perl-lwp-mediatypes"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-perl-http-date"
   "carbonio-perl-http-message"
   "carbonio-perl-io-socket-ip"
@@ -27,20 +20,18 @@ depends:yum=(
   "perl-core"
   "perl"
 )
-makedepends:apt=(
+makedepends__apt=(
   "libmodule-build-tiny-perl"
 )
-makedepends:yum=(
+makedepends__yum=(
   "perl-Module-Build-Tiny"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/HTTP-Daemon-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('df47bed10c38670c780fd0116867d5fd4693604acde31ba63380dce04c4e1fa6')
 
 build() {
   cd "${srcdir}/HTTP-Daemon-${pkgver}"

@@ -1,34 +1,25 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-list-moreutils"
 pkgver="0.430"
 pkgrel="2"
 pkgdesc="Provide the stuff missing in List::Util"
-pkgdesclong=(
-  "Provide the stuff missing in List::Util"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-perl-exporter-tiny"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-perl-exporter-tiny"
   "perl-core"
   "perl"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/R/RE/REHSACK/List-MoreUtils-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('63b1f7842cd42d9b538d1e34e0330de5ff1559e4c2737342506418276f646527')
 
 build() {
   cd "${srcdir}/List-MoreUtils-${pkgver}"

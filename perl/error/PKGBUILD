@@ -1,32 +1,23 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-error"
 pkgver="0.17029"
 pkgrel="2"
 pkgdesc="Error/exception handling in an OO-ish way"
-pkgdesclong=(
-  "Error/exception handling in an OO-ish way"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "perl-core"
   "perl"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/S/SH/SHLOMIF/Error-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('1a23f7913032aed6d4b68321373a3899ca66590f4727391a091ec19c95bf7adc')
 
 build() {
   cd "${srcdir}/Error-${pkgver}"
