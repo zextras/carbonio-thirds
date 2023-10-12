@@ -1,37 +1,28 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-memcached"
 pkgver="1.6.12"
 pkgrel="1"
 pkgdesc="Distributed memory object caching system"
-pkgdesclong=(
-  "Distributed memory object caching system"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-libevent"
 )
-makedepends:apt=(
+makedepends__apt=(
   "pkg-config"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-libevent"
 )
-makedepends:yum=(
+makedepends__yum=(
   "pkgconfig"
 )
 section="utils"
 priority="optional"
-sources=(
+source=(
   "https://www.memcached.org/files/memcached-${pkgver}.tar.gz"
 )
-hashsums=(
-  "6cf41f14679ffac096195c29cf79741f28069e92d8ceddd5039061f1b8d3d4018f2983a6e43a27306ff299f9198e56f9ebd8ee8b62aa4882b38a0aa712ab1779"
-)
+sha256sums=('f291a35f82ef9756ed1d952879ef5f4be870f932bdfcb2ab61356609abf82346')
 
 build() {
 

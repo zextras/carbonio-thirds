@@ -1,32 +1,23 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-xml-sax-base"
 pkgver="1.09"
 pkgrel="2"
 pkgdesc="Base class SAX Drivers and Filters"
-pkgdesclong=(
-  "Base class SAX Drivers and Filters"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "perl-core"
   "perl"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/G/GR/GRANTM/XML-SAX-Base-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('66cb355ba4ef47c10ca738bd35999723644386ac853abbeb5132841f5e8a2ad0')
 
 build() {
   cd "${srcdir}/XML-SAX-Base-${pkgver}"

@@ -1,23 +1,16 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-io-compress"
 pkgver="2.102"
 pkgrel="2"
 pkgdesc="Low-Level Interface to compression libraries"
-pkgdesclong=(
-  "Low-Level Interface to compression libraries"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-perl-compress-raw-bzip2"
   "carbonio-perl-compress-raw-zlib"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-perl-compress-raw-bzip2"
   "carbonio-perl-compress-raw-zlib"
   "perl-core"
@@ -25,12 +18,10 @@ depends:yum=(
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/P/PM/PMQS/IO-Compress-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('d6fa7f9a5beee446452a0fbc43589a0c73fe7e925c075b98628b018048dc72a4')
 
 build() {
   cd "${srcdir}/IO-Compress-${pkgver}"

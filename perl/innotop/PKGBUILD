@@ -1,39 +1,30 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-innotop"
 pkgver="1.13.0"
 pkgrel="2"
 pkgdesc="Postfix log entry summarizer"
-pkgdesclong=(
-  "Postfix log entry summarizer"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-perl-dbd-mysql"
   "carbonio-perl-term-readkey"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-perl-dbd-mysql"
   "carbonio-perl-term-readkey"
   "perl"
   "perl-core"
 )
-provides:yum=(
-  "/bin/perl"	
+provides__yum=(
+  "/bin/perl"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://github.com/innotop/innotop/archive/refs/tags/v${pkgver}.tar.gz"
 )
-hashsums=(
-  "6ec91568e32bda3126661523d9917c7fbbd4b9f85db79224c01b2a740727a65c"
-)
+sha256sums=('6ec91568e32bda3126661523d9917c7fbbd4b9f85db79224c01b2a740727a65c')
 
 build() {
   cd "${srcdir}/innotop-${pkgver}"

@@ -1,32 +1,23 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-net-cidr-lite"
 pkgver="0.22"
 pkgrel="2"
 pkgdesc="Perl extension for merging IPv4 or IPv6 CIDR addresses"
-pkgdesclong=(
-  "Perl extension for merging IPv4 or IPv6 CIDR addresses"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "perl-core"
   "perl"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/S/ST/STIGTSP/Net-CIDR-Lite-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('4317d8cb341a617b9e0888da43c09cdffffcb0c9edf7b8c9928d742a563b8517')
 
 build() {
   cd "${srcdir}/Net-CIDR-Lite-${pkgver}"

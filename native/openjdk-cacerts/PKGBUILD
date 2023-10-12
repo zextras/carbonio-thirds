@@ -1,30 +1,21 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-openjdk-cacerts"
 pkgver="1.0.6"
 pkgrel="3"
 pkgdesc="CA Certs keystore for OpenJDK"
-pkgdesclong=(
-  "CA Certs keystore for OpenJDK"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https:/zextras.com"
 depends=(
   "carbonio-openjdk"
 )
 section="utils"
 priority="optional"
-sources=(
+source=(
   "https://hg.mozilla.org/projects/nss/raw-file/7554fb4e12af7abf01983826b4f8e12946661558/lib/ckfw/builtins/certdata.txt"
   "import-cacerts"
 )
-hashsums=(
-  "187ef9dc231135324fe78830cf4462f1ecdeab3e6c9d5e38d623391e88dc5d3c"
-  "00b2547118007f255c87b3fd3c2a9ccd855a9a6e69c6faff442ad5d05f7cf5d8"
-)
+sha256sums=('187ef9dc231135324fe78830cf4462f1ecdeab3e6c9d5e38d623391e88dc5d3c'
+  '00b2547118007f255c87b3fd3c2a9ccd855a9a6e69c6faff442ad5d05f7cf5d8')
 
 package() {
   mkdir -p "${pkgdir}/opt/zextras/common/etc/java"

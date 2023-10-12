@@ -1,32 +1,23 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-io-html"
 pkgver="1.004"
 pkgrel="2"
 pkgdesc="Open an HTML file with automatic charset detection"
-pkgdesclong=(
-  "Open an HTML file with automatic charset detection"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "perl-core"
   "perl"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/C/CJ/CJM/IO-HTML-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('c87b2df59463bbf2c39596773dfb5c03bde0f7e1051af339f963f58c1cbd8bf5')
 
 build() {
   cd "${srcdir}/IO-HTML-${pkgver}"

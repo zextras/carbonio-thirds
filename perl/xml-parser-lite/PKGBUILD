@@ -1,32 +1,23 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-xml-parser-lite"
 pkgver="0.722"
 pkgrel="2"
 pkgdesc="Lightweight pure-perl XML Parser (based on regexps)"
-pkgdesclong=(
-  "Lightweight pure-perl XML Parser (based on regexps)"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "perl-core"
   "perl"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/P/PH/PHRED/XML-Parser-Lite-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('6f90a027e1531a0e5406cf1de13c709b5216966df8f73d0bab9ab919209763ee')
 
 build() {
   cd "${srcdir}/XML-Parser-Lite-${pkgver}"

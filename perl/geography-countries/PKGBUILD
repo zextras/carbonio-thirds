@@ -1,32 +1,23 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-geography-countries"
 pkgver="2009041301"
 pkgrel="2"
 pkgdesc="2-letter, 3-letter, and numerical codes for countries"
-pkgdesclong=(
-  "2-letter, 3-letter, and numerical codes for countries"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "perl-core"
   "perl"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/A/AB/ABIGAIL/Geography-Countries-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('48c42e40e8281ba7c981743a854c48e6def2d51eb0925ea6c96e25c74497f20f')
 
 build() {
   cd "${srcdir}/Geography-Countries-${pkgver}"
@@ -40,5 +31,5 @@ package() {
   cd "${srcdir}/Geography-Countries-${pkgver}"
   make install DESTDIR="${pkgdir}"
   find "${pkgdir}" -name '.packlist' -delete
-  find "${pkgdir}" -name '*.pod' -delete  
+  find "${pkgdir}" -name '*.pod' -delete
 }

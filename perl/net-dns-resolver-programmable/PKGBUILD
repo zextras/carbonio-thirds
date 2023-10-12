@@ -1,34 +1,25 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-net-dns-resolver-programmable"
 pkgver="0.009"
 pkgrel="2"
 pkgdesc="Programmable DNS resolver class for offline emulation of DNS"
-pkgdesclong=(
-  "Programmable DNS resolver class for offline emulation of DNS"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "carbonio-perl-net-dns"
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "carbonio-perl-net-dns"
   "perl-core"
   "perl"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/B/BI/BIGPRESH/Net-DNS-Resolver-Programmable-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('8080a2ab776629585911af1179bdb7c4dc2bebfd4b5efd77b11d1dac62454bf8')
 
 build() {
   cd "${srcdir}/Net-DNS-Resolver-Programmable-${pkgver}"

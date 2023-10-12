@@ -1,45 +1,38 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-nginx"
 pkgver="1.20.2"
 pkgrel="4"
 pkgdesc="Lightweight HTTP server and IMAP/POP3 proxy server"
-pkgdesclong=(
-  "Lightweight HTTP server and IMAP/POP3 proxy server"
-)
-arch="amd64"
+arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
 license=("CUSTOM")
-depends:apt=(
+depends__apt=(
   "libbrotli1"
   "libpcre3"
   "zlib1g"
   "carbonio-cyrus-sasl"
   "carbonio-openssl"
 )
-makedepends:apt=(
+makedepends__apt=(
   "libbrotli-dev"
   "libpcre3-dev"
   "zlib1g-dev"
 )
-depends:yum=(
+depends__yum=(
   "brotli"
   "pcre"
   "zlib"
   "carbonio-cyrus-sasl"
   "carbonio-openssl"
 )
-makedepends:yum=(
+makedepends__yum=(
   "brotli-devel"
   "pcre-devel"
   "zlib-devel"
 )
 section="utils"
 priority="optional"
-sources=(
+source=(
   "https://nginx.org/download/nginx-${pkgver}.tar.gz"
   "https://github.com/nviennot/nginx-tcp-keepalive/archive/19755fc0e22aa7d7ac2198f78b297951d31ea1dc.tar.gz"
   "https://github.com/google/ngx_brotli/archive/v1.0.0rc/ngx_brotli-1.0.0rc.tar.gz"
@@ -47,14 +40,12 @@ sources=(
   "carbonio-${pkgver}.patch"
   "CVE-2022-27924.patch"
 )
-hashsums=(
-  "958876757782190a1653e14dc26dfc7ba263de310e04c113e11e97d1bef45a42"
-  "8b09b8eefb13d298f865ccb3563f9e2b808f7f5467b261532c47f0a2bddf2685"
-  "c85cdcfd76703c95aa4204ee4c2e619aa5b075cac18f428202f65552104add3b"
-  "b8d1b9c577453d195505c8e4cd195420d5876d2a3dd81480821fdbe149f038b2"
-  "e77a1bf3adfac1a269fe5759c129ced8607a0283371b5c1c144684c8548b9d80"
-  "6fda55b0899af642d4958b953c1b680bb3d0b0b95fe8cdff93103088aa263f80"
-)
+sha256sums=('958876757782190a1653e14dc26dfc7ba263de310e04c113e11e97d1bef45a42'
+  '8b09b8eefb13d298f865ccb3563f9e2b808f7f5467b261532c47f0a2bddf2685'
+  'c85cdcfd76703c95aa4204ee4c2e619aa5b075cac18f428202f65552104add3b'
+  'b8d1b9c577453d195505c8e4cd195420d5876d2a3dd81480821fdbe149f038b2'
+  'e77a1bf3adfac1a269fe5759c129ced8607a0283371b5c1c144684c8548b9d80'
+  '6fda55b0899af642d4958b953c1b680bb3d0b0b95fe8cdff93103088aa263f80')
 
 build() {
 
@@ -62,50 +53,52 @@ build() {
   export CFLAGS="-g -O2 -fdebug-prefix-map=/etc=. -fstack-protector-strong"
 
   cd "${srcdir}/nginx-${pkgver}"
-  patch -Np1 -i ../"carbonio-${pkgver}.patch"
-  patch -Np1 -i ../CVE-2022-27924.patch
+  patch -Np1 -i "${srcdir}/carbonio-${pkgver}.patch"
+  patch -Np1 -i "${srcdir}/CVE-2022-27924.patch"
 
-  cp -r ../modules zmmodules
-  cp -r ../nginx-tcp-keepalive* zmmodules/nginx-tcp-keepalive
+  cp -r "${srcdir}/modules" zmmodules
+  cp -r "${srcdir}/nginx-tcp-keepalive"* \
+    zmmodules/nginx-tcp-keepalive
+
   ./configure --prefix=/opt/zextras/common \
-  --with-cc-opt="-g -I/opt/zextras/common/include" \
-  --with-ld-opt="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib" \
-  --with-debug \
-  --with-ipv6 \
-  --with-http_ssl_module \
-  --with-http_stub_status_module \
-  --with-pcre \
-  --with-http_addition_module \
-  --with-http_auth_request_module \
-  --with-http_degradation_module \
-  --with-http_gunzip_module \
-  --with-http_gzip_static_module \
-  --with-http_secure_link_module \
-  --with-http_slice_module \
-  --with-http_ssl_module \
-  --with-http_stub_status_module \
-  --with-http_sub_module \
-  --with-http_v2_module \
-  --with-stream \
-  --with-stream_ssl_module \
-  --with-stream_ssl_preread_module \
-  --with-threads \
-  --with-mail \
-  --with-mail-sasl \
-  --with-mail_ssl_module \
-  --error-log-path=/opt/zextras/log/nginx.log \
-  --http-log-path=/opt/zextras/log/nginx.access.log \
-  --http-client-body-temp-path=/opt/zextras/data/tmp/nginx/client \
-  --http-proxy-temp-path=/opt/zextras/data/tmp/nginx/proxy \
-  --http-fastcgi-temp-path=/opt/zextras/data/tmp/nginx/fastcgi \
-  --without-http_scgi_module \
-  --without-http_uwsgi_module \
-  --add-module="${srcdir}"/ngx_brotli-1.0.0rc \
-  --add-module=zmmodules/nginx-tcp-keepalive \
-  --add-module=zmmodules/http/sso \
-  --add-module=zmmodules/http/upstreamzmauth \
-  --add-module=zmmodules/mail/zmauth \
-  --add-module=zmmodules/mail/throttle  
+    --with-cc-opt="-g -I/opt/zextras/common/include" \
+    --with-ld-opt="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib" \
+    --with-debug \
+    --with-ipv6 \
+    --with-http_ssl_module \
+    --with-http_stub_status_module \
+    --with-pcre \
+    --with-http_addition_module \
+    --with-http_auth_request_module \
+    --with-http_degradation_module \
+    --with-http_gunzip_module \
+    --with-http_gzip_static_module \
+    --with-http_secure_link_module \
+    --with-http_slice_module \
+    --with-http_ssl_module \
+    --with-http_stub_status_module \
+    --with-http_sub_module \
+    --with-http_v2_module \
+    --with-stream \
+    --with-stream_ssl_module \
+    --with-stream_ssl_preread_module \
+    --with-threads \
+    --with-mail \
+    --with-mail-sasl \
+    --with-mail_ssl_module \
+    --error-log-path=/opt/zextras/log/nginx.log \
+    --http-log-path=/opt/zextras/log/nginx.access.log \
+    --http-client-body-temp-path=/opt/zextras/data/tmp/nginx/client \
+    --http-proxy-temp-path=/opt/zextras/data/tmp/nginx/proxy \
+    --http-fastcgi-temp-path=/opt/zextras/data/tmp/nginx/fastcgi \
+    --without-http_scgi_module \
+    --without-http_uwsgi_module \
+    --add-module="${srcdir}"/ngx_brotli-1.0.0rc \
+    --add-module=zmmodules/nginx-tcp-keepalive \
+    --add-module=zmmodules/http/sso \
+    --add-module=zmmodules/http/upstreamzmauth \
+    --add-module=zmmodules/mail/zmauth \
+    --add-module=zmmodules/mail/throttle
   make -j16
 }
 
@@ -113,10 +106,10 @@ package() {
   cd "${srcdir}/nginx-${pkgver}"
   make DESTDIR="${pkgdir}" install
   mkdir -p "${pkgdir}"/opt/zextras/data/nginx
-  mv "${pkgdir}"/opt/zextras/common/html "${pkgdir}"/opt/zextras/data/nginx/  
+  mv "${pkgdir}"/opt/zextras/common/html "${pkgdir}"/opt/zextras/data/nginx/
 }
 
-postinst:apt() {
+postinst__apt() {
   if [ "$1" = "configure" ]; then
     # creating zextras group if it isn't already there
     if ! getent group zextras >/dev/null; then
@@ -137,7 +130,7 @@ postinst:apt() {
   chown zextras:zextras /opt/zextras/log
 }
 
-postinst:yum() {
+postinst__yum() {
   # creating zextras group if it isn't already there
   if ! getent group zextras >/dev/null; then
     groupadd --system zextras >/dev/null

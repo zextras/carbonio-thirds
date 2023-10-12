@@ -1,38 +1,29 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-data-uuid"
 pkgver="1.226"
 pkgrel="2"
 pkgdesc="Globally/Universally Unique Identifiers (GUIDs/UUIDs)"
-pkgdesclong=(
-  "Globally/Universally Unique Identifiers (GUIDs/UUIDs)"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "perl-core"
   "perl"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/R/RJ/RJBS/Data-UUID-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('093d57ffa0d411a94bafafae495697db26f5c9d0277198fe3f7cf2be22996453')
 
 build() {
   cd "${srcdir}/Data-UUID-${pkgver}"
   perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
     INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
-    LIB=/opt/zextras/common/lib/perl5 
+    LIB=/opt/zextras/common/lib/perl5
   make
 }
 

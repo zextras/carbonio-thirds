@@ -1,32 +1,23 @@
-targets=(
-  "centos"
-  "ubuntu"
-)
 pkgname="carbonio-perl-digest-sha1"
 pkgver="2.13"
 pkgrel="2"
 pkgdesc="Perl interface to the SHA-1 algorithm"
-pkgdesclong=(
-  "Perl interface to the SHA-1 algorithm"
-)
-arch="amd64"
-maintainer="Zextras <packages@zextras.com"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends:apt=(
+depends__apt=(
   "perl"
 )
-depends:yum=(
+depends__yum=(
   "perl-core"
   "perl"
 )
 section="libs"
 priority="important"
-sources=(
+source=(
   "https://cpan.metacpan.org/authors/id/G/GA/GAAS/Digest-SHA1-${pkgver}.tar.gz"
 )
-hashsums=(
-  "SKIP"
-)
+sha256sums=('68c1dac2187421f0eb7abf71452a06f190181b8fc4b28ededf5b90296fb943cc')
 
 build() {
   cd "${srcdir}/Digest-SHA1-${pkgver}"
