@@ -1,0 +1,49 @@
+pkgname="carbonio-perl-net-libidn2"
+pkgver="1.02"
+pkgrel="1"
+pkgdesc="Perl bindings for GNU Libidn2"
+arch=('x86_64')
+maintainer="Zextras <packages@zextras.com>"
+url="https://zextras.com"
+depends__apt=(
+  "libidn2-0"
+  "perl"
+)
+depends__yum=(
+  "libidn2"
+  "perl-core"
+  "perl"
+)
+makedepends__apt=(
+  "libidn2-0-dev"
+)
+makedepends__yum=(
+  "libidn2-devel"
+)
+section="libs"
+priority="important"
+source=(
+  "https://search.cpan.org/CPAN/authors/id/T/TH/THOR/Net-LibIDN2-${pkgver}.tar.gz"
+)
+sha256sums=(
+  "SKIP"
+)
+
+build() {
+  cd "${srcdir}/Net-LibIDN2-${pkgver}"
+
+  perl -I /opt/zextras/common/lib/perl5 Build.PL \
+    install_base=/opt/zextras/common \
+    blib=/opt/zextras/common/lib/perl5 \
+    --extra_linker_flags="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib -lidn2"
+  perl Build
+}
+
+package() {
+  cd "${srcdir}/Net-LibIDN2-${pkgver}"
+
+  perl Build install destdir="${pkgdir}"
+
+  find "${pkgdir}" -name '.packlist' -delete
+  find "${pkgdir}" -name '*.pod' -delete
+}

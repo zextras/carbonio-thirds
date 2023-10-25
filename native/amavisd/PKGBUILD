@@ -1,6 +1,6 @@
 pkgname="carbonio-amavisd"
 pkgver="2.12.2"
-pkgrel="2"
+pkgrel="3"
 pkgdesc="High-performance interface between mailer (MTA) and content checkers"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -22,7 +22,7 @@ depends=(
   "carbonio-perl-mail-dkim"
   "carbonio-perl-mailtools"
   "carbonio-perl-mime-tools"
-  "carbonio-perl-net-libidn"
+  "carbonio-perl-net-libidn2"
   "carbonio-perl-net-server"
   "carbonio-perl-net-ssleay"
   "carbonio-perl-unix-getrusage"
