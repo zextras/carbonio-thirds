@@ -1,26 +1,87 @@
-diff '--color=auto' -Naur a/amavisd b/amavisd
---- a/amavisd	2023-10-12 21:12:37.934615627 +0200
-+++ b/amavisd	2023-10-12 21:12:42.990522560 +0200
-@@ -4,6 +4,8 @@
+diff '--color=auto' -Naur a/bin/amavisd b/bin/amavisd
+--- a/bin/amavisd	2024-01-19 12:11:01.618696011 +0100
++++ b/bin/amavisd	2024-01-19 12:12:35.692048464 +0100
+@@ -5,6 +5,8 @@
  ### #!/usr/bin/perl -d:NYTProf
  ###   NYTPROF=start=no:addpid=1:forkdepth=1 amavisd -m 5 foreground
  
 +use lib $ENV{PERL5LIB} =~ /([^:]+)/g; # Untaint PERL5LIB so modules can be used
 +
  #------------------------------------------------------------------------------
- # This is amavisd-new.
+ # This is amavis.
  # It is an interface between a message transfer agent (MTA) and virus
-@@ -5684,6 +5686,9 @@
+diff '--color=auto' -Naur a/bin/amavisd-release b/bin/amavisd-release
+--- a/bin/amavisd-release	2024-01-19 12:11:01.618696011 +0100
++++ b/bin/amavisd-release	2024-01-19 12:12:35.692048464 +0100
+@@ -88,7 +88,7 @@
+   $log_level = 1;
+ # $socketname = '127.0.0.1:9998';
+ # $socketname = '[::1]:9998';
+-  $socketname = '/var/amavis/amavisd.sock';
++  $socketname = '/opt/zextras/data/amavisd/amavisd.sock';
+ 
+ ### END OF USER CONFIGURABLE
+ }
+diff '--color=auto' -Naur a/bin/amavisd-status b/bin/amavisd-status
+--- a/bin/amavisd-status	2024-01-19 12:11:01.618696011 +0100
++++ b/bin/amavisd-status	2024-01-19 12:12:35.692048464 +0100
+@@ -48,6 +48,7 @@
+ use warnings;
+ use warnings FATAL => qw(utf8 void);
+ no warnings 'uninitialized';
++use lib "/opt/zextras/common/lib/perl5";
+ 
+ use Errno qw(ESRCH ENOENT);
+ use POSIX qw(strftime);
+diff '--color=auto' -Naur a/bin/amavis-mc b/bin/amavis-mc
+--- a/bin/amavis-mc	2024-01-19 12:11:01.618696011 +0100
++++ b/bin/amavis-mc	2024-01-19 12:12:35.692048464 +0100
+@@ -48,6 +48,7 @@
+ use warnings;
+ use warnings FATAL => qw(utf8 void);
+ no warnings 'uninitialized';
++use lib "/opt/zextras/common/lib/perl5";
+ 
+ use vars qw($VERSION);  $VERSION = 2.008002;
+ 
+@@ -73,16 +74,16 @@
+ 
+ ### USER CONFIGURABLE:
+ 
+-$daemon_user   = 'vscan';
+-@daemon_groups = 'vscan';
++$daemon_user   = 'zextras';
++@daemon_groups = 'zextras';
+ 
+-$pid_file = '/var/amavis/amavis-mc.pid';
++$pid_file = '/opt/zextras/log/amavis-mc.pid';
+ 
+ $log_level = 0;
+ $syslog_ident = 'amavis-mc';
+ $syslog_facility = LOG_MAIL;
+ 
+-@path = qw(/usr/local/sbin /usr/local/bin /usr/sbin /sbin /usr/bin /bin);
++@path = qw(/opt/zextras/common/sbin /usr/local/sbin /usr/local/bin /usr/sbin /sbin /usr/bin /bin);
+ 
+ @services = (
+   { cmd => 'amavis-services msg-forwarder' },
+diff '--color=auto' -Naur a/lib/Amavis/rfc2821_2822_Tools.pm b/lib/Amavis/rfc2821_2822_Tools.pm
+--- a/lib/Amavis/rfc2821_2822_Tools.pm	2024-01-19 12:11:01.620695975 +0100
++++ b/lib/Amavis/rfc2821_2822_Tools.pm	2024-01-19 12:14:02.440538664 +0100
+@@ -515,6 +515,9 @@
      my(@dkeys); my $d = $domain;
      for (;;) {            # (@).sub.example.com (@).example.com (@).com (@).
        push(@dkeys, $prepend_to_domain.'.'.$d);
 +      if ($d ne '') {
-+        push(@dkeys, $d);
++	push(@dkeys, $d);
 +      }
        last  if $d eq '';
        $d = ($d =~ /^([^.]*)\.(.*)\z/s) ? $2 : '';
      }
-@@ -12513,7 +12518,7 @@
+diff '--color=auto' -Naur a/lib/Amavis.pm b/lib/Amavis.pm
+--- a/lib/Amavis.pm	2024-01-19 12:11:01.618696011 +0100
++++ b/lib/Amavis.pm	2024-01-19 12:12:35.693048446 +0100
+@@ -443,7 +443,7 @@
      P => sub {$MSGINFO->partition_tag}, # SQL partition tag
      partition_tag => sub {$MSGINFO->partition_tag},  # synonym for %P
      q => sub { my $q = $MSGINFO->quarantined_to;
@@ -29,7 +90,7 @@ diff '--color=auto' -Naur a/amavisd b/amavisd
               },  # list of quarantine mailboxes
      v => sub { !defined $av_output ? undef     # anti-virus scanner output
                   : [split(/[ \t]*\r?\n/, $av_output)]},
-@@ -12963,7 +12968,7 @@
+@@ -889,7 +889,7 @@
            sort map { my $s = $_; $s =~ s/\.pm\z//; $s =~ s{/}{::}g; $s }
                 grep(/\.pm\z/, keys %INC)) {
      next  if !grep($_ eq $m, qw(Amavis::Conf
@@ -38,7 +99,7 @@ diff '--color=auto' -Naur a/amavisd b/amavisd
        Convert::TNEF Convert::UUlib File::LibMagic
        MIME::Entity MIME::Parser MIME::Tools Mail::Header Mail::Internet
        Digest::MD5 Digest::SHA Digest::SHA1 Crypt::OpenSSL::RSA
-@@ -18020,6 +18025,15 @@
+@@ -5968,6 +5968,15 @@
      }
    }  # endfor per_recip_data
  
@@ -54,76 +115,12 @@ diff '--color=auto' -Naur a/amavisd b/amavisd
    if ($ccat == CC_SPAM) {
      my $sqbsm = ca('spam_quarantine_bysender_to_maps');
      if (@$sqbsm) {  # by-sender spam quarantine (hardly useful, rarely used)
-@@ -19089,7 +19103,7 @@
+@@ -7007,7 +7016,7 @@
    push(@{/^no_conf_file_writable_check\z/ ? \@known : \@unknown}, $_)
      for grep($i_know_what_i_am_doing{$_}, keys %i_know_what_i_am_doing);
    $unknown[0] = 'unknown: ' . $unknown[0]  if @unknown;
 -  warn sprintf("I know what I'm doing: %s\n", join(', ',@known,@unknown));
-+  #warn sprintf("I know what I'm doing: %s\n", join(', ',@known,@unknown));
++  # warn sprintf("I know what I'm doing: %s\n", join(', ',@known,@unknown));
  }
  
  # deal with debugging early, based on a command line arg
-@@ -32445,7 +32459,7 @@
-   $retval;
- }
- 
--# DROPED SUPPORT for Archive::Tar; main drawback of this module is: it either
-+# DROPPED SUPPORT for Archive::Tar; main drawback of this module is: it either
- # loads an entire tar into memory (horrors!), or when using extract_archive()
- # it does not relativize absolute paths (which makes it possible to store
- # members in any directory writable by uid), and does not provide a way to
-diff '--color=auto' -Naur a/amavisd-release b/amavisd-release
---- a/amavisd-release	2023-10-12 21:12:37.935615608 +0200
-+++ b/amavisd-release	2023-10-12 21:12:43.023521955 +0200
-@@ -87,7 +87,7 @@
-   $log_level = 1;
- # $socketname = '127.0.0.1:9998';
- # $socketname = '[::1]:9998';
--  $socketname = '/var/amavis/amavisd.sock';
-+  $socketname = '/opt/zextras/data/amavisd/amavisd.sock';
- 
- ### END OF USER CONFIGURABLE
- }
-diff '--color=auto' -Naur a/amavisd-status b/amavisd-status
---- a/amavisd-status	2023-10-12 21:12:37.936615590 +0200
-+++ b/amavisd-status	2023-10-12 21:12:43.023521955 +0200
-@@ -47,6 +47,7 @@
- use warnings;
- use warnings FATAL => qw(utf8 void);
- no warnings 'uninitialized';
-+use lib "/opt/zextras/common/lib/perl5";
- 
- use Errno qw(ESRCH ENOENT);
- use POSIX qw(strftime);
-diff '--color=auto' -Naur a/amavis-mc b/amavis-mc
---- a/amavis-mc	2023-10-12 21:12:37.932615664 +0200
-+++ b/amavis-mc	2023-10-12 21:12:43.024521937 +0200
-@@ -47,6 +47,7 @@
- use warnings;
- use warnings FATAL => qw(utf8 void);
- no warnings 'uninitialized';
-+use lib "/opt/zextras/common/lib/perl5";
- 
- use vars qw($VERSION);  $VERSION = 2.008002;
- 
-@@ -70,16 +71,16 @@
- 
- ### USER CONFIGURABLE:
- 
--$daemon_user  = 'vscan';
--$daemon_group = 'vscan';
-+$daemon_user  = 'zextras';
-+$daemon_group = 'zextras';
- 
--$pid_file = '/var/amavis/amavis-mc.pid';
-+$pid_file = '/opt/zextras/log/amavis-mc.pid';
- 
- $log_level = 0;
- $syslog_ident = 'amavis-mc';
- $syslog_facility = LOG_MAIL;
- 
--@path = qw(/usr/local/sbin /usr/local/bin /usr/sbin /sbin /usr/bin /bin);
-+@path = qw(/opt/zextras/common/sbin /usr/local/sbin /usr/local/bin /usr/sbin /sbin /usr/bin /bin);
- 
- @services = (
-   { cmd => 'amavis-services msg-forwarder' },

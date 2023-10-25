@@ -1,6 +1,6 @@
 pkgname="carbonio-amavisd"
-pkgver="2.12.2"
-pkgrel="3"
+pkgver="2.13.0"
+pkgrel="1"
 pkgdesc="High-performance interface between mailer (MTA) and content checkers"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -34,18 +34,23 @@ source=(
   "https://gitlab.com/amavis/amavis/-/archive/v${pkgver}/amavis-v${pkgver}.tar.bz2"
   "socket_and_misc.patch"
 )
-sha256sums=('9db619010a310351c57ff18385cf06dd6e06160412d3e530f3fe9b1ba219e457'
-  '205e91c5c5cdbbae0f5861836655bf13c2ed8816f4289affce89c924303b38f4')
+sha256sums=('155447e049d02e5170b9183ad3867684514fcb37852440c4679ba6d7cc56e50d'
+  'be3f0d56552ce674365b9fb37f90eb185c261c202f976e8a42b3a49ee9eb306d')
 
 package() {
   cd "${srcdir}/amavis-v${pkgver}"
 
   patch -Np1 -i "${srcdir}/socket_and_misc.patch"
 
-  mkdir -p "${pkgdir}/opt/zextras/common/sbin"
-  cp amavisd "${pkgdir}/opt/zextras/common/sbin"
-  cp amavisd-release "${pkgdir}/opt/zextras/common/sbin"
-  cp amavis-mc "${pkgdir}/opt/zextras/common/sbin"
-  cp amavis-services "${pkgdir}/opt/zextras/common/sbin"
-  cp amavisd-status "${pkgdir}/opt/zextras/common/sbin"
+  install -D -p -m755 bin/amavisd \
+    "${pkgdir}/opt/zextras/common/sbin/amavisd"
+
+  install -p -m755 bin/amavisd-{agent,nanny,release,signer,status,submit} \
+    "${pkgdir}/opt/zextras/common/sbin"
+
+  install -p -m755 bin/amavis-{mc,services} \
+    "${pkgdir}/opt/zextras/common/sbin"
+
+  mkdir -p "${pkgdir}/opt/zextras/common/lib/"
+  cp -pr lib "${pkgdir}/opt/zextras/common/lib/perl5"
 }
