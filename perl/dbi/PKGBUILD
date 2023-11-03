@@ -23,23 +23,6 @@ sha256sums=('8a2b993db560a2c373c174ee976a51027dd780ec766ae17620c20393d2e836fa')
 
 build() {
   cd "${srcdir}/DBI-${pkgver}"
-  rm lib/DBD/Gofer/Transport/corostream.pm
-  sed -i -e '/^lib\/DBD\/Gofer\/Transport\/corostream.pm$/d' MANIFEST
-  # Remove RPC::Pl* reverse dependencies due to security concerns,
-  # CVE-2013-7284, bug #1051110
-  for F in lib/Bundle/DBI.pm lib/DBD/Proxy.pm lib/DBI/ProxyServer.pm \
-    dbiproxy.PL t/80proxy.t; do
-    rm "$F"
-    sed -i -e '\|^'"$F"'|d' MANIFEST
-  done
-  sed -i -e 's/"dbiproxy$ext_pl",//' Makefile.PL
-  # Remove Win32 specific files to avoid unwanted dependencies
-  for F in lib/DBI/W32ODBC.pm lib/Win32/DBIODBC.pm; do
-    rm "$F"
-    sed -i -e '\|^'"$F"'|d' MANIFEST
-  done
-  sed -i "/RPC/d" Makefile.PL META.yml META.json
-
   perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
     INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
     LIB=/opt/zextras/common/lib/perl5 LIBS="-L/opt/zextras/common/lib -lssl -lcrypto" INC="-I/opt/zextras/common/include"
