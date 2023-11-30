@@ -1,5 +1,5 @@
 pkgname="carbonio-mariadb"
-pkgver="10.4.31"
+pkgver="10.4.32"
 pkgrel="1"
 pkgdesc="Fast SQL database server, derived from MySQL"
 arch=('x86_64')
@@ -74,7 +74,7 @@ priority="optional"
 source=(
   "https://mirror.digitalnova.at/mariadb//mariadb-${pkgver}/source/mariadb-${pkgver}.tar.gz"
 )
-sha256sums=('52abf5434c6a42e0a048a63ab99a3898fb7fca1580fadd7a61bd0e9ce9b85054')
+sha256sums=('b3d7724187ad0adee5088e5ccfc9d531d86a64b4505fb127d1004aca4bd0373b')
 
 build() {
 
@@ -108,6 +108,8 @@ build() {
     -DLIBXML2_LIBRARY=/opt/zextras/common/lib \
     -DPLUGIN_ARCHIVE=NO \
     -DPLUGIN_ARIA=NO \
+    -DPLUGIN_AUTH_PAM=NO \
+    -DPLUGIN_AUTH_PAM_V1=YES \
     -DPLUGIN_BLACKHOLE=NO \
     -DPLUGIN_CONNECT=NO \
     -DPLUGIN_EXAMPLE=NO \
@@ -133,20 +135,22 @@ build() {
 package() {
   cd "${srcdir}/mariadb-${pkgver}"
   make DESTDIR="${pkgdir}" install
-  rm -rf "${pkgdir}"/opt/zextras/conf
-  rm -rf "${pkgdir}"/opt/zextras/common/data
-  rm -rf "${pkgdir}"/opt/zextras/common/mysql-test
-  rm -rf "${pkgdir}"/opt/zextras/common/sql-bench
-  rm -rf "${pkgdir}"/opt/zextras/common/support-files
-  rm -f "${pkgdir}"/opt/zextras/common/sbin/rcmysql
-  rm -f "${pkgdir}"/opt/zextras/common/lib/libmysqlclient_r.so.18
-  rm -f "${pkgdir}"/opt/zextras/common/lib/libmysqlclient_r.so.18.0.0
+  rm -rf "${pkgdir}/opt/zextras/conf"
+  rm -rf "${pkgdir}/opt/zextras/common/data"
+  rm -rf "${pkgdir}/opt/zextras/common/mysql-test"
+  rm -rf "${pkgdir}/opt/zextras/common/sql-bench"
+  rm -rf "${pkgdir}/opt/zextras/common/support-files"
+  rm -f "${pkgdir}/opt/zextras/common/sbin/rcmysql"
 
-  cd "${pkgdir}"/opt/zextras/common/lib
-  ln -s libmysqlclient.so.18.0.0 \
-    libmysqlclient_r.so.18.0.0
-  ln -s libmysqlclient.so.18 \
-    libmysqlclient_r.so.18
+  # This should be dropped in the near future
+  ln -s /opt/zextras/common/lib/libmariadb.so.3 \
+    "${pkgdir}/opt/zextras/common/lib/libmysqlclient.so.18.0.0"
+  ln -s /opt/zextras/common/lib/libmariadb.so.3 \
+    "${pkgdir}/opt/zextras/common/lib/libmysqlclient.so.18"
+  ln -s /opt/zextras/common/lib/libmariadb.so.3 \
+    "${pkgdir}/opt/zextras/common/lib/libmysqlclient_r.so.18.0.0"
+  ln -s /opt/zextras/common/lib/libmariadb.so.3 \
+    "${pkgdir}/opt/zextras/common/lib/libmysqlclient_r.so.18"
 
   rm -rf "${pkgdir}"/opt/zextras/common/lib/*.a
 }
