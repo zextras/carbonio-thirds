@@ -1,5 +1,5 @@
 pkgname="carbonio-mariadb"
-pkgver="10.4.31"
+pkgver="10.4.32"
 pkgrel="1"
 pkgdesc="Fast SQL database server, derived from MySQL"
 arch=('x86_64')
@@ -74,7 +74,7 @@ priority="optional"
 source=(
   "https://mirror.digitalnova.at/mariadb//mariadb-${pkgver}/source/mariadb-${pkgver}.tar.gz"
 )
-sha256sums=('52abf5434c6a42e0a048a63ab99a3898fb7fca1580fadd7a61bd0e9ce9b85054')
+sha256sums=('b3d7724187ad0adee5088e5ccfc9d531d86a64b4505fb127d1004aca4bd0373b')
 
 build() {
 
