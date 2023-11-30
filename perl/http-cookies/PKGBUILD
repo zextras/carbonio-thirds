@@ -4,7 +4,7 @@ pkgrel="2"
 pkgdesc="HTTP cookie jars"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
-url="https://zextras.com"
+url="https://github.com/zextras"
 depends__apt=(
   "carbonio-perl-http-date"
   "carbonio-perl-http-message"

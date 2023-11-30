@@ -4,7 +4,7 @@ pkgrel="2"
 pkgdesc="Fast SQL database server, derived from MySQL"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
-url="https://zextras.com"
+url="https://github.com/zextras"
 depends__apt=(
   "libaio1"
   "libbz2-1.0"

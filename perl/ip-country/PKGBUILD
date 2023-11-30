@@ -4,7 +4,7 @@ pkgrel="2"
 pkgdesc="Fast lookup of country codes from IP addresses"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
-url="https://zextras.com"
+url="https://github.com/zextras"
 depends__apt=(
   "carbonio-perl-geography-countries"
   "carbonio-perl-socket"

@@ -4,7 +4,7 @@ pkgrel="2"
 pkgdesc="Lightweight Directory Access Protocol"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
-url="https://zextras.com"
+url="https://github.com/zextras"
 depends__apt=(
   "carbonio-perl-convert-asn1"
   "perl"
