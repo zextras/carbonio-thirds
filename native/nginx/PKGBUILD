@@ -4,7 +4,7 @@ pkgrel="4"
 pkgdesc="Lightweight HTTP server and IMAP/POP3 proxy server"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
-url="https://zextras.com"
+url="https://github.com/zextras"
 license=("CUSTOM")
 depends__apt=(
   "libbrotli1"

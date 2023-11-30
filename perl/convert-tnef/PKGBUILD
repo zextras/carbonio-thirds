@@ -4,7 +4,7 @@ pkgrel="2"
 pkgdesc="Perl module to read TNEF files"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
-url="https://zextras.com"
+url="https://github.com/zextras"
 depends__apt=(
   "carbonio-perl-io-stringy"
   "carbonio-perl-mime-tools"

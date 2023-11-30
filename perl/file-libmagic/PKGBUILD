@@ -4,7 +4,7 @@ pkgrel="2"
 pkgdesc="Determine MIME types of data or files using libmagic"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
-url="https://zextras.com"
+url="https://github.com/zextras"
 depends__apt=(
   "libmagic1"
   "perl"

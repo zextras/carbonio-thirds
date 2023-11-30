@@ -4,7 +4,7 @@ pkgrel="2"
 pkgdesc="2-letter, 3-letter, and numerical codes for countries"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
-url="https://zextras.com"
+url="https://github.com/zextras"
 depends__apt=(
   "perl"
 )

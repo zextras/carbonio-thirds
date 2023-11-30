@@ -4,7 +4,7 @@ pkgrel="2"
 pkgdesc="Perl interface to the SHA-1 algorithm"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
-url="https://zextras.com"
+url="https://github.com/zextras"
 depends__apt=(
   "perl"
 )
