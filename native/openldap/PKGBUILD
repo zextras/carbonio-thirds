@@ -1,15 +1,23 @@
 pkgname="carbonio-openldap"
 pkgver="2.4.59"
-pkgrel="3"
+pkgrel="4"
 pkgdesc="Lightweight Directory Access Protocol (LDAP) library"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
-depends=(
+depends__apt=(
   "carbonio-cyrus-sasl"
   "carbonio-libsodium"
   "carbonio-openssl"
+  "libltdl7"
 )
+depends__yum=(
+  "carbonio-cyrus-sasl"
+  "carbonio-libsodium"
+  "carbonio-openssl"
+  "libtool-ltdl"
+)
+
 makedepends__apt=(
   "libtool"
 )
