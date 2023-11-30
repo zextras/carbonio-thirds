@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-dbd-mysql"
 pkgver="4.050"
-pkgrel="2"
+pkgrel="3"
 pkgdesc="Perl/CPAN DBD::mysql module for interacting with MySQL via DBD"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -11,7 +11,7 @@ depends__apt=(
   "perl"
 )
 depends__yum=(
-  "carbonio-mariadb"
+  "carbonio-mariadb>10.1.48"
   "carbonio-perl-dbi"
   "perl-core"
   "perl"
