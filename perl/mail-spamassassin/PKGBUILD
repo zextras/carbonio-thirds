@@ -4,7 +4,7 @@ pkgrel="4"
 pkgdesc="Spam detector and markup engine"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
-url="https://zextras.com"
+url="https://github.com/zextras"
 depends=(
   "carbonio-openssl"
   "carbonio-perl-http-message"

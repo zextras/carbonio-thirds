@@ -4,7 +4,7 @@ pkgrel="2"
 pkgdesc="Perl/CPAN DBD::mysql module for interacting with MySQL via DBD"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
-url="https://zextras.com"
+url="https://github.com/zextras"
 depends__apt=(
   "carbonio-mariadb"
   "carbonio-perl-dbi"

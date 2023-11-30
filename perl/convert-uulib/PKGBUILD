@@ -4,7 +4,7 @@ pkgrel="3"
 pkgdesc="Decode uu/xx/b64/mime/yenc/etc-encoded data from a massive number of files"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
-url="https://zextras.com"
+url="https://github.com/zextras"
 depends__apt=(
   "carbonio-perl-canary-stability"
   "libcommon-sense-perl"

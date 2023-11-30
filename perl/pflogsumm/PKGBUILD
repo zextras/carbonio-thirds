@@ -4,7 +4,7 @@ pkgrel="1"
 pkgdesc="Postfix log entry summarizer"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
-url="https://zextras.com"
+url="https://github.com/zextras"
 depends=(
   "carbonio-perl-date-calc"
 )

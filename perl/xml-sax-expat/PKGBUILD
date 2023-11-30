@@ -4,7 +4,7 @@ pkgrel="2"
 pkgdesc="SAX2 Driver for Expat"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
-url="https://zextras.com"
+url="https://github.com/zextras"
 depends__apt=(
   "carbonio-perl-xml-namespacesupport"
   "carbonio-perl-xml-parser"

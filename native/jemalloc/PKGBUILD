@@ -6,11 +6,11 @@ pkgver="5.3.0"
 pkgrel="2"
 pkgdesc="General-purpose scalable concurrent malloc implementation"
 arch=('x86_64')
-license=("BSD")
+license=("BSD-2-Clause")
 section="mail"
 priority="extra"
 maintainer="Zextras <packages@zextras.com>"
-url="https://zextras.com"
+url="https://github.com/zextras"
 depends__apt=(
   "libgcc1"
   "libc6"

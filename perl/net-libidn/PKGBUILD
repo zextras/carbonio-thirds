@@ -4,7 +4,7 @@ pkgrel="2"
 pkgdesc="Perl bindings for GNU Libidn"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
-url="https://zextras.com"
+url="https://github.com/zextras"
 depends__ubuntu_focal=(
   "libidn11"
   "perl"
