@@ -14,9 +14,9 @@ depends__yum=(
 section="libs"
 priority="important"
 source=(
-  "https://libbsd.freedesktop.org/releases/libbsd-${pkgver}.tar.xz"
+  "https://github.com/guillemj/libbsd/archive/refs/tags/${pkgver}.tar.gz"
 )
-sha256sums=('34b8adc726883d0e85b3118fa13605e179a62b31ba51f676136ecb2d0bc1a887')
+sha256sums=('00d0a39eb5334cae476be30027a63370cf9427242af66a70505699ffc83451d7')
 
 build() {
   cd "${srcdir}/libbsd-${pkgver}"
@@ -24,6 +24,7 @@ build() {
   export CFLAGS="-fPIC -D_REENTRANT"
   export CXXFLAGS="-fPIC -D_REENTRANT"
 
+  echo "${pkgver}" >.dist-version
   autoreconf -fiv
   ./configure \
     --prefix=/opt/zextras/common \
