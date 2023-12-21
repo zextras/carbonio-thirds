@@ -37,10 +37,6 @@
       "install": true
     },
     {
-      "name": "rsync",
-      "install": true
-    },
-    {
       "name": "altermime",
       "install": true
     },
