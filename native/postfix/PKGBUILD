@@ -1,6 +1,6 @@
 pkgname="carbonio-postfix"
-pkgver="3.8.3"
-pkgrel="2"
+pkgver="3.8.4"
+pkgrel="1"
 pkgdesc="Fast, easy to administer, secure mail server"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -23,7 +23,7 @@ depends__yum=(
   "carbonio-openldap"
   "carbonio-cyrus-sasl"
   "carbonio-openssl"
-  "carbonio-mariadb"
+  "carbonio-mariadb>10.1.48"
 )
 makedepends__yum=(
   "libnsl2-devel"
@@ -35,8 +35,8 @@ source=(
   "https://de.postfix.org/ftpmirror/official/postfix-${pkgver}.tar.gz"
   "carbonio-postfix.patch"
 )
-sha256sums=('16946c9874a786a09f53b17d1c83dc1faae35cbf80bab34ab01798b70420968b'
-  '15ab8397b84d66dcc4eb9a57524d80abbc72627293491f78dba6b1d6e322935c')
+sha256sums=('6f5848c5d8b6a7d2c5af0a9f75b0bd3f103451e912591464ab867fde085e6236'
+  'd4cdba8dffe1a7e23c0495cec5caf18f5cb10b1f52db0bb866f2247e63635598')
 
 build() {
   cd "${srcdir}/postfix-${pkgver}"
@@ -88,8 +88,9 @@ build() {
 package() {
   cd "${srcdir}/postfix-${pkgver}"
   sh postfix-install -non-interactive-package install_root="${pkgdir}"
-  sed -e 's|postconf|/opt/zextras/common/sbin/postconf|' auxiliary/qshape/qshape.pl >"${pkgdir}"/opt/zextras/common/sbin/qshape.pl
-  chmod a+rx "${pkgdir}"/opt/zextras/common/sbin/qshape.pl
+  install -Dm755 auxiliary/qshape/qshape.pl \
+    "${pkgdir}"/opt/zextras/common/sbin/qshape.pl
+
   cd "${pkgdir}"/opt/zextras/common/sbin
   rm -f newaliases
   rm -f mailq
