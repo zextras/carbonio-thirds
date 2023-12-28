@@ -1,6 +1,18 @@
+diff '--color=auto' -Naur a/auxiliary/qshape/qshape.pl b/auxiliary/qshape/qshape.pl
+--- a/auxiliary/qshape/qshape.pl	2024-01-05 17:01:47.137924220 +0100
++++ b/auxiliary/qshape/qshape.pl	2024-01-05 17:01:49.876884335 +0100
+@@ -169,7 +169,7 @@
+ 
+ 	$ENV{q{MAIL_CONFIG}} = $opts{"c"} if (exists $opts{"c"});
+ 
+-	chomp(my $qdir = qx{postconf -h queue_directory});
++	chomp(my $qdir = qx{/opt/zextras/common/sbin/postconf -h queue_directory});
+ 	die "$0: postconf failed\n" if ($? != 0);
+ 	warn "'queue_directory' variable expansion not supported: $qdir\n"
+ 	    if ($qdir =~ /\$/);
 diff '--color=auto' -Naur a/conf/main.cf b/conf/main.cf
---- a/conf/main.cf	2022-01-24 00:45:09.000000000 +0100
-+++ b/conf/main.cf	2023-11-03 17:12:28.488823719 +0100
+--- a/conf/main.cf	2024-01-05 17:01:47.138924206 +0100
++++ b/conf/main.cf	2024-01-05 17:02:30.157296486 +0100
 @@ -269,7 +269,7 @@
  # only the local machine.
  # 
@@ -19,29 +31,29 @@ diff '--color=auto' -Naur a/conf/main.cf b/conf/main.cf
  
  # FAST ETRN SERVICE
  #
-@@ -682,4 +682,54 @@
+@@ -682,4 +682,52 @@
  # readme_directory: The location of the Postfix README files.
  #
  readme_directory =
 -inet_protocols = ipv4
 +inet_protocols = all
 +
++# Source: https://www.postfix.org/smtp-smuggling.html
++# Optionally disconnect remote SMTP clients that send bare newlines,
++# but allow local clients with non-standard SMTP implementations
++# such as netcat, fax machines, or load balancer health checks.
 +#
-+# Zimbra changes.
-+#
++smtpd_forbid_bare_newline = yes
++smtpd_forbid_bare_newline_exclusions = $mynetworks
 +
++# Zextras changes
++#
 +virtual_mailbox_maps = proxy:ldap:/opt/zextras/conf/ldap-vmm.cf
-+
 +virtual_mailbox_domains = proxy:ldap:/opt/zextras/conf/ldap-vmd.cf
-+
 +virtual_alias_maps = proxy:ldap:/opt/zextras/conf/ldap-vam.cf
-+
 +virtual_alias_domains = proxy:ldap:/opt/zextras/conf/ldap-vad.cf
-+
 +virtual_transport = error
-+
 +canonical_maps = proxy:ldap:/opt/zextras/conf/ldap-canonical.cf
-+
 +transport_maps = proxy:ldap:/opt/zextras/conf/ldap-transport.cf
 +
 +# If (email domain name == host name), we don't want $myhostname in
@@ -56,11 +68,8 @@ diff '--color=auto' -Naur a/conf/main.cf b/conf/main.cf
 +allow_mail_to_files =
 +
 +smtpd_helo_required = yes
-+
 +smtpd_client_restrictions = reject_unauth_pipelining
-+
 +smtpd_data_restrictions = reject_unauth_pipelining
-+
 +smtpd_recipient_restrictions =
 +       reject_non_fqdn_recipient,
 +       permit_sasl_authenticated,
@@ -74,10 +83,11 @@ diff '--color=auto' -Naur a/conf/main.cf b/conf/main.cf
 +smtpd_tls_key_file = /opt/zextras/conf/smtpd.key
 +smtpd_tls_loglevel = 3
 +smtputf8_enable = no
-+
++smtpd_forbid_bare_newline = yes
++smtpd_forbid_bare_newline_exclusions = $mynetworks
 diff '--color=auto' -Naur a/conf/postfix-script b/conf/postfix-script
---- a/conf/postfix-script	2022-12-28 20:29:06.000000000 +0100
-+++ b/conf/postfix-script	2023-11-03 17:12:28.488823719 +0100
+--- a/conf/postfix-script	2024-01-05 17:01:47.138924206 +0100
++++ b/conf/postfix-script	2024-01-05 17:01:49.877884320 +0100
 @@ -293,7 +293,7 @@
  
  	# Check Postfix root-owned directory owner/permissions.
@@ -119,8 +129,8 @@ diff '--color=auto' -Naur a/conf/postfix-script b/conf/postfix-script
  
  	# Check Postfix mail_owner-owned directory tree owner/permissions.
 diff '--color=auto' -Naur a/proto/ldap_table b/proto/ldap_table
---- a/proto/ldap_table	2022-12-27 23:09:02.000000000 +0100
-+++ b/proto/ldap_table	2023-11-03 17:12:28.489823682 +0100
+--- a/proto/ldap_table	2024-01-05 17:01:47.148924060 +0100
++++ b/proto/ldap_table	2024-01-05 17:01:49.877884320 +0100
 @@ -142,6 +142,14 @@
  #	When the input key is an address of the form user@domain, \fB%d\fR
  #	is replaced by the (RFC 2253) quoted domain part of the address.
@@ -137,8 +147,8 @@ diff '--color=auto' -Naur a/proto/ldap_table b/proto/ldap_table
  #	For the \fBsearch_base\fR parameter, the upper-case equivalents
  #	of the above expansions behave identically to their lower-case
 diff '--color=auto' -Naur a/src/global/db_common.c b/src/global/db_common.c
---- a/src/global/db_common.c	2021-12-20 00:36:08.000000000 +0100
-+++ b/src/global/db_common.c	2023-11-03 17:12:28.490823647 +0100
+--- a/src/global/db_common.c	2024-01-05 17:01:47.156923943 +0100
++++ b/src/global/db_common.c	2024-01-05 17:01:49.877884320 +0100
 @@ -149,6 +149,7 @@
    * Utility library.
    */
@@ -195,8 +205,8 @@ diff '--color=auto' -Naur a/src/global/db_common.c b/src/global/db_common.c
  		QUOTE_VAL(ctx->dict, quote_func, value, result);
  		break;
 diff '--color=auto' -Naur a/src/global/db_common.h b/src/global/db_common.h
---- a/src/global/db_common.h	2011-12-08 14:27:14.000000000 +0100
-+++ b/src/global/db_common.h	2023-11-03 17:12:28.491823611 +0100
+--- a/src/global/db_common.h	2024-01-05 17:01:47.156923943 +0100
++++ b/src/global/db_common.h	2024-01-05 17:01:49.878884306 +0100
 @@ -18,6 +18,10 @@
  #include "dict.h"
  #include "string_list.h"
@@ -209,8 +219,8 @@ diff '--color=auto' -Naur a/src/global/db_common.h b/src/global/db_common.h
  
  extern int db_common_parse(DICT *, void **, const char *, int);
 diff '--color=auto' -Naur a/src/global/dict_ldap.c b/src/global/dict_ldap.c
---- a/src/global/dict_ldap.c	2023-04-16 23:17:01.000000000 +0200
-+++ b/src/global/dict_ldap.c	2023-11-03 17:12:28.492823574 +0100
+--- a/src/global/dict_ldap.c	2024-01-05 17:01:47.156923943 +0100
++++ b/src/global/dict_ldap.c	2024-01-05 17:01:49.878884306 +0100
 @@ -1347,8 +1347,9 @@
       * On to the search.
       */
@@ -242,8 +252,8 @@ diff '--color=auto' -Naur a/src/global/dict_ldap.c b/src/global/dict_ldap.c
  
      /*
 diff '--color=auto' -Naur a/src/global/dict_memcache.c b/src/global/dict_memcache.c
---- a/src/global/dict_memcache.c	2023-04-16 23:17:01.000000000 +0200
-+++ b/src/global/dict_memcache.c	2023-11-03 17:12:28.493823539 +0100
+--- a/src/global/dict_memcache.c	2024-01-05 17:01:47.156923943 +0100
++++ b/src/global/dict_memcache.c	2024-01-05 17:01:49.879884291 +0100
 @@ -584,7 +584,7 @@
       */
      dict_mc->dbc_ctxt = 0;
@@ -254,8 +264,8 @@ diff '--color=auto' -Naur a/src/global/dict_memcache.c b/src/global/dict_memcach
      if (db_common_dict_partial(dict_mc->dbc_ctxt))
  	/* Breaks recipient delimiters */
 diff '--color=auto' -Naur a/src/global/dict_mysql.c b/src/global/dict_mysql.c
---- a/src/global/dict_mysql.c	2023-04-19 00:47:13.000000000 +0200
-+++ b/src/global/dict_mysql.c	2023-11-03 17:12:28.494823502 +0100
+--- a/src/global/dict_mysql.c	2024-01-05 17:01:47.156923943 +0100
++++ b/src/global/dict_mysql.c	2024-01-05 17:01:49.879884291 +0100
 @@ -684,8 +684,9 @@
       */
      dict_mysql->ctx = 0;
@@ -269,8 +279,8 @@ diff '--color=auto' -Naur a/src/global/dict_mysql.c b/src/global/dict_mysql.c
  
      /*
 diff '--color=auto' -Naur a/src/global/dict_pgsql.c b/src/global/dict_pgsql.c
---- a/src/global/dict_pgsql.c	2023-04-16 23:17:01.000000000 +0200
-+++ b/src/global/dict_pgsql.c	2023-11-03 17:12:28.495823467 +0100
+--- a/src/global/dict_pgsql.c	2024-01-05 17:01:47.156923943 +0100
++++ b/src/global/dict_pgsql.c	2024-01-05 17:01:49.879884291 +0100
 @@ -665,8 +665,9 @@
       */
      dict_pgsql->ctx = 0;
@@ -284,8 +294,8 @@ diff '--color=auto' -Naur a/src/global/dict_pgsql.c b/src/global/dict_pgsql.c
  
      /*
 diff '--color=auto' -Naur a/src/global/dict_sqlite.c b/src/global/dict_sqlite.c
---- a/src/global/dict_sqlite.c	2023-04-16 23:17:01.000000000 +0200
-+++ b/src/global/dict_sqlite.c	2023-11-03 17:12:28.495823467 +0100
+--- a/src/global/dict_sqlite.c	2024-01-05 17:01:47.156923943 +0100
++++ b/src/global/dict_sqlite.c	2024-01-05 17:01:49.880884276 +0100
 @@ -275,8 +275,9 @@
       */
      dict_sqlite->ctx = 0;
@@ -299,8 +309,8 @@ diff '--color=auto' -Naur a/src/global/dict_sqlite.c b/src/global/dict_sqlite.c
  
      /*
 diff '--color=auto' -Naur a/src/global/mail_params.h b/src/global/mail_params.h
---- a/src/global/mail_params.h	2023-06-05 23:44:19.000000000 +0200
-+++ b/src/global/mail_params.h	2023-11-03 17:12:28.497823394 +0100
+--- a/src/global/mail_params.h	2024-01-05 17:01:47.158923914 +0100
++++ b/src/global/mail_params.h	2024-01-05 17:01:49.880884276 +0100
 @@ -2916,7 +2916,7 @@
  extern char *var_verify_service;
  
