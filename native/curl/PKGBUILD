@@ -1,5 +1,5 @@
 pkgname="carbonio-curl"
-pkgver="7.79.1"
+pkgver="8.5.0"
 pkgrel="1"
 pkgdesc="An URL retrieval utility and library"
 arch=('x86_64')
@@ -26,23 +26,27 @@ priority="optional"
 source=(
   "https://curl.haxx.se/download/curl-${pkgver}.tar.gz"
 )
-sha256sums=('370b11201349816287fb0ccc995e420277fbfcaf76206e309b3f60f0eda090c2')
+sha256sums=('05fc17ff25b793a437a0906e0484b82172a9f4de02be5ed447e0cab8c3475add')
 
 build() {
-  cd "${srcdir}/curl-${pkgver}"
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
   export CPPFLAGS="-I/opt/zextras/common/include"
+  export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
 
-  ./configure --prefix=/opt/zextras/common \
-    --disable-ldap --disable-ldaps \
-    --with-gssapi=/opt/zextras/common \
-    --with-ssl=/opt/zextras/common \
-    --without-gnutls \
-    --with-ca-bundle=/opt/zextras/common/share/curl/ca-bundle.crt \
+  cd "${srcdir}/curl-${pkgver}"
+
+  ./configure \
+    --prefix=/opt/zextras/common \
+    --disable-ldap \
+    --disable-ldaps \
+    --disable-static \
     --enable-ipv6 \
+    --with-ca-bundle=/opt/zextras/common/share/curl/ca-bundle.crt \
+    --with-gssapi=/opt/zextras/common \
+    --with-openssl=/opt/zextras/common \
     --with-zlib \
-    --without-libidn \
-    --disable-static
+    --without-gnutls \
+    --without-libidn2
   make -j16
 }
 
