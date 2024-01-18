@@ -1,6 +1,6 @@
 pkgname="carbonio-nginx"
-pkgver="1.20.2"
-pkgrel="4"
+pkgver="1.24.0"
+pkgrel="1"
 pkgdesc="Lightweight HTTP server and IMAP/POP3 proxy server"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -14,6 +14,7 @@ depends__apt=(
   "carbonio-openssl"
 )
 makedepends__apt=(
+  "git"
   "libbrotli-dev"
   "libpcre3-dev"
   "zlib1g-dev"
@@ -27,6 +28,7 @@ depends__yum=(
 )
 makedepends__yum=(
   "brotli-devel"
+  "git"
   "pcre-devel"
   "zlib-devel"
 )
@@ -34,18 +36,23 @@ section="utils"
 priority="optional"
 source=(
   "https://nginx.org/download/nginx-${pkgver}.tar.gz"
-  "https://github.com/nviennot/nginx-tcp-keepalive/archive/19755fc0e22aa7d7ac2198f78b297951d31ea1dc.tar.gz"
-  "https://github.com/google/ngx_brotli/archive/v1.0.0rc/ngx_brotli-1.0.0rc.tar.gz"
-  "modules.tar.gz"
+  "nginx-tcp-keepalive::git+https://github.com/nviennot/nginx-tcp-keepalive#commit=19755fc0e22aa7d7ac2198f78b297951d31ea1dc"
+  "nginx-brotli::git+https://github.com/google/ngx_brotli#commit=a71f9312c2deb28875acc7bacfdd5695a111aa53"
+  "modules::git+https://github.com/zextras/carbonio-nginx-modules#commit=e62d730a1f5f23494fba7f0a45d3271c335fae6f"
   "carbonio-${pkgver}.patch"
-  "CVE-2022-27924.patch"
+  "CVE-2023-44487.patch"
 )
-sha256sums=('958876757782190a1653e14dc26dfc7ba263de310e04c113e11e97d1bef45a42'
-  '8b09b8eefb13d298f865ccb3563f9e2b808f7f5467b261532c47f0a2bddf2685'
-  'c85cdcfd76703c95aa4204ee4c2e619aa5b075cac18f428202f65552104add3b'
-  'b8d1b9c577453d195505c8e4cd195420d5876d2a3dd81480821fdbe149f038b2'
-  'e77a1bf3adfac1a269fe5759c129ced8607a0283371b5c1c144684c8548b9d80'
-  '6fda55b0899af642d4958b953c1b680bb3d0b0b95fe8cdff93103088aa263f80')
+sha256sums=('77a2541637b92a621e3ee76776c8b7b40cf6d707e69ba53a940283e30ff2f55d'
+  'SKIP'
+  'SKIP'
+  'SKIP'
+  '48df9423d3aca1e95f79ff3f89c063b983457451bbe0d6e8aac38acb7595adc5'
+  '72ad36b212fffe7a4824fc37e53972f051050ace11ecc4c55c2c9bdf3ba575ac')
+
+prepare() {
+  cd "${srcdir}/nginx-brotli"
+  git submodule update --init --recursive
+}
 
 build() {
 
@@ -53,18 +60,12 @@ build() {
   export CFLAGS="-g -O2 -fdebug-prefix-map=/etc=. -fstack-protector-strong"
 
   cd "${srcdir}/nginx-${pkgver}"
-  patch -Np1 -i "${srcdir}/carbonio-${pkgver}.patch"
-  patch -Np1 -i "${srcdir}/CVE-2022-27924.patch"
-
-  cp -r "${srcdir}/modules" zmmodules
-  cp -r "${srcdir}/nginx-tcp-keepalive"* \
-    zmmodules/nginx-tcp-keepalive
+  patch -Np1 -i ../"carbonio-${pkgver}.patch"
+  patch -Np1 -i ../CVE-2023-44487.patch
 
   ./configure --prefix=/opt/zextras/common \
     --with-cc-opt="-g -I/opt/zextras/common/include" \
     --with-ld-opt="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib" \
-    --with-debug \
-    --with-ipv6 \
     --with-http_ssl_module \
     --with-http_stub_status_module \
     --with-pcre \
@@ -93,12 +94,12 @@ build() {
     --http-fastcgi-temp-path=/opt/zextras/data/tmp/nginx/fastcgi \
     --without-http_scgi_module \
     --without-http_uwsgi_module \
-    --add-module="${srcdir}"/ngx_brotli-1.0.0rc \
-    --add-module=zmmodules/nginx-tcp-keepalive \
-    --add-module=zmmodules/http/sso \
-    --add-module=zmmodules/http/upstreamzmauth \
-    --add-module=zmmodules/mail/zmauth \
-    --add-module=zmmodules/mail/throttle
+    --add-module="${srcdir}/nginx-brotli" \
+    --add-module="${srcdir}/nginx-tcp-keepalive" \
+    --add-module="${srcdir}/modules/http/sso" \
+    --add-module="${srcdir}/modules/http/upstreamzmauth" \
+    --add-module="${srcdir}/modules/mail/zmauth" \
+    --add-module="${srcdir}/modules/mail/throttle"
   make -j16
 }
 
