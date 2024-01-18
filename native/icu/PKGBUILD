@@ -1,5 +1,5 @@
 pkgname="carbonio-icu"
-pkgver="69.1"
+pkgver="74.2"
 pkgrel="1"
 pkgdesc="International Components for Unicode library"
 arch=('x86_64')
@@ -19,9 +19,9 @@ makedepends=(
 section="libs"
 priority="important"
 source=(
-  "https://github.com/unicode-org/icu/releases/download/release-69-1/icu4c-69_1-src.tgz"
+  "https://github.com/unicode-org/icu/releases/download/release-74-2/icu4c-74_2-src.tgz"
 )
-sha256sums=('4cba7b7acd1d3c42c44bb0c14be6637098c7faf2b330ce876bc5f3b915d09745')
+sha256sums=('68db082212a96d6f53e35d60f47d38b962e9f9d207a74cfac78029ae8ff5e08c')
 
 build() {
   cd "${srcdir}/icu"
@@ -36,6 +36,6 @@ build() {
 package() {
   cd "${srcdir}/icu"
   cd source
-  make -j1 DESTDIR="${pkgdir}" install
+  make DESTDIR="${pkgdir}" install
   rm -rf "${pkgdir}/opt/zextras/common/share/man/"
 }
