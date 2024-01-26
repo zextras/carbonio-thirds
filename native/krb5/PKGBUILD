@@ -1,5 +1,5 @@
 pkgname="carbonio-krb5"
-pkgver="1.19.2"
+pkgver="1.21.2"
 pkgrel="1"
 pkgdesc="The Kerberos network authentication system"
 arch=('x86_64')
@@ -11,11 +11,9 @@ makedepends=(
 section="utils"
 priority="optional"
 source=(
-  "https://web.mit.edu/kerberos/dist/krb5/1.19/krb5-${pkgver}.tar.gz"
-  "krb5-config_LDFLAGS.patch"
+  "https://web.mit.edu/kerberos/dist/krb5/${pkgver%.*}/krb5-${pkgver}.tar.gz"
 )
-sha256sums=('10453fee4e3a8f8ce6129059e5c050b8a65dab1c257df68b99b3112eaa0cdf6a'
-  '66a958f3f089d0aedbed3fe7d2626625cceae2407766790676d4730a2379eb49')
+sha256sums=('9560941a9d843c0243a71b17a7ac6fe31c7cebb5bce3983db79e52ae7e850491')
 
 build() {
 
@@ -24,15 +22,13 @@ build() {
   export CPPFLAGS=" -fPIC -fno-strict-aliasing -fstack-protector-all -I/opt/zextras/common/include -I/usr/include"
   export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
 
-  cd "${srcdir}/krb5-${pkgver}"
-  patch -Np1 -i "${srcdir}/krb5-config_LDFLAGS.patch"
-  cd src
+  cd "${srcdir}/krb5-${pkgver}/src"
+
   ./configure --prefix=/opt/zextras/common \
     --sbindir=/opt/zextras/common/bin \
     --sysconfdir=/opt/zextras/common/etc \
     --localstatedir=/opt/zextras/data \
     --enable-shared \
-    --without-tcl \
     --enable-dns-for-realm \
     --without-readline \
     --without-ldap \
