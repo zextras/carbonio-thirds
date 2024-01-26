@@ -1,5 +1,5 @@
 pkgname="carbonio-libsodium"
-pkgver="1.0.18"
+pkgver="1.0.19"
 pkgrel="1"
 pkgdesc="P(ortable|ackageable) NaCl-based crypto library"
 arch=('x86_64')
@@ -8,12 +8,12 @@ url="https://github.com/zextras"
 section="libs"
 priority="important"
 source=(
-  "https://download.libsodium.org/libsodium/releases/libsodium-${pkgver}.tar.gz"
+  "https://github.com/jedisct1/libsodium/releases/download/${pkgver}-RELEASE/libsodium-${pkgver}.tar.gz"
 )
-sha256sums=('6f504490b342a4f8a4c4a02fc9b866cbef8622d5df4e5452b46be121e46636c1')
+sha256sums=('018d79fe0a045cca07331d37bd0cb57b2e838c51bc48fd837a1472e50068bbea')
 
 build() {
-  cd "${srcdir}/libsodium-${pkgver}"
+  cd "${srcdir}/libsodium-stable"
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
   export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
 
@@ -22,7 +22,7 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/libsodium-${pkgver}"
+  cd "${srcdir}/libsodium-stable"
   make DESTDIR="${pkgdir}" install
   rm -rf "${pkgdir}"/opt/zextras/common/lib/*.a
   rm -rf "${pkgdir}"/opt/zextras/common/lib/*.la
