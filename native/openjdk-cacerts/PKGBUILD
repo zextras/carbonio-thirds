@@ -1,6 +1,6 @@
 pkgname="carbonio-openjdk-cacerts"
 pkgver="3.97"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="CA Certs keystore for OpenJDK"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -26,4 +26,117 @@ package() {
 
   echo "${pkgver}" > \
     "${pkgdir}"/opt/zextras/common/etc/java/.caversion
+}
+
+preinst__apt() {
+  if [ "$1" = upgrade ]; then
+    if [ "$2" != "" ]; then
+      ca_certs_version="$(cat /opt/zextras/common/etc/java/.caversion)"
+      ca_certs_save_dir="/opt/zextras/.saveconfig/carbonio-openjdk-cacerts-${ca_certs_version}"
+      if [ ! -d "${ca_certs_save_dir}" ]; then
+        mkdir -p "${ca_certs_save_dir}"
+      fi
+      cacerts=$(mktemp --tmpdir="${ca_certs_save_dir}" cacerts.XXXXXX 2>/dev/null)
+
+      cp /opt/zextras/common/etc/java/cacerts "${ca_certs_save_dir}"
+    fi
+  fi
+}
+
+preinst__yum() {
+  if [ "$1" -ge "2" ]; then
+    ca_certs_version="$(cat /opt/zextras/common/etc/java/.caversion)"
+    ca_certs_save_dir="/opt/zextras/.saveconfig/carbonio-openjdk-cacerts-${ca_certs_version}"
+    if [ ! -d "${ca_certs_save_dir}" ]; then
+      mkdir -p "${ca_certs_save_dir}"
+    fi
+    cacerts=$(mktemp --tmpdir="${ca_certs_save_dir}" cacerts.XXXXXX 2>/dev/null)
+
+    cp /opt/zextras/common/etc/java/cacerts "$cacerts"
+  fi
+}
+
+postinst__apt() {
+  if [ "$1" = "configure" ]; then
+    # creating zextras group if it isn't already there
+    if ! getent group zextras >/dev/null; then
+      addgroup --system --force-badname --quiet zextras
+    fi
+
+    # creating zextras user if it isn't already there
+    if ! getent passwd zextras >/dev/null; then
+      adduser --system --force-badname --quiet \
+        --ingroup zextras \
+        --home /opt/zextras \
+        --shell /bin/bash \
+        zextras
+      usermod -c "zextras user" zextras
+    fi
+  fi
+
+  chown zextras:zextras /opt/zextras/common/etc/java/cacerts
+  chmod 644 /opt/zextras/common/etc/java/cacerts
+
+  mailboxd_truststore_password=$(su - zextras -c "zmlocalconfig -s -m nokey mailboxd_truststore_password")
+  if [ "$2" != "" ]; then
+    if [ -x /opt/zextras/bin/zmcertmgr ]; then
+      if [ "$mailboxd_truststore_password" != "changeit" ]; then
+        su - zextras -c "/opt/zextras/common/bin/keytool -storepasswd -keystore /opt/zextras/common/etc/java/cacerts -storepass changeit -new $mailboxd_truststore_password"
+      fi
+      for dir in /opt/zextras/.saveconfig/carbonio-openjdk-cacerts-[1-9]*; do
+        if [ -d "$dir" ]; then
+          chown zextras:zextras "$dir/cacerts."*
+          chmod 644 "$dir/cacerts."*
+          for cert in $(/opt/zextras/common/bin/keytool -list -keystore "$dir/cacerts."* -storepass changeit | grep trustedCertEntry | grep -Eo "^[^,]*"); do
+            /opt/zextras/common/bin/keytool -exportcert -keystore "$dir/cacerts."* -storepass changeit -alias "$cert" -file "$dir/$cert"
+            chown zextras:zextras "$dir/$cert"
+            su - zextras -c "/opt/zextras/bin/zmcertmgr addcacert $dir/$cert"
+          done
+        fi
+      done
+    fi
+  fi
+}
+
+postinst__yum() {
+  # creating zextras group if it isn't already there
+  if ! getent group zextras >/dev/null; then
+    groupadd --system zextras >/dev/null
+  fi
+  # creating zextras user if it isn't already there
+  if ! getent passwd zextras >/dev/null; then
+    useradd --system \
+      -g zextras \
+      -d /opt/zextras \
+      --shell /bin/bash \
+      zextras >/dev/null
+    usermod -c "zextras user" zextras
+  fi
+
+  mailboxd_truststore_password=$(/bin/su - zextras -c "zmlocalconfig -s -m nokey mailboxd_truststore_password")
+  chown zextras:zextras /opt/zextras/common/etc/java/cacerts
+  chmod 644 /opt/zextras/common/etc/java/cacerts
+
+  if [ "$1" -ge "2" ]; then
+    if [ -x /opt/zextras/bin/zmcertmgr ]; then
+      # Run as zextras, extract CA to /opt/zextras/conf/ca
+      su - zextras -c '/opt/zextras/bin/zmcertmgr createca'
+      # Run as zextras, update OpenJDK cacerts file with the CA stored in LDAP
+      su - zextras -c '/opt/zextras/bin/zmcertmgr deployca --localonly'
+      if [ "$mailboxd_truststore_password" != "changeit" ]; then
+        su - zextras -c "/opt/zextras/common/bin/keytool -storepasswd -keystore /opt/zextras/common/etc/java/cacerts -storepass changeit -new $mailboxd_truststore_password"
+      fi
+      for dir in /opt/zextras/.saveconfig/carbonio-openjdk-cacerts-[1-9]*; do
+        if [ -d "$dir" ]; then
+          chown zextras:zextras "$dir/cacerts."*
+          chmod 644 "$dir/cacerts."*
+          for cert in $(/opt/zextras/common/bin/keytool -list -keystore "$dir/cacerts."* -storepass changeit | grep trustedCertEntry | grep -Eo "^[^,]*"); do
+            /opt/zextras/common/bin/keytool -exportcert -keystore "$dir/cacerts."* -storepass changeit -alias "$cert" -file "$dir/$cert"
+            chown zextras:zextras "$dir/$cert"
+            su - zextras -c "/opt/zextras/bin/zmcertmgr addcacert $dir/$cert"
+          done
+        fi
+      done
+    fi
+  fi
 }
