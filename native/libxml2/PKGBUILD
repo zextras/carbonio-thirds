@@ -1,6 +1,6 @@
 pkgname="carbonio-libxml2"
-pkgver="2.9.12"
-pkgrel="2"
+pkgver="2.10.1"
+pkgrel="1"
 pkgdesc="XML parsing library, version 2"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -26,7 +26,7 @@ priority="important"
 source=(
   "https://github.com/GNOME/libxml2/archive/refs/tags/v${pkgver}.tar.gz"
 )
-sha256sums=('8a4ddd706419c210b30b8978a51388937fd9362c34fc9a3d69e4fcc6f8055ee0')
+sha256sums=('fb9f90ca7cceb1930d2a890c1c222ef709352b0fea6e5430d03902133f1d476c')
 
 build() {
   cd "${srcdir}/libxml2-${pkgver}"
