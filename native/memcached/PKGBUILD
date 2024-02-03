@@ -1,5 +1,5 @@
 pkgname="carbonio-memcached"
-pkgver="1.6.12"
+pkgver="1.6.14"
 pkgrel="1"
 pkgdesc="Distributed memory object caching system"
 arch=('x86_64')
@@ -22,7 +22,7 @@ priority="optional"
 source=(
   "https://www.memcached.org/files/memcached-${pkgver}.tar.gz"
 )
-sha256sums=('f291a35f82ef9756ed1d952879ef5f4be870f932bdfcb2ab61356609abf82346')
+sha256sums=('54d63742c6886dcdc4e0c87f4439a2930a876cd9f2bfa01d699b0c6bad1707b3')
 
 build() {
 
