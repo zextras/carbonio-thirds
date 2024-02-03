@@ -1,6 +1,6 @@
 pkgname="carbonio-openldap"
 pkgver="2.4.59"
-pkgrel="4"
+pkgrel="5"
 pkgdesc="Lightweight Directory Access Protocol (LDAP) library"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
