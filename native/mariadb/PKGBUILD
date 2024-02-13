@@ -1,6 +1,6 @@
 pkgname="carbonio-mariadb"
-pkgver="10.4.32"
-pkgrel="2"
+pkgver="10.4.33"
+pkgrel="1"
 pkgdesc="Fast SQL database server, derived from MySQL"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -72,9 +72,9 @@ makedepends__yum=(
 section="utils"
 priority="optional"
 source=(
-  "https://mirror.digitalnova.at/mariadb//mariadb-${pkgver}/source/mariadb-${pkgver}.tar.gz"
+  "https://dlm.mariadb.com/3704207/MariaDB/mariadb-${pkgver}/source/mariadb-${pkgver}.tar.gz"
 )
-sha256sums=('b3d7724187ad0adee5088e5ccfc9d531d86a64b4505fb127d1004aca4bd0373b')
+sha256sums=('6da4eb835ee2c2299f59f81d4b24a9a1524d25da6cc156c8d1b9f2faba593081')
 
 build() {
 
