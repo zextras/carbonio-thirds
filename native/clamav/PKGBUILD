@@ -7,7 +7,6 @@ maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 depends__ubuntu_focal=(
   "carbonio-curl"
-  "carbonio-libmilter"
   "carbonio-libxml2"
   "carbonio-openssl"
   "libjson-c4"
@@ -16,7 +15,6 @@ depends__ubuntu_focal=(
 )
 depends__ubuntu_jammy=(
   "carbonio-curl"
-  "carbonio-libmilter"
   "carbonio-libxml2"
   "carbonio-openssl"
   "libjson-c5"
@@ -34,7 +32,6 @@ makedepends__apt=(
 )
 depends__yum=(
   "carbonio-curl"
-  "carbonio-libmilter"
   "carbonio-libxml2"
   "carbonio-openssl"
   "json-c"
@@ -81,7 +78,7 @@ build() {
     -DCMAKE_INSTALL_PREFIX=/opt/zextras/common \
     -DCLAMAV_USER=zextras \
     -DCLAMAV_GROUP=zextras \
-    -DENABLE_MILTER=true
+    -DENABLE_MILTER=false
 
   make -j16
 }
