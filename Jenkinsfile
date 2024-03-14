@@ -32,6 +32,18 @@ pipeline {
                 stash includes: '**', name: 'project'
             }
         }
+        stage('SonarQube analysis') {
+            steps {
+                unstash 'project'
+                script {
+                    scannerHome = tool 'SonarScanner';
+                }
+                withSonarQubeEnv(credentialsId: 'sonarqube-user-token',
+                    installationName: 'SonarQube instance') {
+                    sh "${scannerHome}/bin/sonar-scanner"
+                }
+            }
+        }
         stage('Ubuntu 20') {
             agent {
                 node {
