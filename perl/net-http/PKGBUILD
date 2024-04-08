@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-net-http"
-pkgver="6.21"
-pkgrel="2"
+pkgver="6.23"
+pkgrel="1"
 pkgdesc="Low-level HTTP connection"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -17,7 +17,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/Net-HTTP-${pkgver}.tar.gz"
 )
-sha256sums=('375aa35b76be99f06464089174d66ac76f78ce83a5c92a907bbfab18b099eec4')
+sha256sums=('0d65c09dd6c8589b2ae1118174d3c1a61703b6ecfc14a3442a8c74af65e0c94e')
 
 build() {
   cd "${srcdir}/Net-HTTP-${pkgver}"
