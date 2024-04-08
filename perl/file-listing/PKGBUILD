@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-file-listing"
-pkgver="6.14"
-pkgrel="2"
+pkgver="6.16"
+pkgrel="1"
 pkgdesc="Parse directory listing"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -19,7 +19,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/P/PL/PLICEASE/File-Listing-${pkgver}.tar.gz"
 )
-sha256sums=('15b3a4871e23164a36f226381b74d450af41f12cc94985f592a669fcac7b48ff')
+sha256sums=('189b3a13fc0a1ba412b9d9ec5901e9e5e444cc746b9f0156d4399370d33655c6')
 
 build() {
   cd "${srcdir}/File-Listing-${pkgver}"
