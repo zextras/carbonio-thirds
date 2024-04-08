@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-lwp-protocol-https"
-pkgver="6.10"
-pkgrel="2"
+pkgver="6.11"
+pkgrel="1"
 pkgdesc="Provide https support for LWP::UserAgent"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -23,7 +23,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/LWP-Protocol-https-${pkgver}.tar.gz"
 )
-sha256sums=('cecfc31fe2d4fc854cac47fce13d3a502e8fdfe60c5bc1c09535743185f2a86c')
+sha256sums=('0132ddbf03661565ca85050f2a5094fb9263cbbc3ccb1a4d9c41ac9bb083b917')
 
 build() {
   cd "${srcdir}/LWP-Protocol-https-${pkgver}"
