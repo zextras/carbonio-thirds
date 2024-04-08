@@ -25,7 +25,6 @@ depends=(
   "carbonio-perl-net-libidn2"
   "carbonio-perl-net-server"
   "carbonio-perl-net-ssleay"
-  "carbonio-perl-unix-getrusage"
   "carbonio-perl-unix-syslog"
 )
 section="utils"

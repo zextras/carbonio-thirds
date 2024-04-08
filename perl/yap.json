@@ -303,10 +303,6 @@
       "install": true
     },
     {
-      "name": "unix-getrusage",
-      "install": true
-    },
-    {
       "name": "xml-parser-lite",
       "install": true
     },
@@ -339,6 +335,9 @@
       "install": true
     },
     {
+      "name": "amavisd"
+    },
+    {
       "name": "innotop"
     },
     {
@@ -349,9 +348,6 @@
     },
     {
       "name": "spamassassin-rules"
-    },
-    {
-      "name": "jetty-distribution"
     }
   ]
 }
