@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-json-pp"
-pkgver="4.06"
-pkgrel="2"
+pkgver="4.16"
+pkgrel="1"
 pkgdesc="JSON::XS compatible pure-Perl module"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -19,7 +19,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/I/IS/ISHIGAKI/JSON-PP-${pkgver}.tar.gz"
 )
-sha256sums=('70c4ca2e05dc156de2303765174e45b91c637de6601a70db5eef45e30abad27a')
+sha256sums=('8bc2f162bafc42645c489905ad72540f0d3c284b360c96299095183c30cc9789')
 
 build() {
   cd "${srcdir}/JSON-PP-${pkgver}"
