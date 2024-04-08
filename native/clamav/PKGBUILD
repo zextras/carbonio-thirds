@@ -52,20 +52,24 @@ priority="optional"
 source=(
   "https://www.clamav.net/downloads/production/clamav-${pkgver}.tar.gz"
   "https://dl.fedoraproject.org/pub/fedora/linux/development/rawhide/Everything/x86_64/os/Packages/c/clamav-data-1.0.5-5.fc41.noarch.rpm"
+  "carbonio-antivirus.service"
   "carbonio-clamav"
   "carbonio-clamav-setup.sh"
   "carbonio-clamav-sidecar.service"
   "carbonio-clamav.hcl"
+  "carbonio-freshclam.service"
   "intentions.json"
   "policies.json"
   "service-protocol.json"
 )
 sha256sums=('3d6b99644874558b7de5faf9b340737a9bbc1083878fcd95a49f989c7c980146'
   '9e38b6c80642d609c4dcc3866d00619a721692bdb1d2e7ef8540241b5720a024'
+  '29cf149027f0860038471a4883ada03abb6d4afc46048cea09bfb125f8662812'
   'a82946b05bdc139b790492b345eda5648c0196ce605decab33d75f661b6ed812'
   'cc36d9357d4434ff290e46a713da8246420750a5fafdf148ce0787b531a093a5'
   '9cb7401ccec50e4b28b87624c3185966366bd0f439e7ede40a1aff23812ffa45'
   'c65d4609c5be7e0cc83543bfe25e48d39451363c21e6604d5191a6953e1b3fbb'
+  '2a29c3f73fb4943f5cf5f6ee2aced27ed62fbc38dd247dbf189cc35d03b9caf4'
   'df54edd32986b4213a09069681741ba7533dc40a034a6a2b080cdf380a69fb05'
   'd67bb7f9d98ccb033f632621accf3d8a3391aa3955074af958c0def644be0ef5'
   '6c1f94857671bd044fe4dac20df1f927629c50bfbb0aa9991e6de1a73d1791a0')
@@ -98,12 +102,18 @@ package() {
   find "${pkgdir}" -name '*.a' -delete
   find "${pkgdir}" -name '*.la' -delete
 
-  rm -rf "${pkgdir}"/usr
+  rm -rf "${pkgdir}/usr"
   rm -rf "${pkgdir}"/opt/zextras/common/bin/clamav-config
   if [ -d "${pkgdir}/opt/zextras/common/lib64" ]; then
     mv "${pkgdir}/opt/zextras/common/lib64" \
       "${pkgdir}/opt/zextras/common/lib"
   fi
+
+  # systemd units
+  install -D -m 644 "${srcdir}/carbonio-antivirus.service" \
+    "${pkgdir}/lib/systemd/system/carbonio-antivirus.service"
+  install -D -m 644 "${srcdir}/carbonio-freshclam.service" \
+    "${pkgdir}/lib/systemd/system/carbonio-freshclam.service"
 
   # start install carbonio-clamav consul registration artifacts
   install -D -m 755 "${srcdir}/carbonio-clamav" \

@@ -1,0 +1,17 @@
+[Unit]
+Description=Carbonio Saslauth Daemon
+After=carbonio-configd.service
+Wants=carbonio-configd.service
+PartOf=carbonio-mta.target carbonio-ce.target carbonio.target
+
+[Service]
+User=zextras
+Type=forking
+EnvironmentFile=-/opt/zextras/data/systemd.env
+ExecStartPre=echo REWRITE sasl | netcat -w $configd_rewrite_timeout localhost $configd_listen_port
+ExecStart=/opt/zextras/common/sbin/saslauthd -r -a zimbra
+Restart=on-failure
+RestartSec=3s
+
+[Install]
+WantedBy=carbonio-mta.target carbonio-ce.target carbonio.target

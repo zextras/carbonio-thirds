@@ -1,5 +1,5 @@
 pkgname="carbonio-postfix"
-pkgver="3.8.4"
+pkgver="3.8.6"
 pkgrel="1"
 pkgdesc="Fast, easy to administer, secure mail server"
 arch=('x86_64')
@@ -33,10 +33,12 @@ section="utils"
 priority="optional"
 source=(
   "https://de.postfix.org/ftpmirror/official/postfix-${pkgver}.tar.gz"
-  "carbonio-postfix.patch"
+  "${pkgname}.patch"
+  "${pkgname}.service"
 )
-sha256sums=('6f5848c5d8b6a7d2c5af0a9f75b0bd3f103451e912591464ab867fde085e6236'
-  'd4cdba8dffe1a7e23c0495cec5caf18f5cb10b1f52db0bb866f2247e63635598')
+sha256sums=('4b6e17c826cc438cc3016a9c0a55ea7e77c6cbafba7dd57241d81b690b0e9774'
+  'd4cdba8dffe1a7e23c0495cec5caf18f5cb10b1f52db0bb866f2247e63635598'
+  '78559a798a29934d9f81e6e0efeb48e44905927a5f5318c31fd27a9fa27ad9ff')
 
 build() {
   cd "${srcdir}/postfix-${pkgver}"
@@ -90,6 +92,10 @@ package() {
   sh postfix-install -non-interactive-package install_root="${pkgdir}"
   install -Dm755 auxiliary/qshape/qshape.pl \
     "${pkgdir}"/opt/zextras/common/sbin/qshape.pl
+
+  # systemd unit
+  install -D -m 644 "${srcdir}/${pkgname}.service" \
+    "${pkgdir}/lib/systemd/system/${pkgname}.service"
 
   cd "${pkgdir}"/opt/zextras/common/sbin
   rm -f newaliases

@@ -1,6 +1,6 @@
 pkgname="carbonio-openldap"
 pkgver="2.4.59"
-pkgrel="5"
+pkgrel="6"
 pkgdesc="Lightweight Directory Access Protocol (LDAP) library"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -29,11 +29,13 @@ section="libs"
 priority="important"
 source=(
   "https://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-${pkgver}.tgz"
-  "carbonio-openldap.patch"
+  "${pkgname}.patch"
+  "${pkgname}.service"
   "carbonio-argon2-make.patch"
 )
 sha256sums=('99f37d6747d88206c470067eda624d5e48c1011e943ec0ab217bae8712e22f34'
   '9d9460e24b582685d02f707248840ff19231e2cf1b8ba84fccf5b29438c768e8'
+  'be8812b4d66a5507ce92697abd614a09a0af5ee7df109665a582de6fb6fcf36f'
   '152fbbca7fd1ec92c1ee5c20f4a06e62bb276e2d6f83e2946fbafea6dc6e8ed5')
 
 build() {
@@ -84,6 +86,10 @@ package() {
   make -C contrib/slapd-modules/noopsrch install prefix=/opt/zextras/common DESTDIR="${pkgdir}"
   make -C contrib/slapd-modules/passwd/argon2 install prefix=/opt/zextras/common DESTDIR="${pkgdir}"
   make -C contrib/slapd-modules/passwd/sha2 install prefix=/opt/zextras/common DESTDIR="${pkgdir}"
+
+  # systemd unit
+  install -D -m 644 "${srcdir}/${pkgname}.service" \
+    "${pkgdir}/lib/systemd/system/${pkgname}.service"
 
   ln -s /opt/zextras/common/lib/liblber.so \
     "${pkgdir}"/opt/zextras/common/lib/liblber.so.2
