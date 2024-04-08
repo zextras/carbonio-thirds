@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-mime-tools"
-pkgver="5.509"
-pkgrel="2"
+pkgver="5.510"
+pkgrel="1"
 pkgdesc="Modules for parsing (and creating!) MIME entities"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -23,7 +23,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/D/DS/DSKOLL/MIME-tools-${pkgver}.tar.gz"
 )
-sha256sums=('64579f0c923d81d9a2194586e47c3475519e2646e4b5c102a8920759facf6973')
+sha256sums=('1bcfb4ece6ab4a6850ea1c8f3aa7405e233f50885dbdcd7bae546d52ec953cfe')
 
 build() {
   cd "${srcdir}/MIME-tools-${pkgver}"
