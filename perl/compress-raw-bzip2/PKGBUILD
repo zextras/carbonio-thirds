@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-compress-raw-bzip2"
-pkgver="2.101"
-pkgrel="2"
+pkgver="2.206"
+pkgrel="1"
 pkgdesc="Low-Level Interface to bzip2 compression library"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -17,7 +17,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/P/PM/PMQS/Compress-Raw-Bzip2-${pkgver}.tar.gz"
 )
-sha256sums=('0c9b134fd388290e30e90fc9f63900966127f98e76b054ecd481eb3b5500b8d8')
+sha256sums=('212b81db1c0ae822d19928619a603bd108cb5d5c4700fc67dc7cb169e0cc6525')
 
 build() {
   cd "${srcdir}/Compress-Raw-Bzip2-${pkgver}"
