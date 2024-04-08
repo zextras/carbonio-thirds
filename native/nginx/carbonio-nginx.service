@@ -1,0 +1,21 @@
+[Unit]
+Description=Carbonio Web and Reverse Proxy Server
+After=carbonio-memcached.service network.target network-online.target nss-lookup.target
+Wants=carbonio-memcached.service
+PartOf=carbonio-proxy.target carbonio-ce.target carbonio.target
+
+[Service]
+User=zextras
+Type=forking
+# PIDFile=/opt/zextras/log/nginx.pid
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+EnvironmentFile=-/opt/zextras/data/systemd.env
+ExecStartPre=echo REWRITE proxy | netcat -w $configd_rewrite_timeout localhost $configd_listen_port
+ExecStart=/opt/zextras/common/sbin/nginx -c /opt/zextras/conf/nginx.conf
+ExecReload=/opt/zextras/common/sbin/nginx -c /opt/zextras/conf/nginx.conf -s reload
+ExecStop=/opt/zextras/common/sbin/nginx -c /opt/zextras/conf/nginx.conf -s stop
+RestartSec=5s
+Restart=on-failure
+
+[Install]
+WantedBy=carbonio-proxy.target carbonio-ce.target carbonio.target

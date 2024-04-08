@@ -1,0 +1,19 @@
+[Unit]
+Description=Carbonio Postfix Daemon
+After=carbonio-milter.service carbonio-saslauthd.service
+Wants=carbonio-milter.service carbonio-saslauthd.service
+PartOf=carbonio-mta.target carbonio-ce.target carbonio.target
+
+[Service]
+User=root
+Type=forking
+CapabilityBoundingSet=~ CAP_NET_ADMIN CAP_SYS_ADMIN CAP_SYS_BOOT CAP_SYS_MODULE
+PIDFile=/opt/zextras/data/postfix/spool/pid/master.pid
+ExecStartPre=/opt/zextras/common/sbin/postalias /etc/aliases
+ExecStart=/opt/zextras/common/sbin/postfix start
+ExecStop=/opt/zextras/common/sbin/postfix stop
+ExecReload=/opt/zextras/common/sbin/postfix reload
+Restart=always
+
+[Install]
+WantedBy=carbonio-mta.target carbonio-ce.target carbonio.target

@@ -1,0 +1,21 @@
+[Unit]
+Description=Carbonio Anti-spam DB Daemon
+After=carbonio-configd.service
+Wants=carbonio-configd.service
+PartOf=carbonio-mta.target carbonio-ce.target carbonio.target
+
+[Service]
+User=zextras
+EnvironmentFile=-/opt/zextras/data/systemd.env
+ExecStartPre=/opt/zextras/bin/systemd-envscript-antispam
+ExecStart=/opt/zextras/common/bin/mysqld_safe \
+  --defaults-file=${antispam_mysql_mycnf} \
+  --external-locking \
+  --log-error=${log_directory}/antispam-mysqld.log \
+  --malloc-lib=/opt/zextras/common/lib/libjemalloc.so \
+  --ledir=/opt/zextras/common/sbin
+RestartSec=3
+Restart=on-failure
+
+[Install]
+WantedBy=carbonio-mta.target carbonio-ce.target carbonio.target

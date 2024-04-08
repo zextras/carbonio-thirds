@@ -1,0 +1,16 @@
+[Unit]
+Description=Carbonio Altermime Daemon
+PartOf=carbonio-mta.target carbonio-ce.target carbonio.target
+After=network.target
+
+[Service]
+User=zextras
+Type=oneshot
+Environment=PERL5LIB="/opt/zextras/common/lib/perl5/x86_64-linux-gnu-thread-multi:/opt/zextras/common/lib/perl5/x86_64-linux-thread-multi:/opt/zextras/common/lib/perl5"
+ExecStart=/opt/zextras/libexec/zmaltermimeconfig
+RestartSec=3
+Restart=on-failure
+RemainAfterExit=yes
+
+[Install]
+WantedBy=carbonio-mta.target carbonio-ce.target carbonio.target

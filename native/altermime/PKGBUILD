@@ -1,6 +1,6 @@
 pkgname="carbonio-altermime"
 pkgver="0.3.10"
-pkgrel="4"
+pkgrel="5"
 pkgdesc="MIME encoded email pack alteration tool"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -12,11 +12,13 @@ source=(
   "altermime-0.3.10-fprintf-compiler-error.patch"
   "altermime-0.3.10-cflags.patch"
   "altermime-disclaimers.patch"
+  "${pkgname}.service"
 )
 sha256sums=('8334da6b55d4a05dfe1492389dfe1f289953053a21773849b060d7c856ddc36e'
   '2d9dadc9ccf529f1a778a3f21b315c96aa1e9c81dfacc9e4e705725682e581a0'
   '21b1db5e5851453cd95cd8a69b9cd53cb5767a0e1408f232cb4a156e79731762'
-  '406e0481a01ffe1491e3b937626e92022013fe815194d88b143c7361abfc3fe0')
+  '406e0481a01ffe1491e3b937626e92022013fe815194d88b143c7361abfc3fe0'
+  '8c67caffacea4a5a17ff5601fee0fa256ce4718de79429f3535bdb8c679ffd84')
 
 build() {
   cd "${srcdir}/altermime-${pkgver}"
@@ -32,4 +34,8 @@ package() {
   cd "${srcdir}/altermime-${pkgver}"
   install -d "${pkgdir}/opt/zextras/common/bin"
   install -m 755 altermime "${pkgdir}/opt/zextras/common/bin/"
+
+  # systemd unit
+  install -D -m 644 "${srcdir}/${pkgname}.service" \
+    "${pkgdir}/lib/systemd/system/${pkgname}.service"
 }

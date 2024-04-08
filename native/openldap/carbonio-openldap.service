@@ -1,0 +1,14 @@
+[Unit]
+Description=Carbonio OpenLDAP Daemon
+PartOf=carbonio-directory-server.target carbonio-ce.target carbonio.target
+
+[Service]
+User=zextras
+Type=forking
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+EnvironmentFile=-/opt/zextras/data/systemd.env
+ExecStartPre=/opt/zextras/bin/systemd-envscript
+ExecStart=/opt/zextras/common/libexec/slapd -l LOCAL0 -h '${bind_url} ldapi:///' -F /opt/zextras/data/ldap/config
+
+[Install]
+WantedBy=carbonio-directory-server.target carbonio-ce.target carbonio.target

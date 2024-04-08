@@ -1,6 +1,6 @@
 pkgname="carbonio-memcached"
 pkgver="1.6.14"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Distributed memory object caching system"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -21,8 +21,10 @@ section="utils"
 priority="optional"
 source=(
   "https://www.memcached.org/files/memcached-${pkgver}.tar.gz"
+  "${pkgname}.service"
 )
-sha256sums=('54d63742c6886dcdc4e0c87f4439a2930a876cd9f2bfa01d699b0c6bad1707b3')
+sha256sums=('54d63742c6886dcdc4e0c87f4439a2930a876cd9f2bfa01d699b0c6bad1707b3'
+  'd21d7b42836c7236b299f68a448edfad76dd9814a8f669ab0c0a24558fd64d3c')
 
 build() {
 
@@ -37,4 +39,8 @@ build() {
 package() {
   cd "${srcdir}/memcached-${pkgver}"
   make DESTDIR="${pkgdir}" install
+
+  # systemd unit
+  install -D -m 644 "${srcdir}/${pkgname}.service" \
+    "${pkgdir}/lib/systemd/system/${pkgname}.service"
 }
