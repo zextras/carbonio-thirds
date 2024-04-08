@@ -327,10 +327,6 @@
       "install": true
     },
     {
-      "name": "db-file",
-      "install": true
-    },
-    {
       "name": "dbd-mysql",
       "install": true
     },
