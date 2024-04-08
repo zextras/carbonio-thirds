@@ -1,6 +1,6 @@
 pkgname="carbonio-amavisd"
 pkgver="2.13.0"
-pkgrel="1"
+pkgrel="3"
 pkgdesc="High-performance interface between mailer (MTA) and content checkers"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -31,9 +31,11 @@ section="utils"
 priority="optional"
 source=(
   "https://gitlab.com/amavis/amavis/-/archive/v${pkgver}/amavis-v${pkgver}.tar.bz2"
+  "carbonio-mailthreat.service"
   "socket_and_misc.patch"
 )
 sha256sums=('155447e049d02e5170b9183ad3867684514fcb37852440c4679ba6d7cc56e50d'
+  'c844e478c83378c46f7e3d9259dd02862570d83212dc00c5f747507fe4175ba4'
   'be3f0d56552ce674365b9fb37f90eb185c261c202f976e8a42b3a49ee9eb306d')
 
 package() {
@@ -52,4 +54,70 @@ package() {
 
   mkdir -p "${pkgdir}/opt/zextras/common/lib/"
   cp -pr lib "${pkgdir}/opt/zextras/common/lib/perl5"
+
+  # systemd units
+  install -D -m 644 "${srcdir}/carbonio-mailthreat.service" \
+    "${pkgdir}/lib/systemd/system/carbonio-mailthreat.service"
+}
+
+postinst__apt() {
+  if [ "$1" = "configure" ]; then
+    # creating zextras group if it isn't already there
+    if ! getent group zextras >/dev/null; then
+      addgroup --system --force-badname --quiet zextras
+    fi
+    # creating zextras user if it isn't already there
+    if ! getent passwd zextras >/dev/null; then
+      adduser --system --force-badname --quiet \
+        --ingroup zextras \
+        --home /opt/zextras \
+        --shell /bin/bash \
+        zextras
+      usermod -c "zextras user" zextras
+    fi
+  fi
+
+  if [[ ! -d /opt/zextras/data/amavisd/quarantine ]]; then
+    mkdir -p /opt/zextras/data/amavisd/quarantine
+  fi
+  if [[ ! -d /opt/zextras/data/amavisd/tmp ]]; then
+    mkdir -p /opt/zextras/data/amavisd/tmp
+  else
+    find -p /opt/zextras/data/amavisd/tmp -maxdepth 1 -type d -name 'amavis-*' -exec rm -rf {} \; >/dev/null 2>&1
+  fi
+  if [[ ! -d /opt/zextras/data/amavisd/var ]]; then
+    mkdir -p /opt/zextras/data/amavisd/var
+  fi
+
+  chown -R zextras:zextras /opt/zextras/data/amavisd
+}
+
+postinst__yum() {
+  # creating zextras group if it isn't already there
+  if ! getent group zextras >/dev/null; then
+    groupadd --system zextras >/dev/null
+  fi
+  # creating zextras user if it isn't already there
+  if ! getent passwd zextras >/dev/null; then
+    useradd --system \
+      -g zextras \
+      -d /opt/zextras \
+      --shell /bin/bash \
+      zextras >/dev/null
+    usermod -c "zextras user" zextras
+  fi
+
+  if [[ ! -d /opt/zextras/data/amavisd/quarantine ]]; then
+    mkdir -p /opt/zextras/data/amavisd/quarantine
+  fi
+  if [[ ! -d /opt/zextras/data/amavisd/tmp ]]; then
+    mkdir -p /opt/zextras/data/amavisd/tmp
+  else
+    find -p /opt/zextras/data/amavisd/tmp -maxdepth 1 -type d -name 'amavis-*' -exec rm -rf {} \; >/dev/null 2>&1
+  fi
+  if [[ ! -d /opt/zextras/data/amavisd/var ]]; then
+    mkdir -p /opt/zextras/data/amavisd/var
+  fi
+
+  chown -R zextras:zextras /opt/zextras/data/amavisd
 }

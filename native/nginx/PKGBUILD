@@ -1,6 +1,6 @@
 pkgname="carbonio-nginx"
 pkgver="1.24.0"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Lightweight HTTP server and IMAP/POP3 proxy server"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -40,13 +40,15 @@ source=(
   "nginx-brotli::git+https://github.com/google/ngx_brotli#commit=a71f9312c2deb28875acc7bacfdd5695a111aa53"
   "modules::git+https://github.com/zextras/carbonio-nginx-modules#commit=e62d730a1f5f23494fba7f0a45d3271c335fae6f"
   "carbonio-${pkgver}.patch"
+  "${pkgname}.service"
   "CVE-2023-44487.patch"
 )
 sha256sums=('77a2541637b92a621e3ee76776c8b7b40cf6d707e69ba53a940283e30ff2f55d'
-  'SKIP'
-  'SKIP'
-  'SKIP'
+  '2e200a3d9451216b7b17f436347ba71e4ac5e501bc01b9047c3f483e0877ed90'
+  '2790ddd8cdd7520f331efa3d446a15084131927b2f21d68e41f4ac1ca228bd5b'
+  '2b4317cd4ede79d82ee74d9a6875d622eb6d4874fe3db025804bfffd32b4e88d'
   '48df9423d3aca1e95f79ff3f89c063b983457451bbe0d6e8aac38acb7595adc5'
+  '13139ae5d5cec3e78cd1271e364692641f41cddfc31e60e166c0ceab590243a9'
   '72ad36b212fffe7a4824fc37e53972f051050ace11ecc4c55c2c9bdf3ba575ac')
 
 prepare() {
@@ -108,6 +110,10 @@ package() {
   make DESTDIR="${pkgdir}" install
   mkdir -p "${pkgdir}"/opt/zextras/data/nginx
   mv "${pkgdir}"/opt/zextras/common/html "${pkgdir}"/opt/zextras/data/nginx/
+
+  # systemd unit
+  install -D -m 644 "${srcdir}/${pkgname}.service" \
+    "${pkgdir}/lib/systemd/system/${pkgname}.service"
 }
 
 postinst__apt() {

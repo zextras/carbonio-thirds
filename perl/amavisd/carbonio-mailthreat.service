@@ -1,0 +1,22 @@
+[Unit]
+Description=Carbonio Mail Threat Daemon
+PartOf=carbonio-mta.target carbonio-ce.target carbonio.target
+After=network.target
+
+[Service]
+User=zextras
+EnvironmentFile=-/opt/zextras/data/systemd.env
+Environment=PERL5LIB="/opt/zextras/common/lib/perl5/x86_64-linux-gnu-thread-multi:/opt/zextras/common/lib/perl5/x86_64-linux-thread-multi:/opt/zextras/common/lib/perl5"
+PIDFile=/opt/zextras/log/amavisd.pid
+ExecStartPre=/opt/zextras/bin/systemd-envscript-mta
+ExecStartPre=bash -c "echo REWRITE amavis | netcat -w ${configd_rewrite_timeout} localhost ${configd_listen_port}; \
+  echo REWRITE antispam | netcat -w ${configd_rewrite_timeout} localhost ${configd_listen_port}; \
+  /opt/zextras/common/sbin/amavis-mc"
+ExecStart=/opt/zextras/common/sbin/amavisd \
+  -X no_conf_file_writable_check \
+  -c /opt/zextras/conf/amavisd.conf foreground
+ExecReload=/opt/zextras/common/sbin/amavisd \
+  -X no_conf_file_writable_check \
+  -c /opt/zextras/conf/amavisd.conf reload
+RestartSec=3
+Restart=on-failure

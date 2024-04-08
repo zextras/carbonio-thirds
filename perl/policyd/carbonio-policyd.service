@@ -1,0 +1,14 @@
+[Unit]
+Description=Carbonio Policyd Daemon
+After=carbonio-antispam.service carbonio-configd.service
+Wants=carbonio-antispam.service carbonio-configd.service
+PartOf=carbonio-mta.target carbonio-ce.target carbonio.target
+
+[Service]
+User=zextras
+EnvironmentFile=-/opt/zextras/data/systemd.env
+ExecStartPre=echo REWRITE cbpolicyd | netcat -w $configd_rewrite_timeout localhost $configd_listen_port
+ExecStart=/opt/zextras/common/bin/cbpolicyd --config /opt/zextras/conf/cbpolicyd.conf -fg
+
+[Install]
+WantedBy=carbonio-mta.target carbonio-ce.target carbonio.target

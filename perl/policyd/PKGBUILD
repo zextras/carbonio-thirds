@@ -1,6 +1,6 @@
 pkgname="carbonio-policyd"
 pkgver="2.1.0.0"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Multi-platform policy server for popular MTAs (aka ClueBringer)"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -39,10 +39,12 @@ section="libs"
 priority="important"
 source=(
   "git+https://gitlab.linux.community/policyd/policyd"
-  "carbonio-policyd.patch"
+  "${pkgname}.patch"
+  "${pkgname}.service"
 )
 sha256sums=('SKIP'
-  '6fe53e6077c95a45f6fd5adffa8369b3f6fc0c1debe85c78240d4e45d483a6c6')
+  '6fe53e6077c95a45f6fd5adffa8369b3f6fc0c1debe85c78240d4e45d483a6c6'
+  '2b53a5768abcae263940ca2011e8fcbc898fcab185e51c9e27b125880d8db5f4')
 
 package() {
   cd "${srcdir}/policyd"
@@ -75,6 +77,9 @@ package() {
   cp -r database "${pkgdir}/opt/zextras/common/share"
   cp -r webui "${pkgdir}/opt/zextras/common/share"
 
+  # systemd units
+  install -D -m 644 "${srcdir}/${pkgname}.service" \
+    "${pkgdir}/lib/systemd/system/${pkgname}.service"
 }
 
 postinst__apt() {
@@ -94,8 +99,14 @@ postinst__apt() {
     fi
   fi
 
-  mkdir -p /opt/zextras/data/cbpolicyd
+  if [[ ! -d /opt/zextras/data/cbpolicyd/db ]]; then
+    mkdir -p /opt/zextras/data/cbpolicyd/db
+  fi
   chown -R zextras:zextras /opt/zextras/data/cbpolicyd
+
+  if [[ ! -f "/opt/zextras/data/cbpolicyd/db/cbpolicyd.sqlitedb" ]]; then
+    su - zextras -c "/opt/zextras/libexec/zmcbpolicydinit"
+  fi
 }
 
 postinst__yum() {
@@ -113,6 +124,12 @@ postinst__yum() {
     usermod -c "zextras user" zextras
   fi
 
-  mkdir -p /opt/zextras/data/cbpolicyd
+  if [[ ! -d /opt/zextras/data/cbpolicyd/db ]]; then
+    mkdir -p /opt/zextras/data/cbpolicyd/db
+  fi
   chown -R zextras:zextras /opt/zextras/data/cbpolicyd
+
+  if [[ ! -f "/opt/zextras/data/cbpolicyd/db/cbpolicyd.sqlitedb" ]]; then
+    su - zextras -c "/opt/zextras/libexec/zmcbpolicydinit"
+  fi
 }
