@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-mime-types"
-pkgver="2.21"
-pkgrel="2"
+pkgver="2.24"
+pkgrel="1"
 pkgdesc="Definition of MIME types"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -17,7 +17,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/M/MA/MARKOV/MIME-Types-${pkgver}.tar.gz"
 )
-sha256sums=('0086454aec7144ddcaf842ec88e01d7fc27a61091454eb8f6f8afd568da68dd7')
+sha256sums=('629e361f22b220be50c2da7354e23c0451757709a03c25a22f3160edb94cb65f')
 
 build() {
   cd "${srcdir}/MIME-Types-${pkgver}"
