@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-http-message"
-pkgver="6.32"
-pkgrel="2"
+pkgver="6.45"
+pkgrel="1"
 pkgdesc="HTTP style message"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -29,7 +29,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/HTTP-Message-${pkgver}.tar.gz"
 )
-sha256sums=('ac32960ce01a3ae4a950666736f2bd633fb694c60ad545adaad9cb5fe5c12278')
+sha256sums=('01cb8406612a3f738842d1e97313ae4d874870d1b8d6d66331f16000943d4cbe')
 
 build() {
   cd "${srcdir}/HTTP-Message-${pkgver}"
