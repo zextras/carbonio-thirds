@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-mail-dkim"
-pkgver="1.20200907"
-pkgrel="2"
+pkgver="1.20230911"
+pkgrel="1"
 pkgdesc="Signs/verifies Internet mail with DKIM/DomainKey signatures"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -29,7 +29,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/M/MB/MBRADSHAW/Mail-DKIM-${pkgver}.tar.gz"
 )
-sha256sums=('abff11bd0977b9b8c3b2c3fc2a0dbdd2d38da249568698710fec1002d4251bf5')
+sha256sums=('91e7317282b724cfbd2c9b6e6630ef14328848b6fc5203efd70dec2fb87268ca')
 
 build() {
   cd "${srcdir}/Mail-DKIM-${pkgver}"
