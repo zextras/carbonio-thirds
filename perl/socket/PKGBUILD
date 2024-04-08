@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-socket"
-pkgver="2.032"
-pkgrel="2"
+pkgver="2.037"
+pkgrel="1"
 pkgdesc="Networking constants and support functions"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -17,7 +17,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/P/PE/PEVANS/Socket-${pkgver}.tar.gz"
 )
-sha256sums=('20ecb6ad469f4a13c5c7a891abfa12a3cecfdeccc7140ad57b05be12815dd517')
+sha256sums=('85448811e9e274374404634f3c208afa936ee4d223e76251ea9868315b0c812f')
 
 build() {
   cd "${srcdir}/Socket-${pkgver}"
