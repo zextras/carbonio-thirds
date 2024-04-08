@@ -1,5 +1,6 @@
---- Crypt-OpenSSL-RSA-0.31/Makefile.PL	2018-09-24 19:21:49.000000000 +0200
-+++ Crypt-OpenSSL-RSA-0.31/Makefile.PL	2020-03-19 11:02:40.470755395 +0100
+diff '--color=auto' -Naur a/Makefile.PL b/Makefile.PL
+--- a/Makefile.PL	2024-01-09 09:18:37.220692181 +0100
++++ b/Makefile.PL	2024-01-09 09:18:57.506472918 +0100
 @@ -3,11 +3,14 @@
  
  use 5.006;
@@ -15,7 +16,7 @@
 +
  WriteMakefile(
      'NAME'             => 'Crypt::OpenSSL::RSA',
-     AUTHOR             => 'Ian Robertson <iroberts@cpan.org>',
+     'AUTHOR'           => 'Ian Robertson <iroberts@cpan.org>',
 @@ -22,11 +25,11 @@
          'Test::More'             => 0,
      },
@@ -30,13 +31,13 @@
  
      'dist'  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
      'clean' => { FILES    => 'Crypt-OpenSSL-RSA-*' },
-@@ -38,9 +41,6 @@
-                 recommends => {
-                     'Crypt::OpenSSL::Bignum' => 0,
-                 },
--                configure_requires => {
--                    'Crypt::OpenSSL::Guess' => '0.11',
--                },
-                 build_requires => {
-                     'Test' => 0,    # For testing
-                 },
+@@ -34,9 +37,6 @@
+         recommends => {
+             'Crypt::OpenSSL::Bignum' => 0,
+         },
+-        configure_requires => {
+-            'Crypt::OpenSSL::Guess' => '0.11',
+-        },
+         build_requires => {
+             'Test' => 0,    # For testing
+         },
