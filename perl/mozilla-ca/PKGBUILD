@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-mozilla-ca"
-pkgver="20200520"
-pkgrel="2"
+pkgver="20230821"
+pkgrel="1"
 pkgdesc="Mozilla's CA cert bundle in PEM format"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -15,9 +15,9 @@ depends__yum=(
 section="libs"
 priority="important"
 source=(
-  "https://cpan.metacpan.org/authors/id/A/AB/ABH/Mozilla-CA-${pkgver}.tar.gz"
+  "https://cpan.metacpan.org/authors/id/L/LW/LWP/Mozilla-CA-${pkgver}.tar.gz"
 )
-sha256sums=('b3ca0002310bf24a16c0d5920bdea97a2f46e77e7be3e7377e850d033387c726')
+sha256sums=('32e1d0045299004045b9c4d16c2daae453a216208873deea2440f71260a7cda1')
 
 build() {
   cd "${srcdir}/Mozilla-CA-${pkgver}"
