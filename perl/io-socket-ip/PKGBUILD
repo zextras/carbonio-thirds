@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-io-socket-ip"
-pkgver="0.41"
-pkgrel="2"
+pkgver="0.42"
+pkgrel="1"
 pkgdesc="Family-neutral IP socket supporting both IPv4 and IPv6"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -19,7 +19,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/P/PE/PEVANS/IO-Socket-IP-${pkgver}.tar.gz"
 )
-sha256sums=('849a45a238f8392588b97722c850382c4e6d157cd08a822ddcb9073c73bf1446')
+sha256sums=('f97a3846c50a4e0658ce1722ce7cc2acad9472e70478bfbe9c794fb1db6a6b13')
 
 build() {
   cd "${srcdir}/IO-Socket-IP-${pkgver}"
