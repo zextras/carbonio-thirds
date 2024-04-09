@@ -86,6 +86,8 @@ package() {
   make -C contrib/slapd-modules/noopsrch install prefix=/opt/zextras/common DESTDIR="${pkgdir}"
   make -C contrib/slapd-modules/passwd/argon2 install prefix=/opt/zextras/common DESTDIR="${pkgdir}"
   make -C contrib/slapd-modules/passwd/sha2 install prefix=/opt/zextras/common DESTDIR="${pkgdir}"
+  
+  rm "${pkgdir}/opt/zextras/common/etc/openldap/DB_CONFIG.example"
 
   # systemd unit
   install -D -m 644 "${srcdir}/${pkgname}.service" \
