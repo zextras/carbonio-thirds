@@ -1,6 +1,6 @@
 pkgname="carbonio-opendkim"
 pkgver="2.11.0"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="An open source implementation of the DKIM sender authentication system. Based on a fork of dkim-milter"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -9,7 +9,6 @@ depends__apt=(
   "carbonio-cyrus-sasl"
   "carbonio-bdb"
   "carbonio-libbsd"
-  "carbonio-libmilter"
   "carbonio-openldap"
   "carbonio-openssl"
   "zlib1g"
@@ -22,7 +21,6 @@ depends__yum=(
   "carbonio-cyrus-sasl"
   "carbonio-bdb"
   "carbonio-libbsd"
-  "carbonio-libmilter"
   "carbonio-openldap"
   "carbonio-openssl"
   "zlib"
