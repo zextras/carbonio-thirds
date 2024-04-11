@@ -82,6 +82,7 @@ build() {
     -DCMAKE_INSTALL_PREFIX=/opt/zextras/common \
     -DCLAMAV_USER=zextras \
     -DCLAMAV_GROUP=zextras \
+    -DAPP_CONFIG_DIRECTORY=/opt/zextras/conf \
     -DENABLE_MILTER=false
 
   make -j16
