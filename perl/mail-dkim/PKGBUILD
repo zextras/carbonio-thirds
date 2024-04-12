@@ -6,17 +6,19 @@ arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 depends__apt=(
+  "carbonio-opendkim"
   "carbonio-perl-crypt-openssl-rsa"
+  "carbonio-perl-cryptx"
   "carbonio-perl-mailtools"
   "carbonio-perl-net-dns"
-  "carbonio-opendkim"
   "perl"
 )
 depends__yum=(
+  "carbonio-opendkim"
   "carbonio-perl-crypt-openssl-rsa"
+  "carbonio-perl-cryptx"
   "carbonio-perl-mailtools"
   "carbonio-perl-net-dns"
-  "carbonio-opendkim"
   "perl-core"
   "perl"
 )
