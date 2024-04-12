@@ -279,6 +279,10 @@
       "install": true
     },
     {
+      "name": "cryptx",
+      "install": true
+    },
+    {
       "name": "mail-dkim",
       "install": true
     },
