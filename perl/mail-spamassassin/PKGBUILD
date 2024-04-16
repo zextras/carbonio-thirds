@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-mail-spamassassin"
-pkgver="3.4.6"
-pkgrel="4"
+pkgver="4.0.1"
+pkgrel="1"
 pkgdesc="Spam detector and markup engine"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -26,7 +26,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/S/SI/SIDNEY/Mail-SpamAssassin-${pkgver}.tar.gz"
 )
-sha256sums=('500c7e2a7cdf3aa4dd822d97aaff2ab22235a60cf17a68ab817861d215a4e568')
+sha256sums=('5c6bb222e18405f1a276816d04e1ffc5cc90785e1265714b4506c2b541d6d5e5')
 
 build() {
   cd "${srcdir}/Mail-SpamAssassin-${pkgver}"
