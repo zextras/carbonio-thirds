@@ -1,7 +1,7 @@
 pkgname="carbonio-spamassassin-rules"
 pkgver="1.0"
-pkgrel="2"
-pkgdesc="Base class SAX Drivers and Filters"
+pkgrel="3"
+pkgdesc="Default ruleset for SpamAssassin"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
