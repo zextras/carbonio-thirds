@@ -1,10 +1,11 @@
 pkgname="carbonio-openssl"
-pkgver="1.1.1w"
+pkgver="3.0.13"
 pkgrel="1"
 pkgdesc="Zextras's Secure Socket Layer build"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
+license=('Apache-2.0')
 makedepends__apt=(
   "perl"
 )
@@ -15,23 +16,29 @@ section="libs"
 priority="important"
 source=(
   "https://www.openssl.org/source/openssl-${pkgver}.tar.gz"
+  "${pkgname}-fips.cnf"
 )
-sha256sums=('cf3098950cb4d853ad95c0841f1f9c6d3dc102dccfcacd521d93925208b76ac8')
+sha256sums=('88525753f79d3bec27d2fa7c66aa0b92b3aa9498dafd93d7cfa4b3780cdae313'
+  '05f86d63faa156bab0e5c858e0d268921d26aa2be7bb76a7bc77becb715cf3af')
 
 build() {
   cd "${srcdir}/openssl-${pkgver}"
-  ./Configure no-idea enable-ec_nistp_64_gcc_128 no-mdc2 no-rc5 no-ssl2 \
-    no-hw \
-    no-tests \
-    shared \
-    no-ssl3-method \
-    linux-x86_64 \
-    -DOPENSSL_NO_HEARTBEATS \
-    --prefix=/opt/zextras/common \
+  ./Configure \
     --libdir=lib \
-    --openssldir=/opt/zextras/common/etc/ssl
+    --openssldir=/opt/zextras/common/etc/ssl \
+    --prefix=/opt/zextras/common \
+    --with-rand-seed=devrandom,rdcpu,os,getrandom \
+    -DOPENSSL_NO_HEARTBEATS \
+    enable-ec_nistp_64_gcc_128 \
+    enable-fips \
+    linux-x86_64 \
+    no-idea \
+    no-mdc2 no-rc5 \
+    no-ssl3-method \
+    no-tests \
+    shared
   LD_RUN_PATH=/opt/zextras/common/lib make depend
-  LD_RUN_PATH=/opt/zextras/common/lib make all
+  LD_RUN_PATH=/opt/zextras/common/lib make build_sw
 }
 
 package() {
@@ -39,8 +46,24 @@ package() {
   LD_RUN_PATH=/opt/zextras/common/lib \
     MANDIR="/opt/zextras/common/share/man" \
     LIBS="" \
-    make DESTDIR="${pkgdir}" install_sw install_ssldirs
+    make DESTDIR="${pkgdir}" install_sw install_ssldirs install_fips
+
   rm "${pkgdir}"/opt/zextras/common/lib/*.a
   rm "${pkgdir}"/opt/zextras/common/etc/ssl/misc/tsget*
-  # rm -rf "${pkgdir}"/opt/zextras/common/include
+  cp "${pkgdir}/opt/zextras/common/etc/ssl/openssl.cnf" \
+    "${pkgdir}/opt/zextras/common/etc/ssl/openssl-source.cnf"
+  install -D -m 644 "${srcdir}/${pkgname}-fips.cnf" \
+    "${pkgdir}/opt/zextras/common/etc/ssl/openssl-fips.cnf"
+}
+
+postinst__apt() {
+  if [ "$1" = "configure" ]; then
+    /opt/zextras/common/bin/openssl fipsinstall -quiet -out /opt/zextras/common/etc/ssl/fipsmodule.cnf -module /opt/zextras/common/lib/ossl-modules/fips.so
+    cp -af /opt/zextras/common/etc/ssl/openssl-fips.cnf /opt/zextras/common/etc/ssl/openssl.cnf
+  fi
+}
+
+postinst__yum() {
+  /opt/zextras/common/bin/openssl fipsinstall -quiet -out /opt/zextras/common/etc/ssl/fipsmodule.cnf -module /opt/zextras/common/lib/ossl-modules/fips.so
+  cp -af /opt/zextras/common/etc/ssl/openssl-fips.cnf /opt/zextras/common/etc/ssl/openssl.cnf
 }
