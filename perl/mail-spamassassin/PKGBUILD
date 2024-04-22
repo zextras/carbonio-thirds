@@ -18,23 +18,35 @@ depends=(
   "carbonio-perl-net-dns"
   "carbonio-perl-net-http"
   "pyzor"
-  "razor"
-  "arc"
   "arj"
-  "geoip-database"
-  "libgeo-ip-perl"
-  "libgeo-ipfree-perl"
-  "libgeoip1"
-  "libnet-cidr-lite-perl"
-  "libnet-patricia-perl"
-  "lrzip"
   "lzop"
   "nomarch"
-  "p7zip"
-  "p7zip-full"
-  "p7zip-rar"
-  "rar"
+)
+# arc tnef only on Ubuntu
+depends__apt=(
+  "arc"
+  "lrzip"
   "tnef"
+  "rar"
+  "p7zip-rar"
+  "libgeoip1"
+  "p7zip-full"
+  "p7zip"
+  "libnet-patricia-perl"
+  "libnet-cidr-lite-perl"
+  "libgeo-ipfree-perl"
+  "libgeo-ip-perl"
+  "geoip-database"
+  "razor"
+)
+
+depends__yum=(
+	"epel-release"
+	"unar"
+	"p7zip"
+	"p7zip-plugins"
+	"lz4-devel"
+	"perl-Razor-Agent"
 )
 provides__yum=(
   "perl(BSD::Resource)"
