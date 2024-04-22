@@ -1,5 +1,5 @@
 pkgname="carbonio-mariadb"
-pkgver="10.4.33"
+pkgver="10.5.24"
 pkgrel="1"
 pkgdesc="Fast SQL database server, derived from MySQL"
 arch=('x86_64')
@@ -72,9 +72,9 @@ makedepends__yum=(
 section="utils"
 priority="optional"
 source=(
-  "https://dlm.mariadb.com/3704207/MariaDB/mariadb-${pkgver}/source/mariadb-${pkgver}.tar.gz"
+  "https://downloads.mariadb.org/rest-api/mariadb/${pkgver}/mariadb-${pkgver}.tar.gz"
 )
-sha256sums=('6da4eb835ee2c2299f59f81d4b24a9a1524d25da6cc156c8d1b9f2faba593081')
+sha256sums=('f677c5edf82aeb394cc41937aea33a3d3cc64ea2ed786adaf162b32f203d14a5')
 
 build() {
 
@@ -107,15 +107,18 @@ build() {
     -DLIBXML2_INCLUDE_DIR=/opt/zextras/common/include/libxml2 \
     -DLIBXML2_LIBRARY=/opt/zextras/common/lib \
     -DPLUGIN_ARCHIVE=NO \
-    -DPLUGIN_ARIA=NO \
     -DPLUGIN_AUTH_PAM=NO \
     -DPLUGIN_AUTH_PAM_V1=YES \
+    -DPLUGIN_AWS_KEY_MANAGEMENT=NO \
+    -DPLUGIN_BINLOG=NO \
     -DPLUGIN_BLACKHOLE=NO \
+    -DPLUGIN_COLUMNSTORE=NO \
     -DPLUGIN_CONNECT=NO \
     -DPLUGIN_EXAMPLE=NO \
     -DPLUGIN_FEDERATED=NO \
     -DPLUGIN_FEDERATEDX=NO \
     -DPLUGIN_MROONGA=NO \
+    -DPLUGIN_S3=NO \
     -DPLUGIN_SPHINX=NO \
     -DPLUGIN_SPIDER=NO \
     -DPLUGIN_TOKUDB=NO \
