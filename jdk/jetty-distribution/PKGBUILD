@@ -1,6 +1,6 @@
 pkgname="carbonio-jetty-distribution"
 pkgver="9.4.48.v20220622"
-pkgrel="2"
+pkgrel="3"
 pkgdesc="A pure Java-based HTTP server and Java Servlet container"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

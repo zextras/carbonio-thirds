@@ -9,6 +9,9 @@ pipeline {
             label 'base-agent-v2'
         }
     }
+    parameters {
+        booleanParam defaultValue: false, description: 'Build JDK packages.', name: 'BUILD_JDK'
+    }
     environment {
         NETWORK_OPTS = '--network ci_agent'
     }
@@ -36,6 +39,50 @@ pipeline {
                 }
             }
         }
+        stage('Ubuntu JDK') {
+            when {
+                expression {
+                    params.BUILD_JDK == true
+                }
+            }
+            agent {
+                node {
+                    label 'yap-agent-ubuntu-20.04-v2'
+                }
+            }
+            steps {
+                unstash 'project'
+                sh 'sudo yap build ubuntu jdk -s'
+                stash includes: 'artifacts/*.deb', name: 'artifacts-ubuntu-jdk'
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'artifacts/*.deb', fingerprint: true
+                }
+            }
+        }
+        stage('RHEL JDK') {
+            when {
+                expression {
+                    params.BUILD_JDK == true
+                }
+            }
+            agent {
+                node {
+                    label 'yap-agent-rocky-8-v2'
+                }
+            }
+            steps {
+                unstash 'project'
+                sh 'sudo yap build rocky jdk -s'
+                stash includes: 'artifacts/x86_64/*.rpm', name: 'artifacts-rocky-jdk'
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'artifacts/x86_64/*.rpm', fingerprint: true
+                }
+            }
+        }
         stage('Ubuntu 20') {
             agent {
                 node {
@@ -50,8 +97,7 @@ pipeline {
             }
             post {
                 always {
-                    archiveArtifacts artifacts: 'artifacts/*.deb',
-                    fingerprint: true
+                    archiveArtifacts artifacts: 'artifacts/*.deb', fingerprint: true
                 }
             }
         }
@@ -69,8 +115,7 @@ pipeline {
             }
             post {
                 always {
-                    archiveArtifacts artifacts: 'artifacts/*.deb',
-                    fingerprint: true
+                    archiveArtifacts artifacts: 'artifacts/*.deb', fingerprint: true
                 }
             }
         }
@@ -107,6 +152,76 @@ pipeline {
             post {
                 always {
                     archiveArtifacts artifacts: 'artifacts/x86_64/*el9*.rpm', fingerprint: true
+                }
+            }
+        }
+        stage('Upload JDK To Devel') {
+            when {
+                allOf {
+                    branch 'devel'
+                    expression { params.BUILD_JDK == true }
+                }
+            }
+            steps {
+                unstash 'artifacts-ubuntu-jdk'
+                unstash 'artifacts-rocky-jdk'
+
+                script {
+                    def server = Artifactory.server 'zextras-artifactory'
+                    def buildInfo
+                    def uploadSpecUbuntu
+                    def uploadSpecRhel
+
+                    buildInfo = Artifactory.newBuildInfo()
+
+                    uploadSpecUbuntu = '''{
+                        "files": [
+                            {
+                                "pattern": "artifacts/*.deb",
+                                "target": "ubuntu-devel/pool/",
+                                "props": "deb.distribution=focal;deb.distribution=jammy;deb.component=main;deb.architecture=amd64"
+                            }
+                        ]
+                    }'''
+
+                    uploadSpecRhel = '''{
+                        "files": [
+                            {
+                                "pattern": "artifacts/x86_64/(carbonio-openjdk)-(*).x86_64.rpm",
+                                "target": "centos8-devel/zextras/{1}/{1}-{2}.x86_64.rpm",
+                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras",
+                                "exclusions": ["*openjdk-cacerts*.rpm"]
+                            },
+                            {
+                                "pattern": "artifacts/x86_64/(carbonio-openjdk-cacerts)-(*).x86_64.rpm",
+                                "target": "centos8-devel/zextras/{1}/{1}-{2}.x86_64.rpm",
+                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
+                            },
+                            {
+                                "pattern": "artifacts/x86_64/(carbonio-jetty-distribution)-(*).x86_64.rpm",
+                                "target": "centos8-devel/zextras/{1}/{1}-{2}.x86_64.rpm",
+                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
+                            },
+                            {
+                                "pattern": "artifacts/x86_64/(carbonio-openjdk)-(*).x86_64.rpm",
+                                "target": "rhel9-devel/zextras/{1}/{1}-{2}.x86_64.rpm",
+                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras",
+                                "exclusions": ["*openjdk-cacerts*.rpm"]
+                            },
+                            {
+                                "pattern": "artifacts/x86_64/(carbonio-openjdk-cacerts)-(*).x86_64.rpm",
+                                "target": "rhel9-devel/zextras/{1}/{1}-{2}.x86_64.rpm",
+                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
+                            },
+                            {
+                                "pattern": "artifacts/x86_64/(carbonio-jetty-distribution)-(*).x86_64.rpm",
+                                "target": "rhel9-devel/zextras/{1}/{1}-{2}.x86_64.rpm",
+                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
+                            }
+                        ]
+                    }'''
+                    server.upload spec: uploadSpecUbuntu, buildInfo: buildInfo, failNoOp: false
+                    server.upload spec: uploadSpecRhel, buildInfo: buildInfo, failNoOp: false
                 }
             }
         }
@@ -233,16 +348,6 @@ pipeline {
                             },
                             {
                                 "pattern": "artifacts/x86_64/(carbonio-opendkim)-(*).el8.x86_64.rpm",
-                                "target": "centos8-devel/zextras/{1}/{1}-{2}.el8.x86_64.rpm",
-                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
-                            },
-                            {
-                                "pattern": "artifacts/x86_64/(carbonio-openjdk)-(*).el8.x86_64.rpm",
-                                "target": "centos8-devel/zextras/{1}/{1}-{2}.el8.x86_64.rpm",
-                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
-                            },
-                            {
-                                "pattern": "artifacts/x86_64/(carbonio-openjdk-cacerts)-(*).el8.x86_64.rpm",
                                 "target": "centos8-devel/zextras/{1}/{1}-{2}.el8.x86_64.rpm",
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
                             },
@@ -498,11 +603,6 @@ pipeline {
                             },
                             {
                                 "pattern": "artifacts/x86_64/(carbonio-perl-ip-country)-(*).el8.x86_64.rpm",
-                                "target": "centos8-devel/zextras/{1}/{1}-{2}.el8.x86_64.rpm",
-                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
-                            },
-                            {
-                                "pattern": "artifacts/x86_64/(carbonio-jetty-distribution)-(*).el8.x86_64.rpm",
                                 "target": "centos8-devel/zextras/{1}/{1}-{2}.el8.x86_64.rpm",
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
                             },
@@ -809,16 +909,6 @@ pipeline {
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
                             },
                             {
-                                "pattern": "artifacts/x86_64/(carbonio-openjdk)-(*).el9.x86_64.rpm",
-                                "target": "rhel9-devel/zextras/{1}/{1}-{2}.el9.x86_64.rpm",
-                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
-                            },
-                            {
-                                "pattern": "artifacts/x86_64/(carbonio-openjdk-cacerts)-(*).el9.x86_64.rpm",
-                                "target": "rhel9-devel/zextras/{1}/{1}-{2}.el9.x86_64.rpm",
-                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
-                            },
-                            {
                                 "pattern": "artifacts/x86_64/(carbonio-openldap)-(*).el9.x86_64.rpm",
                                 "target": "rhel9-devel/zextras/{1}/{1}-{2}.el9.x86_64.rpm",
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
@@ -1074,11 +1164,6 @@ pipeline {
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
                             },
                             {
-                                "pattern": "artifacts/x86_64/(carbonio-jetty-distribution)-(*).el9.x86_64.rpm",
-                                "target": "rhel9-devel/zextras/{1}/{1}-{2}.el9.x86_64.rpm",
-                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
-                            },
-                            {
                                 "pattern": "artifacts/x86_64/(carbonio-perl-json-pp)-(*).el9.x86_64.rpm",
                                 "target": "rhel9-devel/zextras/{1}/{1}-{2}.el9.x86_64.rpm",
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
@@ -1294,6 +1379,134 @@ pipeline {
                 }
             }
         }
+        stage('Upload & Promotion Config for JDK') {
+            when {
+                allOf {
+                    buildingTag()
+                    expression { params.BUILD_JDK == true }
+                }
+            }
+            steps {
+                unstash 'artifacts-ubuntu-jdk'
+                unstash 'artifacts-rocky-jdk'
+
+                script {
+                    def server = Artifactory.server 'zextras-artifactory'
+                    def buildInfo
+                    def uploadSpec
+                    def config
+
+                    //ubuntu
+                    buildInfo = Artifactory.newBuildInfo()
+                    buildInfo.name += '-ubuntu'
+                    uploadSpec = '''{
+                        "files": [
+                            {
+                                "pattern": "artifacts/*.deb",
+                                "target": "ubuntu-rc/pool/",
+                                "props": "deb.distribution=focal;deb.distribution=jammy;deb.component=main;deb.architecture=amd64"
+                            }
+                        ]
+                    }'''
+                    server.upload spec: uploadSpec, buildInfo: buildInfo, failNoOp: false
+                    config = [
+                            'buildName'          : buildInfo.name,
+                            'buildNumber'        : buildInfo.number,
+                            'sourceRepo'         : 'ubuntu-rc',
+                            'targetRepo'         : 'ubuntu-release',
+                            'comment'            : 'Do not change anything! Just press the button',
+                            'status'             : 'Released',
+                            'includeDependencies': false,
+                            'copy'               : true,
+                            'failFast'           : true
+                    ]
+                    Artifactory.addInteractivePromotion server: server,
+                    promotionConfig: config,
+                    displayName: 'Ubuntu Promotion to Release'
+                    server.publishBuildInfo buildInfo
+
+                    //rocky8
+                    buildInfo = Artifactory.newBuildInfo()
+                    buildInfo.name += '-centos8'
+                    uploadSpec= '''{
+                        "files": [
+                            {
+                                "pattern": "artifacts/x86_64/(carbonio-openjdk)-(*).x86_64.rpm",
+                                "target": "centos8-rc/zextras/{1}/{1}-{2}.x86_64.rpm",
+                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras",
+                                "exclusions": ["*openjdk-cacerts*.rpm"]
+                            },
+                            {
+                                "pattern": "artifacts/x86_64/(carbonio-openjdk-cacerts)-(*).x86_64.rpm",
+                                "target": "centos8-rc/zextras/{1}/{1}-{2}.x86_64.rpm",
+                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
+                            },
+                            {
+                                "pattern": "artifacts/x86_64/(carbonio-jetty-distribution)-(*).x86_64.rpm",
+                                "target": "centos8-rc/zextras/{1}/{1}-{2}.x86_64.rpm",
+                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
+                            }
+                        ]
+                    }'''
+                    server.upload spec: uploadSpec, buildInfo: buildInfo, failNoOp: false
+                    config = [
+                            'buildName'          : buildInfo.name,
+                            'buildNumber'        : buildInfo.number,
+                            'sourceRepo'         : 'centos8-rc',
+                            'targetRepo'         : 'centos8-release',
+                            'comment'            : 'Do not change anything! Just press the button',
+                            'status'             : 'Released',
+                            'includeDependencies': false,
+                            'copy'               : true,
+                            'failFast'           : true
+                    ]
+                    Artifactory.addInteractivePromotion server: server,
+                    promotionConfig: config,
+                    displayName: 'Centos8 Promotion to Release'
+                    server.publishBuildInfo buildInfo
+
+                    //rocky9
+                    buildInfo = Artifactory.newBuildInfo()
+                    buildInfo.name += '-rhel9'
+                    uploadSpec= '''{
+                        "files": [
+                            {
+                                "pattern": "artifacts/x86_64/(carbonio-openjdk)-(*).x86_64.rpm",
+                                "target": "rhel9-rc/zextras/{1}/{1}-{2}.x86_64.rpm",
+                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras",
+                                "exclusions": ["*openjdk-cacerts*.rpm"]
+                            },
+                            {
+                                "pattern": "artifacts/x86_64/(carbonio-openjdk-cacerts)-(*).x86_64.rpm",
+                                "target": "rhel9-rc/zextras/{1}/{1}-{2}.x86_64.rpm",
+                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
+                            },
+                            {
+                                "pattern": "artifacts/x86_64/(carbonio-jetty-distribution)-(*).x86_64.rpm",
+                                "target": "rhel9-rc/zextras/{1}/{1}-{2}.x86_64.rpm",
+                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
+                            }
+                        ]
+                    }'''
+                    server.upload spec: uploadSpec, buildInfo: buildInfo, failNoOp: false
+                    config = [
+                            'buildName'          : buildInfo.name,
+                            'buildNumber'        : buildInfo.number,
+                            'sourceRepo'         : 'rhel9-rc',
+                            'targetRepo'         : 'rhel9-release',
+                            'comment'            : 'Do not change anything! Just press the button',
+                            'status'             : 'Released',
+                            'includeDependencies': false,
+                            'copy'               : true,
+                            'failFast'           : true
+                    ]
+                    Artifactory.addInteractivePromotion server: server,
+                    promotionConfig: config,
+                    displayName: 'RHEL9 Promotion to Release'
+                    server.publishBuildInfo buildInfo
+                }
+            }
+        }
         stage('Upload & Promotion Config') {
             when {
                 buildingTag()
@@ -1436,16 +1649,6 @@ pipeline {
                             },
                             {
                                 "pattern": "artifacts/x86_64/(carbonio-opendkim)-(*).el8.x86_64.rpm",
-                                "target": "centos8-rc/zextras/{1}/{1}-{2}.el8.x86_64.rpm",
-                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
-                            },
-                            {
-                                "pattern": "artifacts/x86_64/(carbonio-openjdk)-(*).el8.x86_64.rpm",
-                                "target": "centos8-rc/zextras/{1}/{1}-{2}.el8.x86_64.rpm",
-                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
-                            },
-                            {
-                                "pattern": "artifacts/x86_64/(carbonio-openjdk-cacerts)-(*).el8.x86_64.rpm",
                                 "target": "centos8-rc/zextras/{1}/{1}-{2}.el8.x86_64.rpm",
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
                             },
@@ -1703,12 +1906,7 @@ pipeline {
                                 "pattern": "artifacts/x86_64/(carbonio-perl-ip-country)-(*).el8.x86_64.rpm",
                                 "target": "centos8-rc/zextras/{1}/{1}-{2}.el8.x86_64.rpm",
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
-                            },
-                            {
-                                "pattern": "artifacts/x86_64/(carbonio-jetty-distribution)-(*).el8.x86_64.rpm",
-                                "target": "centos8-rc/zextras/{1}/{1}-{2}.el8.x86_64.rpm",
-                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
-                            },
+                            }
                             {
                                 "pattern": "artifacts/x86_64/(carbonio-perl-json-pp)-(*).el8.x86_64.rpm",
                                 "target": "centos8-rc/zextras/{1}/{1}-{2}.el8.x86_64.rpm",
@@ -2026,16 +2224,6 @@ pipeline {
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
                             },
                             {
-                                "pattern": "artifacts/x86_64/(carbonio-openjdk)-(*).el9.x86_64.rpm",
-                                "target": "rhel9-rc/zextras/{1}/{1}-{2}.el9.x86_64.rpm",
-                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
-                            },
-                            {
-                                "pattern": "artifacts/x86_64/(carbonio-openjdk-cacerts)-(*).el9.x86_64.rpm",
-                                "target": "rhel9-rc/zextras/{1}/{1}-{2}.el9.x86_64.rpm",
-                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
-                            },
-                            {
                                 "pattern": "artifacts/x86_64/(carbonio-openldap)-(*).el9.x86_64.rpm",
                                 "target": "rhel9-rc/zextras/{1}/{1}-{2}.el9.x86_64.rpm",
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
@@ -2287,11 +2475,6 @@ pipeline {
                             },
                             {
                                 "pattern": "artifacts/x86_64/(carbonio-perl-ip-country)-(*).el9.x86_64.rpm",
-                                "target": "rhel9-rc/zextras/{1}/{1}-{2}.el9.x86_64.rpm",
-                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
-                            },
-                            {
-                                "pattern": "artifacts/x86_64/(carbonio-jetty-distribution)-(*).el9.x86_64.rpm",
                                 "target": "rhel9-rc/zextras/{1}/{1}-{2}.el9.x86_64.rpm",
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
                             },

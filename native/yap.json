@@ -1,13 +1,9 @@
 {
-  "name": "Zextras Server",
+  "name": "native",
   "description": "This is the manifest to build native third-party packages",
   "buildDir": "/tmp/",
   "output": "artifacts",
   "projects": [
-    {
-      "name": "openjdk",
-      "install": true
-    },
     {
       "name": "icu",
       "install": true
@@ -43,9 +39,6 @@
     {
       "name": "bdb",
       "install": true
-    },
-    {
-      "name": "openjdk-cacerts"
     },
     {
       "name": "krb5",
@@ -86,9 +79,6 @@
     {
       "name": "opendkim",
       "install": true
-    },
-    {
-      "name": "jetty-distribution"
     }
   ]
 }

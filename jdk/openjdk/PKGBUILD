@@ -1,6 +1,6 @@
 pkgname="carbonio-openjdk"
 pkgver="17.0.10"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="OpenJDK Java 17 development kit"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
