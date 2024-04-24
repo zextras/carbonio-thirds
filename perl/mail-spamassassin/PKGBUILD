@@ -43,6 +43,11 @@ depends__apt=(
 depends__yum=(
 	"epel-release"
 	"unar"
+	"cabextract"
+	"unzoo"
+	"arj"
+        "pax"
+	"freeze"
 	"p7zip"
 	"p7zip-plugins"
 	"lz4-devel"
