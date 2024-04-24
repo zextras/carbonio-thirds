@@ -41,17 +41,16 @@ depends__apt=(
 )
 
 depends__yum=(
-	"epel-release"
-	"unar"
-	"cabextract"
-	"unzoo"
-	"arj"
-        "pax"
-	"freeze"
-	"p7zip"
-	"p7zip-plugins"
-	"lz4-devel"
-	"perl-Razor-Agent"
+  "epel-release"
+  "unar"
+  "cabextract"
+  "unzoo"
+  "arj"
+  "freeze"
+  "p7zip"
+  "p7zip-plugins"
+  "lz4-devel"
+  "perl-Razor-Agent"
 )
 provides__yum=(
   "perl(BSD::Resource)"
