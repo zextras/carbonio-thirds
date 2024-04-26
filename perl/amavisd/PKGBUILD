@@ -1,6 +1,6 @@
 pkgname="carbonio-amavisd"
-pkgver="2.13.0"
-pkgrel="3"
+pkgver="2.13.1"
+pkgrel="1"
 pkgdesc="High-performance interface between mailer (MTA) and content checkers"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -13,7 +13,6 @@ depends=(
   "carbonio-perl-digest-sha1"
   "carbonio-perl-file-libmagic"
   "carbonio-perl-http-message"
-  "carbonio-perl-io-socket-inet6"
   "carbonio-perl-io-socket-ip"
   "carbonio-perl-io-stringy"
   "carbonio-perl-ip-country"
@@ -34,7 +33,7 @@ source=(
   "carbonio-mailthreat.service"
   "socket_and_misc.patch"
 )
-sha256sums=('155447e049d02e5170b9183ad3867684514fcb37852440c4679ba6d7cc56e50d'
+sha256sums=('cd08d5b17e393873b79e72a843a672b9207fc4b577b9b8a07769d79bff0a845b'
   '9df73af76421aa7a5459e3ef9d1c3419086d07f1f3faf8d834c084912fbc8d67'
   'b7f662752874a9d9035fe231adf809591b42b401b2a9d058ecb5ffb4b4cb2737')
 
