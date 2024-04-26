@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-net-dns"
-pkgver="1.40"
+pkgver="1.44"
 pkgrel="1"
 pkgdesc="Perl Interface to the Domain Name System"
 arch=('x86_64')
@@ -7,13 +7,13 @@ maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 depends__apt=(
   "carbonio-perl-digest-hmac"
-  "carbonio-perl-io-socket-inet6"
+  "carbonio-perl-io-socket-ip"
   "carbonio-perl-net-libidn2"
   "perl"
 )
 depends__yum=(
   "carbonio-perl-digest-hmac"
-  "carbonio-perl-io-socket-inet6"
+  "carbonio-perl-io-socket-ip"
   "carbonio-perl-net-libidn2"
   "perl-core"
   "perl"
@@ -26,14 +26,16 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/N/NL/NLNETLABS/Net-DNS-${pkgver}.tar.gz"
 )
-sha256sums=('209bbd40de8d48c1bd7aade48da237fe0a499f89d279baa2e1a99bd5ec922ddc')
+sha256sums=('13d7edc4b8cea0132147faac3571f6b3c71d1d0cfd844c530c5a044f4a3ec31e')
 
 build() {
   cd "${srcdir}/Net-DNS-${pkgver}"
-  perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
+  perl -I /opt/zextras/common/lib/perl5 Makefile.PL \
+    --noonline-tests \
+    INSTALL_BASE=/opt/zextras/common \
     INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
     LIB=/opt/zextras/common/lib/perl5 LIBS="-L/opt/zextras/common/lib -lssl -lcrypto" INC="-I/opt/zextras/common/include"
-  make
+  LD_RUN_PATH=/opt/zextras/common/lib make
 }
 
 package() {
