@@ -37,10 +37,6 @@
       "install": true
     },
     {
-      "name": "io-socket-inet6",
-      "install": true
-    },
-    {
       "name": "io-socket-ip",
       "install": true
     },
