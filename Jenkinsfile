@@ -582,11 +582,6 @@ pipeline {
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
                             },
                             {
-                                "pattern": "artifacts/x86_64/(carbonio-perl-io-socket-inet6)-(*).el8.x86_64.rpm",
-                                "target": "centos8-devel/zextras/{1}/{1}-{2}.el8.x86_64.rpm",
-                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
-                            },
-                            {
                                 "pattern": "artifacts/x86_64/(carbonio-perl-io-socket-ip)-(*).el8.x86_64.rpm",
                                 "target": "centos8-devel/zextras/{1}/{1}-{2}.el8.x86_64.rpm",
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
@@ -1135,11 +1130,6 @@ pipeline {
                             },
                             {
                                 "pattern": "artifacts/x86_64/(carbonio-perl-io-html)-(*).el9.x86_64.rpm",
-                                "target": "rhel9-devel/zextras/{1}/{1}-{2}.el9.x86_64.rpm",
-                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
-                            },
-                            {
-                                "pattern": "artifacts/x86_64/(carbonio-perl-io-socket-inet6)-(*).el9.x86_64.rpm",
                                 "target": "rhel9-devel/zextras/{1}/{1}-{2}.el9.x86_64.rpm",
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
                             },
@@ -1883,11 +1873,6 @@ pipeline {
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
                             },
                             {
-                                "pattern": "artifacts/x86_64/(carbonio-perl-io-socket-inet6)-(*).el8.x86_64.rpm",
-                                "target": "centos8-rc/zextras/{1}/{1}-{2}.el8.x86_64.rpm",
-                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
-                            },
-                            {
                                 "pattern": "artifacts/x86_64/(carbonio-perl-io-socket-ip)-(*).el8.x86_64.rpm",
                                 "target": "centos8-rc/zextras/{1}/{1}-{2}.el8.x86_64.rpm",
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
@@ -2450,11 +2435,6 @@ pipeline {
                             },
                             {
                                 "pattern": "artifacts/x86_64/(carbonio-perl-io-html)-(*).el9.x86_64.rpm",
-                                "target": "rhel9-rc/zextras/{1}/{1}-{2}.el9.x86_64.rpm",
-                                "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
-                            },
-                            {
-                                "pattern": "artifacts/x86_64/(carbonio-perl-io-socket-inet6)-(*).el9.x86_64.rpm",
                                 "target": "rhel9-rc/zextras/{1}/{1}-{2}.el9.x86_64.rpm",
                                 "props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=zextras"
                             },

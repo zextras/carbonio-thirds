@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-mail-spamassassin"
 pkgver="4.0.1"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Spam detector and markup engine"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -8,7 +8,6 @@ url="https://github.com/zextras"
 depends=(
   "carbonio-openssl"
   "carbonio-perl-http-message"
-  "carbonio-perl-io-socket-inet6"
   "carbonio-perl-io-socket-ip"
   "carbonio-perl-io-socket-ssl"
   "carbonio-perl-ip-country"
