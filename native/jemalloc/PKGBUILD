@@ -1,7 +1,4 @@
-targets=(
-  "ubuntu"
-  "rocky"
-) pkgname="carbonio-jemalloc"
+pkgname="carbonio-jemalloc"
 pkgver="5.3.0"
 pkgrel="2"
 pkgdesc="General-purpose scalable concurrent malloc implementation"
