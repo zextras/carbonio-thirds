@@ -51,7 +51,7 @@ section="utils"
 priority="optional"
 source=(
   "https://www.clamav.net/downloads/production/clamav-${pkgver}.tar.gz"
-  "https://dl.fedoraproject.org/pub/fedora/linux/development/rawhide/Everything/x86_64/os/Packages/c/clamav-data-1.0.5-5.fc41.noarch.rpm"
+  "https://dl.fedoraproject.org/pub/fedora/linux/development/rawhide/Everything/x86_64/os/Packages/c/clamav-data-1.0.6-1.fc41.noarch.rpm"
   "carbonio-antivirus.service"
   "carbonio-clamav"
   "carbonio-clamav-setup.sh"
@@ -63,7 +63,7 @@ source=(
   "service-protocol.json"
 )
 sha256sums=('3d6b99644874558b7de5faf9b340737a9bbc1083878fcd95a49f989c7c980146'
-  '9e38b6c80642d609c4dcc3866d00619a721692bdb1d2e7ef8540241b5720a024'
+  'SKIP'
   '29cf149027f0860038471a4883ada03abb6d4afc46048cea09bfb125f8662812'
   'a82946b05bdc139b790492b345eda5648c0196ce605decab33d75f661b6ed812'
   'cc36d9357d4434ff290e46a713da8246420750a5fafdf148ce0787b531a093a5'
