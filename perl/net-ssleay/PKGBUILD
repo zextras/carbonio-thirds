@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-net-ssleay"
-pkgver="1.92"
+pkgver="1.94"
 pkgrel="1"
 pkgdesc="Perl bindings for OpenSSL"
 arch=('x86_64')
@@ -19,7 +19,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/C/CH/CHRISN/Net-SSLeay-${pkgver}.tar.gz"
 )
-sha256sums=('47c2f2b300f2e7162d71d699f633dd6a35b0625a00cbda8c50ac01144a9396a9')
+sha256sums=('9d7be8a56d1bedda05c425306cc504ba134307e0c09bda4a788c98744ebcd95d')
 
 build() {
   cd "${srcdir}/Net-SSLeay-${pkgver}"
@@ -28,7 +28,7 @@ build() {
   perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
     INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
     LIB=/opt/zextras/common/lib/perl5 LIBS="-L/opt/zextras/common/lib -lssl -lcrypto" INC="-I/opt/zextras/common/include"
-  make
+  LD_RUN_PATH=/opt/zextras/common/lib make
 }
 
 package() {
