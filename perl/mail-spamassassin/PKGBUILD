@@ -18,6 +18,37 @@ depends=(
   "carbonio-perl-net-dns"
   "carbonio-perl-net-http"
 )
+optdepends__apt=(
+  "arc"
+  "arj"
+  "carbonio-perl-net-cidr-lite"
+  "geoip-database"
+  "libgeoip1"
+  "libgeo-ipfree-perl"
+  "libgeo-ip-perl"
+  "lrzip"
+  "lzop"
+  "nomarch"
+  "p7zip-rar"
+  "pyzor"
+  "rar"
+  "razor"
+  "tnef"
+)
+optdepends__yum=(
+  "arj"
+  "cabextract"
+  "freeze"
+  "lz4"
+  "lzop"
+  "nomarch"
+  "p7zip"
+  "p7zip-plugins"
+  "perl-Razor-Agent"
+  "pyzor"
+  "unar"
+  "unzoo"
+)
 provides__yum=(
   "perl(BSD::Resource)"
 )
