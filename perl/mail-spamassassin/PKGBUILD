@@ -39,7 +39,7 @@ optdepends__yum=(
   "arj"
   "cabextract"
   "freeze"
-  "lz4-devel"
+  "lz4"
   "lzop"
   "nomarch"
   "p7zip"
