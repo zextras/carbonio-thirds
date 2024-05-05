@@ -15,15 +15,6 @@ depends__yum=(
   "carbonio-cyrus-sasl"
   "carbonio-libsodium"
   "carbonio-openssl"
-  "libtool-ltdl"
-)
-
-makedepends__apt=(
-  "libtool"
-)
-makedepends__yum=(
-  "libtool"
-  "libtool-ltdl-devel"
 )
 section="libs"
 priority="important"

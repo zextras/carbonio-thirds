@@ -14,7 +14,6 @@ depends__apt=(
   "zlib1g"
 )
 makedepends__apt=(
-  "autoconf"
   "zlib1g-dev"
 )
 depends__yum=(
@@ -26,7 +25,6 @@ depends__yum=(
   "zlib"
 )
 makedepends__yum=(
-  "autoconf"
   "zlib-devel"
 )
 section="utils"
