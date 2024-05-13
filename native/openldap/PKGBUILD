@@ -50,7 +50,7 @@ build() {
 
   ./configure \
     --prefix=/opt/zextras/common \
-    --localstatedir=/opt/zextras/data/ldap/state \
+    --localstatedir=/run/carbonio/ \
     --disable-hdb \
     --disable-ndb \
     --disable-perl \
@@ -86,7 +86,7 @@ package() {
   make -C contrib/slapd-modules/noopsrch install prefix=/opt/zextras/common DESTDIR="${pkgdir}"
   make -C contrib/slapd-modules/passwd/argon2 install prefix=/opt/zextras/common DESTDIR="${pkgdir}"
   make -C contrib/slapd-modules/passwd/sha2 install prefix=/opt/zextras/common DESTDIR="${pkgdir}"
-  
+
   rm "${pkgdir}/opt/zextras/common/etc/openldap/DB_CONFIG.example"
 
   # systemd unit
@@ -104,4 +104,12 @@ package() {
   # they are related to slapd plugins
   find "${pkgdir}/opt/zextras/common/lib" -name '*.a' -delete
   find "${pkgdir}/opt/zextras/common/lib" -name '*.la' -delete
+}
+
+postinst() {
+  if [ ! -d /run/carbonio ]; then
+    mkdir -p /run/carbonio
+  fi
+
+  chown zextras:zextras /run/carbonio
 }
