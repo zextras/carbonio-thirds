@@ -31,8 +31,8 @@ source=(
   "carbonio-saslauthd.service"
 )
 sha256sums=('7ccfc6abd01ed67c1a0924b353e526f1b766b21f42d4562ee635a8ebfc5bb38c'
-            '2f624ccb8c5f351538bc990b9e72af18e8823fbc77a14bcd35cf66df4390cccc'
-            'd2218ea6ad8bbd85a88b6a116810fe84979af9a1bb3221562c18fd1b65745c00')
+  '2f624ccb8c5f351538bc990b9e72af18e8823fbc77a14bcd35cf66df4390cccc'
+  'd2218ea6ad8bbd85a88b6a116810fe84979af9a1bb3221562c18fd1b65745c00')
 
 build() {
   cd "${srcdir}/cyrus-sasl-${pkgver}"
@@ -76,7 +76,7 @@ build() {
     --without-pgsql \
     --with-mysql=/opt/zextras/common \
     --disable-macos-framework \
-    --with-saslauthd=/opt/zextras/data/sasl2/state \
+    --with-saslauthd=/run/carbonio \
     --with-plugindir=/opt/zextras/common/lib/sasl2 \
     --with-lib-subdir=lib \
     --with-openssl=/opt/zextras/common \
