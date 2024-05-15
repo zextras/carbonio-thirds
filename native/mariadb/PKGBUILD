@@ -103,7 +103,7 @@ build() {
     -DINSTALL_SCRIPTDIR=share/mysql/scripts \
     -DINSTALL_SHAREDIR=share/mysql \
     -DINSTALL_SYSCONFDIR=/opt/zextras/conf \
-    -DINSTALL_UNIX_ADDRDIR=/opt/zextras/data/tmp/mysql/mysql.sock \
+    -DINSTALL_UNIX_ADDRDIR=/run/carbonio/mysql.sock \
     -DLIBXML2_INCLUDE_DIR=/opt/zextras/common/include/libxml2 \
     -DLIBXML2_LIBRARY=/opt/zextras/common/lib \
     -DPLUGIN_ARCHIVE=NO \
@@ -153,4 +153,77 @@ package() {
     "${pkgdir}/opt/zextras/common/lib/libmysqlclient_r.so.18"
 
   rm -rf "${pkgdir}"/opt/zextras/common/lib/*.a
+}
+
+postinst__apt() {
+  if [ "$1" = "configure" ]; then
+    # creating zextras group if it isn't already there
+    if ! getent group zextras >/dev/null; then
+      groupadd --system zextras >/dev/null
+    fi
+    # creating zextras user if it isn't already there
+    if ! getent passwd zextras >/dev/null; then
+      useradd --system \
+        -g zextras \
+        -d /opt/zextras \
+        --shell /bin/bash \
+        zextras >/dev/null
+      usermod -c "zextras user" zextras
+    fi
+  fi
+
+  if [ ! -d /run/carbonio ]; then
+    mkdir -p /run/carbonio
+  fi
+  chown zextras:zextras /run/carbonio
+
+  # zmmycnf is only called at bootstrap.
+  # Here we take care of upgrading scenario.
+  if [ -f /opt/zextras/conf/my.cnf ]; then
+    if grep -q "tmp/mysql/mysql.sock" /opt/zextras/conf/my.cnf; then
+      sed -i 's!\/opt\/zextras\/data\/tmp\/mysql!\/run\/carbonio!' \
+        /opt/zextras/conf/my.cnf
+    fi
+
+    if grep -q "log/mysql.pid" /opt/zextras/conf/my.cnf; then
+      sed -i 's!\/opt\/zextras\/log\/mysql.pid!\/run\/carbonio/mysql.pid!' \
+        /opt/zextras/conf/my.cnf
+    fi
+  fi
+}
+
+postinst__yum() {
+  # creating zextras group if it isn't already there
+  if ! getent group zextras >/dev/null; then
+    groupadd --system zextras >/dev/null
+  fi
+  # creating zextras user if it isn't already there
+  if ! getent passwd zextras >/dev/null; then
+    useradd --system \
+      -g zextras \
+      -d /opt/zextras \
+      --shell /bin/bash \
+      zextras >/dev/null
+    usermod -c "zextras user" zextras
+  fi
+
+  if [ ! -d /run/carbonio ]; then
+    mkdir -p /run/carbonio
+  fi
+
+  chown zextras:zextras /run/carbonio
+
+  # zmmycnf is only called at bootstrap.
+  # Here we take care of upgrading scenario.
+  if [ -f /opt/zextras/conf/my.cnf ]; then
+    if grep -q "tmp/mysql/mysql.sock" /opt/zextras/conf/my.cnf; then
+      sed -i 's!\/opt\/zextras\/data\/tmp\/mysql!\/run\/carbonio!' \
+        /opt/zextras/conf/my.cnf
+    fi
+
+    if grep -q "log/mysql.pid" /opt/zextras/conf/my.cnf; then
+      sed -i 's!\/opt\/zextras\/log\/mysql.pid!\/run\/carbonio/mysql.pid!' \
+        /opt/zextras/conf/my.cnf
+    fi
+  fi
 }

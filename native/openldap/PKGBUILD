@@ -50,7 +50,7 @@ build() {
 
   ./configure \
     --prefix=/opt/zextras/common \
-    --localstatedir=/opt/zextras/data/ldap/state \
+    --localstatedir=/run/carbonio/ \
     --disable-hdb \
     --disable-ndb \
     --disable-perl \
@@ -86,7 +86,7 @@ package() {
   make -C contrib/slapd-modules/noopsrch install prefix=/opt/zextras/common DESTDIR="${pkgdir}"
   make -C contrib/slapd-modules/passwd/argon2 install prefix=/opt/zextras/common DESTDIR="${pkgdir}"
   make -C contrib/slapd-modules/passwd/sha2 install prefix=/opt/zextras/common DESTDIR="${pkgdir}"
-  
+
   rm "${pkgdir}/opt/zextras/common/etc/openldap/DB_CONFIG.example"
 
   # systemd unit
@@ -104,4 +104,50 @@ package() {
   # they are related to slapd plugins
   find "${pkgdir}/opt/zextras/common/lib" -name '*.a' -delete
   find "${pkgdir}/opt/zextras/common/lib" -name '*.la' -delete
+}
+
+postinst__apt() {
+  if [ "$1" = "configure" ]; then
+    # creating zextras group if it isn't already there
+    if ! getent group zextras >/dev/null; then
+      groupadd --system zextras >/dev/null
+    fi
+    # creating zextras user if it isn't already there
+    if ! getent passwd zextras >/dev/null; then
+      useradd --system \
+        -g zextras \
+        -d /opt/zextras \
+        --shell /bin/bash \
+        zextras >/dev/null
+      usermod -c "zextras user" zextras
+    fi
+  fi
+
+  if [ ! -d /run/carbonio ]; then
+    mkdir -p /run/carbonio
+  fi
+
+  chown zextras:zextras /run/carbonio
+}
+
+postinst__yum() {
+  # creating zextras group if it isn't already there
+  if ! getent group zextras >/dev/null; then
+    groupadd --system zextras >/dev/null
+  fi
+  # creating zextras user if it isn't already there
+  if ! getent passwd zextras >/dev/null; then
+    useradd --system \
+      -g zextras \
+      -d /opt/zextras \
+      --shell /bin/bash \
+      zextras >/dev/null
+    usermod -c "zextras user" zextras
+  fi
+
+  if [ ! -d /run/carbonio ]; then
+    mkdir -p /run/carbonio
+  fi
+
+  chown zextras:zextras /run/carbonio
 }

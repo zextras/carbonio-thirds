@@ -43,15 +43,13 @@ source=(
   "${pkgname}.service"
   "CVE-2023-44487.patch"
 )
-sha256sums=(
-  'SKIP'
+sha256sums=('77a2541637b92a621e3ee76776c8b7b40cf6d707e69ba53a940283e30ff2f55d'
   'SKIP'
   'SKIP'
   'SKIP'
   '48df9423d3aca1e95f79ff3f89c063b983457451bbe0d6e8aac38acb7595adc5'
   'a922347182aa80001c303ee222015a388cded0a5be9505a90087b91011a4bbe1'
-  '72ad36b212fffe7a4824fc37e53972f051050ace11ecc4c55c2c9bdf3ba575ac'
-)
+  '72ad36b212fffe7a4824fc37e53972f051050ace11ecc4c55c2c9bdf3ba575ac')
 
 prepare() {
   cd "${srcdir}/nginx-brotli"
@@ -67,7 +65,20 @@ build() {
   patch -Np1 -i ../"carbonio-${pkgver}.patch"
   patch -Np1 -i ../CVE-2023-44487.patch
 
-  ./configure --prefix=/opt/zextras/common \
+  ./configure \
+    --add-module="${srcdir}/nginx-brotli" \
+    --add-module="${srcdir}/nginx-tcp-keepalive" \
+    --add-module="${srcdir}/modules/http/sso" \
+    --add-module="${srcdir}/modules/http/upstreamzmauth" \
+    --add-module="${srcdir}/modules/mail/zmauth" \
+    --add-module="${srcdir}/modules/mail/throttle" \
+    --error-log-path=/opt/zextras/log/nginx.log \
+    --http-log-path=/opt/zextras/log/nginx.access.log \
+    --http-client-body-temp-path=/opt/zextras/data/tmp/nginx/client \
+    --http-proxy-temp-path=/opt/zextras/data/tmp/nginx/proxy \
+    --http-fastcgi-temp-path=/opt/zextras/data/tmp/nginx/fastcgi \
+    --pid-path=/run/carbonio/nginx.pid \
+    --prefix=/opt/zextras/common \
     --with-cc-opt="-g -I/opt/zextras/common/include" \
     --with-ld-opt="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib" \
     --with-http_ssl_module \
@@ -91,19 +102,8 @@ build() {
     --with-mail \
     --with-mail-sasl \
     --with-mail_ssl_module \
-    --error-log-path=/opt/zextras/log/nginx.log \
-    --http-log-path=/opt/zextras/log/nginx.access.log \
-    --http-client-body-temp-path=/opt/zextras/data/tmp/nginx/client \
-    --http-proxy-temp-path=/opt/zextras/data/tmp/nginx/proxy \
-    --http-fastcgi-temp-path=/opt/zextras/data/tmp/nginx/fastcgi \
     --without-http_scgi_module \
-    --without-http_uwsgi_module \
-    --add-module="${srcdir}/nginx-brotli" \
-    --add-module="${srcdir}/nginx-tcp-keepalive" \
-    --add-module="${srcdir}/modules/http/sso" \
-    --add-module="${srcdir}/modules/http/upstreamzmauth" \
-    --add-module="${srcdir}/modules/mail/zmauth" \
-    --add-module="${srcdir}/modules/mail/throttle"
+    --without-http_uwsgi_module
   make -j16
 }
 
@@ -136,7 +136,12 @@ postinst__apt() {
     fi
   fi
 
+  if [ ! -d /run/carbonio ]; then
+    mkdir -p /run/carbonio
+  fi
+
   chown zextras:zextras /opt/zextras/log
+  chown zextras:zextras /run/carbonio
 }
 
 postinst__yum() {
@@ -154,5 +159,10 @@ postinst__yum() {
     usermod -c "zextras user" zextras
   fi
 
+  if [ ! -d /run/carbonio ]; then
+    mkdir -p /run/carbonio
+  fi
+
   chown zextras:zextras /opt/zextras/log
+  chown zextras:zextras /run/carbonio
 }

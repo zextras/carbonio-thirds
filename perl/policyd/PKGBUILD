@@ -43,7 +43,7 @@ source=(
   "${pkgname}.service"
 )
 sha256sums=('SKIP'
-  '6fe53e6077c95a45f6fd5adffa8369b3f6fc0c1debe85c78240d4e45d483a6c6'
+  '2f71d4274585f8ae963e2e2b081a0b0d0780e9eb7aa0e44cd99b5b7f3271119f'
   'a16cd33c1acb17e81ea6c0f55c4b40c7589fce09d29448c675fc30320a7966d5')
 
 package() {
@@ -102,7 +102,13 @@ postinst__apt() {
   if [ ! -d /opt/zextras/data/cbpolicyd/db ]; then
     mkdir -p /opt/zextras/data/cbpolicyd/db
   fi
+
+  if [ ! -d /run/carbonio ]; then
+    mkdir -p /run/carbonio
+  fi
+
   chown -R zextras:zextras /opt/zextras/data/cbpolicyd
+  chown zextras:zextras /run/carbonio
 }
 
 postinst__yum() {
@@ -123,5 +129,11 @@ postinst__yum() {
   if [ ! -d /opt/zextras/data/cbpolicyd/db ]; then
     mkdir -p /opt/zextras/data/cbpolicyd/db
   fi
+
+  if [ ! -d /run/carbonio ]; then
+    mkdir -p /run/carbonio
+  fi
+
   chown -R zextras:zextras /opt/zextras/data/cbpolicyd
+  chown zextras:zextras /run/carbonio
 }
