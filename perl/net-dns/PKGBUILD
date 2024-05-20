@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-net-dns"
-pkgver="1.44"
+pkgver="1.45"
 pkgrel="1"
 pkgdesc="Perl Interface to the Domain Name System"
 arch=('x86_64')
@@ -25,11 +25,15 @@ section="libs"
 priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/N/NL/NLNETLABS/Net-DNS-${pkgver}.tar.gz"
+  "remote-tests.patch"
 )
-sha256sums=('13d7edc4b8cea0132147faac3571f6b3c71d1d0cfd844c530c5a044f4a3ec31e')
+sha256sums=('39f4b82ffe822f4d28691f6c4260f6f1fe6b5a09b546b56dd2410c21b38c1380'
+  '485fd51f739315a559ddcea7c6defcf38ee61f153b3a3fb8e3863a5860380774')
 
 build() {
   cd "${srcdir}/Net-DNS-${pkgver}"
+  patch -Np1 -i ../remote-tests.patch
+
   perl -I /opt/zextras/common/lib/perl5 Makefile.PL \
     --noonline-tests \
     INSTALL_BASE=/opt/zextras/common \
