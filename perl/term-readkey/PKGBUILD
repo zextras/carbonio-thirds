@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-term-readkey"
 pkgver="2.38"
-pkgrel="2"
+pkgrel="3"
 pkgdesc="A perl module for simple terminal control"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -24,7 +24,7 @@ build() {
   perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
     INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
     LIB=/opt/zextras/common/lib/perl5 LIBS="-L/opt/zextras/common/lib -lssl -lcrypto" INC="-I/opt/zextras/common/include"
-  make
+  LD_RUN_PATH=/opt/zextras/common/lib make
 }
 
 package() {
