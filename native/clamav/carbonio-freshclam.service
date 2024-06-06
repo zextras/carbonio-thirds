@@ -12,6 +12,8 @@ ExecStart=/opt/zextras/common/bin/freshclam \
   --config-file=/opt/zextras/conf/freshclam.conf \
   --quiet -d --checks=12 --foreground=true\
   >>${log_directory}/freshclam.log
+Restart=on-failure
+RestartSec=3s
 
 [Install]
 WantedBy=carbonio-mta.target carbonio-ce.target carbonio.target
