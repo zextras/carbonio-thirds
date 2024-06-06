@@ -1,5 +1,5 @@
 pkgname="carbonio-openssl"
-pkgver="3.0.13"
+pkgver="3.0.14"
 pkgrel="1"
 pkgdesc="Zextras's Secure Socket Layer build"
 arch=('x86_64')
@@ -18,7 +18,7 @@ source=(
   "https://www.openssl.org/source/openssl-${pkgver}.tar.gz"
   "${pkgname}-fips.cnf"
 )
-sha256sums=('88525753f79d3bec27d2fa7c66aa0b92b3aa9498dafd93d7cfa4b3780cdae313'
+sha256sums=('eeca035d4dd4e84fc25846d952da6297484afa0650a6f84c682e39df3a4123ca'
   '05f86d63faa156bab0e5c858e0d268921d26aa2be7bb76a7bc77becb715cf3af')
 
 build() {
