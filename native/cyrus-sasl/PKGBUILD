@@ -1,6 +1,6 @@
 pkgname="carbonio-cyrus-sasl"
 pkgver="2.1.28"
-pkgrel="4"
+pkgrel="5"
 pkgdesc="Cyrus Simple Authentication Service Layer (SASL) library"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

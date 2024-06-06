@@ -1,6 +1,6 @@
 pkgname="carbonio-openldap"
 pkgver="2.4.59"
-pkgrel="6"
+pkgrel="7"
 pkgdesc="Lightweight Directory Access Protocol (LDAP) library"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -118,6 +118,11 @@ postinst__apt() {
     mkdir -p /run/carbonio
   fi
 
+  chown root:zextras /opt/zextras/common/libexec/slapd
+  chmod 750 /opt/zextras/common/libexec/slapd
+  # changing permission will reset capabilities so set it again
+  setcap CAP_NET_BIND_SERVICE=+ep /opt/zextras/common/libexec/slapd
+
   chown zextras:zextras /run/carbonio
 }
 
@@ -139,6 +144,11 @@ postinst__yum() {
   if [ ! -d /run/carbonio ]; then
     mkdir -p /run/carbonio
   fi
+
+  chown root:zextras /opt/zextras/common/libexec/slapd
+  chmod 750 /opt/zextras/common/libexec/slapd
+  # changing permission will reset capabilities so set it again
+  setcap CAP_NET_BIND_SERVICE=+ep /opt/zextras/common/libexec/slapd
 
   chown zextras:zextras /run/carbonio
 }
