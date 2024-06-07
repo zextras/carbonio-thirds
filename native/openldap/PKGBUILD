@@ -1,6 +1,6 @@
 pkgname="carbonio-openldap"
-pkgver="2.4.59"
-pkgrel="7"
+pkgver="2.5.18"
+pkgrel="1"
 pkgdesc="Lightweight Directory Access Protocol (LDAP) library"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -31,17 +31,14 @@ source=(
   "https://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-${pkgver}.tgz"
   "${pkgname}.patch"
   "${pkgname}.service"
-  "carbonio-argon2-make.patch"
 )
-sha256sums=('99f37d6747d88206c470067eda624d5e48c1011e943ec0ab217bae8712e22f34'
-  '9d9460e24b582685d02f707248840ff19231e2cf1b8ba84fccf5b29438c768e8'
-  '0a13ecd08f1e424adc7942e0d948013c8f40227f6ee68acc864adb43728501c5'
-  '152fbbca7fd1ec92c1ee5c20f4a06e62bb276e2d6f83e2946fbafea6dc6e8ed5')
+sha256sums=('2670ae43d8d99dd6b1ba182101d982350d613d09c098eb1607ea6b36e6b51d3e'
+  'a2ba7ee70d6caf8f21bdac376d95b1e98361874c4fcc62dd63356f9f2a1cae99'
+  '0a13ecd08f1e424adc7942e0d948013c8f40227f6ee68acc864adb43728501c5')
 
 build() {
   cd "${srcdir}/openldap-${pkgver}"
   patch -Np1 -i "${srcdir}/carbonio-openldap.patch"
-  patch -Np1 -i "${srcdir}/carbonio-argon2-make.patch"
 
   export LDFLAGS="-L/opt/zextras/common/lib -Wl,-rpath,/opt/zextras/common/lib"
   export CFLAGS="-D_REENTRANT"
@@ -56,6 +53,8 @@ build() {
     --disable-perl \
     --disable-shell \
     --disable-sql \
+    --disable-wt \
+    --enable-argon2 \
     --enable-backends=mod \
     --enable-crypt \
     --enable-dynamic \
@@ -73,7 +72,6 @@ build() {
   LD_RUN_PATH=/opt/zextras/common/lib make DEFINES="-DCHECK_CSN -DSLAP_SCHEMA_EXPOSE"
   make -C libraries/liblmdb prefix=/opt/zextras/common
   make -C contrib/slapd-modules/noopsrch prefix=/opt/zextras/common
-  make -C contrib/slapd-modules/passwd/argon2 prefix=/opt/zextras/common
   make -C contrib/slapd-modules/passwd/sha2 prefix=/opt/zextras/common
 }
 
@@ -84,10 +82,8 @@ package() {
 
   make -C libraries/liblmdb install prefix=/opt/zextras/common DESTDIR="${pkgdir}"
   make -C contrib/slapd-modules/noopsrch install prefix=/opt/zextras/common DESTDIR="${pkgdir}"
-  make -C contrib/slapd-modules/passwd/argon2 install prefix=/opt/zextras/common DESTDIR="${pkgdir}"
   make -C contrib/slapd-modules/passwd/sha2 install prefix=/opt/zextras/common DESTDIR="${pkgdir}"
 
-  rm "${pkgdir}/opt/zextras/common/etc/openldap/DB_CONFIG.example"
   rm -rf "${pkgdir}/run"
 
   # systemd unit
@@ -98,8 +94,6 @@ package() {
     "${pkgdir}"/opt/zextras/common/lib/liblber.so.2
   ln -s /opt/zextras/common/lib/libldap.so \
     "${pkgdir}"/opt/zextras/common/lib/libldap.so.2
-  ln -s /opt/zextras/common/lib/liblmdb.so \
-    "${pkgdir}"/opt/zextras/common/lib/liblmdb.so.0
 
   # libexec .a and .la files should not be deleted
   # they are related to slapd plugins
