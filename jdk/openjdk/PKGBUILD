@@ -32,14 +32,14 @@ package() {
   ln -s /opt/zextras/common/etc/java/cacerts cacerts
 
   cd "${pkgdir}"/opt/zextras/common/bin
-  ln -s ../lib/jvm/java/bin/jar
-  ln -s ../lib/jvm/java/bin/java
-  ln -s ../lib/jvm/java/bin/javac
-  ln -s ../lib/jvm/java/bin/javap
-  ln -s ../lib/jvm/java/bin/jhat
-  ln -s ../lib/jvm/java/bin/jmap
-  ln -s ../lib/jvm/java/bin/jps
-  ln -s ../lib/jvm/java/bin/jstack
-  ln -s ../lib/jvm/java/bin/jstat
-  ln -s ../lib/jvm/java/bin/keytool
+  ln -s ../lib/jvm/java/bin/jar .
+  ln -s ../lib/jvm/java/bin/java .
+  ln -s ../lib/jvm/java/bin/javac .
+  ln -s ../lib/jvm/java/bin/javap .
+  ln -s ../lib/jvm/java/bin/jhat .
+  ln -s ../lib/jvm/java/bin/jmap .
+  ln -s ../lib/jvm/java/bin/jps .
+  ln -s ../lib/jvm/java/bin/jstack .
+  ln -s ../lib/jvm/java/bin/jstat .
+  ln -s ../lib/jvm/java/bin/keytool .
 }
