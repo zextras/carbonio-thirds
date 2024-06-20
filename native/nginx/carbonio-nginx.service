@@ -15,6 +15,7 @@ ExecReload=/opt/zextras/common/sbin/nginx -c /opt/zextras/conf/nginx.conf -s rel
 ExecStop=/opt/zextras/common/sbin/nginx -c /opt/zextras/conf/nginx.conf -s stop
 RestartSec=5s
 Restart=on-failure
+LimitNOFILE=524288
 
 [Install]
 WantedBy=carbonio-proxy.target carbonio-ce.target carbonio.target

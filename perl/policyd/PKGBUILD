@@ -44,7 +44,7 @@ source=(
 )
 sha256sums=('SKIP'
   '2f71d4274585f8ae963e2e2b081a0b0d0780e9eb7aa0e44cd99b5b7f3271119f'
-  'a16cd33c1acb17e81ea6c0f55c4b40c7589fce09d29448c675fc30320a7966d5')
+  '83bbd5b09d98bbbb1c8a99292cb3f571b501c2408eb9137956ea4ebb4ae49bfe')
 
 package() {
   cd "${srcdir}/policyd"
