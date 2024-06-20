@@ -14,6 +14,7 @@ ExecStart=/opt/zextras/common/sbin/postfix start
 ExecStop=/opt/zextras/common/sbin/postfix stop
 ExecReload=/opt/zextras/common/sbin/postfix reload
 Restart=always
+LimitNOFILE=524288
 
 [Install]
 WantedBy=carbonio-mta.target carbonio-ce.target carbonio.target
