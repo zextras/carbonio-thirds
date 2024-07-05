@@ -10,9 +10,6 @@
     },
     {
       "name": "openjdk-cacerts"
-    },
-    {
-      "name": "jetty-distribution"
     }
   ]
 }
