@@ -1,6 +1,6 @@
 pkgname="carbonio-clamav"
 pkgver="1.0.6"
-pkgrel="7"
+pkgrel="8"
 pkgdesc="Anti-virus toolkit for Unix"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -58,7 +58,6 @@ source=(
   "carbonio-clamav-sidecar.service"
   "carbonio-clamav.hcl"
   "carbonio-freshclam.service"
-  "enable-fips-openssl3.patch"
   "intentions.json"
   "policies.json"
   "service-protocol.json"
@@ -71,7 +70,6 @@ sha256sums=('12dcd842b6c46e5a9fdf2f5c16304efafe53310ac4605990465651b0c42227b2'
   '9cb7401ccec50e4b28b87624c3185966366bd0f439e7ede40a1aff23812ffa45'
   'c65d4609c5be7e0cc83543bfe25e48d39451363c21e6604d5191a6953e1b3fbb'
   'f777e4c08716406c6c638ca85794d355a32e12403d5991a40c5ecc38b1a69c7d'
-  '59ab514e88e14f0b3c9a9a9b987b25504f442fbcd0a3184352ca57fe68e8286d'
   'df54edd32986b4213a09069681741ba7533dc40a034a6a2b080cdf380a69fb05'
   'd67bb7f9d98ccb033f632621accf3d8a3391aa3955074af958c0def644be0ef5'
   '6c1f94857671bd044fe4dac20df1f927629c50bfbb0aa9991e6de1a73d1791a0')
@@ -80,10 +78,6 @@ build() {
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib"
   export CPPFLAGS="-I/opt/zextras/common/include"
   cd "${srcdir}/clamav-${pkgver}"
-
-  # Patch to enable FIPS in clamav, using a proper openssl config
-  patch -Np1 -i "${srcdir}/enable-fips-openssl3.patch"
-
   cmake . \
     -DCMAKE_INSTALL_PREFIX=/opt/zextras/common \
     -DCLAMAV_USER=zextras \

@@ -1,6 +1,6 @@
 pkgname="carbonio-openssl"
 pkgver="3.0.14"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Zextras's Secure Socket Layer build"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -16,10 +16,8 @@ section="libs"
 priority="important"
 source=(
   "https://www.openssl.org/source/openssl-${pkgver}.tar.gz"
-  "${pkgname}-fips.cnf"
 )
-sha256sums=('eeca035d4dd4e84fc25846d952da6297484afa0650a6f84c682e39df3a4123ca'
-  '05f86d63faa156bab0e5c858e0d268921d26aa2be7bb76a7bc77becb715cf3af')
+sha256sums=('eeca035d4dd4e84fc25846d952da6297484afa0650a6f84c682e39df3a4123ca')
 
 build() {
   cd "${srcdir}/openssl-${pkgver}"
@@ -30,7 +28,6 @@ build() {
     --with-rand-seed=devrandom,rdcpu,os,getrandom \
     -DOPENSSL_NO_HEARTBEATS \
     enable-ec_nistp_64_gcc_128 \
-    enable-fips \
     linux-x86_64 \
     no-idea \
     no-mdc2 no-rc5 \
@@ -46,14 +43,12 @@ package() {
   LD_RUN_PATH=/opt/zextras/common/lib \
     MANDIR="/opt/zextras/common/share/man" \
     LIBS="" \
-    make DESTDIR="${pkgdir}" install_sw install_ssldirs install_fips
+    make DESTDIR="${pkgdir}" install_sw install_ssldirs
 
   rm "${pkgdir}"/opt/zextras/common/lib/*.a
   rm "${pkgdir}"/opt/zextras/common/etc/ssl/misc/tsget*
   cp "${pkgdir}/opt/zextras/common/etc/ssl/openssl.cnf" \
     "${pkgdir}/opt/zextras/common/etc/ssl/openssl-source.cnf"
-  install -D -m 644 "${srcdir}/${pkgname}-fips.cnf" \
-    "${pkgdir}/opt/zextras/common/etc/ssl/openssl-fips.cnf"
 
   # Til now, these symlinks are only required for carbonio-docs-editor
   install -d "${pkgdir}/opt/zextras/common/lib64"
@@ -61,16 +56,4 @@ package() {
     "${pkgdir}/opt/zextras/common/lib64/libcrypto.so.3"
   ln -s /opt/zextras/common/lib/libssl.so.3 \
     "${pkgdir}/opt/zextras/common/lib64/libssl.so.3"
-}
-
-postinst__apt() {
-  if [ "$1" = "configure" ]; then
-    /opt/zextras/common/bin/openssl fipsinstall -quiet -out /opt/zextras/common/etc/ssl/fipsmodule.cnf -module /opt/zextras/common/lib/ossl-modules/fips.so
-    cp -af /opt/zextras/common/etc/ssl/openssl-fips.cnf /opt/zextras/common/etc/ssl/openssl.cnf
-  fi
-}
-
-postinst__yum() {
-  /opt/zextras/common/bin/openssl fipsinstall -quiet -out /opt/zextras/common/etc/ssl/fipsmodule.cnf -module /opt/zextras/common/lib/ossl-modules/fips.so
-  cp -af /opt/zextras/common/etc/ssl/openssl-fips.cnf /opt/zextras/common/etc/ssl/openssl.cnf
 }
