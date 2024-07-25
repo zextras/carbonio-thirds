@@ -1,6 +1,6 @@
 pkgname="carbonio-postfix"
 pkgver="3.8.6"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Fast, easy to administer, secure mail server"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
