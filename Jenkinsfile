@@ -84,6 +84,11 @@ pipeline {
             }
         }
         stage('Ubuntu 20') {
+            when {
+                expression {
+                    params.BUILD_JDK == false
+                }
+            }
             agent {
                 node {
                     label 'yap-agent-ubuntu-20.04-v2'
@@ -102,6 +107,11 @@ pipeline {
             }
         }
         stage('Ubuntu 22') {
+            when {
+                expression {
+                    params.BUILD_JDK == false
+                }
+            }
             agent {
                 node {
                     label 'yap-agent-ubuntu-22.04-v2'
@@ -120,6 +130,11 @@ pipeline {
             }
         }
         stage('Rocky 8') {
+            when {
+                expression {
+                    params.BUILD_JDK == false
+                }
+            }
             agent {
                 node {
                     label 'yap-agent-rocky-8-v2'
@@ -138,6 +153,11 @@ pipeline {
             }
         }
         stage('Rocky 9') {
+            when {
+                expression {
+                    params.BUILD_JDK == false
+                }
+            }
             agent {
                 node {
                     label 'yap-agent-rocky-9-v2'
@@ -217,7 +237,10 @@ pipeline {
         }
         stage('Upload To Devel') {
             when {
-                branch 'devel'
+                allOf {
+                    branch 'devel'
+                    expression { params.BUILD_JDK == false }
+                }
             }
             steps {
                 unstash 'artifacts-ubuntu-focal'
