@@ -1,5 +1,5 @@
 pkgname="carbonio-curl"
-pkgver="8.5.0"
+pkgver="8.9.0"
 pkgrel="1"
 pkgdesc="An URL retrieval utility and library"
 arch=('x86_64')
@@ -8,17 +8,21 @@ url="https://github.com/zextras"
 depends__apt=(
   "carbonio-krb5"
   "carbonio-openssl"
+  "libbrotli1"
   "zlib1g"
 )
 makedepends__apt=(
+  "libbrotli-dev"
   "zlib1g-dev"
 )
 depends__yum=(
+  "brotli"
   "carbonio-krb5"
   "carbonio-openssl"
   "zlib"
 )
 makedepends__yum=(
+  "brotli-devel"
   "zlib-devel"
 )
 section="utils"
@@ -26,7 +30,7 @@ priority="optional"
 source=(
   "https://curl.haxx.se/download/curl-${pkgver}.tar.gz"
 )
-sha256sums=('05fc17ff25b793a437a0906e0484b82172a9f4de02be5ed447e0cab8c3475add')
+sha256sums=('14d931fa98a329310dca7b190d047c3d4987674b1f466481f5490e4e12067ba4')
 
 build() {
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
