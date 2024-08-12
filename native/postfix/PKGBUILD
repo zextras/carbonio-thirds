@@ -1,29 +1,43 @@
 pkgname="carbonio-postfix"
 pkgver="3.8.6"
-pkgrel="2"
+pkgrel="3"
 pkgdesc="Fast, easy to administer, secure mail server"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 depends__apt=(
+  "carbonio-cyrus-sasl"
+  "carbonio-mariadb"
+  "carbonio-openldap"
+  "carbonio-openssl"
   "libc6"
   "libpcre3"
-  "carbonio-openldap"
+)
+depends__ubuntu_noble=(
   "carbonio-cyrus-sasl"
-  "carbonio-openssl"
   "carbonio-mariadb"
+  "carbonio-openldap"
+  "carbonio-openssl"
+  "libc6"
+  "libnsl2"
+  "libpcre3"
 )
 makedepends__apt=(
   "libc6-dev"
   "libpcre3-dev"
 )
+makedepends__ubuntu_noble=(
+  "libc6-dev"
+  "libnsl-dev"
+  "libpcre3-dev"
+)
 depends__yum=(
+  "carbonio-cyrus-sasl"
+  "carbonio-mariadb>10.1.48"
+  "carbonio-openldap"
+  "carbonio-openssl"
   "libnsl2"
   "pcre"
-  "carbonio-openldap"
-  "carbonio-cyrus-sasl"
-  "carbonio-openssl"
-  "carbonio-mariadb>10.1.48"
 )
 makedepends__yum=(
   "libnsl2-devel"

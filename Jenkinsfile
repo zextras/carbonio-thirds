@@ -72,6 +72,24 @@ pipeline {
                 }
             }
         }
+        stage('Ubuntu 24') {
+            agent {
+                node {
+                    label 'yap-agent-ubuntu-24.04-v2'
+                }
+            }
+            steps {
+                unstash 'project'
+                sh 'sudo yap build ubuntu-noble native'
+                sh 'sudo yap build ubuntu-noble perl'
+                stash includes: 'artifacts/*noble*', name: 'artifacts-ubuntu-noble'
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'artifacts/*.deb', fingerprint: true
+                }
+            }
+        }
         stage('Rocky 8') {
             agent {
                 node {
@@ -115,6 +133,7 @@ pipeline {
             steps {
                 unstash 'artifacts-ubuntu-focal'
                 unstash 'artifacts-ubuntu-jammy'
+                unstash 'artifacts-ubuntu-noble'
                 unstash 'artifacts-rocky-8'
                 unstash 'artifacts-rocky-9'
 
@@ -138,6 +157,11 @@ pipeline {
                                 "pattern": "artifacts/*jammy*.deb",
                                 "target": "ubuntu-devel/pool/",
                                 "props": "deb.distribution=jammy;deb.component=main;deb.architecture=amd64"
+                            },
+                            {
+                                "pattern": "artifacts/*noble*.deb",
+                                "target": "ubuntu-devel/pool/",
+                                "props": "deb.distribution=noble;deb.component=main;deb.architecture=amd64"
                             }
                         ]
                     }'''
@@ -1259,6 +1283,7 @@ pipeline {
             steps {
                 unstash 'artifacts-ubuntu-focal'
                 unstash 'artifacts-ubuntu-jammy'
+                unstash 'artifacts-ubuntu-noble'
                 unstash 'artifacts-rocky-8'
                 unstash 'artifacts-rocky-9'
 
@@ -1282,6 +1307,11 @@ pipeline {
                                 "pattern": "artifacts/*jammy*.deb",
                                 "target": "ubuntu-rc/pool/",
                                 "props": "deb.distribution=jammy;deb.component=main;deb.architecture=amd64"
+                            },
+                            {
+                                "pattern": "artifacts/*noble*.deb",
+                                "target": "ubuntu-rc/pool/",
+                                "props": "deb.distribution=noble;deb.component=main;deb.architecture=amd64"
                             }
                         ]
                     }'''
