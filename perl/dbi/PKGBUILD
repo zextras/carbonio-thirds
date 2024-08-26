@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-dbi"
-pkgver="1.643"
-pkgrel="2"
+pkgver="1.644"
+pkgrel="1"
 pkgdesc="Database independent interface for Perl"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -17,15 +17,15 @@ depends__yum=(
 section="libs"
 priority="important"
 source=(
-  "https://cpan.metacpan.org/authors/id/T/TI/TIMB/DBI-${pkgver}.tar.gz"
+  "https://cpan.metacpan.org/authors/id/H/HM/HMBRAND/DBI-${pkgver}.tar.gz"
 )
-sha256sums=('8a2b993db560a2c373c174ee976a51027dd780ec766ae17620c20393d2e836fa')
+sha256sums=('2297b99de09e67086640b590699e0e982fb469da63a93fe28dc14782db7a53c8')
 
 build() {
   cd "${srcdir}/DBI-${pkgver}"
   perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
     INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
-    LIB=/opt/zextras/common/lib/perl5 LIBS="-L/opt/zextras/common/lib -lssl -lcrypto" INC="-I/opt/zextras/common/include"
+    LIB=/opt/zextras/common/lib/perl5 LIBS="-L/opt/zextras/common/lib" INC="-I/opt/zextras/common/include"
   LD_RUN_PATH=/opt/zextras/common/lib make
 }
 
