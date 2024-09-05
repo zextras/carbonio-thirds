@@ -1,6 +1,6 @@
 pkgname="carbonio-openssl"
-pkgver="3.0.14"
-pkgrel="2"
+pkgver="3.0.15"
+pkgrel="1"
 pkgdesc="Zextras's Secure Socket Layer build"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -15,9 +15,9 @@ makedepends__yum=(
 section="libs"
 priority="important"
 source=(
-  "https://www.openssl.org/source/openssl-${pkgver}.tar.gz"
+  "https://github.com/openssl/openssl/releases/download/openssl-${pkgver}/openssl-${pkgver}.tar.gz"
 )
-sha256sums=('eeca035d4dd4e84fc25846d952da6297484afa0650a6f84c682e39df3a4123ca')
+sha256sums=('23c666d0edf20f14249b3d8f0368acaee9ab585b09e1de82107c66e1f3ec9533')
 
 build() {
   cd "${srcdir}/openssl-${pkgver}"
