@@ -52,10 +52,6 @@
       "name": "net-server"
     },
     {
-      "name": "mozilla-ca",
-      "install": true
-    },
-    {
       "name": "parent",
       "install": true
     },
