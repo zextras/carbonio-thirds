@@ -1,6 +1,6 @@
 pkgname="carbonio-nginx"
-pkgver="1.24.0"
-pkgrel="4"
+pkgver="1.26.2"
+pkgrel="1"
 pkgdesc="Lightweight HTTP server and IMAP/POP3 proxy server"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -43,18 +43,17 @@ source=(
   "nginx-tcp-keepalive::git+https://github.com/nviennot/nginx-tcp-keepalive#commit=19755fc0e22aa7d7ac2198f78b297951d31ea1dc"
   "nginx-brotli::git+https://github.com/google/ngx_brotli#commit=a71f9312c2deb28875acc7bacfdd5695a111aa53"
   "modules::git+https://github.com/zextras/carbonio-nginx-modules#commit=e62d730a1f5f23494fba7f0a45d3271c335fae6f"
-  "carbonio-${pkgver}.patch"
   "${pkgname}.service"
-  "CVE-2023-44487.patch"
+  "${pkgname}-${pkgver}.patch"
 )
-sha256sums=('77a2541637b92a621e3ee76776c8b7b40cf6d707e69ba53a940283e30ff2f55d'
+sha256sums=(
+  '627fe086209bba80a2853a0add9d958d7ebbdffa1a8467a5784c9a6b4f03d738'
   'SKIP'
   'SKIP'
   'SKIP'
-  '48df9423d3aca1e95f79ff3f89c063b983457451bbe0d6e8aac38acb7595adc5'
   '9db322d6729095063f903e3b7862c267b97659f58fa3210987c81ff49d7285f5'
-  '72ad36b212fffe7a4824fc37e53972f051050ace11ecc4c55c2c9bdf3ba575ac')
-
+  'e3a0888055505f9202860682978ae246b5f8dc4d48ced85216482432fefbb1c8'
+)
 prepare() {
   cd "${srcdir}/nginx-brotli"
   git submodule update --init --recursive
@@ -66,8 +65,7 @@ build() {
   export CFLAGS="-g -O2 -fdebug-prefix-map=/etc=. -fstack-protector-strong"
 
   cd "${srcdir}/nginx-${pkgver}"
-  patch -Np1 -i ../"carbonio-${pkgver}.patch"
-  patch -Np1 -i ../CVE-2023-44487.patch
+  patch -Np1 -i "${srcdir}/${pkgname}-${pkgver}.patch"
 
   ./configure \
     --add-module="${srcdir}/nginx-brotli" \

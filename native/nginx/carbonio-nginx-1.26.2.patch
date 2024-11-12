@@ -1,6 +1,6 @@
 diff '--color=auto' -Naur a/auto/lib/conf b/auto/lib/conf
---- a/auto/lib/conf	2023-04-11 03:45:34.000000000 +0200
-+++ b/auto/lib/conf	2024-02-19 02:06:42.275860889 +0100
+--- a/auto/lib/conf	2024-11-15 13:24:02.809573969 +0100
++++ b/auto/lib/conf	2024-11-15 13:24:11.066410654 +0100
 @@ -52,3 +52,7 @@
  if [ $NGX_LIBATOMIC != NO ]; then
      . auto/lib/libatomic/conf
@@ -11,7 +11,7 @@ diff '--color=auto' -Naur a/auto/lib/conf b/auto/lib/conf
 +fi
 diff '--color=auto' -Naur a/auto/lib/sasl/conf b/auto/lib/sasl/conf
 --- a/auto/lib/sasl/conf	1970-01-01 01:00:00.000000000 +0100
-+++ b/auto/lib/sasl/conf	2024-02-19 02:06:42.274860902 +0100
++++ b/auto/lib/sasl/conf	2024-11-15 13:24:11.067410634 +0100
 @@ -0,0 +1,79 @@
 +    ngx_feature="SASL library"
 +    ngx_feature_name="NGX_SASL"
@@ -93,8 +93,8 @@ diff '--color=auto' -Naur a/auto/lib/sasl/conf b/auto/lib/sasl/conf
 +
 +fi
 diff '--color=auto' -Naur a/auto/modules b/auto/modules
---- a/auto/modules	2023-04-11 03:45:34.000000000 +0200
-+++ b/auto/modules	2024-02-19 02:06:42.276860877 +0100
+--- a/auto/modules	2024-11-15 13:24:02.810573949 +0100
++++ b/auto/modules	2024-11-15 13:24:11.067410634 +0100
 @@ -77,7 +77,8 @@
                           src/http/ngx_http_variables.h \
                           src/http/ngx_http_script.h \
@@ -115,7 +115,7 @@ diff '--color=auto' -Naur a/auto/modules b/auto/modules
          ngx_module_libs=
          ngx_module_link=YES
  
-@@ -939,6 +941,11 @@
+@@ -977,6 +979,11 @@
  
      ngx_module_incs=
  
@@ -127,7 +127,7 @@ diff '--color=auto' -Naur a/auto/modules b/auto/modules
      if [ $MAIL_SSL = YES ]; then
          USE_OPENSSL=YES
          have=NGX_MAIL_SSL . auto/have
-@@ -1287,6 +1294,8 @@
+@@ -1392,6 +1399,8 @@
  
  
  modules="$CORE_MODULES $EVENT_MODULES"
@@ -137,10 +137,10 @@ diff '--color=auto' -Naur a/auto/modules b/auto/modules
  
  # thread pool module should be initialized after events
 diff '--color=auto' -Naur a/auto/options b/auto/options
---- a/auto/options	2023-04-11 03:45:34.000000000 +0200
-+++ b/auto/options	2024-02-19 02:06:42.275860889 +0100
-@@ -151,6 +151,10 @@
- USE_OPENSSL=NO
+--- a/auto/options	2024-11-15 13:24:02.808573989 +0100
++++ b/auto/options	2024-11-15 13:24:11.068410615 +0100
+@@ -156,6 +156,10 @@
+ USE_OPENSSL_QUIC=NO
  OPENSSL=NONE
  
 +USE_SASL=NO
@@ -150,7 +150,7 @@ diff '--color=auto' -Naur a/auto/options b/auto/options
  USE_ZLIB=NO
  ZLIB=NONE
  ZLIB_OPT=
-@@ -292,6 +296,7 @@
+@@ -302,6 +306,7 @@
          --with-http_stub_status_module)  HTTP_STUB_STATUS=YES       ;;
  
          --with-mail)                     MAIL=YES                   ;;
@@ -158,7 +158,7 @@ diff '--color=auto' -Naur a/auto/options b/auto/options
          --with-mail=dynamic)             MAIL=DYNAMIC               ;;
          --with-mail_ssl_module)          MAIL_SSL=YES               ;;
          # STUB
-@@ -363,6 +368,9 @@
+@@ -374,6 +379,9 @@
          --with-openssl=*)                OPENSSL="$value"           ;;
          --with-openssl-opt=*)            OPENSSL_OPT="$value"       ;;
  
@@ -168,7 +168,7 @@ diff '--color=auto' -Naur a/auto/options b/auto/options
          --with-md5=*)
              NGX_POST_CONF_MSG="$NGX_POST_CONF_MSG
  $0: warning: the \"--with-md5\" option is deprecated"
-@@ -524,6 +532,7 @@
+@@ -538,6 +546,7 @@
    --without-http-cache               disable HTTP cache
  
    --with-mail                        enable POP3/IMAP4/SMTP proxy module
@@ -176,7 +176,7 @@ diff '--color=auto' -Naur a/auto/options b/auto/options
    --with-mail=dynamic                enable dynamic POP3/IMAP4/SMTP proxy module
    --with-mail_ssl_module             enable ngx_mail_ssl_module
    --without-mail_pop3_module         disable ngx_mail_pop3_module
-@@ -577,6 +586,9 @@
+@@ -592,6 +601,9 @@
    --with-pcre-jit                    build PCRE with JIT compilation support
    --without-pcre2                    do not use PCRE2 library
  
@@ -187,8 +187,8 @@ diff '--color=auto' -Naur a/auto/options b/auto/options
    --with-zlib-opt=OPTIONS            set additional build options for zlib
    --with-zlib-asm=CPU                use zlib assembler sources optimized
 diff '--color=auto' -Naur a/auto/sources b/auto/sources
---- a/auto/sources	2023-04-11 03:45:34.000000000 +0200
-+++ b/auto/sources	2024-02-19 02:06:42.275860889 +0100
+--- a/auto/sources	2024-11-15 13:24:02.809573969 +0100
++++ b/auto/sources	2024-11-15 13:24:11.068410615 +0100
 @@ -39,6 +39,8 @@
             src/core/ngx_module.h \
             src/core/ngx_resolver.h \
@@ -219,7 +219,7 @@ diff '--color=auto' -Naur a/auto/sources b/auto/sources
  UNIX_DEPS="$CORE_DEPS $EVENT_DEPS \
 diff '--color=auto' -Naur a/docs/html/zmerror_upstream_502.html b/docs/html/zmerror_upstream_502.html
 --- a/docs/html/zmerror_upstream_502.html	1970-01-01 01:00:00.000000000 +0100
-+++ b/docs/html/zmerror_upstream_502.html	2024-02-19 02:06:42.285860763 +0100
++++ b/docs/html/zmerror_upstream_502.html	2024-11-15 13:24:11.068410615 +0100
 @@ -0,0 +1,29 @@
 +<html>
 +<head>
@@ -252,7 +252,7 @@ diff '--color=auto' -Naur a/docs/html/zmerror_upstream_502.html b/docs/html/zmer
 +</html>
 diff '--color=auto' -Naur a/docs/html/zmerror_upstream_504.html b/docs/html/zmerror_upstream_504.html
 --- a/docs/html/zmerror_upstream_504.html	1970-01-01 01:00:00.000000000 +0100
-+++ b/docs/html/zmerror_upstream_504.html	2024-02-19 02:06:42.285860763 +0100
++++ b/docs/html/zmerror_upstream_504.html	2024-11-15 13:24:11.068410615 +0100
 @@ -0,0 +1,30 @@
 +<html>
 +<head>
@@ -285,8 +285,8 @@ diff '--color=auto' -Naur a/docs/html/zmerror_upstream_504.html b/docs/html/zmer
 +</html>
 +
 diff '--color=auto' -Naur a/src/core/ngx_log.c b/src/core/ngx_log.c
---- a/src/core/ngx_log.c	2023-04-11 03:45:34.000000000 +0200
-+++ b/src/core/ngx_log.c	2024-02-19 02:06:42.277860864 +0100
+--- a/src/core/ngx_log.c	2024-11-15 13:24:02.812573909 +0100
++++ b/src/core/ngx_log.c	2024-11-15 13:24:11.068410615 +0100
 @@ -86,7 +86,7 @@
  
  static const char *debug_levels[] = {
@@ -297,8 +297,8 @@ diff '--color=auto' -Naur a/src/core/ngx_log.c b/src/core/ngx_log.c
  
  
 diff '--color=auto' -Naur a/src/core/ngx_log.h b/src/core/ngx_log.h
---- a/src/core/ngx_log.h	2023-04-11 03:45:34.000000000 +0200
-+++ b/src/core/ngx_log.h	2024-02-19 02:06:42.277860864 +0100
+--- a/src/core/ngx_log.h	2024-11-15 13:24:02.814573870 +0100
++++ b/src/core/ngx_log.h	2024-11-15 13:24:11.069410595 +0100
 @@ -30,6 +30,7 @@
  #define NGX_LOG_DEBUG_HTTP        0x100
  #define NGX_LOG_DEBUG_MAIL        0x200
@@ -318,7 +318,7 @@ diff '--color=auto' -Naur a/src/core/ngx_log.h b/src/core/ngx_log.h
  
 diff '--color=auto' -Naur a/src/core/ngx_memcache.c b/src/core/ngx_memcache.c
 --- a/src/core/ngx_memcache.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/src/core/ngx_memcache.c	2024-02-19 02:06:42.277860864 +0100
++++ b/src/core/ngx_memcache.c	2024-11-15 13:24:11.070410575 +0100
 @@ -0,0 +1,2170 @@
 +#include <ngx_memcache.h>
 +#include <openssl/md5.h>
@@ -2492,7 +2492,7 @@ diff '--color=auto' -Naur a/src/core/ngx_memcache.c b/src/core/ngx_memcache.c
 +}
 diff '--color=auto' -Naur a/src/core/ngx_memcache.h b/src/core/ngx_memcache.h
 --- a/src/core/ngx_memcache.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/src/core/ngx_memcache.h	2024-02-19 02:06:42.277860864 +0100
++++ b/src/core/ngx_memcache.h	2024-11-15 13:24:11.070410575 +0100
 @@ -0,0 +1,142 @@
 +#ifndef _NGX_MEMCACHE_H_INCLUDED_
 +#define _NGX_MEMCACHE_H_INCLUDED_
@@ -2637,8 +2637,8 @@ diff '--color=auto' -Naur a/src/core/ngx_memcache.h b/src/core/ngx_memcache.h
 +
 +#endif
 diff '--color=auto' -Naur a/src/core/ngx_palloc.c b/src/core/ngx_palloc.c
---- a/src/core/ngx_palloc.c	2023-04-11 03:45:34.000000000 +0200
-+++ b/src/core/ngx_palloc.c	2024-02-19 02:06:42.278860851 +0100
+--- a/src/core/ngx_palloc.c	2024-11-15 13:24:02.812573909 +0100
++++ b/src/core/ngx_palloc.c	2024-11-15 13:24:11.070410575 +0100
 @@ -70,8 +70,6 @@
      }
  
@@ -2649,8 +2649,8 @@ diff '--color=auto' -Naur a/src/core/ngx_palloc.c b/src/core/ngx_palloc.c
          if (n == NULL) {
              break;
 diff '--color=auto' -Naur a/src/core/ngx_string.c b/src/core/ngx_string.c
---- a/src/core/ngx_string.c	2023-04-11 03:45:34.000000000 +0200
-+++ b/src/core/ngx_string.c	2024-02-19 02:06:42.277860864 +0100
+--- a/src/core/ngx_string.c	2024-11-15 13:24:02.813573890 +0100
++++ b/src/core/ngx_string.c	2024-11-15 13:24:11.071410555 +0100
 @@ -86,6 +86,24 @@
      return dst;
  }
@@ -2677,8 +2677,8 @@ diff '--color=auto' -Naur a/src/core/ngx_string.c b/src/core/ngx_string.c
  /*
   * supported formats:
 diff '--color=auto' -Naur a/src/core/ngx_string.h b/src/core/ngx_string.h
---- a/src/core/ngx_string.h	2023-04-11 03:45:34.000000000 +0200
-+++ b/src/core/ngx_string.h	2024-02-19 02:06:42.277860864 +0100
+--- a/src/core/ngx_string.h	2024-11-15 13:24:02.814573870 +0100
++++ b/src/core/ngx_string.h	2024-11-15 13:24:11.071410555 +0100
 @@ -150,6 +150,7 @@
  
  u_char *ngx_cpystrn(u_char *dst, u_char *src, size_t n);
@@ -2689,7 +2689,7 @@ diff '--color=auto' -Naur a/src/core/ngx_string.h b/src/core/ngx_string.h
  u_char * ngx_cdecl ngx_slprintf(u_char *buf, u_char *last, const char *fmt,
 diff '--color=auto' -Naur a/src/core/ngx_zm_lookup.c b/src/core/ngx_zm_lookup.c
 --- a/src/core/ngx_zm_lookup.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/src/core/ngx_zm_lookup.c	2024-02-19 02:06:42.277860864 +0100
++++ b/src/core/ngx_zm_lookup.c	2024-11-15 13:24:11.072410536 +0100
 @@ -0,0 +1,2267 @@
 +#include <ngx_zm_lookup.h>
 +#include <ngx_memcache.h>
@@ -4960,7 +4960,7 @@ diff '--color=auto' -Naur a/src/core/ngx_zm_lookup.c b/src/core/ngx_zm_lookup.c
 +}
 diff '--color=auto' -Naur a/src/core/ngx_zm_lookup.h b/src/core/ngx_zm_lookup.h
 --- a/src/core/ngx_zm_lookup.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/src/core/ngx_zm_lookup.h	2024-02-19 02:06:42.278860851 +0100
++++ b/src/core/ngx_zm_lookup.h	2024-11-15 13:24:11.072410536 +0100
 @@ -0,0 +1,192 @@
 +#ifndef _NGX_ZM_LOOKUP_H_INCLUDED_
 +#define _NGX_ZM_LOOKUP_H_INCLUDED_
@@ -5155,10 +5155,10 @@ diff '--color=auto' -Naur a/src/core/ngx_zm_lookup.h b/src/core/ngx_zm_lookup.h
 +
 +#endif
 diff '--color=auto' -Naur a/src/event/ngx_event_openssl.c b/src/event/ngx_event_openssl.c
---- a/src/event/ngx_event_openssl.c	2023-04-11 03:45:34.000000000 +0200
-+++ b/src/event/ngx_event_openssl.c	2024-02-19 02:06:42.278860851 +0100
-@@ -3203,9 +3203,6 @@
-     ngx_uint_t  tries;
+--- a/src/event/ngx_event_openssl.c	2024-11-15 13:24:02.826573632 +0100
++++ b/src/event/ngx_event_openssl.c	2024-11-15 13:24:11.073410516 +0100
+@@ -3245,9 +3245,6 @@
+ #endif
  
      rc = NGX_OK;
 -
@@ -5167,7 +5167,7 @@ diff '--color=auto' -Naur a/src/event/ngx_event_openssl.c b/src/event/ngx_event_
      if (SSL_in_init(c->ssl->connection)) {
          /*
           * OpenSSL 1.0.2f complains if SSL_shutdown() is called during
-@@ -3216,6 +3213,7 @@
+@@ -3258,6 +3255,7 @@
          goto done;
      }
  
@@ -5176,9 +5176,9 @@ diff '--color=auto' -Naur a/src/event/ngx_event_openssl.c b/src/event/ngx_event_
          mode = SSL_RECEIVED_SHUTDOWN|SSL_SENT_SHUTDOWN;
          SSL_set_quiet_shutdown(c->ssl->connection, 1);
 diff '--color=auto' -Naur a/src/event/ngx_event_udp.h b/src/event/ngx_event_udp.h
---- a/src/event/ngx_event_udp.h	2023-04-11 03:45:34.000000000 +0200
-+++ b/src/event/ngx_event_udp.h	2024-02-19 02:06:42.278860851 +0100
-@@ -33,10 +33,11 @@
+--- a/src/event/ngx_event_udp.h	2024-11-15 13:24:02.826573632 +0100
++++ b/src/event/ngx_event_udp.h	2024-11-15 13:24:11.073410516 +0100
+@@ -41,10 +41,11 @@
  #if (NGX_HAVE_IP_PKTINFO)
      struct in_pktinfo     pkt;
  #endif
@@ -5195,8 +5195,8 @@ diff '--color=auto' -Naur a/src/event/ngx_event_udp.h b/src/event/ngx_event_udp.
  
  size_t ngx_set_srcaddr_cmsg(struct cmsghdr *cmsg,
 diff '--color=auto' -Naur a/src/http/ngx_http_core_module.c b/src/http/ngx_http_core_module.c
---- a/src/http/ngx_http_core_module.c	2023-04-11 03:45:34.000000000 +0200
-+++ b/src/http/ngx_http_core_module.c	2024-02-19 02:06:42.281860813 +0100
+--- a/src/http/ngx_http_core_module.c	2024-11-15 13:24:02.819573771 +0100
++++ b/src/http/ngx_http_core_module.c	2024-11-15 13:24:11.075410477 +0100
 @@ -778,6 +778,13 @@
  
  #endif
@@ -5211,7 +5211,7 @@ diff '--color=auto' -Naur a/src/http/ngx_http_core_module.c b/src/http/ngx_http_
        ngx_null_command
  };
  
-@@ -3630,6 +3637,7 @@
+@@ -3631,6 +3638,7 @@
      clcf->open_file_cache_min_uses = NGX_CONF_UNSET_UINT;
      clcf->open_file_cache_errors = NGX_CONF_UNSET;
      clcf->open_file_cache_events = NGX_CONF_UNSET;
@@ -5220,9 +5220,9 @@ diff '--color=auto' -Naur a/src/http/ngx_http_core_module.c b/src/http/ngx_http_
  #if (NGX_HTTP_GZIP)
      clcf->gzip_vary = NGX_CONF_UNSET;
 diff '--color=auto' -Naur a/src/http/ngx_http_core_module.h b/src/http/ngx_http_core_module.h
---- a/src/http/ngx_http_core_module.h	2023-04-11 03:45:34.000000000 +0200
-+++ b/src/http/ngx_http_core_module.h	2024-02-19 02:06:42.280860826 +0100
-@@ -403,6 +403,7 @@
+--- a/src/http/ngx_http_core_module.h	2024-11-15 13:24:02.818573791 +0100
++++ b/src/http/ngx_http_core_module.h	2024-11-15 13:24:11.075410477 +0100
+@@ -407,6 +407,7 @@
      ngx_uint_t    server_tokens;           /* server_tokens */
      ngx_flag_t    chunked_transfer_encoding; /* chunked_transfer_encoding */
      ngx_flag_t    etag;                    /* etag */
@@ -5231,9 +5231,9 @@ diff '--color=auto' -Naur a/src/http/ngx_http_core_module.h b/src/http/ngx_http_
  #if (NGX_HTTP_GZIP)
      ngx_flag_t    gzip_vary;               /* gzip_vary */
 diff '--color=auto' -Naur a/src/http/ngx_http.h b/src/http/ngx_http.h
---- a/src/http/ngx_http.h	2023-04-11 03:45:34.000000000 +0200
-+++ b/src/http/ngx_http.h	2024-02-19 02:06:42.280860826 +0100
-@@ -32,6 +32,7 @@
+--- a/src/http/ngx_http.h	2024-11-15 13:24:02.820573751 +0100
++++ b/src/http/ngx_http.h	2024-11-15 13:24:11.075410477 +0100
+@@ -34,6 +34,7 @@
  #include <ngx_http_request.h>
  #include <ngx_http_script.h>
  #include <ngx_http_upstream.h>
@@ -5242,8 +5242,8 @@ diff '--color=auto' -Naur a/src/http/ngx_http.h b/src/http/ngx_http.h
  #include <ngx_http_core_module.h>
  
 diff '--color=auto' -Naur a/src/http/ngx_http_upstream.c b/src/http/ngx_http_upstream.c
---- a/src/http/ngx_http_upstream.c	2023-04-11 03:45:34.000000000 +0200
-+++ b/src/http/ngx_http_upstream.c	2024-02-19 02:06:42.280860826 +0100
+--- a/src/http/ngx_http_upstream.c	2024-11-15 13:24:02.820573751 +0100
++++ b/src/http/ngx_http_upstream.c	2024-11-15 13:24:11.077410437 +0100
 @@ -8,6 +8,7 @@
  #include <ngx_config.h>
  #include <ngx_core.h>
@@ -5252,7 +5252,7 @@ diff '--color=auto' -Naur a/src/http/ngx_http_upstream.c b/src/http/ngx_http_ups
  
  
  #if (NGX_HTTP_CACHE)
-@@ -546,6 +547,7 @@
+@@ -553,6 +554,7 @@
  {
      ngx_str_t                      *host;
      ngx_uint_t                      i;
@@ -5260,7 +5260,7 @@ diff '--color=auto' -Naur a/src/http/ngx_http_upstream.c b/src/http/ngx_http_ups
      ngx_resolver_ctx_t             *ctx, temp;
      ngx_http_cleanup_t             *cln;
      ngx_http_upstream_t            *u;
-@@ -795,7 +797,9 @@
+@@ -802,7 +804,9 @@
      u->ssl_name = uscf->host;
  #endif
  
@@ -5271,7 +5271,7 @@ diff '--color=auto' -Naur a/src/http/ngx_http_upstream.c b/src/http/ngx_http_ups
          ngx_http_upstream_finalize_request(r, u,
                                             NGX_HTTP_INTERNAL_SERVER_ERROR);
          return;
-@@ -1552,7 +1556,7 @@
+@@ -1572,7 +1576,7 @@
      }
  
      if (rc == NGX_DECLINED) {
@@ -5280,7 +5280,7 @@ diff '--color=auto' -Naur a/src/http/ngx_http_upstream.c b/src/http/ngx_http_ups
          return;
      }
  
-@@ -1682,6 +1686,7 @@
+@@ -1702,6 +1706,7 @@
          return;
      }
  
@@ -5288,7 +5288,7 @@ diff '--color=auto' -Naur a/src/http/ngx_http_upstream.c b/src/http/ngx_http_ups
      if (u->conf->ssl_server_name || u->conf->ssl_verify) {
          if (ngx_http_upstream_ssl_name(r, u, c) != NGX_OK) {
              ngx_http_upstream_finalize_request(r, u,
-@@ -1702,7 +1707,7 @@
+@@ -1722,7 +1727,7 @@
          }
      }
  
@@ -5297,7 +5297,7 @@ diff '--color=auto' -Naur a/src/http/ngx_http_upstream.c b/src/http/ngx_http_ups
          c->ssl->save_session = ngx_http_upstream_ssl_save_session;
  
          if (u->peer.set_session(&u->peer, u->peer.data) != NGX_OK) {
-@@ -4302,6 +4307,7 @@
+@@ -4335,6 +4340,7 @@
  {
      ngx_msec_t  timeout;
      ngx_uint_t  status, state;
@@ -5305,7 +5305,7 @@ diff '--color=auto' -Naur a/src/http/ngx_http_upstream.c b/src/http/ngx_http_ups
  
      ngx_log_debug1(NGX_LOG_DEBUG_HTTP, r->connection->log, 0,
                     "http next upstream, %xi", ft_type);
-@@ -4387,10 +4393,16 @@
+@@ -4420,10 +4426,16 @@
          ft_type |= NGX_HTTP_UPSTREAM_FT_NON_IDEMPOTENT;
      }
  
@@ -5323,7 +5323,7 @@ diff '--color=auto' -Naur a/src/http/ngx_http_upstream.c b/src/http/ngx_http_ups
      {
  #if (NGX_HTTP_CACHE)
  
-@@ -6034,7 +6046,8 @@
+@@ -6071,7 +6083,8 @@
                                           |NGX_HTTP_UPSTREAM_MAX_FAILS
                                           |NGX_HTTP_UPSTREAM_FAIL_TIMEOUT
                                           |NGX_HTTP_UPSTREAM_DOWN
@@ -5333,7 +5333,7 @@ diff '--color=auto' -Naur a/src/http/ngx_http_upstream.c b/src/http/ngx_http_ups
      if (uscf == NULL) {
          return NGX_CONF_ERROR;
      }
-@@ -6120,6 +6133,9 @@
+@@ -6157,6 +6170,9 @@
          return NGX_CONF_ERROR;
      }
  
@@ -5343,7 +5343,7 @@ diff '--color=auto' -Naur a/src/http/ngx_http_upstream.c b/src/http/ngx_http_ups
      return rv;
  }
  
-@@ -6130,7 +6146,7 @@
+@@ -6167,7 +6183,7 @@
      ngx_http_upstream_srv_conf_t  *uscf = conf;
  
      time_t                       fail_timeout;
@@ -5352,7 +5352,7 @@ diff '--color=auto' -Naur a/src/http/ngx_http_upstream.c b/src/http/ngx_http_ups
      ngx_url_t                    u;
      ngx_int_t                    weight, max_conns, max_fails;
      ngx_uint_t                   i;
-@@ -6149,6 +6165,8 @@
+@@ -6186,6 +6202,8 @@
      max_conns = 0;
      max_fails = 1;
      fail_timeout = 10;
@@ -5361,7 +5361,7 @@ diff '--color=auto' -Naur a/src/http/ngx_http_upstream.c b/src/http/ngx_http_ups
  
      for (i = 2; i < cf->args->nelts; i++) {
  
-@@ -6237,6 +6255,20 @@
+@@ -6274,6 +6292,20 @@
              continue;
          }
  
@@ -5382,7 +5382,7 @@ diff '--color=auto' -Naur a/src/http/ngx_http_upstream.c b/src/http/ngx_http_ups
          goto invalid;
      }
  
-@@ -6261,6 +6293,7 @@
+@@ -6298,6 +6330,7 @@
      us->max_conns = max_conns;
      us->max_fails = max_fails;
      us->fail_timeout = fail_timeout;
@@ -5392,7 +5392,7 @@ diff '--color=auto' -Naur a/src/http/ngx_http_upstream.c b/src/http/ngx_http_ups
  
 diff '--color=auto' -Naur a/src/http/ngx_http_upstream_fair.c b/src/http/ngx_http_upstream_fair.c
 --- a/src/http/ngx_http_upstream_fair.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/src/http/ngx_http_upstream_fair.c	2024-02-19 02:06:42.281860813 +0100
++++ b/src/http/ngx_http_upstream_fair.c	2024-11-15 13:24:11.078410417 +0100
 @@ -0,0 +1,1280 @@
 +#include <ngx_config.h>
 +#include <ngx_core.h>
@@ -6676,7 +6676,7 @@ diff '--color=auto' -Naur a/src/http/ngx_http_upstream_fair.c b/src/http/ngx_htt
 +/* vim: set et ts=4 sw=4: */
 diff '--color=auto' -Naur a/src/http/ngx_http_upstream_fair.h b/src/http/ngx_http_upstream_fair.h
 --- a/src/http/ngx_http_upstream_fair.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/src/http/ngx_http_upstream_fair.h	2024-02-19 02:06:42.281860813 +0100
++++ b/src/http/ngx_http_upstream_fair.h	2024-11-15 13:24:11.078410417 +0100
 @@ -0,0 +1,98 @@
 +#ifndef _NGX_HTTP_UPSTREAM_FAIR_H_INCLUDED_
 +#define _NGX_HTTP_UPSTREAM_FAIR_H_INCLUDED_
@@ -6777,8 +6777,8 @@ diff '--color=auto' -Naur a/src/http/ngx_http_upstream_fair.h b/src/http/ngx_htt
 +
 +#endif /* _NGX_HTTP_UPSTREAM_FAIR_H_INCLUDED_ */
 diff '--color=auto' -Naur a/src/http/ngx_http_upstream.h b/src/http/ngx_http_upstream.h
---- a/src/http/ngx_http_upstream.h	2023-04-11 03:45:34.000000000 +0200
-+++ b/src/http/ngx_http_upstream.h	2024-02-19 02:06:42.281860813 +0100
+--- a/src/http/ngx_http_upstream.h	2024-11-15 13:24:02.818573791 +0100
++++ b/src/http/ngx_http_upstream.h	2024-11-15 13:24:11.078410417 +0100
 @@ -99,6 +99,7 @@
      ngx_uint_t                       max_conns;
      ngx_uint_t                       max_fails;
@@ -6806,8 +6806,8 @@ diff '--color=auto' -Naur a/src/http/ngx_http_upstream.h b/src/http/ngx_http_ups
      ngx_shm_zone_t                  *shm_zone;
  #endif
 diff '--color=auto' -Naur a/src/mail/ngx_mail_auth_http_module.c b/src/mail/ngx_mail_auth_http_module.c
---- a/src/mail/ngx_mail_auth_http_module.c	2023-04-11 03:45:34.000000000 +0200
-+++ b/src/mail/ngx_mail_auth_http_module.c	2024-02-19 02:06:42.281860813 +0100
+--- a/src/mail/ngx_mail_auth_http_module.c	2024-11-15 13:24:02.815573850 +0100
++++ b/src/mail/ngx_mail_auth_http_module.c	2024-11-15 13:24:11.078410417 +0100
 @@ -1536,6 +1536,7 @@
          conf->host_header = prev->host_header;
          conf->uri = prev->uri;
@@ -6825,8 +6825,8 @@ diff '--color=auto' -Naur a/src/mail/ngx_mail_auth_http_module.c b/src/mail/ngx_
  
      ngx_conf_merge_msec_value(conf->timeout, prev->timeout, 60000);
 diff '--color=auto' -Naur a/src/mail/ngx_mail_core_module.c b/src/mail/ngx_mail_core_module.c
---- a/src/mail/ngx_mail_core_module.c	2023-04-11 03:45:34.000000000 +0200
-+++ b/src/mail/ngx_mail_core_module.c	2024-02-19 02:06:42.281860813 +0100
+--- a/src/mail/ngx_mail_core_module.c	2024-11-15 13:24:02.815573850 +0100
++++ b/src/mail/ngx_mail_core_module.c	2024-11-15 13:24:11.079410397 +0100
 @@ -92,6 +92,41 @@
        offsetof(ngx_mail_core_srv_conf_t, max_errors),
        NULL },
@@ -6994,8 +6994,8 @@ diff '--color=auto' -Naur a/src/mail/ngx_mail_core_module.c b/src/mail/ngx_mail_
 +    return cln;
 +}
 diff '--color=auto' -Naur a/src/mail/ngx_mail.h b/src/mail/ngx_mail.h
---- a/src/mail/ngx_mail.h	2023-04-11 03:45:34.000000000 +0200
-+++ b/src/mail/ngx_mail.h	2024-02-19 02:06:42.281860813 +0100
+--- a/src/mail/ngx_mail.h	2024-11-15 13:24:02.815573850 +0100
++++ b/src/mail/ngx_mail.h	2024-11-15 13:24:11.079410397 +0100
 @@ -18,7 +18,7 @@
  #include <ngx_mail_ssl_module.h>
  #endif
@@ -7256,8 +7256,8 @@ diff '--color=auto' -Naur a/src/mail/ngx_mail.h b/src/mail/ngx_mail.h
  extern ngx_uint_t    ngx_mail_max_module;
  extern ngx_module_t  ngx_mail_core_module;
 diff '--color=auto' -Naur a/src/mail/ngx_mail_handler.c b/src/mail/ngx_mail_handler.c
---- a/src/mail/ngx_mail_handler.c	2023-04-11 03:45:34.000000000 +0200
-+++ b/src/mail/ngx_mail_handler.c	2024-02-19 02:06:42.281860813 +0100
+--- a/src/mail/ngx_mail_handler.c	2024-11-15 13:24:02.816573830 +0100
++++ b/src/mail/ngx_mail_handler.c	2024-11-15 13:24:11.080410377 +0100
 @@ -10,10 +10,20 @@
  #include <ngx_event.h>
  #include <ngx_mail.h>
@@ -8755,8 +8755,8 @@ diff '--color=auto' -Naur a/src/mail/ngx_mail_handler.c b/src/mail/ngx_mail_hand
 +    return res;
 +}
 diff '--color=auto' -Naur a/src/mail/ngx_mail_imap_handler.c b/src/mail/ngx_mail_imap_handler.c
---- a/src/mail/ngx_mail_imap_handler.c	2023-04-11 03:45:34.000000000 +0200
-+++ b/src/mail/ngx_mail_imap_handler.c	2024-02-19 02:06:42.281860813 +0100
+--- a/src/mail/ngx_mail_imap_handler.c	2024-11-15 13:24:02.815573850 +0100
++++ b/src/mail/ngx_mail_imap_handler.c	2024-11-15 13:24:11.080410377 +0100
 @@ -20,27 +20,34 @@
      ngx_connection_t *c);
  static ngx_int_t ngx_mail_imap_starttls(ngx_mail_session_t *s,
@@ -9207,8 +9207,8 @@ diff '--color=auto' -Naur a/src/mail/ngx_mail_imap_handler.c b/src/mail/ngx_mail
 +    return NGX_OK;
 +}
 diff '--color=auto' -Naur a/src/mail/ngx_mail_imap_module.c b/src/mail/ngx_mail_imap_module.c
---- a/src/mail/ngx_mail_imap_module.c	2023-04-11 03:45:34.000000000 +0200
-+++ b/src/mail/ngx_mail_imap_module.c	2024-02-19 02:06:42.281860813 +0100
+--- a/src/mail/ngx_mail_imap_module.c	2024-11-15 13:24:02.815573850 +0100
++++ b/src/mail/ngx_mail_imap_module.c	2024-11-15 13:24:11.080410377 +0100
 @@ -15,7 +15,9 @@
  static void *ngx_mail_imap_create_srv_conf(ngx_conf_t *cf);
  static char *ngx_mail_imap_merge_srv_conf(ngx_conf_t *cf, void *parent,
@@ -9628,8 +9628,8 @@ diff '--color=auto' -Naur a/src/mail/ngx_mail_imap_module.c b/src/mail/ngx_mail_
  }
 +
 diff '--color=auto' -Naur a/src/mail/ngx_mail_imap_module.h b/src/mail/ngx_mail_imap_module.h
---- a/src/mail/ngx_mail_imap_module.h	2023-04-11 03:45:34.000000000 +0200
-+++ b/src/mail/ngx_mail_imap_module.h	2024-02-19 02:06:42.281860813 +0100
+--- a/src/mail/ngx_mail_imap_module.h	2024-11-15 13:24:02.816573830 +0100
++++ b/src/mail/ngx_mail_imap_module.h	2024-11-15 13:24:11.080410377 +0100
 @@ -24,6 +24,15 @@
      ngx_uint_t   auth_methods;
  
@@ -9647,8 +9647,8 @@ diff '--color=auto' -Naur a/src/mail/ngx_mail_imap_module.h b/src/mail/ngx_mail_
  
  
 diff '--color=auto' -Naur a/src/mail/ngx_mail_parse.c b/src/mail/ngx_mail_parse.c
---- a/src/mail/ngx_mail_parse.c	2023-04-11 03:45:34.000000000 +0200
-+++ b/src/mail/ngx_mail_parse.c	2024-02-19 02:06:42.281860813 +0100
+--- a/src/mail/ngx_mail_parse.c	2024-11-15 13:24:02.815573850 +0100
++++ b/src/mail/ngx_mail_parse.c	2024-11-15 13:24:11.081410358 +0100
 @@ -13,22 +13,102 @@
  #include <ngx_mail_imap_module.h>
  #include <ngx_mail_smtp_module.h>
@@ -10975,8 +10975,8 @@ diff '--color=auto' -Naur a/src/mail/ngx_mail_parse.c b/src/mail/ngx_mail_parse.
 +    return NGX_MAIL_PARSE_INVALID_AUTH_MECH;
  }
 diff '--color=auto' -Naur a/src/mail/ngx_mail_pop3_handler.c b/src/mail/ngx_mail_pop3_handler.c
---- a/src/mail/ngx_mail_pop3_handler.c	2023-04-11 03:45:34.000000000 +0200
-+++ b/src/mail/ngx_mail_pop3_handler.c	2024-02-19 02:06:42.281860813 +0100
+--- a/src/mail/ngx_mail_pop3_handler.c	2024-11-15 13:24:02.816573830 +0100
++++ b/src/mail/ngx_mail_pop3_handler.c	2024-11-15 13:24:11.081410358 +0100
 @@ -21,12 +21,18 @@
  static ngx_int_t ngx_mail_pop3_auth(ngx_mail_session_t *s, ngx_connection_t *c);
  
@@ -11359,8 +11359,8 @@ diff '--color=auto' -Naur a/src/mail/ngx_mail_pop3_handler.c b/src/mail/ngx_mail
  
      return rc;
 diff '--color=auto' -Naur a/src/mail/ngx_mail_pop3_module.c b/src/mail/ngx_mail_pop3_module.c
---- a/src/mail/ngx_mail_pop3_module.c	2023-04-11 03:45:34.000000000 +0200
-+++ b/src/mail/ngx_mail_pop3_module.c	2024-02-19 02:06:42.281860813 +0100
+--- a/src/mail/ngx_mail_pop3_module.c	2024-11-15 13:24:02.815573850 +0100
++++ b/src/mail/ngx_mail_pop3_module.c	2024-11-15 13:24:11.082410338 +0100
 @@ -16,6 +16,7 @@
  static char *ngx_mail_pop3_merge_srv_conf(ngx_conf_t *cf, void *parent,
      void *child);
@@ -11730,8 +11730,8 @@ diff '--color=auto' -Naur a/src/mail/ngx_mail_pop3_module.c b/src/mail/ngx_mail_
      return NGX_CONF_OK;
  }
 diff '--color=auto' -Naur a/src/mail/ngx_mail_pop3_module.h b/src/mail/ngx_mail_pop3_module.h
---- a/src/mail/ngx_mail_pop3_module.h	2023-04-11 03:45:34.000000000 +0200
-+++ b/src/mail/ngx_mail_pop3_module.h	2024-02-19 02:06:42.281860813 +0100
+--- a/src/mail/ngx_mail_pop3_module.h	2024-11-15 13:24:02.816573830 +0100
++++ b/src/mail/ngx_mail_pop3_module.h	2024-11-15 13:24:11.082410338 +0100
 @@ -15,6 +15,8 @@
  
  
@@ -11751,8 +11751,8 @@ diff '--color=auto' -Naur a/src/mail/ngx_mail_pop3_module.h b/src/mail/ngx_mail_
  
  
 diff '--color=auto' -Naur a/src/mail/ngx_mail_proxy_module.c b/src/mail/ngx_mail_proxy_module.c
---- a/src/mail/ngx_mail_proxy_module.c	2023-04-11 03:45:34.000000000 +0200
-+++ b/src/mail/ngx_mail_proxy_module.c	2024-02-19 02:06:42.281860813 +0100
+--- a/src/mail/ngx_mail_proxy_module.c	2024-11-15 13:24:02.815573850 +0100
++++ b/src/mail/ngx_mail_proxy_module.c	2024-11-15 13:24:11.082410338 +0100
 @@ -5,20 +5,32 @@
   */
  
@@ -13414,8 +13414,8 @@ diff '--color=auto' -Naur a/src/mail/ngx_mail_proxy_module.c b/src/mail/ngx_mail
 +#endif
 +
 diff '--color=auto' -Naur a/src/mail/ngx_mail_smtp_module.c b/src/mail/ngx_mail_smtp_module.c
---- a/src/mail/ngx_mail_smtp_module.c	2023-04-11 03:45:34.000000000 +0200
-+++ b/src/mail/ngx_mail_smtp_module.c	2024-02-19 02:06:42.281860813 +0100
+--- a/src/mail/ngx_mail_smtp_module.c	2024-11-15 13:24:02.815573850 +0100
++++ b/src/mail/ngx_mail_smtp_module.c	2024-11-15 13:24:11.082410338 +0100
 @@ -50,7 +50,8 @@
  
      ngx_string("451 4.3.2 Internal server error" CRLF),
