@@ -1,8 +1,8 @@
 services {
   check {
     tcp = "127.0.0.1:3310"
-    timeout = "1s"
-    interval = "5s"
+    timeout = "5s"
+    interval = "30s"
   }
   connect {
     sidecar_service {
@@ -12,9 +12,6 @@ services {
             destination_name   = "carbonio-clamav-signature-provider"
             local_bind_port    = 20000
             local_bind_address = "127.78.0.20"
-            config = {
-              protocol = "http"
-            }
           }
         ]
       }
