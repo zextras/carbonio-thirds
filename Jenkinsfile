@@ -46,6 +46,9 @@ pipeline {
                 }
             }
             steps {
+                withCredentials([sshUserPrivateKey(credentialsId: 'tarsier_bot-ssh-key', keyFileVariable: 'KEY', usernameVariable: 'KEY_USR')]) {
+                    sh 'cp $KEY /root/.ssh/id_rsa'
+                }
                 unstash 'project'
                 sh 'sudo yap build ubuntu-focal native'
                 sh 'sudo yap build ubuntu-focal perl'
@@ -64,6 +67,9 @@ pipeline {
                 }
             }
             steps {
+                withCredentials([sshUserPrivateKey(credentialsId: 'tarsier_bot-ssh-key', keyFileVariable: 'KEY', usernameVariable: 'KEY_USR')]) {
+                    sh 'cp $KEY /root/.ssh/id_rsa'
+                }
                 unstash 'project'
                 sh 'sudo yap build ubuntu-jammy native'
                 sh 'sudo yap build ubuntu-jammy perl'
@@ -82,6 +88,9 @@ pipeline {
                 }
             }
             steps {
+                withCredentials([sshUserPrivateKey(credentialsId: 'tarsier_bot-ssh-key', keyFileVariable: 'KEY', usernameVariable: 'KEY_USR')]) {
+                    sh 'cp $KEY /root/.ssh/id_rsa'
+                }
                 unstash 'project'
                 sh 'sudo yap build ubuntu-noble native'
                 sh 'sudo yap build ubuntu-noble perl'
@@ -100,6 +109,9 @@ pipeline {
                 }
             }
             steps {
+                withCredentials([sshUserPrivateKey(credentialsId: 'tarsier_bot-ssh-key', keyFileVariable: 'KEY', usernameVariable: 'KEY_USR')]) {
+                    sh 'cp $KEY /root/.ssh/id_rsa'
+                }
                 unstash 'project'
                 sh 'sudo yap build rocky-8 native'
                 sh 'sudo yap build rocky-8 perl'
@@ -118,6 +130,9 @@ pipeline {
                 }
             }
             steps {
+                withCredentials([sshUserPrivateKey(credentialsId: 'tarsier_bot-ssh-key', keyFileVariable: 'KEY', usernameVariable: 'KEY_USR')]) {
+                    sh 'cp $KEY /root/.ssh/id_rsa'
+                }
                 unstash 'project'
                 sh 'sudo yap build rocky-9 native'
                 sh 'sudo yap build rocky-9 perl'
