@@ -48,9 +48,6 @@ optdepends__yum=(
   "unar"
   "unzoo"
 )
-provides__yum=(
-  "perl(BSD::Resource)"
-)
 section="libs"
 priority="important"
 source=(

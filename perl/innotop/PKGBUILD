@@ -16,9 +16,6 @@ depends__yum=(
   "perl"
   "perl-core"
 )
-provides__yum=(
-  "/bin/perl"
-)
 section="libs"
 priority="important"
 source=(

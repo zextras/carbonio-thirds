@@ -12,9 +12,6 @@ depends__yum=(
   "perl-core"
   "perl"
 )
-provides__yum=(
-  "perl(Mac::Files)"
-)
 section="libs"
 priority="important"
 source=(
