@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-net-server"
 pkgver="2.014"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Extensible, general Perl server engine"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

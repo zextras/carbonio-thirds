@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-email-date-format"
 pkgver="1.008"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Produce RFC 2822 date strings"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

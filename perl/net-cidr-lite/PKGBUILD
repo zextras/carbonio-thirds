@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-net-cidr-lite"
 pkgver="0.22"
-pkgrel="2"
+pkgrel="3"
 pkgdesc="Perl extension for merging IPv4 or IPv6 CIDR addresses"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

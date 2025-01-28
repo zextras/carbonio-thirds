@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-net-dns-resolver-programmable"
 pkgver="0.009"
-pkgrel="2"
+pkgrel="3"
 pkgdesc="Programmable DNS resolver class for offline emulation of DNS"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-libwww"
 pkgver="6.72"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="The World-Wide Web library for Perl"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

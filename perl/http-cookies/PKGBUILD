@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-http-cookies"
 pkgver="6.10"
-pkgrel="2"
+pkgrel="3"
 pkgdesc="HTTP cookie jars"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

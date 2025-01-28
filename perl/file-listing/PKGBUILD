@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-file-listing"
 pkgver="6.16"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Parse directory listing"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

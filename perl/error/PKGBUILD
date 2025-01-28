@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-error"
 pkgver="0.17029"
-pkgrel="2"
+pkgrel="3"
 pkgdesc="Error/exception handling in an OO-ish way"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

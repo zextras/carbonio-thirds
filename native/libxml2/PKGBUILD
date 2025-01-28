@@ -1,6 +1,6 @@
 pkgname="carbonio-libxml2"
 pkgver="2.10.1"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="XML parsing library, version 2"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

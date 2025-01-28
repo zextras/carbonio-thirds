@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-net-ldap"
 pkgver="0.68"
-pkgrel="2"
+pkgrel="3"
 pkgdesc="Lightweight Directory Access Protocol"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

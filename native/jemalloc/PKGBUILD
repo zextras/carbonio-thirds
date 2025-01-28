@@ -1,6 +1,6 @@
 pkgname="carbonio-jemalloc"
 pkgver="5.3.0"
-pkgrel="2"
+pkgrel="3"
 pkgdesc="General-purpose scalable concurrent malloc implementation"
 arch=('x86_64')
 license=("BSD-2-Clause")

@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-date-manip"
 pkgver="6.92"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Date manipulation routines"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

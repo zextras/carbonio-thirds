@@ -1,6 +1,6 @@
 pkgname="carbonio-libmilter"
 pkgver="8.17.1"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Implementation of the sendmail Mail Filter API"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

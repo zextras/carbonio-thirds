@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-filesys-df"
 pkgver="0.92"
-pkgrel="2"
+pkgrel="3"
 pkgdesc="Perl extension for filesystem disk space information."
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

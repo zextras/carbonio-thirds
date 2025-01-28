@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-data-uuid"
 pkgver="1.226"
-pkgrel="2"
+pkgrel="3"
 pkgdesc="Globally/Universally Unique Identifiers (GUIDs/UUIDs)"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

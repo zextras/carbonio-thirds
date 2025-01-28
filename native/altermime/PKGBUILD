@@ -1,6 +1,6 @@
 pkgname="carbonio-altermime"
 pkgver="0.3.10"
-pkgrel="5"
+pkgrel="6"
 pkgdesc="MIME encoded email pack alteration tool"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

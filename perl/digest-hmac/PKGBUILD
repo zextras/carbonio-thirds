@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-digest-hmac"
 pkgver="1.04"
-pkgrel="2"
+pkgrel="3"
 pkgdesc="Keyed-Hashing for Message Authentication"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

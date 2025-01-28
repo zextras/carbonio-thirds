@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-mime-tools"
 pkgver="5.510"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Modules for parsing (and creating!) MIME entities"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

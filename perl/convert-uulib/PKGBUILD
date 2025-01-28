@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-convert-uulib"
 pkgver="1.8"
-pkgrel="3"
+pkgrel="4"
 pkgdesc="Decode uu/xx/b64/mime/yenc/etc-encoded data from a massive number of files"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

@@ -1,6 +1,6 @@
 pkgname="carbonio-spamassassin-rules"
 pkgver="1.0"
-pkgrel="3"
+pkgrel="4"
 pkgdesc="Default ruleset for SpamAssassin"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

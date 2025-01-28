@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-net-dns"
 pkgver="1.45"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Perl Interface to the Domain Name System"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

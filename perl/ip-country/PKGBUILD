@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-ip-country"
 pkgver="2.28"
-pkgrel="2"
+pkgrel="3"
 pkgdesc="Fast lookup of country codes from IP addresses"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

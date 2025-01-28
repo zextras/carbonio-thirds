@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-file-grep"
 pkgver="0.02"
-pkgrel="2"
+pkgrel="3"
 pkgdesc="Find matches to a pattern in a series of files and related functions"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

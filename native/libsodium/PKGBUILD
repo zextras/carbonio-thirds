@@ -1,6 +1,6 @@
 pkgname="carbonio-libsodium"
 pkgver="1.0.19"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="P(ortable|ackageable) NaCl-based crypto library"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

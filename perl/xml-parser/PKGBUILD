@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-xml-parser"
 pkgver="2.46"
-pkgrel="2"
+pkgrel="3"
 pkgdesc="A perl module for parsing XML documents"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

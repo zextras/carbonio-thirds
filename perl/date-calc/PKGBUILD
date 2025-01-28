@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-date-calc"
 pkgver="6.4"
-pkgrel="2"
+pkgrel="3"
 pkgdesc="Gregorian calendar date calculations"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

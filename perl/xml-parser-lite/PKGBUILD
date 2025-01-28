@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-xml-parser-lite"
 pkgver="0.722"
-pkgrel="2"
+pkgrel="3"
 pkgdesc="Lightweight pure-perl XML Parser (based on regexps)"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

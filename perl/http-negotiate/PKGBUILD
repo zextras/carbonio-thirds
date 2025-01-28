@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-http-negotiate"
 pkgver="6.01"
-pkgrel="2"
+pkgrel="3"
 pkgdesc="A complete implementation of the HTTP content negotiation algorithm"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

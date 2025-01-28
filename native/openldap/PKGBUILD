@@ -1,6 +1,6 @@
 pkgname="carbonio-openldap"
 pkgver="2.5.18"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Lightweight Directory Access Protocol (LDAP) library"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -48,10 +48,8 @@ build() {
   ./configure \
     --prefix=/opt/zextras/common \
     --localstatedir=/run/carbonio/ \
-    --disable-hdb \
     --disable-ndb \
     --disable-perl \
-    --disable-shell \
     --disable-sql \
     --disable-wt \
     --enable-argon2 \

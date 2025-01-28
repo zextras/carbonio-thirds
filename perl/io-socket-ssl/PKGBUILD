@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-io-socket-ssl"
 pkgver="2.083"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="SSL sockets with IO::Socket interface"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

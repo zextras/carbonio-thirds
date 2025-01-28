@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-encode-locale"
 pkgver="1.05"
-pkgrel="2"
+pkgrel="3"
 pkgdesc="Determine the locale encoding"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

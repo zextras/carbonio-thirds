@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-mail-spamassassin"
 pkgver="4.0.1"
-pkgrel="2"
+pkgrel="3"
 pkgdesc="Spam detector and markup engine"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

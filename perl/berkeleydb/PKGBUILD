@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-berkeleydb"
 pkgver="0.65"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Perl5 Module Supporting LDAP API"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

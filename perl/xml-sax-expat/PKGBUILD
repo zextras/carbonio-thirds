@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-xml-sax-expat"
 pkgver="0.51"
-pkgrel="2"
+pkgrel="3"
 pkgdesc="SAX2 Driver for Expat"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

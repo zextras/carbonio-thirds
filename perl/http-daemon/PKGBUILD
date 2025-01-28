@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-http-daemon"
 pkgver="6.16"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="A simple http server class"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

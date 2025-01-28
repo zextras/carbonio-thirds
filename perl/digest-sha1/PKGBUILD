@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-digest-sha1"
 pkgver="2.13"
-pkgrel="2"
+pkgrel="3"
 pkgdesc="Perl interface to the SHA-1 algorithm"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

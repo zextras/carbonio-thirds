@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-mail-dkim"
 pkgver="1.20230911"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Signs/verifies Internet mail with DKIM/DomainKey signatures"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

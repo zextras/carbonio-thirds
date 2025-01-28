@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-mime-types"
 pkgver="2.24"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Definition of MIME types"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

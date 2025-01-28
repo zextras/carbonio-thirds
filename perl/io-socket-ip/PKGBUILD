@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-io-socket-ip"
 pkgver="0.42"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Family-neutral IP socket supporting both IPv4 and IPv6"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

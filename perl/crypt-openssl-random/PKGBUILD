@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-crypt-openssl-random"
 pkgver="0.15"
-pkgrel="2"
+pkgrel="3"
 pkgdesc="OpenSSL/LibreSSL pseudo-random number generator access"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

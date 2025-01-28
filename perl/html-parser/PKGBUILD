@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-html-parser"
 pkgver="3.81"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="HTML parser class"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

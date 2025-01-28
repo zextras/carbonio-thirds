@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-cryptx"
 pkgver="0.080"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Cryptographic toolkit"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

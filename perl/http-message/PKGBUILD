@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-http-message"
 pkgver="6.45"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="HTTP style message"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

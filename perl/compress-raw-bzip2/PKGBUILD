@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-compress-raw-bzip2"
 pkgver="2.206"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Low-Level Interface to bzip2 compression library"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

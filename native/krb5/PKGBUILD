@@ -1,6 +1,6 @@
 pkgname="carbonio-krb5"
 pkgver="1.21.2"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="The Kerberos network authentication system"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

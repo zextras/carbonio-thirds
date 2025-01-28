@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-xml-simple"
 pkgver="2.25"
-pkgrel="2"
+pkgrel="3"
 pkgdesc="An API for simple XML files"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

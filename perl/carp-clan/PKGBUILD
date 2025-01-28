@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-carp-clan"
 pkgver="6.08"
-pkgrel="2"
+pkgrel="3"
 pkgdesc="Report errors from perspective of caller of a clan of modules"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

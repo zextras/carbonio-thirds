@@ -1,6 +1,6 @@
 pkgname="carbonio-memcached"
 pkgver="1.6.14"
-pkgrel="3"
+pkgrel="4"
 pkgdesc="Distributed memory object caching system"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

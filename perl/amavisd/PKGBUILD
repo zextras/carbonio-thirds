@@ -1,6 +1,6 @@
 pkgname="carbonio-amavisd"
 pkgver="2.13.1"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="High-performance interface between mailer (MTA) and content checkers"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"

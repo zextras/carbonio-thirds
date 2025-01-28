@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-compress-raw-zlib"
 pkgver="2.206"
-pkgrel="2"
+pkgrel="3"
 pkgdesc="Low-Level Interface to zlib compression library"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
