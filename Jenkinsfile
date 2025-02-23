@@ -6,19 +6,11 @@ pipeline {
     }
     agent {
         node {
-            label 'base-agent-v2'
+            label 'base'
         }
-    }
-    environment {
-        NETWORK_OPTS = '--network ci_agent'
     }
     stages {
         stage('Checkout & Stash') {
-            agent {
-                node {
-                    label 'base-agent-v2'
-                }
-            }
             steps {
                 checkout scm
                 script {
@@ -42,16 +34,15 @@ pipeline {
         stage('Ubuntu 20') {
             agent {
                 node {
-                    label 'yap-agent-ubuntu-20.04-v3'
+                    label 'yap-ubuntu-20-v1'
                 }
             }
             steps {
-                withCredentials([sshUserPrivateKey(credentialsId: 'tarsier_bot-ssh-key', keyFileVariable: 'KEY', usernameVariable: 'KEY_USR')]) {
-                    sh 'cp $KEY /root/.ssh/id_rsa'
-                }
                 unstash 'project'
-                sh 'sudo yap build ubuntu-focal native'
-                sh 'sudo yap build ubuntu-focal perl'
+                container('yap') {
+                    sh 'sudo yap build ubuntu-focal native'
+                    sh 'sudo yap build ubuntu-focal perl'
+                }
                 stash includes: 'artifacts/*focal*', name: 'artifacts-ubuntu-focal'
             }
             post {
@@ -63,16 +54,15 @@ pipeline {
         stage('Ubuntu 22') {
             agent {
                 node {
-                    label 'yap-agent-ubuntu-22.04-v3'
+                    label 'yap-ubuntu-22-v1'
                 }
             }
             steps {
-                withCredentials([sshUserPrivateKey(credentialsId: 'tarsier_bot-ssh-key', keyFileVariable: 'KEY', usernameVariable: 'KEY_USR')]) {
-                    sh 'cp $KEY /root/.ssh/id_rsa'
-                }
                 unstash 'project'
-                sh 'sudo yap build ubuntu-jammy native'
-                sh 'sudo yap build ubuntu-jammy perl'
+                container('yap') {
+                    sh 'sudo yap build ubuntu-jammy native'
+                    sh 'sudo yap build ubuntu-jammy perl'
+                }
                 stash includes: 'artifacts/*jammy*', name: 'artifacts-ubuntu-jammy'
             }
             post {
@@ -84,16 +74,15 @@ pipeline {
         stage('Ubuntu 24') {
             agent {
                 node {
-                    label 'yap-agent-ubuntu-24.04-v3'
+                    label 'yap-ubuntu-24-v1'
                 }
             }
             steps {
-                withCredentials([sshUserPrivateKey(credentialsId: 'tarsier_bot-ssh-key', keyFileVariable: 'KEY', usernameVariable: 'KEY_USR')]) {
-                    sh 'cp $KEY /root/.ssh/id_rsa'
-                }
                 unstash 'project'
-                sh 'sudo yap build ubuntu-noble native'
-                sh 'sudo yap build ubuntu-noble perl'
+                container('yap') {
+                    sh 'sudo yap build ubuntu-noble native'
+                    sh 'sudo yap build ubuntu-noble perl'
+                }
                 stash includes: 'artifacts/*noble*', name: 'artifacts-ubuntu-noble'
             }
             post {
@@ -105,16 +94,16 @@ pipeline {
         stage('Rocky 8') {
             agent {
                 node {
-                    label 'yap-agent-rocky-8-v3'
+                    label 'yap-rocky-8-v1'
                 }
             }
             steps {
-                withCredentials([sshUserPrivateKey(credentialsId: 'tarsier_bot-ssh-key', keyFileVariable: 'KEY', usernameVariable: 'KEY_USR')]) {
-                    sh 'cp $KEY /root/.ssh/id_rsa'
-                }
                 unstash 'project'
-                sh 'sudo yap build rocky-8 native'
-                sh 'sudo yap build rocky-8 perl'
+                container('yap') {
+                    sh 'sudo yap prepare rocky-8'
+                    sh 'sudo yap build rocky-8 native'
+                    sh 'sudo yap build rocky-8 perl'
+                }
                 stash includes: 'artifacts/*el8*.rpm', name: 'artifacts-rocky-8'
             }
             post {
@@ -126,16 +115,16 @@ pipeline {
         stage('Rocky 9') {
             agent {
                 node {
-                    label 'yap-agent-rocky-9-v3'
+                    label 'yap-rocky-9-v1'
                 }
             }
             steps {
-                withCredentials([sshUserPrivateKey(credentialsId: 'tarsier_bot-ssh-key', keyFileVariable: 'KEY', usernameVariable: 'KEY_USR')]) {
-                    sh 'cp $KEY /root/.ssh/id_rsa'
-                }
                 unstash 'project'
-                sh 'sudo yap build rocky-9 native'
-                sh 'sudo yap build rocky-9 perl'
+                container('yap') {
+                    sh 'sudo yap prepare rocky-9'
+                    sh 'sudo yap build rocky-9 native'
+                    sh 'sudo yap build rocky-9 perl'
+                }
                 stash includes: 'artifacts/*el9*.rpm', name: 'artifacts-rocky-9'
             }
             post {
