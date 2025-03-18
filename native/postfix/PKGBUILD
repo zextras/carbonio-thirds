@@ -1,6 +1,6 @@
 pkgname="carbonio-postfix"
 pkgver="3.8.7"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Fast, easy to administer, secure mail server"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -116,4 +116,90 @@ package() {
   rm -f mailq
   ln -s sendmail mailq
   ln -s sendmail newaliases
+}
+
+postinst__apt() {
+  if [ "$1" = "configure" ]; then
+    # creating postfix and postdrop groups if aren't already there
+    if ! getent group postdrop >/dev/null; then
+      groupadd --system postdrop
+    fi
+    if ! getent group postfix >/dev/null; then
+      groupadd --system postfix
+    fi
+
+    # creating postfix user if it isn't already there
+    if ! getent passwd postfix >/dev/null; then
+      useradd --system \
+        -g postfix \
+        -d /opt/zextras/postfix \
+        -c "postfix user" \
+        postfix
+    fi
+  fi
+
+  usermod -a -G postfix,tty zextras
+  chgrp -f postdrop /opt/zextras/common/sbin/postqueue
+  chmod -f u=rwx,g=rsx,o=rx /opt/zextras/common/sbin/postqueue
+  chgrp -f postdrop /opt/zextras/common/sbin/postdrop
+  chmod -f u=rwx,g=rsx,o=rx /opt/zextras/common/sbin/postdrop
+  chmod 755 /opt/zextras/data/postfix
+  chown -fR postfix:postfix /opt/zextras/data/postfix/spool
+  chown -f root /opt/zextras/data/postfix/spool
+  chown -f postfix /opt/zextras/data/postfix/spool/pid
+  chgrp -f root /opt/zextras/data/postfix/spool/pid
+  chgrp -f postdrop /opt/zextras/data/postfix/spool/public
+  chmod 730 /opt/zextras/data/postfix/spool/maildrop
+  chgrp -f postdrop /opt/zextras/data/postfix/spool/maildrop
+  chmod 730 /opt/zextras/data/postfix/spool/maildrop
+  chown -f postfix /opt/zextras/data/postfix
+  chown -f postfix /opt/zextras/data/postfix/* 2>/dev/null
+  chgrp -f postdrop /opt/zextras/data/postfix/data
+  chmod 755 /opt/zextras/data/postfix/data
+  chown -f postfix:postfix /opt/zextras/data/postfix/data/* 2>/dev/null
+  chmod -R go-w /opt/zextras/data/postfix/data
+  chown -f root /opt/zextras/data/postfix/spool
+  chgrp -f root /opt/zextras/data/postfix/spool
+}
+
+postinst__yum() {
+  # creating postfix and postdrop groups if aren't already there
+  if ! getent group postdrop >/dev/null; then
+    groupadd --system postdrop
+  fi
+  if ! getent group postfix >/dev/null; then
+    groupadd --system postfix
+  fi
+
+  # creating postfix user if it isn't already there
+  if ! getent passwd postfix >/dev/null; then
+    useradd --system \
+      -g postfix \
+      -d /opt/zextras/postfix \
+      -c "postfix user" \
+      postfix
+  fi
+
+  usermod -a -G postfix,tty zextras
+  chgrp -f postdrop /opt/zextras/common/sbin/postqueue
+  chmod -f u=rwx,g=rsx,o=rx /opt/zextras/common/sbin/postqueue
+  chgrp -f postdrop /opt/zextras/common/sbin/postdrop
+  chmod -f u=rwx,g=rsx,o=rx /opt/zextras/common/sbin/postdrop
+  chmod 755 /opt/zextras/data/postfix
+  chown -fR postfix:postfix /opt/zextras/data/postfix/spool
+  chown -f root /opt/zextras/data/postfix/spool
+  chown -f postfix /opt/zextras/data/postfix/spool/pid
+  chgrp -f root /opt/zextras/data/postfix/spool/pid
+  chgrp -f postdrop /opt/zextras/data/postfix/spool/public
+  chmod 730 /opt/zextras/data/postfix/spool/maildrop
+  chgrp -f postdrop /opt/zextras/data/postfix/spool/maildrop
+  chmod 730 /opt/zextras/data/postfix/spool/maildrop
+  chown -f postfix /opt/zextras/data/postfix
+  chown -f postfix /opt/zextras/data/postfix/* 2>/dev/null
+  chgrp -f postdrop /opt/zextras/data/postfix/data
+  chmod 755 /opt/zextras/data/postfix/data
+  chown -f postfix:postfix /opt/zextras/data/postfix/data/* 2>/dev/null
+  chmod -R go-w /opt/zextras/data/postfix/data
+  chown -f root /opt/zextras/data/postfix/spool
+  chgrp -f root /opt/zextras/data/postfix/spool
 }
