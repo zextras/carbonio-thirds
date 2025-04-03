@@ -1,6 +1,6 @@
 pkgname="carbonio-postfix"
-pkgver="3.8.7"
-pkgrel="2"
+pkgver="3.8.9"
+pkgrel="1"
 pkgdesc="Fast, easy to administer, secure mail server"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -50,7 +50,7 @@ source=(
   "${pkgname}.patch"
   "${pkgname}.service"
 )
-sha256sums=('cef02716732aee8a5a6f4c34c951f2f575649fd034e8d1394657fbcbfb173f1c'
+sha256sums=('d0205a11e36d57b640daaa17a7e7166b8abc730d93b1db7e92e32dfb24bbfde1'
   'd4cdba8dffe1a7e23c0495cec5caf18f5cb10b1f52db0bb866f2247e63635598'
   '8e30e3979abd88aa4b1c0f1d1811ada6c7da138ea05e1686a26fc7b8e7200405')
 
