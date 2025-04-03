@@ -38,12 +38,12 @@ pipeline {
                 }
             }
             steps {
-                unstash 'project'
                 container('yap') {
+                    unstash 'project'
                     sh 'sudo yap build ubuntu-focal native'
                     sh 'sudo yap build ubuntu-focal perl'
+                    stash includes: 'artifacts/*focal*', name: 'artifacts-ubuntu-focal'
                 }
-                stash includes: 'artifacts/*focal*', name: 'artifacts-ubuntu-focal'
             }
             post {
                 always {
@@ -58,12 +58,12 @@ pipeline {
                 }
             }
             steps {
-                unstash 'project'
                 container('yap') {
+                    unstash 'project'
                     sh 'sudo yap build ubuntu-jammy native'
                     sh 'sudo yap build ubuntu-jammy perl'
+                    stash includes: 'artifacts/*jammy*', name: 'artifacts-ubuntu-jammy'
                 }
-                stash includes: 'artifacts/*jammy*', name: 'artifacts-ubuntu-jammy'
             }
             post {
                 always {
@@ -78,12 +78,12 @@ pipeline {
                 }
             }
             steps {
-                unstash 'project'
                 container('yap') {
+                    unstash 'project'
                     sh 'sudo yap build ubuntu-noble native'
                     sh 'sudo yap build ubuntu-noble perl'
+                    stash includes: 'artifacts/*noble*', name: 'artifacts-ubuntu-noble'
                 }
-                stash includes: 'artifacts/*noble*', name: 'artifacts-ubuntu-noble'
             }
             post {
                 always {
@@ -98,13 +98,13 @@ pipeline {
                 }
             }
             steps {
-                unstash 'project'
                 container('yap') {
+                    unstash 'project'
                     sh 'sudo yap prepare rocky-8'
                     sh 'sudo yap build rocky-8 native'
                     sh 'sudo yap build rocky-8 perl'
+                    stash includes: 'artifacts/*el8*.rpm', name: 'artifacts-rocky-8'
                 }
-                stash includes: 'artifacts/*el8*.rpm', name: 'artifacts-rocky-8'
             }
             post {
                 always {
@@ -119,13 +119,13 @@ pipeline {
                 }
             }
             steps {
-                unstash 'project'
                 container('yap') {
+                    unstash 'project'
                     sh 'sudo yap prepare rocky-9'
                     sh 'sudo yap build rocky-9 native'
                     sh 'sudo yap build rocky-9 perl'
+                    stash includes: 'artifacts/*el9*.rpm', name: 'artifacts-rocky-9'
                 }
-                stash includes: 'artifacts/*el9*.rpm', name: 'artifacts-rocky-9'
             }
             post {
                 always {

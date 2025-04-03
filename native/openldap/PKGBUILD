@@ -1,6 +1,6 @@
 pkgname="carbonio-openldap"
-pkgver="2.5.18"
-pkgrel="2"
+pkgver="2.6.9"
+pkgrel="1"
 pkgdesc="Lightweight Directory Access Protocol (LDAP) library"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -32,7 +32,7 @@ source=(
   "${pkgname}.patch"
   "${pkgname}.service"
 )
-sha256sums=('2670ae43d8d99dd6b1ba182101d982350d613d09c098eb1607ea6b36e6b51d3e'
+sha256sums=('2cb7dc73e9c8340dff0d99357fbaa578abf30cc6619f0521972c555681e6b2ff'
   'a2ba7ee70d6caf8f21bdac376d95b1e98361874c4fcc62dd63356f9f2a1cae99'
   '0a13ecd08f1e424adc7942e0d948013c8f40227f6ee68acc864adb43728501c5')
 
@@ -87,11 +87,6 @@ package() {
   # systemd unit
   install -D -m 644 "${srcdir}/${pkgname}.service" \
     "${pkgdir}/lib/systemd/system/${pkgname}.service"
-
-  ln -s /opt/zextras/common/lib/liblber.so \
-    "${pkgdir}"/opt/zextras/common/lib/liblber.so.2
-  ln -s /opt/zextras/common/lib/libldap.so \
-    "${pkgdir}"/opt/zextras/common/lib/libldap.so.2
 
   # libexec .a and .la files should not be deleted
   # they are related to slapd plugins
