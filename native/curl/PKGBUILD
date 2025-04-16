@@ -1,6 +1,6 @@
 pkgname="carbonio-curl"
-pkgver="8.9.0"
-pkgrel="2"
+pkgver="8.13.0"
+pkgrel="1"
 pkgdesc="An URL retrieval utility and library"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -29,8 +29,10 @@ section="utils"
 priority="optional"
 source=(
   "https://curl.haxx.se/download/curl-${pkgver}.tar.gz"
+  "https://github.com/nss-dev/nss/raw/refs/heads/master/lib/ckfw/builtins/certdata.txt"
 )
-sha256sums=('14d931fa98a329310dca7b190d047c3d4987674b1f466481f5490e4e12067ba4')
+sha256sums=('c261a4db579b289a7501565497658bbd52d3138fdbaccf1490fa918129ab45bc'
+  'SKIP')
 
 build() {
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
@@ -50,14 +52,22 @@ build() {
     --with-openssl=/opt/zextras/common \
     --with-zlib \
     --without-gnutls \
-    --without-libidn2
+    --without-libidn2 \
+    --without-libpsl
   make -j16
 }
 
 package() {
   cd "${srcdir}/curl-${pkgver}"
   make DESTDIR="${pkgdir}" install
-  make ca-bundle
+
+  # make ca-bundle target is replaced with the script.
+  # certdata.txt is retrieved directly from github, cause of
+  # hg.mozilla.org unreliability.
+  # mk-ca-bundle.pl `-n` relies on an already existent certdata.txt
+  cp "${srcdir}/certdata.txt" .
+  scripts/mk-ca-bundle.pl -n -b -l -u lib/ca-bundle.crt
+
   mkdir -p "${pkgdir}/opt/zextras/common/share/curl"
   cp -f lib/ca-bundle.crt "${pkgdir}/opt/zextras/common/share/curl/ca-bundle.crt"
   rm -rf "${pkgdir}"/opt/zextras/common/lib/*.la
