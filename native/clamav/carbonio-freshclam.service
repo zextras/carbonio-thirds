@@ -2,7 +2,7 @@
 Description=Carbonio Freshclam Daemon
 After=carbonio-antivirus.service carbonio-configd.service
 Wants=carbonio-antivirus.service carbonio-configd.service
-PartOf=carbonio-mta.target carbonio-ce.target carbonio.target
+PartOf=carbonio-mta.target
 
 [Service]
 User=zextras
@@ -16,4 +16,4 @@ Restart=on-failure
 RestartSec=3s
 
 [Install]
-WantedBy=carbonio-mta.target carbonio-ce.target carbonio.target
+WantedBy=carbonio-mta.target

@@ -34,7 +34,7 @@ source=(
 )
 sha256sums=('2cb7dc73e9c8340dff0d99357fbaa578abf30cc6619f0521972c555681e6b2ff'
   'a2ba7ee70d6caf8f21bdac376d95b1e98361874c4fcc62dd63356f9f2a1cae99'
-  '0a13ecd08f1e424adc7942e0d948013c8f40227f6ee68acc864adb43728501c5')
+  'ea5035b346caa69b14d15b2fb205838164a86a752c1d9239a483f059183d8150')
 
 build() {
   cd "${srcdir}/openldap-${pkgver}"
@@ -86,7 +86,7 @@ package() {
 
   # systemd unit
   install -D -m 644 "${srcdir}/${pkgname}.service" \
-    "${pkgdir}/lib/systemd/system/${pkgname}.service"
+    "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
 
   # libexec .a and .la files should not be deleted
   # they are related to slapd plugins

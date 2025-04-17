@@ -44,7 +44,7 @@ source=(
 )
 sha256sums=('SKIP'
   '2f71d4274585f8ae963e2e2b081a0b0d0780e9eb7aa0e44cd99b5b7f3271119f'
-  '83bbd5b09d98bbbb1c8a99292cb3f571b501c2408eb9137956ea4ebb4ae49bfe')
+  'de79eca4916b6377a610bb51d5439513d5f2ffc12ab6b1b15a32267ac0e6daf3')
 
 package() {
   cd "${srcdir}/policyd"
@@ -79,7 +79,7 @@ package() {
 
   # systemd units
   install -D -m 644 "${srcdir}/${pkgname}.service" \
-    "${pkgdir}/lib/systemd/system/${pkgname}.service"
+    "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
 }
 
 postinst__apt() {

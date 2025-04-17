@@ -2,7 +2,7 @@
 Description=Carbonio Policyd Daemon
 After=carbonio-mailthreat.service carbonio-configd.service
 Wants=carbonio-mailthreat.service carbonio-configd.service
-PartOf=carbonio-mta.target carbonio-ce.target carbonio.target
+PartOf=carbonio-mta.target
 
 [Service]
 User=zextras
@@ -13,4 +13,4 @@ ExecStart=/opt/zextras/common/bin/cbpolicyd --config /opt/zextras/conf/cbpolicyd
 LimitNOFILE=524288
 
 [Install]
-WantedBy=carbonio-mta.target carbonio-ce.target carbonio.target
+WantedBy=carbonio-mta.target

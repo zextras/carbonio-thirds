@@ -1,6 +1,6 @@
 [Unit]
 Description=Carbonio OpenLDAP Daemon
-PartOf=carbonio-directory-server.target carbonio-ce.target carbonio.target
+PartOf=carbonio-directory-server.target
 
 [Service]
 User=zextras
@@ -11,4 +11,4 @@ ExecStart=/opt/zextras/common/libexec/slapd -d 0 -l LOCAL0 -h '${bind_url} ldapi
 LimitNOFILE=524288
 
 [Install]
-WantedBy=carbonio-directory-server.target carbonio-ce.target carbonio.target
+WantedBy=carbonio-directory-server.target

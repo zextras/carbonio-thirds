@@ -2,7 +2,7 @@
 Description=Carbonio Web and Reverse Proxy Server
 After=carbonio-memcached.service network.target network-online.target nss-lookup.target
 Wants=carbonio-memcached.service
-PartOf=carbonio-proxy.target carbonio-ce.target carbonio.target
+PartOf=carbonio-proxy.target
 
 [Service]
 User=zextras
@@ -18,4 +18,4 @@ Restart=on-failure
 LimitNOFILE=524288
 
 [Install]
-WantedBy=carbonio-proxy.target carbonio-ce.target carbonio.target
+WantedBy=carbonio-proxy.target

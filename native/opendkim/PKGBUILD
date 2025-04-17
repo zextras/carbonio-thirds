@@ -34,7 +34,7 @@ source=(
   "${pkgname}.service"
 )
 sha256sums=('b9d033ac6ba4c14c42dd485e7dc8e03d6f415cb3d45a7fe8c020164636b9d23e'
-  '97188e132c3f820dea4291b377d30a37296bd29009773353f9bf452a9a55b101')
+  '0711dfa98034a06b5ce32e2275499a4ed6e05ddcd10b155f0a699781e10a17e4')
 
 build() {
   cd "${srcdir}/OpenDKIM-14d54524e0a97d3fe9b80441907d7e356c9ded04"
@@ -73,7 +73,7 @@ package() {
 
   # systemd units
   install -D -m 644 "${srcdir}/${pkgname}.service" \
-    "${pkgdir}/lib/systemd/system/${pkgname}.service"
+    "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
 
   rm -rf "${pkgdir}"/opt/zextras/common/lib/*.a
   rm -rf "${pkgdir}"/opt/zextras/common/lib/*.la

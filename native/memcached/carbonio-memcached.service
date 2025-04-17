@@ -2,7 +2,7 @@
 Description=Carbonio Memcached Daemon
 Wants=carbonio-configd.service
 After=carbonio-configd.service
-PartOf=carbonio-proxy.target carbonio-ce.target carbonio.target
+PartOf=carbonio-proxy.target
 
 [Service]
 User=zextras
@@ -74,4 +74,4 @@ RestrictRealtime=true
 RestrictNamespaces=true
 
 [Install]
-WantedBy=carbonio-proxy.target carbonio-ce.target carbonio.target
+WantedBy=carbonio-proxy.target

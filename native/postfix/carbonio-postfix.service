@@ -2,7 +2,7 @@
 Description=Carbonio Postfix Daemon
 After=carbonio-milter.service carbonio-saslauthd.service
 Wants=carbonio-milter.service carbonio-saslauthd.service
-PartOf=carbonio-mta.target carbonio-ce.target carbonio.target
+PartOf=carbonio-mta.target
 
 [Service]
 User=root
@@ -17,4 +17,4 @@ Restart=always
 LimitNOFILE=524288
 
 [Install]
-WantedBy=carbonio-mta.target carbonio-ce.target carbonio.target
+WantedBy=carbonio-mta.target

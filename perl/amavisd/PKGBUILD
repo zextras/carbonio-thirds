@@ -34,7 +34,7 @@ source=(
   "socket_and_misc.patch"
 )
 sha256sums=('cd08d5b17e393873b79e72a843a672b9207fc4b577b9b8a07769d79bff0a845b'
-  '9df73af76421aa7a5459e3ef9d1c3419086d07f1f3faf8d834c084912fbc8d67'
+  '78118f4c93b5a797f8d8c50f2e5c2de6759094fd51d0c9bf67138317a34088ab'
   'b7f662752874a9d9035fe231adf809591b42b401b2a9d058ecb5ffb4b4cb2737')
 
 package() {
@@ -56,7 +56,7 @@ package() {
 
   # systemd units
   install -D -m 644 "${srcdir}/carbonio-mailthreat.service" \
-    "${pkgdir}/lib/systemd/system/carbonio-mailthreat.service"
+    "${pkgdir}/usr/lib/systemd/system/carbonio-mailthreat.service"
 }
 
 postinst__apt() {

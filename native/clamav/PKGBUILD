@@ -64,12 +64,12 @@ source=(
 )
 sha256sums=('8c92f8ade2a8f2c9d6688d1d63ee57f6caf965d74dce06d0971c6709c8e6c04c'
   'SKIP'
-  '29cf149027f0860038471a4883ada03abb6d4afc46048cea09bfb125f8662812'
+  'ae25e9e1ab67db1d55a29221042851ba2a6d73bb190abe7635aee1169d69801a'
   'a82946b05bdc139b790492b345eda5648c0196ce605decab33d75f661b6ed812'
   'cc36d9357d4434ff290e46a713da8246420750a5fafdf148ce0787b531a093a5'
   '9cb7401ccec50e4b28b87624c3185966366bd0f439e7ede40a1aff23812ffa45'
   '08fa4a2b6cd15a5dc9394743692306d6762a21f3b94df28abcaee51d54b30250'
-  'f777e4c08716406c6c638ca85794d355a32e12403d5991a40c5ecc38b1a69c7d'
+  '14d253334669b8ac76d4b72b66b95ba501fbc5f9f1f13abaed3a6448dd91cdd7'
   'df54edd32986b4213a09069681741ba7533dc40a034a6a2b080cdf380a69fb05'
   'd67bb7f9d98ccb033f632621accf3d8a3391aa3955074af958c0def644be0ef5'
   '6c1f94857671bd044fe4dac20df1f927629c50bfbb0aa9991e6de1a73d1791a0')
@@ -112,16 +112,15 @@ package() {
 
   # systemd units
   install -D -m 644 "${srcdir}/carbonio-antivirus.service" \
-    "${pkgdir}/lib/systemd/system/carbonio-antivirus.service"
+    "${pkgdir}/usr/lib/systemd/system/carbonio-antivirus.service"
   install -D -m 644 "${srcdir}/carbonio-freshclam.service" \
-    "${pkgdir}/lib/systemd/system/carbonio-freshclam.service"
+    "${pkgdir}/usr/lib/systemd/system/carbonio-freshclam.service"
+  install -D -m 644 "${srcdir}/carbonio-clamav-sidecar.service" \
+    "${pkgdir}/usr/lib/systemd/system/carbonio-clamav-sidecar.service"
 
   # start install carbonio-clamav consul registration artifacts
   install -D -m 755 "${srcdir}/carbonio-clamav" \
     "${pkgdir}/usr/bin/carbonio-clamav"
-
-  install -D -m 644 "${srcdir}/carbonio-clamav-sidecar.service" \
-    "${pkgdir}/lib/systemd/system/carbonio-clamav-sidecar.service"
 
   install -D -m 644 "${srcdir}/policies.json" \
     "${pkgdir}/etc/carbonio/clamav/service-discover/policies.json"

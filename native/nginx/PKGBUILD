@@ -51,7 +51,7 @@ sha256sums=(
   'SKIP'
   'SKIP'
   'SKIP'
-  '9db322d6729095063f903e3b7862c267b97659f58fa3210987c81ff49d7285f5'
+  '49a203086ff15c647f9a05a6c10e008eea829ce05ed61a7ba5ccdb7f26ba243c'
   'e3a0888055505f9202860682978ae246b5f8dc4d48ced85216482432fefbb1c8'
 )
 prepare() {
@@ -117,7 +117,7 @@ package() {
 
   # systemd unit
   install -D -m 644 "${srcdir}/${pkgname}.service" \
-    "${pkgdir}/lib/systemd/system/${pkgname}.service"
+    "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
 
   rm -rf "${pkgdir}/run"
 }

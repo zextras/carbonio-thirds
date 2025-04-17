@@ -1,6 +1,6 @@
 [Unit]
-Description=Carbonio Altermime Config
-PartOf=carbonio-mta.target carbonio-ce.target carbonio.target
+Description=Carbonio AlterMIME Config
+PartOf=carbonio-mta.target
 After=network.target
 
 [Service]
@@ -13,4 +13,4 @@ Restart=on-failure
 RemainAfterExit=yes
 
 [Install]
-WantedBy=carbonio-mta.target carbonio-ce.target carbonio.target
+WantedBy=carbonio-mta.target

@@ -1,6 +1,6 @@
 [Unit]
 Description=Carbonio Mail Threat Daemon
-PartOf=carbonio-mta.target carbonio-ce.target carbonio.target
+PartOf=carbonio-mta.target
 After=network.target
 
 [Service]
@@ -18,3 +18,6 @@ ExecReload=/opt/zextras/common/sbin/amavisd \
   -c /opt/zextras/conf/amavisd.conf reload
 RestartSec=3
 Restart=on-failure
+
+[Install]
+WantedBy=carbonio-mta.target

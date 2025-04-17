@@ -1,8 +1,8 @@
 [Unit]
-Description=Carbonio Opendkim Daemon
+Description=Carbonio OpenDKIM Daemon
 After=carbonio-configd.service
 Wants=carbonio-configd.service
-PartOf=carbonio-mta.target carbonio-ce.target carbonio.target
+PartOf=carbonio-mta.target
 
 [Service]
 User=zextras
@@ -13,4 +13,4 @@ RestartSec=3
 Restart=on-failure
 
 [Install]
-WantedBy=carbonio-mta.target carbonio-ce.target carbonio.target
+WantedBy=carbonio-mta.target

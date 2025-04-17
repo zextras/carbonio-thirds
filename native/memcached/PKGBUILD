@@ -24,7 +24,7 @@ source=(
   "${pkgname}.service"
 )
 sha256sums=('54d63742c6886dcdc4e0c87f4439a2930a876cd9f2bfa01d699b0c6bad1707b3'
-  'd21d7b42836c7236b299f68a448edfad76dd9814a8f669ab0c0a24558fd64d3c')
+  '274547ead8e3dc022ce0e716463063ae0fe56d90483c06841503409d5cfeb697')
 
 build() {
 
@@ -42,5 +42,5 @@ package() {
 
   # systemd unit
   install -D -m 644 "${srcdir}/${pkgname}.service" \
-    "${pkgdir}/lib/systemd/system/${pkgname}.service"
+    "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
 }
