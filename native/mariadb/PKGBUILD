@@ -1,6 +1,6 @@
 pkgname="carbonio-mariadb"
-pkgver="10.5.28"
-pkgrel="2"
+pkgver="10.5.29"
+pkgrel="1"
 pkgdesc="Fast SQL database server, derived from MySQL"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -85,7 +85,7 @@ priority="optional"
 source=(
   "https://mirrors.ircam.fr/pub/mariadb/mariadb-${pkgver}/source/mariadb-${pkgver}.tar.gz"
 )
-sha256sums=('0b5070208da0116640f20bd085f1136527f998cc23268715bcbf352e7b7f3cc1')
+sha256sums=('de49ed417f6fa90e8fee72a41e526e0983dc47f388caff9e703803cec263b826')
 
 build() {
 
