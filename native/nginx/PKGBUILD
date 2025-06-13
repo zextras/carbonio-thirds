@@ -1,5 +1,5 @@
 pkgname="carbonio-nginx"
-pkgver="1.26.3"
+pkgver="1.28.0"
 pkgrel="1"
 pkgdesc="Lightweight HTTP server and IMAP/POP3 proxy server"
 arch=('x86_64')
@@ -47,12 +47,12 @@ source=(
   "${pkgname}-${pkgver}.patch"
 )
 sha256sums=(
-  '69ee2b237744036e61d24b836668aad3040dda461fe6f570f1787eab570c75aa'
+  'c6b5c6b086c0df9d3ca3ff5e084c1d0ef909e6038279c71c1c3e985f576ff76a'
   'SKIP'
   'SKIP'
   'SKIP'
   '49a203086ff15c647f9a05a6c10e008eea829ce05ed61a7ba5ccdb7f26ba243c'
-  'e3a0888055505f9202860682978ae246b5f8dc4d48ced85216482432fefbb1c8'
+  'fc1f424ddcceca647d2eb9e1d1f129f4fb09f42f74c7c0bbf818dadc5bb0509f'
 )
 prepare() {
   cd "${srcdir}/nginx-brotli"
