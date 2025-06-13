@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-net-ssleay"
 pkgver="1.94"
-pkgrel="2"
+pkgrel="3"
 pkgdesc="Perl bindings for OpenSSL"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
