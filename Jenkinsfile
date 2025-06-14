@@ -31,7 +31,6 @@ pipeline {
             }
             steps {
                 container('renovate') {
-                    unstash 'project'
                     sh 'renovate zextras/carbonio-thirds'
                 }
             }

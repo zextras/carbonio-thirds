@@ -1,5 +1,5 @@
 pkgname="carbonio-nginx"
-pkgver="1.26.3"
+pkgver="1.26.3" # renovate: datasource=github-tags depName=nginx/nginx
 pkgrel="1"
 pkgdesc="Lightweight HTTP server and IMAP/POP3 proxy server"
 arch=('x86_64')

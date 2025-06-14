@@ -1,5 +1,5 @@
 pkgname="carbonio-icu"
-pkgver="74.2"
+pkgver="74.2" # renovate: datasource=github-tags depName=unicode-org/icu
 pkgrel="2"
 pkgdesc="International Components for Unicode library"
 arch=('x86_64')
