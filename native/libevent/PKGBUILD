@@ -1,5 +1,5 @@
 pkgname="carbonio-libevent"
-pkgver="2.1.12" # renovate: datasource=github-tags depName=libevent/libevent
+pkgver="2.1.12"
 pkgrel="3"
 pkgdesc="An event notification library"
 arch=('x86_64')
