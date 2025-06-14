@@ -9,6 +9,9 @@ pipeline {
             label 'base'
         }
     }
+    triggers {
+        cron('0 2 * * *') // Daily at 2 AM
+    }    
     stages {
         stage('Checkout & Stash') {
             steps {
@@ -19,6 +22,20 @@ pipeline {
                 stash includes: '**', name: 'project'
             }
         }
+        stage('Renovate') {
+            agent {
+                label 'renovate'
+            }
+            when {
+                triggeredBy 'TimerTrigger'
+            }
+            steps {
+                container('renovate') {
+                    unstash 'project'
+                    sh 'renovate zextras/carbonio-thirds'
+                }
+            }
+        }        
         stage('SonarQube analysis') {
             steps {
                 unstash 'project'
