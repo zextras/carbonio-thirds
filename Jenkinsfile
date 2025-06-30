@@ -31,26 +31,6 @@ pipeline {
                 }
             }
         }
-        stage('Ubuntu 20') {
-            agent {
-                node {
-                    label 'yap-ubuntu-20-v1'
-                }
-            }
-            steps {
-                container('yap') {
-                    unstash 'project'
-                    sh 'sudo yap build ubuntu-focal native'
-                    sh 'sudo yap build ubuntu-focal perl'
-                    stash includes: 'artifacts/*focal*', name: 'artifacts-ubuntu-focal'
-                }
-            }
-            post {
-                always {
-                    archiveArtifacts artifacts: 'artifacts/*.deb', fingerprint: true
-                }
-            }
-        }
         stage('Ubuntu 22') {
             agent {
                 node {
@@ -138,7 +118,6 @@ pipeline {
                 branch 'devel'
             }
             steps {
-                unstash 'artifacts-ubuntu-focal'
                 unstash 'artifacts-ubuntu-jammy'
                 unstash 'artifacts-ubuntu-noble'
                 unstash 'artifacts-rocky-8'
@@ -155,11 +134,6 @@ pipeline {
 
                     uploadSpecUbuntu = """{
                         "files": [
-                            {
-                                "pattern": "artifacts/*focal*.deb",
-                                "target": "ubuntu-devel/pool/",
-                                "props": "deb.distribution=focal;deb.component=main;deb.architecture=amd64;vcs.revision=${env.GIT_COMMIT}"
-                            },
                             {
                                 "pattern": "artifacts/*jammy*.deb",
                                 "target": "ubuntu-devel/pool/",
@@ -1278,7 +1252,6 @@ pipeline {
                 buildingTag()
             }
             steps {
-                unstash 'artifacts-ubuntu-focal'
                 unstash 'artifacts-ubuntu-jammy'
                 unstash 'artifacts-ubuntu-noble'
                 unstash 'artifacts-rocky-8'
@@ -1295,11 +1268,6 @@ pipeline {
                     buildInfo.name += '-ubuntu'
                     uploadSpec = '''{
                         "files": [
-                            {
-                                "pattern": "artifacts/*focal*.deb",
-                                "target": "ubuntu-rc/pool/",
-                                "props": "deb.distribution=focal;deb.component=main;deb.architecture=amd64;vcs.revision=${env.GIT_COMMIT}"
-                            },
                             {
                                 "pattern": "artifacts/*jammy*.deb",
                                 "target": "ubuntu-rc/pool/",
