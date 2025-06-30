@@ -1,14 +1,20 @@
 diff '--color=auto' -Naur a/Makefile.PL b/Makefile.PL
---- a/Makefile.PL	2024-01-09 09:18:37.220692181 +0100
-+++ b/Makefile.PL	2024-01-09 09:18:57.506472918 +0100
-@@ -3,11 +3,14 @@
+--- a/Makefile.PL	2025-06-30 17:00:52.087453804 +0200
++++ b/Makefile.PL	2025-06-30 17:04:28.169794344 +0200
+@@ -4,10 +4,7 @@
  
  use 5.006;
  use ExtUtils::MakeMaker 6.48;
--use Crypt::OpenSSL::Guess qw(openssl_inc_paths openssl_lib_paths);
+-use Crypt::OpenSSL::Guess qw(openssl_inc_paths openssl_lib_paths openssl_version);
  
+-my ($major, $minor, $patch) = openssl_version(); 
+-print "OpenSSL version: $major.$minor $patch", "\n";
  # See lib/ExtUtils/MakeMaker.pm for details of how to influence
  # the contents of the Makefile that is written.
+ 
+@@ -16,6 +13,10 @@
+   $libs = $libs . ' -lz';
+ }
  
 +my $KERBEROS_INCLUDE = "/usr/kerberos/include";
 +
@@ -17,11 +23,12 @@ diff '--color=auto' -Naur a/Makefile.PL b/Makefile.PL
  WriteMakefile(
      'NAME'             => 'Crypt::OpenSSL::RSA',
      'AUTHOR'           => 'Ian Robertson <iroberts@cpan.org>',
-@@ -22,11 +25,11 @@
+@@ -30,12 +31,11 @@
          'Test::More'             => 0,
      },
      'OBJECT' => 'RSA.o',
--    'LIBS'   => [openssl_lib_paths() . ' -lssl -lcrypto'],
+-    'LIBS'   => [openssl_lib_paths() . $libs],
+-    'LDDLFLAGS' => openssl_lib_paths() . ' ' . $Config{lddlflags},
 +    'LIBS'    => ($^O eq 'MSWin32') ? ['-lssl32 -leay32'] : ['-lssl -lcrypto'],
      'DEFINE' => '-DPERL5 -DOPENSSL_NO_KRB5',
  
@@ -31,7 +38,7 @@ diff '--color=auto' -Naur a/Makefile.PL b/Makefile.PL
  
      'dist'  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
      'clean' => { FILES    => 'Crypt-OpenSSL-RSA-*' },
-@@ -34,9 +37,6 @@
+@@ -43,9 +43,6 @@
          recommends => {
              'Crypt::OpenSSL::Bignum' => 0,
          },
