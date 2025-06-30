@@ -1,6 +1,6 @@
 pkgname="carbonio-memcached"
-pkgver="1.6.14"
-pkgrel="4"
+pkgver="1.6.38"
+pkgrel="1"
 pkgdesc="Distributed memory object caching system"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -23,7 +23,7 @@ source=(
   "https://www.memcached.org/files/memcached-${pkgver}.tar.gz"
   "${pkgname}.service"
 )
-sha256sums=('54d63742c6886dcdc4e0c87f4439a2930a876cd9f2bfa01d699b0c6bad1707b3'
+sha256sums=('334d792294e37738796b5b03375c47bb6db283b1152e2ea4ccb720152dd17c66'
   '274547ead8e3dc022ce0e716463063ae0fe56d90483c06841503409d5cfeb697')
 
 build() {
@@ -32,6 +32,7 @@ build() {
   export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
 
   cd "${srcdir}/memcached-${pkgver}"
+  autoreconf -fiv
   ./configure --prefix=/opt/zextras/common
   make -j16
 }
