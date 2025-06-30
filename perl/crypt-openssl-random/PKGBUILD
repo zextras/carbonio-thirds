@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-crypt-openssl-random"
-pkgver="0.15"
-pkgrel="3"
+pkgver="0.17"
+pkgrel="1"
 pkgdesc="OpenSSL/LibreSSL pseudo-random number generator access"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -20,12 +20,16 @@ source=(
   "https://cpan.metacpan.org/authors/id/R/RU/RURBAN/Crypt-OpenSSL-Random-${pkgver}.tar.gz"
   "remove-guess.patch"
 )
-sha256sums=('f0876faa1ba3111e39b86aa730c603211eff2905e460c72a57b61e8cf475cef4'
-  'd5f8aad1abb062ea114a0a4990258948bb5eea0fa5632f0d49991cbd15644333')
+sha256sums=('a571b24181baaa76c96704e92acffc6934ff593e380dade274db4e43c140ad51'
+  'dd022607d86e928f0142317502b400f0d988172060243e78a93020bd71ed2d26')
+
+prepare() {
+  cd "${srcdir}/Crypt-OpenSSL-Random-${pkgver}"
+  patch -Np1 -i "${srcdir}/remove-guess.patch"
+}
 
 build() {
   cd "${srcdir}/Crypt-OpenSSL-Random-${pkgver}"
-  patch -Np1 -i "${srcdir}/remove-guess.patch"
   perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
     INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
     LIB=/opt/zextras/common/lib/perl5 LIBS="-L/opt/zextras/common/lib -lssl -lcrypto" INC="-I/opt/zextras/common/include"

@@ -1,5 +1,6 @@
---- Crypt-OpenSSL-Random-0.15/Makefile.PL	2018-04-17 19:29:26.000000000 +0200
-+++ Crypt-OpenSSL-Random-0.15/Makefile.PL	2020-03-19 09:28:34.903848875 +0100
+diff '--color=auto' -Naur a/Makefile.PL b/Makefile.PL
+--- a/Makefile.PL	2025-06-30 15:53:52.835642039 +0200
++++ b/Makefile.PL	2025-06-30 15:59:08.804752590 +0200
 @@ -1,6 +1,5 @@
  use ExtUtils::MakeMaker;
  use Config;
@@ -7,16 +8,20 @@
  use 5.006;
  
  my ($libdir, $incdir);
-@@ -16,16 +15,10 @@
+@@ -20,20 +19,14 @@
  WriteMakefile(
    'NAME'	    => 'Crypt::OpenSSL::Random',
    'VERSION_FROM'    => 'Random.pm',
 -  'LIBS'            => $libdir ? [ "-L$libdir $libs" ] : [ openssl_lib_paths() . " $libs" ],
 -  'INC'             => $incdir ? "-I$incdir" : openssl_inc_paths(),
-+  'LIBS'            => $libdir ? [ "-L$libdir $libs" ] : [ $libs ],
++  'LIBS'            => $libdir ? [ "-L$libdir $libs" ] : [ "$libs" ],
 +  'INC'             => $incdir ? "-I$incdir" : "",
    'AUTHOR'          => 'Ian Robertson',
--   (eval { ExtUtils::MakeMaker->VERSION('6.52'); 1 } ?
+   TEST_REQUIRES => {
+     'Test::Pod'           => '1.22',
+     'Test::More'          => 0,
+   },
+-  (eval { ExtUtils::MakeMaker->VERSION('6.52'); 1 } ?
 -    ('CONFIGURE_REQUIRES' =>
 -     {
 -      'Crypt::OpenSSL::Guess' => '0.11',
