@@ -1,5 +1,5 @@
 pkgname="carbonio-clamav"
-pkgver="1.4.3"
+pkgver="1.4.4"
 pkgrel="1"
 pkgdesc="Anti-virus toolkit for Unix"
 arch=('x86_64')
@@ -62,17 +62,19 @@ source=(
   "policies.json"
   "service-protocol.json"
 )
-sha256sums=('d874cabf3d4765b35b518ef535658a1e6ec74802006a1d613f9f124aa1343210'
+sha256sums=(
+  'd874cabf3d4765b35b518ef535658a1e6ec74802006a1d613f9f124aa1343210'
   'SKIP'
   'ae25e9e1ab67db1d55a29221042851ba2a6d73bb190abe7635aee1169d69801a'
   'a82946b05bdc139b790492b345eda5648c0196ce605decab33d75f661b6ed812'
   'cc36d9357d4434ff290e46a713da8246420750a5fafdf148ce0787b531a093a5'
-  '9cb7401ccec50e4b28b87624c3185966366bd0f439e7ede40a1aff23812ffa45'
+  '2e5b6832f344c433d331d414112098aff2b9565e622dee11021adfb32ecff558'
   '08fa4a2b6cd15a5dc9394743692306d6762a21f3b94df28abcaee51d54b30250'
   '14d253334669b8ac76d4b72b66b95ba501fbc5f9f1f13abaed3a6448dd91cdd7'
   'df54edd32986b4213a09069681741ba7533dc40a034a6a2b080cdf380a69fb05'
   'd67bb7f9d98ccb033f632621accf3d8a3391aa3955074af958c0def644be0ef5'
-  '6c1f94857671bd044fe4dac20df1f927629c50bfbb0aa9991e6de1a73d1791a0')
+  '6c1f94857671bd044fe4dac20df1f927629c50bfbb0aa9991e6de1a73d1791a0'
+)
 
 build() {
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib"
