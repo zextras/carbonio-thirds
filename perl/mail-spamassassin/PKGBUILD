@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-mail-spamassassin"
 pkgver="4.0.1"
-pkgrel="3"
+pkgrel="4"
 pkgdesc="Spam detector and markup engine"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -16,6 +16,8 @@ depends=(
   "carbonio-perl-mail-spf"
   "carbonio-perl-net-dns"
   "carbonio-perl-net-http"
+  "make"
+  "re2c"
 )
 optdepends__apt=(
   "arc"
