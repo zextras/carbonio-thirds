@@ -1,0 +1,27 @@
+[Unit]
+Description=Carbonio Mail Threat Update Daemon
+PartOf=carbonio-mta.target
+After=carbonio-mailthreat.service network.target
+Wants=carbonio-mailthreat.service
+
+[Service]
+User=zextras
+Type=oneshot
+EnvironmentFile=-/opt/zextras/data/systemd.env
+ExecStart=/bin/bash -c 'if [ "${antispam_enable_rule_updates}" = "true" ]; then \
+  /opt/zextras/common/bin/sa-update -v --reallyallowplugins --refreshmirrors || true; \
+fi'
+ExecStart=/bin/bash -c 'if [ "${antispam_enable_rule_compilation}" = "true" ]; then \
+  if command -v gcc >/dev/null 2>&1; then \
+    /opt/zextras/common/bin/sa-compile; \
+  else \
+    echo "GCC not found, skipping rule compilation"; \
+    exit 0; \
+  fi; \
+fi'
+ExecStart=!/bin/bash -c 'if [ "${antispam_enable_restarts}" = "true" ]; then \
+  /usr/bin/systemctl -q --no-block try-restart carbonio-mailthreat.service; \
+fi'
+
+[Install]
+WantedBy=carbonio-mta.target

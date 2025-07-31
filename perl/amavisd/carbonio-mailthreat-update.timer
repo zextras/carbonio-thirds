@@ -1,0 +1,11 @@
+[Unit]
+Description=Carbonio Mail Threat Update Timer
+PartOf=carbonio-mta.target
+After=carbonio-mailthreat.service
+
+[Timer]
+OnCalendar=*-*-* 00:45:00
+Persistent=true
+
+[Install]
+WantedBy=carbonio-mta.target

@@ -1,6 +1,6 @@
 pkgname="carbonio-amavisd"
 pkgver="2.13.1"
-pkgrel="2"
+pkgrel="3"
 pkgdesc="High-performance interface between mailer (MTA) and content checkers"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -31,10 +31,14 @@ priority="optional"
 source=(
   "https://gitlab.com/amavis/amavis/-/archive/v${pkgver}/amavis-v${pkgver}.tar.bz2"
   "carbonio-mailthreat.service"
+  "carbonio-mailthreat-update.service"
+  "carbonio-mailthreat-update.timer"
   "socket_and_misc.patch"
 )
 sha256sums=('cd08d5b17e393873b79e72a843a672b9207fc4b577b9b8a07769d79bff0a845b'
   '78118f4c93b5a797f8d8c50f2e5c2de6759094fd51d0c9bf67138317a34088ab'
+  '2aae564745031515e80899115fb6f13ad0be86056a504b2c03cbd785980e7cf5'
+  'c80d0a99da02ab4058ad4f5538c5905cc212b962e43446e2b678d665892fb1bf'
   'b7f662752874a9d9035fe231adf809591b42b401b2a9d058ecb5ffb4b4cb2737')
 
 package() {
@@ -55,8 +59,12 @@ package() {
   cp -pr lib "${pkgdir}/opt/zextras/common/lib/perl5"
 
   # systemd units
-  install -D -m 644 "${srcdir}/carbonio-mailthreat.service" \
+  install -Dm644 "${srcdir}/carbonio-mailthreat.service" \
     "${pkgdir}/usr/lib/systemd/system/carbonio-mailthreat.service"
+  install -Dm644 "${srcdir}/carbonio-mailthreat-update.service" \
+    "${pkgdir}/usr/lib/systemd/system/carbonio-mailthreat-update.service"
+  install -Dm644 "${srcdir}/carbonio-mailthreat-update.timer" \
+    "${pkgdir}/usr/lib/systemd/system/carbonio-mailthreat-update.timer"
 }
 
 postinst__apt() {
