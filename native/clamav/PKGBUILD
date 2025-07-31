@@ -1,6 +1,6 @@
 pkgname="carbonio-clamav"
 pkgver="1.4.3"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Anti-virus toolkit for Unix"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -51,7 +51,7 @@ section="utils"
 priority="optional"
 source=(
   "https://www.clamav.net/downloads/production/clamav-${pkgver}.tar.gz"
-  "https://dl.fedoraproject.org/pub/fedora/linux/development/rawhide/Everything/x86_64/os/Packages/c/clamav-data-1.4.3-1.fc43.noarch.rpm"
+  "https://dl.fedoraproject.org/pub/fedora/linux/development/rawhide/Everything/x86_64/os/Packages/c/clamav-data-1.4.3-2.fc43.noarch.rpm"
   "carbonio-antivirus.service"
   "carbonio-clamav"
   "carbonio-clamav-setup.sh"
@@ -141,10 +141,10 @@ package() {
 
 postinst() {
   # ClamAV consul registration
-  getent group 'carbonio-clamav' >/dev/null ||
-    groupadd -r 'carbonio-clamav'
-  getent passwd 'carbonio-clamav' >/dev/null ||
-    useradd -r -M -g 'carbonio-clamav' -s /sbin/nologin 'carbonio-clamav'
+  getent group 'carbonio-clamav' >/dev/null \
+    || groupadd -r 'carbonio-clamav'
+  getent passwd 'carbonio-clamav' >/dev/null \
+    || useradd -r -M -g 'carbonio-clamav' -s /sbin/nologin 'carbonio-clamav'
 
   if [ -d /run/systemd/system ]; then
     systemctl daemon-reload >/dev/null 2>&1 || :
