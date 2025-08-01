@@ -1,5 +1,5 @@
 pkgname="carbonio-postfix"
-pkgver="3.10.2"
+pkgver="3.10.3"
 pkgrel="1"
 pkgdesc="Fast, easy to administer, secure mail server"
 arch=('x86_64')
@@ -50,8 +50,8 @@ source=(
   "${pkgname}.patch"
   "${pkgname}.service"
 )
-sha256sums=('bcca564132d4cf5f9c9ce354dab9dd35ee8e9e21900864623c815dac16bfbc27'
-  '26259d1002c24a9198289364f901e001947f21ce8cc14cc7010285b6b50bae30'
+sha256sums=('e3cec05d91b6d2958ecd6ea9045faa35f79c5b0e228b975ace46ad2afe812053'
+  'ba8d566f9814551e71875efff5f59259dba809d53aaecebae0a451d9177d7371'
   '16775c587d70cf4f4f2e885bd4e209c8d97ac03d75ac69a6b9d3fc4b58ee8366')
 
 build() {
