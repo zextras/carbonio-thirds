@@ -152,10 +152,6 @@
       "install": true
     },
     {
-      "name": "email-date-format",
-      "install": true
-    },
-    {
       "name": "convert-binhex",
       "install": true
     },
