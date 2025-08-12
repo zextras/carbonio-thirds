@@ -1,5 +1,5 @@
 pkgname="carbonio-mariadb"
-pkgver="10.5.29"
+pkgver="10.11.14"
 pkgrel="1"
 pkgdesc="Fast SQL database server, derived from MySQL"
 arch=('x86_64')
@@ -85,7 +85,7 @@ priority="optional"
 source=(
   "https://mirrors.ircam.fr/pub/mariadb/mariadb-${pkgver}/source/mariadb-${pkgver}.tar.gz"
 )
-sha256sums=('de49ed417f6fa90e8fee72a41e526e0983dc47f388caff9e703803cec263b826')
+sha256sums=('8a571cb14fb1d4e3663d8e98f3d4200c042fc8b2a4aaaab495860dea8b7d052f')
 
 build() {
 
@@ -95,6 +95,10 @@ build() {
   export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
 
   cd "${srcdir}/mariadb-${pkgver}"
+
+  # There's no switch to disable hashicorp_key_management
+  rm -rf plugin/hashicorp_key_management
+
   cmake . \
     -DBUILD_CONFIG=mysql_release \
     -DCMAKE_BUILD_WITH_INSTALL_RPATH=FALSE \
