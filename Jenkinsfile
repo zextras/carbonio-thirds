@@ -59,7 +59,7 @@ pipeline {
                 echo 'Building deb/rpm packages'
                 buildStage(
                     buildDirs: ['native', 'perl'],
-                    parallel: false,
+                    parallelBuilds: false,
                     prepare: true,
                     skipTsOverride: true,
                 )
