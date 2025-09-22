@@ -1,6 +1,6 @@
 pkgname="carbonio-mariadb"
 pkgver="10.11.14"
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Fast SQL database server, derived from MySQL"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -173,7 +173,7 @@ package() {
   rm -rf "${pkgdir}"/opt/zextras/common/lib/*.a
 }
 
-postinst__apt() {
+postinst__ubuntu_jammy() {
   if [ "$1" = "configure" ]; then
     # zmmycnf is only called at bootstrap.
     # Here we take care of upgrading scenario.
@@ -188,10 +188,122 @@ postinst__apt() {
           /opt/zextras/conf/my.cnf
       fi
     fi
+
+    # Handle MariaDB upgrade scenarios
+    if [ -f /opt/zextras/db/data/mysql_upgrade_info ]; then
+      # Check if this is a major version upgrade
+      current_version="10.11.14"
+      installed_version=$(cat /opt/zextras/db/data/mysql_upgrade_info | head -n1 | cut -d'-' -f1)
+
+      # Compare major and minor version numbers
+      current_major=$(echo "$current_version" | cut -d'.' -f1)
+      current_minor=$(echo "$current_version" | cut -d'.' -f2)
+      installed_major=$(echo "$installed_version" | cut -d'.' -f1)
+      installed_minor=$(echo "$installed_version" | cut -d'.' -f2)
+
+      if [ "$current_major" -gt "$installed_major" ] || [ "$current_major" -eq "$installed_major" -a "$current_minor" -gt "$installed_minor" ]; then
+        # Perform upgrade tasks for major version upgrade
+        echo "Upgrading MariaDB from version $installed_version to $current_version"
+
+        # Restart MariaDB to load new version
+        su - zextras -c 'zmmailboxdctl stop'
+        su - zextras -c 'mysql.server restart'
+
+        # Retrieve settings values from LocalConfigCLI.
+        # shutil is avoided cause of default use of "#!/bin/sh"
+        # in postinstall and shebang compatibility with shutil
+        eval "$(/opt/zextras/common/bin/java \
+          -client \
+          -cp '/opt/zextras/mailbox/jars/*' \
+          -Djava.library.path=/opt/zextras/lib \
+          -Dzimbra.home=/opt/zextras \
+          com.zimbra.cs.localconfig.LocalConfigCLI -q -m shell || true)"
+
+        # Execute the upgrade
+        echo "Running mariadb-upgrade to upgrade system tables"
+        echo "WARNING: This operation can take a considerable amount of time depending on the size of your database."
+
+        /opt/zextras/common/bin/mariadb-upgrade \
+          --user="root" \
+          --host="${mysql_bind_address}" \
+          --port="${mysql_port}" \
+          --password="${mysql_root_password}" \
+          --socket="/run/carbonio/mysql.sock"
+
+        # Restart both appserver and its db
+        su - zextras -c 'mysql.server restart'
+        su - zextras -c 'zmmailboxdctl start'
+      fi
+    fi
   fi
 }
 
-postinst__yum() {
+postinst__ubuntu_noble() {
+  if [ "$1" = "configure" ]; then
+    # zmmycnf is only called at bootstrap.
+    # Here we take care of upgrading scenario.
+    if [ -f /opt/zextras/conf/my.cnf ]; then
+      if grep -q "tmp/mysql/mysql.sock" /opt/zextras/conf/my.cnf; then
+        sed -i 's!\/opt\/zextras\/data\/tmp\/mysql!\/run\/carbonio!' \
+          /opt/zextras/conf/my.cnf
+      fi
+
+      if grep -q "log/mysql.pid" /opt/zextras/conf/my.cnf; then
+        sed -i 's!\/opt\/zextras\/log\/mysql.pid!\/run\/carbonio/mysql.pid!' \
+          /opt/zextras/conf/my.cnf
+      fi
+    fi
+
+    # Handle MariaDB upgrade scenarios
+    if [ -f /opt/zextras/db/data/mysql_upgrade_info ]; then
+      # Check if this is a major version upgrade
+      current_version="10.11.14"
+      installed_version=$(cat /opt/zextras/db/data/mysql_upgrade_info | head -n1 | cut -d'-' -f1)
+
+      # Compare major and minor version numbers
+      current_major=$(echo "$current_version" | cut -d'.' -f1)
+      current_minor=$(echo "$current_version" | cut -d'.' -f2)
+      installed_major=$(echo "$installed_version" | cut -d'.' -f1)
+      installed_minor=$(echo "$installed_version" | cut -d'.' -f2)
+
+      if [ "$current_major" -gt "$installed_major" ] || [ "$current_major" -eq "$installed_major" -a "$current_minor" -gt "$installed_minor" ]; then
+        # Perform upgrade tasks for major version upgrade
+        echo "Upgrading MariaDB from version $installed_version to $current_version"
+
+        # Restart MariaDB to load new version
+        systemctl stop carbonio-appserver-db.service &>/dev/null || :
+        systemctl restart carbonio-appserver-db.service &>/dev/null || :
+
+        # Retrieve settings values from LocalConfigCLI.
+        # shutil is avoided cause of default use of "#!/bin/sh"
+        # in postinstall and shebang compatibility with shutil
+        eval "$(/opt/zextras/common/bin/java \
+          -client \
+          -cp '/opt/zextras/mailbox/jars/*' \
+          -Djava.library.path=/opt/zextras/lib \
+          -Dzimbra.home=/opt/zextras \
+          com.zimbra.cs.localconfig.LocalConfigCLI -q -m shell || true)"
+
+        # Execute the upgrade
+        echo "Running mariadb-upgrade to upgrade system tables"
+        echo "WARNING: This operation can take a considerable amount of time depending on the size of your database."
+
+        /opt/zextras/common/bin/mariadb-upgrade \
+          --user="root" \
+          --host="${mysql_bind_address}" \
+          --port="${mysql_port}" \
+          --password="${mysql_root_password}" \
+          --socket="/run/carbonio/mysql.sock"
+
+        # Restart both appserver and its db
+        systemctl restart carbonio-appserver-db.service &>/dev/null || :
+        systemctl start carbonio-appserver.service &>/dev/null || :
+      fi
+    fi
+  fi
+}
+
+postinst__rocky_8() {
   # zmmycnf is only called at bootstrap.
   # Here we take care of upgrading scenario.
   if [ -f /opt/zextras/conf/my.cnf ]; then
@@ -203,6 +315,118 @@ postinst__yum() {
     if grep -q "log/mysql.pid" /opt/zextras/conf/my.cnf; then
       sed -i 's!\/opt\/zextras\/log\/mysql.pid!\/run\/carbonio/mysql.pid!' \
         /opt/zextras/conf/my.cnf
+    fi
+  fi
+
+  # Handle MariaDB upgrade scenarios
+  if [ -f /opt/zextras/db/data/mysql_upgrade_info ]; then
+    # Check if this is a major version upgrade
+    current_version="10.11.14"
+    installed_version=$(cat /opt/zextras/db/data/mysql_upgrade_info | head -n1 | cut -d'-' -f1)
+
+    # Compare major and minor version numbers
+    current_major=$(echo "$current_version" | cut -d'.' -f1)
+    current_minor=$(echo "$current_version" | cut -d'.' -f2)
+    installed_major=$(echo "$installed_version" | cut -d'.' -f1)
+    installed_minor=$(echo "$installed_version" | cut -d'.' -f2)
+
+    if [ "$current_major" -gt "$installed_major" ] || [ "$current_major" -eq "$installed_major" -a "$current_minor" -gt "$installed_minor" ]; then
+      # Perform upgrade tasks for major version upgrade
+      echo "Upgrading MariaDB from version $installed_version to $current_version"
+      echo "WARNING: This operation can take a considerable amount of time depending on the size of your database."
+
+      # Restart MariaDB to load new version
+      su - zextras -c 'zmmailboxdctl stop'
+      su - zextras -c 'mysql.server restart'
+
+      # Retrieve settings values from LocalConfigCLI.
+      # shutil is avoided cause of default use of "#!/bin/sh"
+      # in postinstall and shebang compatibility with shutil
+      eval "$(/opt/zextras/common/bin/java \
+        -client \
+        -cp '/opt/zextras/mailbox/jars/*' \
+        -Djava.library.path=/opt/zextras/lib \
+        -Dzimbra.home=/opt/zextras \
+        com.zimbra.cs.localconfig.LocalConfigCLI -q -m shell || true)"
+
+      # Execute the upgrade
+      echo "Running mariadb-upgrade to upgrade system tables"
+      echo "WARNING: This operation can take a considerable amount of time depending on the size of your database."
+
+      /opt/zextras/common/bin/mariadb-upgrade \
+        --user="root" \
+        --host="${mysql_bind_address}" \
+        --port="${mysql_port}" \
+        --password="${mysql_root_password}" \
+        --socket="/run/carbonio/mysql.sock"
+
+      # Restart both appserver and its db
+      su - zextras -c 'mysql.server restart'
+      su - zextras -c 'zmmailboxdctl start'
+    fi
+  fi
+}
+
+postinst__rocky_9() {
+  # zmmycnf is only called at bootstrap.
+  # Here we take care of upgrading scenario.
+  if [ -f /opt/zextras/conf/my.cnf ]; then
+    if grep -q "tmp/mysql/mysql.sock" /opt/zextras/conf/my.cnf; then
+      sed -i 's!\/opt\/zextras\/data\/tmp\/mysql!\/run\/carbonio!' \
+        /opt/zextras/conf/my.cnf
+    fi
+
+    if grep -q "log/mysql.pid" /opt/zextras/conf/my.cnf; then
+      sed -i 's!\/opt\/zextras\/log\/mysql.pid!\/run\/carbonio/mysql.pid!' \
+        /opt/zextras/conf/my.cnf
+    fi
+  fi
+
+  # Handle MariaDB upgrade scenarios
+  if [ -f /opt/zextras/db/data/mysql_upgrade_info ]; then
+    # Check if this is a major version upgrade
+    current_version="10.11.14"
+    installed_version=$(cat /opt/zextras/db/data/mysql_upgrade_info | head -n1 | cut -d'-' -f1)
+
+    # Compare major and minor version numbers
+    current_major=$(echo "$current_version" | cut -d'.' -f1)
+    current_minor=$(echo "$current_version" | cut -d'.' -f2)
+    installed_major=$(echo "$installed_version" | cut -d'.' -f1)
+    installed_minor=$(echo "$installed_version" | cut -d'.' -f2)
+
+    if [ "$current_major" -gt "$installed_major" ] || [ "$current_major" -eq "$installed_major" -a "$current_minor" -gt "$installed_minor" ]; then
+      # Perform upgrade tasks for major version upgrade
+      echo "Upgrading MariaDB from version $installed_version to $current_version"
+      echo "WARNING: This operation can take a considerable amount of time depending on the size of your database."
+
+      # Restart MariaDB to load new version
+      systemctl stop carbonio-appserver.service &>/dev/null || :
+      systemctl restart carbonio-appserver-db.service &>/dev/null || :
+
+      # Retrieve settings values from LocalConfigCLI.
+      # shutil is avoided cause of default use of "#!/bin/sh"
+      # in postinstall and shebang compatibility with shutil
+      eval "$(/opt/zextras/common/bin/java \
+        -client \
+        -cp '/opt/zextras/mailbox/jars/*' \
+        -Djava.library.path=/opt/zextras/lib \
+        -Dzimbra.home=/opt/zextras \
+        com.zimbra.cs.localconfig.LocalConfigCLI -q -m shell || true)"
+
+      # Execute the upgrade
+      echo "Running mariadb-upgrade to upgrade system tables"
+      echo "WARNING: This operation can take a considerable amount of time depending on the size of your database."
+
+      /opt/zextras/common/bin/mariadb-upgrade \
+        --user="root" \
+        --host="${mysql_bind_address}" \
+        --port="${mysql_port}" \
+        --password="${mysql_root_password}" \
+        --socket="/run/carbonio/mysql.sock"
+
+      # Restart both appserver and its db
+      systemctl restart carbonio-appserver-db.service &>/dev/null || :
+      systemctl start carbonio-appserver.service &>/dev/null || :
     fi
   fi
 }
