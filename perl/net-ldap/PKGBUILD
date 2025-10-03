@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-net-ldap"
-pkgver="0.68"
+pkgver="0.68" # renovate: datasource=cpan depName=perl::ldap
 pkgrel="3"
 pkgdesc="Lightweight Directory Access Protocol"
 arch=('x86_64')

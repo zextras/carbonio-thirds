@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-mailtools"
-pkgver="2.21"
+pkgver="2.21" # renovate: datasource=cpan depName=MailTools
 pkgrel="3"
 pkgdesc="Various e-mail related modules"
 arch=('x86_64')

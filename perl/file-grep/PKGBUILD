@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-file-grep"
-pkgver="0.02"
+pkgver="0.02" # renovate: datasource=cpan depName=File::Grep
 pkgrel="3"
 pkgdesc="Find matches to a pattern in a series of files and related functions"
 arch=('x86_64')

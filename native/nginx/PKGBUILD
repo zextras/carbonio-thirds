@@ -1,5 +1,5 @@
 pkgname="carbonio-nginx"
-pkgver="1.28.0"
+pkgver="1.28.0" # renovate: datasource=custom.nginx depName=nginx/nginx
 pkgrel="1"
 pkgdesc="Lightweight HTTP server and IMAP/POP3 proxy server"
 arch=('x86_64')

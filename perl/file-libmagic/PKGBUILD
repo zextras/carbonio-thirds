@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-file-libmagic"
-pkgver="1.23"
+pkgver="1.23" # renovate: datasource=cpan depName=File::LibMagic
 pkgrel="3"
 pkgdesc="Determine MIME types of data or files using libmagic"
 arch=('x86_64')

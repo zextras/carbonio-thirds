@@ -1,5 +1,5 @@
 pkgname="carbonio-altermime"
-pkgver="0.3.10"
+pkgver="0.3.10" # renovate: datasource=repology depName=altermime
 pkgrel="6"
 pkgdesc="MIME encoded email pack alteration tool"
 arch=('x86_64')

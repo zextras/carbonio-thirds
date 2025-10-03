@@ -1,5 +1,5 @@
 pkgname="carbonio-openldap"
-pkgver="2.6.10"
+pkgver="2.6.10" # renovate: datasource=repology depName=openldap
 pkgrel="1"
 pkgdesc="Lightweight Directory Access Protocol (LDAP) library"
 arch=('x86_64')

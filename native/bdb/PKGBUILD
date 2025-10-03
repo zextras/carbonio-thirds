@@ -1,5 +1,5 @@
 pkgname="carbonio-bdb"
-pkgver="5.3.28"
+pkgver="5.3.28" # renovate: datasource=repology depName=db
 pkgrel="2"
 pkgdesc="The Berkeley DB embedded database system"
 arch=('x86_64')

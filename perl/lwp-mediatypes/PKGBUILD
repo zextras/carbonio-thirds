@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-lwp-mediatypes"
-pkgver="6.04"
+pkgver="6.04" # renovate: datasource=cpan depName=LWP::MediaTypes
 pkgrel="3"
 pkgdesc="Guess media type for a file or a URL"
 arch=('x86_64')
