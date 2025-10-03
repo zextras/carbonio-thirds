@@ -1,5 +1,5 @@
 pkgname="carbonio-openldap"
-pkgver="2.6.10"
+pkgver="2.6.10" # renovate: datasource=github-tags depName=openldap/openldap  extractVersion=^OPENLDAP_REL_ENG_(?<version>.+)$ versioning=regex:^(?<major>\d+)_(?<minor>\d+)(_(?<patch>\d+))?$
 pkgrel="1"
 pkgdesc="Lightweight Directory Access Protocol (LDAP) library"
 arch=('x86_64')

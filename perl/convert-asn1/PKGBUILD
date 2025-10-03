@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-convert-asn1"
-pkgver="0.34"
+pkgver="0.34" # renovate: datasource=cpan depName=Convert::ASN1
 pkgrel="2"
 pkgdesc="ASN.1 Encode/Decode library"
 arch=('x86_64')

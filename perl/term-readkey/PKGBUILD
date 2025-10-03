@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-term-readkey"
-pkgver="2.38"
+pkgver="2.38" # renovate: datasource=cpan depName=TermReadKey
 pkgrel="4"
 pkgdesc="A perl module for simple terminal control"
 arch=('x86_64')

@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-error"
-pkgver="0.17029"
+pkgver="0.17029" # renovate: datasource=cpan depName=Error
 pkgrel="3"
 pkgdesc="Error/exception handling in an OO-ish way"
 arch=('x86_64')

@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-io-socket-ssl"
-pkgver="2.083"
+pkgver="2.083" # renovate: datasource=cpan depName=IO::Socket::SSL
 pkgrel="2"
 pkgdesc="SSL sockets with IO::Socket interface"
 arch=('x86_64')

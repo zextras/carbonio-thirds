@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-canary-stability"
-pkgver="2013"
+pkgver="2013" # renovate: datasource=cpan depName=Canary::Stability
 pkgrel="3"
 pkgdesc="Canary to check perl compatibility for schmorp's modules"
 arch=('x86_64')

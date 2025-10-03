@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-xml-sax"
-pkgver="1.02"
+pkgver="1.02" # renovate: datasource=cpan depName=XML::SAX
 pkgrel="3"
 pkgdesc="Simple API for XML"
 arch=('x86_64')

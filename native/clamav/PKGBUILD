@@ -1,5 +1,5 @@
 pkgname="carbonio-clamav"
-pkgver="1.4.3"
+pkgver="1.4.3" # renovate: datasource=github-releases depName=Cisco-Talos/clamav
 pkgrel="3"
 pkgdesc="Anti-virus toolkit for Unix"
 arch=('x86_64')

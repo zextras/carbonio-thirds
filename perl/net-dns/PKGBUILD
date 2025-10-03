@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-net-dns"
-pkgver="1.45"
+pkgver="1.45" # renovate: datasource=cpan depName=Net::DNS
 pkgrel="2"
 pkgdesc="Perl Interface to the Domain Name System"
 arch=('x86_64')

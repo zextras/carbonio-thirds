@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-socket"
-pkgver="2.037"
+pkgver="2.037" # renovate: datasource=cpan depName=Socket
 pkgrel="2"
 pkgdesc="Networking constants and support functions"
 arch=('x86_64')

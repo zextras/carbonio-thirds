@@ -1,5 +1,5 @@
 pkgname="carbonio-memcached"
-pkgver="1.6.38"
+pkgver="1.6.38" # renovate: datasource=github-tags depName=memcached/memcached
 pkgrel="1"
 pkgdesc="Distributed memory object caching system"
 arch=('x86_64')
