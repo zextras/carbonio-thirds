@@ -1,5 +1,5 @@
 pkgname="carbonio-libbsd"
-pkgver="0.10.0" # renovate: datasource=github-tags depName=guillemj/libbsd
+pkgver=0.12.2 # renovate: datasource=github-tags depName=guillemj/libbsd
 pkgrel="2"
 pkgdesc="Provides useful functions commonly found on BSD systems like strlcpy()"
 arch=('x86_64')
