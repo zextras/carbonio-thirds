@@ -1,6 +1,6 @@
 pkgname="carbonio-clamav"
 pkgver="1.4.3" # renovate: datasource=github-releases depName=Cisco-Talos/clamav
-pkgrel="3"
+pkgrel="4"
 pkgdesc="Anti-virus toolkit for Unix"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -52,9 +52,9 @@ priority="optional"
 source=(
   "https://www.clamav.net/downloads/production/clamav-${pkgver}.tar.gz"
   "https://dl.fedoraproject.org/pub/fedora/linux/development/rawhide/Everything/x86_64/os/Packages/c/clamav-data-1.4.3-2.fc43.noarch.rpm"
+  "211-carbonio-clamav-setup.sh"
   "carbonio-antivirus.service"
   "carbonio-clamav"
-  "carbonio-clamav-setup.sh"
   "carbonio-clamav-sidecar.service"
   "carbonio-clamav.hcl"
   "carbonio-freshclam.service"
@@ -65,9 +65,9 @@ source=(
 sha256sums=(
   'd874cabf3d4765b35b518ef535658a1e6ec74802006a1d613f9f124aa1343210'
   'SKIP'
+  'cc36d9357d4434ff290e46a713da8246420750a5fafdf148ce0787b531a093a5'
   'ae25e9e1ab67db1d55a29221042851ba2a6d73bb190abe7635aee1169d69801a'
   'a82946b05bdc139b790492b345eda5648c0196ce605decab33d75f661b6ed812'
-  'cc36d9357d4434ff290e46a713da8246420750a5fafdf148ce0787b531a093a5'
   'a0120f980af3ea00adc923f191e8b8a078e7eaabd2c49544a9e21ccd08941fec'
   '08fa4a2b6cd15a5dc9394743692306d6762a21f3b94df28abcaee51d54b30250'
   '14d253334669b8ac76d4b72b66b95ba501fbc5f9f1f13abaed3a6448dd91cdd7'
@@ -136,8 +136,8 @@ package() {
   install -D -m 644 "${srcdir}/service-protocol.json" \
     "${pkgdir}/etc/carbonio/clamav/service-discover/service-protocol.json"
 
-  install -D -m 755 "${srcdir}/carbonio-clamav-setup.sh" \
-    "${pkgdir}/etc/zextras/pending-setups.d/carbonio-clamav-setup.sh"
+  install -D -m 755 "${srcdir}/211-carbonio-clamav-setup.sh" \
+    "${pkgdir}/etc/zextras/pending-setups.d/211-carbonio-clamav-setup.sh"
   # end install carbonio-clamav consul registration artifacts
 }
 
