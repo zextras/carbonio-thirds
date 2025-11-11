@@ -1,6 +1,6 @@
 diff '--color=auto' -Naur a/auxiliary/qshape/qshape.pl b/auxiliary/qshape/qshape.pl
---- a/auxiliary/qshape/qshape.pl	2025-08-01 16:15:23.840715642 +0200
-+++ b/auxiliary/qshape/qshape.pl	2025-08-01 16:54:31.745176694 +0200
+--- a/auxiliary/qshape/qshape.pl	2025-11-11 10:55:08.719420552 +0100
++++ b/auxiliary/qshape/qshape.pl	2025-11-11 10:55:17.298793308 +0100
 @@ -169,7 +169,7 @@
  
  	$ENV{q{MAIL_CONFIG}} = $opts{"c"} if (exists $opts{"c"});
@@ -11,17 +11,179 @@ diff '--color=auto' -Naur a/auxiliary/qshape/qshape.pl b/auxiliary/qshape/qshape
  	warn "'queue_directory' variable expansion not supported: $qdir\n"
  	    if ($qdir =~ /\$/);
 diff '--color=auto' -Naur a/conf/main.cf b/conf/main.cf
---- a/conf/main.cf	2025-08-01 16:15:23.841952336 +0200
-+++ b/conf/main.cf	2025-08-01 16:54:46.426957408 +0200
-@@ -269,7 +269,7 @@
+--- a/conf/main.cf	2025-11-11 10:55:08.720043393 +0100
++++ b/conf/main.cf	2025-11-11 11:02:40.256457874 +0100
+@@ -89,7 +89,7 @@
+ #default_privs = nobody
+ 
+ # INTERNET HOST AND DOMAIN NAMES
+-# 
++#
+ # The myhostname parameter specifies the internet hostname of this
+ # mail system. The default is to use the fully-qualified domain name
+ # from gethostname(). $myhostname is used as a default value for many
+@@ -106,7 +106,7 @@
+ #mydomain = domain.tld
+ 
+ # SENDING MAIL
+-# 
++#
+ # The myorigin parameter specifies the domain that locally-posted
+ # mail appears to come from. The default is to append $myhostname,
+ # which is fine for small sites.  If you run a domain with multiple
+@@ -203,7 +203,7 @@
+ #
+ # - You define $mydestination domain recipients in files other than
+ #   /etc/passwd, /etc/aliases, or the $virtual_alias_maps files.
+-#   For example, you define $mydestination domain recipients in    
++#   For example, you define $mydestination domain recipients in
+ #   the $virtual_mailbox_maps files.
+ #
+ # - You redefine the local delivery agent in master.cf.
+@@ -223,7 +223,7 @@
+ # The right-hand side of the lookup tables is conveniently ignored.
+ # In the left-hand side, specify a bare username, an @domain.tld
+ # wild-card, or specify a user@domain.tld address.
+-# 
++#
+ #local_recipient_maps = unix:passwd.byname $alias_maps
+ #local_recipient_maps = proxy:unix:passwd.byname $alias_maps
+ #local_recipient_maps =
+@@ -253,7 +253,7 @@
+ #
+ # By default (mynetworks_style = host), Postfix "trusts" only
+ # the local machine.
+-# 
++#
+ # Specify "mynetworks_style = subnet" when Postfix should "trust"
+ # SMTP clients in the same IP subnetworks as the local machine.
+ # On Linux, this works correctly only with interfaces specified
+@@ -264,12 +264,12 @@
+ # Don't do this with a dialup site - it would cause Postfix to "trust"
+ # your entire provider's network.  Instead, specify an explicit
+ # mynetworks list by hand, as described below.
+-#  
++#
+ # Specify "mynetworks_style = host" when Postfix should "trust"
  # only the local machine.
- # 
+-# 
++#
  #mynetworks_style = class
 -#mynetworks_style = subnet
 +mynetworks_style = subnet
  #mynetworks_style = host
  
  # Alternatively, you can specify the mynetworks list by hand, in
+@@ -298,7 +298,7 @@
+ # - from "untrusted" clients to destinations that match $relay_domains or
+ #   subdomains thereof, except addresses with sender-specified routing.
+ # The default relay_domains value is empty.
+-# 
++#
+ # In addition to the above, the Postfix SMTP server by default accepts mail
+ # that Postfix is final destination for:
+ # - destinations that match $inet_interfaces or $proxy_interfaces,
+@@ -306,7 +306,7 @@
+ # - destinations that match $virtual_alias_domains,
+ # - destinations that match $virtual_mailbox_domains.
+ # These destinations do not need to be listed in $relay_domains.
+-# 
++#
+ # Specify a list of hosts or domains, /file/name patterns or type:name
+ # lookup tables, separated by commas and/or whitespace.  Continue
+ # long lines by starting the next line with whitespace. A file name
+@@ -317,7 +317,7 @@
+ # list this system as their primary or backup MX host. See the
+ # permit_mx_backup restriction description in postconf(5).
+ #
+-#relay_domains = 
++#relay_domains =
+ 
+ # INTERNET OR INTRANET
+ 
+@@ -351,7 +351,7 @@
+ # The right-hand side of the lookup tables is conveniently ignored.
+ # In the left-hand side, specify an @domain.tld wild-card, or specify
+ # a user@domain.tld address.
+-# 
++#
+ #relay_recipient_maps = hash:/etc/postfix/relay_recipients
+ 
+ # INPUT RATE CONTROL
+@@ -360,15 +360,15 @@
+ # flow control. This feature is turned on by default, although it
+ # still needs further development (it's disabled on SCO UNIX due
+ # to an SCO bug).
+-# 
++#
+ # A Postfix process will pause for $in_flow_delay seconds before
+ # accepting a new message, when the message arrival rate exceeds the
+ # message delivery rate. With the default 100 SMTP server process
+ # limit, this limits the mail inflow to 100 messages a second more
+ # than the number of messages delivered per second.
+-# 
++#
+ # Specify 0 to disable the feature. Valid delays are 0..10.
+-# 
++#
+ #in_flow_delay = 1s
+ 
+ # ADDRESS REWRITING
+@@ -398,7 +398,7 @@
+ # On systems with NIS, the default is to search the local alias
+ # database, then the NIS alias database. See aliases(5) for syntax
+ # details.
+-# 
++#
+ # If you change the alias database, run "postalias /etc/aliases" (or
+ # wherever your system stores the mail alias file), or simply run
+ # "newaliases" to build the necessary DBM or DB file.
+@@ -441,7 +441,7 @@
+ #
+ #home_mailbox = Mailbox
+ #home_mailbox = Maildir/
+- 
++
+ # The mail_spool_directory parameter specifies the directory where
+ # UNIX-style mailboxes are kept. The default setting depends on the
+ # system type.
+@@ -483,7 +483,7 @@
+ #
+ # NOTE: if you use this feature for accounts not in the UNIX password
+ # file, then you must update the "local_recipient_maps" setting in
+-# the main.cf file, otherwise the SMTP server will reject mail for    
++# the main.cf file, otherwise the SMTP server will reject mail for
+ # non-UNIX accounts with "User unknown in local recipient table".
+ #
+ # Cyrus IMAP over LMTP. Specify ``lmtpunix      cmd="lmtpd"
+@@ -505,7 +505,7 @@
+ #
+ # NOTE: if you use this feature for accounts not in the UNIX password
+ # file, then you must update the "local_recipient_maps" setting in
+-# the main.cf file, otherwise the SMTP server will reject mail for    
++# the main.cf file, otherwise the SMTP server will reject mail for
+ # non-UNIX accounts with "User unknown in local recipient table".
+ #
+ #fallback_transport = lmtp:unix:/file/name
+@@ -528,15 +528,15 @@
+ #
+ # NOTE: if you use this feature for accounts not in the UNIX password
+ # file, then you must specify "local_recipient_maps =" (i.e. empty) in
+-# the main.cf file, otherwise the SMTP server will reject mail for    
++# the main.cf file, otherwise the SMTP server will reject mail for
+ # non-UNIX accounts with "User unknown in local recipient table".
+ #
+ #luser_relay = $user@other.host
+ #luser_relay = $local@other.host
+ #luser_relay = admin+$local
+-  
++
+ # JUNK MAIL CONTROLS
+-# 
++#
+ # The controls listed here are only a very small subset. The file
+ # SMTPD_ACCESS_README provides an overview.
+ 
 @@ -550,7 +550,7 @@
  #
  # For details, see "man header_checks".
@@ -31,13 +193,64 @@ diff '--color=auto' -Naur a/conf/main.cf b/conf/main.cf
  
  # FAST ETRN SERVICE
  #
-@@ -682,4 +682,52 @@
+@@ -558,11 +558,11 @@
+ # deferred mail, so that mail can be flushed quickly with the SMTP
+ # "ETRN domain.tld" command, or by executing "sendmail -qRdomain.tld".
+ # See the ETRN_README document for a detailed description.
+-# 
++#
+ # The fast_flush_domains parameter controls what destinations are
+ # eligible for this service. By default, they are all domains that
+ # this server is willing to relay mail to.
+-# 
++#
+ #fast_flush_domains = $relay_domains
+ 
+ # SHOW SOFTWARE VERSION OR NOT
+@@ -586,7 +586,7 @@
+ # too many are run at the same time. With SMTP deliveries, 10
+ # simultaneous connections to the same domain could be sufficient to
+ # raise eyebrows.
+-# 
++#
+ # Each message delivery transport has its XXX_destination_concurrency_limit
+ # parameter.  The default is $default_destination_concurrency_limit for
+ # most delivery transports. For the local delivery agent the default is 2.
+@@ -644,10 +644,10 @@
+ # INSTALL-TIME CONFIGURATION INFORMATION
+ #
+ # The following parameters are used when installing a new Postfix version.
+-# 
++#
+ # sendmail_path: The full pathname of the Postfix sendmail command.
+ # This is the Sendmail-compatible mail posting interface.
+-# 
++#
+ sendmail_path =
+ 
+ # newaliases_path: The full pathname of the Postfix newaliases command.
+@@ -657,7 +657,7 @@
+ 
+ # mailq_path: The full pathname of the Postfix mailq command.  This
+ # is the Sendmail-compatible mail queue listing command.
+-# 
++#
+ mailq_path =
+ 
+ # setgid_group: The group for mail submission and queue management
+@@ -682,6 +682,54 @@
  # readme_directory: The location of the Postfix README files.
  #
  readme_directory =
 -inet_protocols = ipv4
+-shlib_directory = /usr/lib/postfix/${mail_version}
+-meta_directory = /etc/postfix
 +inet_protocols = all
++shlib_directory = /opt/zextras/common/lib/postfix/${mail_version}
++meta_directory = /opt/zextras/common/conf
 +
++# Zextras changes
++#
 +# Source: https://www.postfix.org/smtp-smuggling.html
 +# Optionally disconnect remote SMTP clients that send bare newlines,
 +# but allow local clients with non-standard SMTP implementations
@@ -46,8 +259,6 @@ diff '--color=auto' -Naur a/conf/main.cf b/conf/main.cf
 +smtpd_forbid_bare_newline = yes
 +smtpd_forbid_bare_newline_exclusions = $mynetworks
 +
-+# Zextras changes
-+#
 +virtual_mailbox_maps = proxy:ldap:/opt/zextras/conf/ldap-vmm.cf
 +virtual_mailbox_domains = proxy:ldap:/opt/zextras/conf/ldap-vmd.cf
 +virtual_alias_maps = proxy:ldap:/opt/zextras/conf/ldap-vam.cf
@@ -63,7 +274,7 @@ diff '--color=auto' -Naur a/conf/main.cf b/conf/main.cf
 +# Disable NIS which is in the default
 +alias_maps = lmdb:/etc/aliases
 +
-+# for security...
++# Security hardening
 +allow_mail_to_commands =
 +allow_mail_to_files =
 +disable_vrfy_command = yes
@@ -78,7 +289,7 @@ diff '--color=auto' -Naur a/conf/main.cf b/conf/main.cf
 +
 +broken_sasl_auth_clients = yes
 +
-+smtpd_use_tls = yes
++smtpd_tls_security_level = may
 +smtpd_tls_cert_file = /opt/zextras/conf/smtpd.crt
 +smtpd_tls_key_file = /opt/zextras/conf/smtpd.key
 +smtpd_tls_loglevel = 3
@@ -86,8 +297,8 @@ diff '--color=auto' -Naur a/conf/main.cf b/conf/main.cf
 +smtpd_forbid_bare_newline = yes
 +smtpd_forbid_bare_newline_exclusions = $mynetworks
 diff '--color=auto' -Naur a/conf/postfix-script b/conf/postfix-script
---- a/conf/postfix-script	2025-08-01 16:15:23.842234333 +0200
-+++ b/conf/postfix-script	2025-08-01 16:54:31.746752126 +0200
+--- a/conf/postfix-script	2025-11-11 10:55:08.720189162 +0100
++++ b/conf/postfix-script	2025-11-11 10:55:17.299952995 +0100
 @@ -306,7 +306,7 @@
  
  	# Check Postfix root-owned directory owner/permissions.
@@ -129,8 +340,8 @@ diff '--color=auto' -Naur a/conf/postfix-script b/conf/postfix-script
  
  	# Check Postfix mail_owner-owned directory tree owner/permissions.
 diff '--color=auto' -Naur a/proto/ldap_table b/proto/ldap_table
---- a/proto/ldap_table	2025-08-01 16:15:23.859009605 +0200
-+++ b/proto/ldap_table	2025-08-01 16:54:31.747356223 +0200
+--- a/proto/ldap_table	2025-11-11 10:55:08.743377299 +0100
++++ b/proto/ldap_table	2025-11-11 10:55:17.300022370 +0100
 @@ -146,6 +146,14 @@
  #	When the input key is an address of the form user@domain, \fB%d\fR
  #	is replaced by the (RFC 2253) quoted domain part of the address.
@@ -147,8 +358,8 @@ diff '--color=auto' -Naur a/proto/ldap_table b/proto/ldap_table
  #	For the \fBsearch_base\fR parameter, the upper-case equivalents
  #	of the above expansions behave identically to their lower-case
 diff '--color=auto' -Naur a/src/global/db_common.c b/src/global/db_common.c
---- a/src/global/db_common.c	2025-08-01 16:15:23.867699136 +0200
-+++ b/src/global/db_common.c	2025-08-01 16:54:31.747958006 +0200
+--- a/src/global/db_common.c	2025-11-11 10:55:08.762848070 +0100
++++ b/src/global/db_common.c	2025-11-11 10:55:17.300467378 +0100
 @@ -149,6 +149,7 @@
    * Utility library.
    */
@@ -205,8 +416,8 @@ diff '--color=auto' -Naur a/src/global/db_common.c b/src/global/db_common.c
  		QUOTE_VAL(ctx->dict, quote_func, value, result);
  		break;
 diff '--color=auto' -Naur a/src/global/db_common.h b/src/global/db_common.h
---- a/src/global/db_common.h	2025-08-01 16:15:23.867718791 +0200
-+++ b/src/global/db_common.h	2025-08-01 16:54:31.748459412 +0200
+--- a/src/global/db_common.h	2025-11-11 10:55:08.762881984 +0100
++++ b/src/global/db_common.h	2025-11-11 10:55:17.300650492 +0100
 @@ -18,6 +18,10 @@
  #include "dict.h"
  #include "string_list.h"
@@ -219,8 +430,8 @@ diff '--color=auto' -Naur a/src/global/db_common.h b/src/global/db_common.h
  
  extern int db_common_parse(DICT *, void **, const char *, int);
 diff '--color=auto' -Naur a/src/global/dict_ldap.c b/src/global/dict_ldap.c
---- a/src/global/dict_ldap.c	2025-08-01 16:15:23.867999457 +0200
-+++ b/src/global/dict_ldap.c	2025-08-01 16:54:31.749020438 +0200
+--- a/src/global/dict_ldap.c	2025-11-11 10:55:08.763369383 +0100
++++ b/src/global/dict_ldap.c	2025-11-11 10:55:17.300890429 +0100
 @@ -1347,8 +1347,9 @@
       * On to the search.
       */
@@ -252,8 +463,8 @@ diff '--color=auto' -Naur a/src/global/dict_ldap.c b/src/global/dict_ldap.c
  
      /*
 diff '--color=auto' -Naur a/src/global/dict_memcache.c b/src/global/dict_memcache.c
---- a/src/global/dict_memcache.c	2025-08-01 16:15:23.868049855 +0200
-+++ b/src/global/dict_memcache.c	2025-08-01 16:54:31.749680347 +0200
+--- a/src/global/dict_memcache.c	2025-11-11 10:55:08.763452756 +0100
++++ b/src/global/dict_memcache.c	2025-11-11 10:55:17.301183301 +0100
 @@ -584,7 +584,7 @@
       */
      dict_mc->dbc_ctxt = 0;
@@ -264,8 +475,8 @@ diff '--color=auto' -Naur a/src/global/dict_memcache.c b/src/global/dict_memcach
      if (db_common_dict_partial(dict_mc->dbc_ctxt))
  	/* Breaks recipient delimiters */
 diff '--color=auto' -Naur a/src/global/dict_mysql.c b/src/global/dict_mysql.c
---- a/src/global/dict_mysql.c	2025-08-01 16:15:23.868125274 +0200
-+++ b/src/global/dict_mysql.c	2025-08-01 16:54:31.750097998 +0200
+--- a/src/global/dict_mysql.c	2025-11-11 10:55:08.763593855 +0100
++++ b/src/global/dict_mysql.c	2025-11-11 10:55:17.301367407 +0100
 @@ -732,8 +732,9 @@
       */
      dict_mysql->ctx = 0;
@@ -279,8 +490,8 @@ diff '--color=auto' -Naur a/src/global/dict_mysql.c b/src/global/dict_mysql.c
  
      /*
 diff '--color=auto' -Naur a/src/global/dict_pgsql.c b/src/global/dict_pgsql.c
---- a/src/global/dict_pgsql.c	2025-08-01 16:15:23.868165858 +0200
-+++ b/src/global/dict_pgsql.c	2025-08-01 16:54:31.750603574 +0200
+--- a/src/global/dict_pgsql.c	2025-11-11 10:55:08.763664052 +0100
++++ b/src/global/dict_pgsql.c	2025-11-11 10:55:17.301600739 +0100
 @@ -664,8 +664,9 @@
       */
      dict_pgsql->ctx = 0;
@@ -294,8 +505,8 @@ diff '--color=auto' -Naur a/src/global/dict_pgsql.c b/src/global/dict_pgsql.c
  
      /*
 diff '--color=auto' -Naur a/src/global/dict_sqlite.c b/src/global/dict_sqlite.c
---- a/src/global/dict_sqlite.c	2025-08-01 16:15:23.868244021 +0200
-+++ b/src/global/dict_sqlite.c	2025-08-01 16:54:31.751053039 +0200
+--- a/src/global/dict_sqlite.c	2025-11-11 10:55:08.763796377 +0100
++++ b/src/global/dict_sqlite.c	2025-11-11 10:55:17.301764681 +0100
 @@ -278,8 +278,9 @@
       */
      dict_sqlite->ctx = 0;
@@ -309,8 +520,8 @@ diff '--color=auto' -Naur a/src/global/dict_sqlite.c b/src/global/dict_sqlite.c
  
      /*
 diff '--color=auto' -Naur a/src/global/mail_params.h b/src/global/mail_params.h
---- a/src/global/mail_params.h	2025-08-01 16:15:23.870327037 +0200
-+++ b/src/global/mail_params.h	2025-08-01 16:54:31.751893208 +0200
+--- a/src/global/mail_params.h	2025-11-11 10:55:08.768733158 +0100
++++ b/src/global/mail_params.h	2025-11-11 10:55:17.302022308 +0100
 @@ -2932,7 +2932,7 @@
  extern char *var_verify_service;
  
