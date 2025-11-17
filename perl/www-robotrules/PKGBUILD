@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-www-robotrules"
-pkgver="6.02"
+pkgver="6.02" # renovate: datasource=cpan depName=WWW::RobotRules
 pkgrel="3"
 pkgdesc="Database of robots.txt-derived permissions"
 arch=('x86_64')

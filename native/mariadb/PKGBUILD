@@ -1,6 +1,6 @@
 pkgname="carbonio-mariadb"
-pkgver="10.11.14"
-pkgrel="2"
+pkgver="10.11.15" # renovate: datasource=github-releases depName=MariaDB/server
+pkgrel="1"
 pkgdesc="Fast SQL database server, derived from MySQL"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -85,7 +85,7 @@ priority="optional"
 source=(
   "https://mirrors.ircam.fr/pub/mariadb/mariadb-${pkgver}/source/mariadb-${pkgver}.tar.gz"
 )
-sha256sums=('8a571cb14fb1d4e3663d8e98f3d4200c042fc8b2a4aaaab495860dea8b7d052f')
+sha256sums=('5311e85765402bde5a81a9a7b2643a7378d20316a2822bfad4b6ddcf104759a5')
 
 build() {
 

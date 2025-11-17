@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-xml-sax-expat"
-pkgver="0.51"
+pkgver="0.51" # renovate: datasource=cpan depName=XML::SAX::Expat
 pkgrel="3"
 pkgdesc="SAX2 Driver for Expat"
 arch=('x86_64')

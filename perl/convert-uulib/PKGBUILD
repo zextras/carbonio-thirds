@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-convert-uulib"
-pkgver="1.8"
+pkgver="1.8" # renovate: datasource=cpan depName=Convert::UUlib
 pkgrel="4"
 pkgdesc="Decode uu/xx/b64/mime/yenc/etc-encoded data from a massive number of files"
 arch=('x86_64')

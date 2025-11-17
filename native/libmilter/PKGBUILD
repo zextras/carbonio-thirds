@@ -1,5 +1,5 @@
 pkgname="carbonio-libmilter"
-pkgver="8.17.1"
+pkgver="8.17.1" # renovate: datasource=repology depName=arch/libmilter
 pkgrel="2"
 pkgdesc="Implementation of the sendmail Mail Filter API"
 arch=('x86_64')

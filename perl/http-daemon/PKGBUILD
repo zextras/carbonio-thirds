@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-http-daemon"
-pkgver="6.16"
+pkgver="6.16" # renovate: datasource=cpan depName=HTTP::Daemon
 pkgrel="2"
 pkgdesc="A simple http server class"
 arch=('x86_64')

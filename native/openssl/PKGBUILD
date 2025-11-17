@@ -1,5 +1,5 @@
 pkgname="carbonio-openssl"
-pkgver="3.5.0"
+pkgver="3.5.0" # renovate: datasource=github-releases depName=openssl/openssl
 pkgrel="1"
 pkgdesc="Zextras's Secure Socket Layer build"
 arch=('x86_64')

@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-xml-namespacesupport"
-pkgver="1.12"
+pkgver="1.12" # renovate: datasource=cpan depName=XML::NamespaceSupport
 pkgrel="3"
 pkgdesc="A simple generic namespace processor"
 arch=('x86_64')

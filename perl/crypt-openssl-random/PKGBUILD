@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-crypt-openssl-random"
-pkgver="0.17"
+pkgver="0.17" # renovate: datasource=cpan depName=Crypt::OpenSSL::Random
 pkgrel="1"
 pkgdesc="OpenSSL/LibreSSL pseudo-random number generator access"
 arch=('x86_64')

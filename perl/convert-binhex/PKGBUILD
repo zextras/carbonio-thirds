@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-convert-binhex"
-pkgver="1.125"
+pkgver="1.125" # renovate: datasource=cpan depName=Convert::BinHex
 pkgrel="3"
 pkgdesc="Perl module to extract data from Macintosh BinHex files"
 arch=('x86_64')

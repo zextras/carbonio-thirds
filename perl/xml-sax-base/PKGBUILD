@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-xml-sax-base"
-pkgver="1.09"
+pkgver="1.09" # renovate: datasource=cpan depName=XML::SAX::Base
 pkgrel="3"
 pkgdesc="Base class SAX Drivers and Filters"
 arch=('x86_64')
