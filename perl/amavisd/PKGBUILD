@@ -1,6 +1,6 @@
 pkgname="carbonio-amavisd"
 pkgver="2.13.1" # renovate: datasource=gitlab-tags depName=amavis/amavis
-pkgrel="3"
+pkgrel="4"
 pkgdesc="High-performance interface between mailer (MTA) and content checkers"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -25,6 +25,31 @@ depends=(
   "carbonio-perl-net-server"
   "carbonio-perl-net-ssleay"
   "carbonio-perl-unix-syslog"
+)
+optdepends__apt=(
+  "arc"
+  "arj"
+  "libgeo-ip-perl"
+  "libgeo-ipfree-perl"
+  "libnet-patricia-perl"
+  "lrzip"
+  "lzop"
+  "nomarch"
+  "p7zip-full"
+  "p7zip-rar"
+  "rar"
+  "tnef"
+)
+optdepends__yum=(
+  "arj"
+  "cabextract"
+  "lzop"
+  "nomarch"
+  "p7zip"
+  "p7zip-plugins"
+  "pax"
+  "unar"
+  "unzoo"
 )
 section="utils"
 priority="optional"
