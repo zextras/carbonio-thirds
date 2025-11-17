@@ -32,6 +32,7 @@ depends__yum=(
   "unzoo"
   "arj"
   "pax"
+  "nomarch" 
   "lzop"
 )
 depends__apt=(
