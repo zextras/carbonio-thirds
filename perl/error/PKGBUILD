@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-error"
-pkgver="0.17029" # renovate: datasource=cpan depName=Error
-pkgrel="3"
+pkgver="0.17030" # renovate: datasource=cpan depName=Error
+pkgrel="1"
 pkgdesc="Error/exception handling in an OO-ish way"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -17,7 +17,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/S/SH/SHLOMIF/Error-${pkgver}.tar.gz"
 )
-sha256sums=('1a23f7913032aed6d4b68321373a3899ca66590f4727391a091ec19c95bf7adc')
+sha256sums=('34d382276c0fb0d6b38355b94c96a30b12d834d5662eb53f088ee25e3e712924')
 
 build() {
   cd "${srcdir}/Error-${pkgver}"
