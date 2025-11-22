@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-data-uuid"
-pkgver="1.226" # renovate: datasource=cpan depName=Data::UUID
-pkgrel="3"
+pkgver="1.227" # renovate: datasource=cpan depName=Data::UUID
+pkgrel="1"
 pkgdesc="Globally/Universally Unique Identifiers (GUIDs/UUIDs)"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -15,9 +15,9 @@ depends__yum=(
 section="libs"
 priority="important"
 source=(
-  "https://cpan.metacpan.org/authors/id/R/RJ/RJBS/Data-UUID-${pkgver}.tar.gz"
+  "https://cpan.metacpan.org/authors/id/G/GT/GTERMARS/Data-UUID-${pkgver}.tar.gz"
 )
-sha256sums=('093d57ffa0d411a94bafafae495697db26f5c9d0277198fe3f7cf2be22996453')
+sha256sums=('95bda7276265f57bc48ffdeddec5ef28cd6f765e3a183757fa5f09f0ce6b98ac')
 
 build() {
   cd "${srcdir}/Data-UUID-${pkgver}"
