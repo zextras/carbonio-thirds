@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-digest-hmac"
-pkgver="1.04" # renovate: datasource=cpan depName=Digest::HMAC
-pkgrel="3"
+pkgver="1.05" # renovate: datasource=cpan depName=Digest::HMAC
+pkgrel="1"
 pkgdesc="Keyed-Hashing for Message Authentication"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -17,7 +17,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/A/AR/ARODLAND/Digest-HMAC-${pkgver}.tar.gz"
 )
-sha256sums=('d6bc8156aa275c44d794b7c18f44cdac4a58140245c959e6b19b2c3838b08ed4')
+sha256sums=('215cb59cba610745cfb2d4b3f8ef756d590e57e3ad7986a992e87c4969fcdc7a')
 
 build() {
   cd "${srcdir}/Digest-HMAC-${pkgver}"
