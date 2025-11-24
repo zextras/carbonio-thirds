@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-digest-hmac"
-pkgver="1.04" # renovate: datasource=cpan depName=Digest::HMAC
+pkgver="1.05" # renovate: datasource=cpan depName=Digest::HMAC
 pkgrel="3"
 pkgdesc="Keyed-Hashing for Message Authentication"
 arch=('x86_64')
