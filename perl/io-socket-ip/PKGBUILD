@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-io-socket-ip"
-pkgver="0.42" # renovate: datasource=cpan depName=IO::Socket::IP
-pkgrel="2"
+pkgver="0.43" # renovate: datasource=cpan depName=IO::Socket::IP
+pkgrel="1"
 pkgdesc="Family-neutral IP socket supporting both IPv4 and IPv6"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -19,7 +19,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/P/PE/PEVANS/IO-Socket-IP-${pkgver}.tar.gz"
 )
-sha256sums=('f97a3846c50a4e0658ce1722ce7cc2acad9472e70478bfbe9c794fb1db6a6b13')
+sha256sums=('ebf6217f48f537ae9a78126f0ecb4baa3d4820e3e26153ce250f3bffd05f6d0b')
 
 build() {
   cd "${srcdir}/IO-Socket-IP-${pkgver}"
