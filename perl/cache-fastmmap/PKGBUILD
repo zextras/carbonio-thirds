@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-cache-fastmmap"
-pkgver="1.57" # renovate: datasource=cpan depName=Cache::FastMmap
-pkgrel="2"
+pkgver="1.60" # renovate: datasource=cpan depName=Cache::FastMmap
+pkgrel="1"
 pkgdesc="Uses an mmap'ed file to act as a shared memory interprocess cache"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -17,7 +17,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/R/RO/ROBM/Cache-FastMmap-${pkgver}.tar.gz"
 )
-sha256sums=('e04b3a28d989edb8fb96eafacdc2b87f9eccb84f047eb2e27cb26aa7d08cc7b8')
+sha256sums=('9b2d3b0aef095d2c59b356a4482950d0c3a22e84e6e69b97bb96dcc1edc642ff')
 
 build() {
   cd "${srcdir}/Cache-FastMmap-${pkgver}"
