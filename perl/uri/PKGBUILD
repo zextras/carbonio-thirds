@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-uri"
-pkgver="5.21" # renovate: datasource=cpan depName=URI
-pkgrel="2"
+pkgver="5.34" # renovate: datasource=cpan depName=URI
+pkgrel="1"
 pkgdesc="Uniform Resource Identifiers (absolute and relative)"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -19,7 +19,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/URI-${pkgver}.tar.gz"
 )
-sha256sums=('96265860cd61bde16e8415dcfbf108056de162caa0ac37f81eb695c9d2e0ab77')
+sha256sums=('de64c779a212ff1821896c5ca2bb69e74767d2674cee411e777deea7a22604a8')
 
 build() {
   cd "${srcdir}/URI-${pkgver}"
