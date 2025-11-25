@@ -1,5 +1,5 @@
 pkgname="carbonio-memcached"
-pkgver="1.6.38" # renovate: datasource=github-tags depName=memcached/memcached
+pkgver="1.6.39" # renovate: datasource=github-tags depName=memcached/memcached
 pkgrel="1"
 pkgdesc="Distributed memory object caching system"
 arch=('x86_64')
@@ -23,8 +23,10 @@ source=(
   "https://www.memcached.org/files/memcached-${pkgver}.tar.gz"
   "${pkgname}.service"
 )
-sha256sums=('334d792294e37738796b5b03375c47bb6db283b1152e2ea4ccb720152dd17c66'
-  '274547ead8e3dc022ce0e716463063ae0fe56d90483c06841503409d5cfeb697')
+sha256sums=(
+  '23e5507e933b15463161d4c5d3921b0c5f340b542d6edd7f6c5e17c34f11a363'
+  '274547ead8e3dc022ce0e716463063ae0fe56d90483c06841503409d5cfeb697'
+)
 
 build() {
 
