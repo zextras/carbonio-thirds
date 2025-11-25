@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-berkeleydb"
-pkgver="0.65" # renovate: datasource=cpan depName=BerkeleyDB
+pkgver="0.66" # renovate: datasource=cpan depName=BerkeleyDB
 pkgrel="2"
 pkgdesc="Perl5 Module Supporting LDAP API"
 arch=('x86_64')
