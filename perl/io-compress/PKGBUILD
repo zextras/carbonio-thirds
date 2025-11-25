@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-io-compress"
-pkgver="2.206" # renovate: datasource=cpan depName=IO::Compress
-pkgrel="2"
+pkgver="2.214" # renovate: datasource=cpan depName=IO::Compress
+pkgrel="1"
 pkgdesc="Low-Level Interface to compression libraries"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -21,7 +21,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/P/PM/PMQS/IO-Compress-${pkgver}.tar.gz"
 )
-sha256sums=('7d3062b9a494f757e8d0614f220d83f22731bbda1aeb5f7cff0e72a83f433d35')
+sha256sums=('0cfbc4b4ac9b28f7cbf22f114e09c9a49ace9e0b6c3778432afa2cde55512d69')
 
 build() {
   cd "${srcdir}/IO-Compress-${pkgver}"
