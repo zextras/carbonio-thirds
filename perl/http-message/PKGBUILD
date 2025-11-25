@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-http-message"
-pkgver="6.45" # renovate: datasource=cpan depName=HTTP::Message
+pkgver="6.46" # renovate: datasource=cpan depName=HTTP::Message
 pkgrel="2"
 pkgdesc="HTTP style message"
 arch=('x86_64')
