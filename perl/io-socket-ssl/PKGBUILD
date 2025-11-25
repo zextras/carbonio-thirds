@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-io-socket-ssl"
-pkgver="2.083" # renovate: datasource=cpan depName=IO::Socket::SSL
-pkgrel="2"
+pkgver="2.095" # renovate: datasource=cpan depName=IO::Socket::SSL
+pkgrel="1"
 pkgdesc="SSL sockets with IO::Socket interface"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -25,7 +25,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/S/SU/SULLR/IO-Socket-SSL-${pkgver}.tar.gz"
 )
-sha256sums=('904ef28765440a97d8a9a0df597f8c3d7f3cb0a053d1b082c10bed03bc802069')
+sha256sums=('7e764392b1b8bd44e654183c082b75be47800e98d7cd325f0e1b76c7d9a6b768')
 
 build() {
   cd "${srcdir}/IO-Socket-SSL-${pkgver}"
