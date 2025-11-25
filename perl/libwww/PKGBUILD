@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-libwww"
-pkgver="6.72" # renovate: datasource=cpan depName=LWP
+pkgver="6.81" # renovate: datasource=cpan depName=LWP
 pkgrel="2"
 pkgdesc="The World-Wide Web library for Perl"
 arch=('x86_64')
