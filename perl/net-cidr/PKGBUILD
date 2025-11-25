@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-net-cidr"
-pkgver="0.21" # renovate: datasource=cpan depName=Net::CIDR
-pkgrel="3"
+pkgver="0.27" # renovate: datasource=cpan depName=Net::CIDR
+pkgrel="1"
 pkgdesc="Manipulate IPv4/IPv6 netblocks in CIDR notation"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -17,7 +17,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/M/MR/MRSAM/Net-CIDR-${pkgver}.tar.gz"
 )
-sha256sums=('30f303c0735948da33370decc7e87cfa68bc430aa44b81d18f8d823b6d1abfbf')
+sha256sums=('9e950fef4422264dc8efab30dbbd3ce2be125e61b3f5c50111d15506d3b570e3')
 
 build() {
   cd "${srcdir}/Net-CIDR-${pkgver}"
