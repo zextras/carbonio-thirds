@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-http-cookies"
-pkgver="6.10" # renovate: datasource=cpan depName=HTTP::Cookies
+pkgver="6.11" # renovate: datasource=cpan depName=HTTP::Cookies
 pkgrel="3"
 pkgdesc="HTTP cookie jars"
 arch=('x86_64')
