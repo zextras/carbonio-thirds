@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-net-dns"
-pkgver="1.45" # renovate: datasource=cpan depName=Net::DNS
-pkgrel="2"
+pkgver="1.53" # renovate: datasource=cpan depName=Net::DNS
+pkgrel="1"
 pkgdesc="Perl Interface to the Domain Name System"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -24,8 +24,8 @@ source=(
   "https://cpan.metacpan.org/authors/id/N/NL/NLNETLABS/Net-DNS-${pkgver}.tar.gz"
   "remote-tests.patch"
 )
-sha256sums=('39f4b82ffe822f4d28691f6c4260f6f1fe6b5a09b546b56dd2410c21b38c1380'
-  '485fd51f739315a559ddcea7c6defcf38ee61f153b3a3fb8e3863a5860380774')
+sha256sums=('04acb4f177d57c147dcedc4bd70e23806af3db75a532f46f95461b2bc9a94959'
+            '485fd51f739315a559ddcea7c6defcf38ee61f153b3a3fb8e3863a5860380774')
 
 build() {
   cd "${srcdir}/Net-DNS-${pkgver}"
