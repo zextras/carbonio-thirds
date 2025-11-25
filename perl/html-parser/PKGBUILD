@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-html-parser"
-pkgver="3.81" # renovate: datasource=cpan depName=HTML::Parser
-pkgrel="2"
+pkgver="3.83" # renovate: datasource=cpan depName=HTML::Parser
+pkgrel="1"
 pkgdesc="HTML parser class"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -21,7 +21,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/HTML-Parser-${pkgver}.tar.gz"
 )
-sha256sums=('c0910a5c8f92f8817edd06ccfd224ba1c2ebe8c10f551f032587a1fc83d62ff2')
+sha256sums=('7278ce9791256132b26a71a5719451844704bb9674b58302c3486df43584f8c0')
 
 build() {
   cd "${srcdir}/HTML-Parser-${pkgver}"
