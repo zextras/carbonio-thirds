@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-parent"
-pkgver="0.241" # renovate: datasource=cpan depName=parent
-pkgrel="2"
+pkgver="0.244" # renovate: datasource=cpan depName=parent
+pkgrel="1"
 pkgdesc="Establish an ISA relationship with base classes at compile time"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -17,7 +17,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/C/CO/CORION/parent-${pkgver}.tar.gz"
 )
-sha256sums=('b10b3960ab3997dab7571ffe975ba462d979d086450740a1e08b3959e75128fe')
+sha256sums=('149a65f019909c289714b57fb5c7cadba593e7b86ccf25cb49f7e54a2a1af1ce')
 
 build() {
   cd "${srcdir}/parent-${pkgver}"
