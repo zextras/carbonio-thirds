@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-parent"
-pkgver="0.241" # renovate: datasource=cpan depName=parent
+pkgver="0.244" # renovate: datasource=cpan depName=parent
 pkgrel="2"
 pkgdesc="Establish an ISA relationship with base classes at compile time"
 arch=('x86_64')
