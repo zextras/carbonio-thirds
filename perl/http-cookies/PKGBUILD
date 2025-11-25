@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-http-cookies"
-pkgver="6.10" # renovate: datasource=cpan depName=HTTP::Cookies
-pkgrel="3"
+pkgver="6.11" # renovate: datasource=cpan depName=HTTP::Cookies
+pkgrel="1"
 pkgdesc="HTTP cookie jars"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -23,7 +23,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/HTTP-Cookies-${pkgver}.tar.gz"
 )
-sha256sums=('e36f36633c5ce6b5e4b876ffcf74787cc5efe0736dd7f487bdd73c14f0bd7007')
+sha256sums=('8c9a541a4a39f6c0c7e3d0b700b05dfdb830bd490a1b1942a7dedd1b50d9a8c8')
 
 build() {
   cd "${srcdir}/HTTP-Cookies-${pkgver}"
