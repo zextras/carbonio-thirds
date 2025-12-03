@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-mail-spamassassin"
-pkgver="4.0.1" # renovate: datasource=cpan depName=Mail::SpamAssassin
-pkgrel="4"
+pkgver="4.0.2" # renovate: datasource=cpan depName=Mail::SpamAssassin
+pkgrel="1"
 pkgdesc="Spam detector and markup engine"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -39,7 +39,6 @@ optdepends__apt=(
 optdepends__yum=(
   "arj"
   "cabextract"
-  "freeze"
   "lz4"
   "lzop"
   "nomarch"
@@ -53,9 +52,9 @@ optdepends__yum=(
 section="libs"
 priority="important"
 source=(
-  "https://cpan.metacpan.org/authors/id/S/SI/SIDNEY/Mail-SpamAssassin-${pkgver}.tar.gz"
+  "https://cpan.metacpan.org/authors/id/G/GB/GBECHIS/Mail-SpamAssassin-${pkgver}.tar.gz"
 )
-sha256sums=('5c6bb222e18405f1a276816d04e1ffc5cc90785e1265714b4506c2b541d6d5e5')
+sha256sums=('c521be978cef3d49b1e139477ca60a0bd498345fc98274796e44161fae49a17f')
 
 build() {
   cd "${srcdir}/Mail-SpamAssassin-${pkgver}"
