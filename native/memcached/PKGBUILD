@@ -21,11 +21,25 @@ section="utils"
 priority="optional"
 source=(
   "https://www.memcached.org/files/memcached-${pkgver}.tar.gz"
+  "411-${pkgname}-setup.sh"
+  "${pkgname}-intentions.json"
+  "${pkgname}-policies.json"
+  "${pkgname}-service-protocol.json"
+  "${pkgname}-sidecar.service"
+  "${pkgname}.hcl"
   "${pkgname}.service"
+  "${pkgname}.sh"
 )
 sha256sums=(
   '23e5507e933b15463161d4c5d3921b0c5f340b542d6edd7f6c5e17c34f11a363'
+  '0cd06de30fe49858f1d0457ee5d8874bd8a688d110ce16d155e28d7804c4acaa'
+  '0dac2d242e7b000e2fcff6c0dd1aac050e0005af37149d71eebe0dc6bf88f399'
+  '8d25760595a59a5ca1f014093693caf911f5397ebce00752abcfa0db4a505c36'
+  '50743f955abb8b550c5fd9384a7421e8b85631dfaa7e2d8e39259aa7fbcab7ee'
+  '047663a9352f7dd1ac75f93e9ba34e4ec1b39fa4482eac3a543a7cf569923454'
+  'a4b11224bdf2b3e6c38327c5843d55bc6628fa42c6deb99c3f5ae838bd39c385'
   '274547ead8e3dc022ce0e716463063ae0fe56d90483c06841503409d5cfeb697'
+  'b0f23a87871dac149b07f8197fd0fcd2c6b4cf046b48033a54771caa330d4575'
 )
 
 build() {
@@ -46,4 +60,27 @@ package() {
   # systemd unit
   install -D -m 644 "${srcdir}/${pkgname}.service" \
     "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
+
+  # start install service registration files for consul
+  install -Dm644 "411-${pkgname}-setup.sh" \
+    "${pkgdir}/etc/zextras/pending-setups.d/411-${pkgname}-setup.sh"
+
+  install -Dm755 "${pkgname}.sh" \
+    "${pkgdir}/usr/bin/${pkgname}"
+
+  install -Dm644 "${pkgname}-sidecar.service" \
+    "${pkgdir}/usr/lib/systemd/system/${pkgname}-sidecar.service"
+
+  install -Dm644 "${pkgname}-policies.json" \
+    "${pkgdir}/etc/carbonio/memcached/service-discover/policies.json"
+
+  install -Dm644 "${pkgname}-intentions.json" \
+    "${pkgdir}/etc/carbonio/memcached/service-discover/intentions.json"
+
+  install -Dm644 "${pkgname}-service-protocol.json" \
+    "${pkgdir}/etc/carbonio/memcached/service-discover/service-protocol.json"
+
+  install -Dm644 "${pkgname}.hcl" \
+    "${pkgdir}/etc/zextras/service-discover/${pkgname}.hcl"
+  # end install service registration files for consul
 }

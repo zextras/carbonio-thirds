@@ -5,12 +5,7 @@ services {
     interval = "5s"
   }
   connect {
-    sidecar_service {
-      proxy {
-        upstreams = [
-        ]
-      }
-    }
+    sidecar_service { }
   }
   name = "carbonio-memcached"
   port = 443
