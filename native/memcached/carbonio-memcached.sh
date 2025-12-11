@@ -13,7 +13,7 @@ fi
 
 if [[ "$1" != "setup" ]]; then
   echo "Syntax: '${SERVICE_NAME} setup' to automatically configure the service"
-  exit 1;
+  exit 1
 fi
 
 # Decrypt the bootstrap token, asking the password to the sys admin
@@ -26,7 +26,7 @@ EXIT_CODE="$?"
 echo ""
 if [[ "${EXIT_CODE}" != "0" ]]; then
   echo "Cannot access to bootstrap token"
-  exit 1;
+  exit 1
 fi
 # Limit secret visibility as much as possible
 export -n SETUP_CONSUL_TOKEN
@@ -38,11 +38,11 @@ POLICY_DESCRIPTION="Carbonio ${SERVICE} service policy for service and sidecar p
 consul acl policy create -name "${POLICY_NAME}" -description "${POLICY_DESCRIPTION}" -rules @"${SERVICE_BASE_DIR}/policies.json" >/dev/null 2>&1
 # shellcheck disable=SC2181
 if [[ "$?" != "0" ]]; then
-    consul acl policy update -no-merge -name "${POLICY_NAME}" -description "${POLICY_DESCRIPTION}" -rules @"${SERVICE_BASE_DIR}/policies.json"
-    if [[ "$?" != "0" ]]; then
-      echo "Setup failed: Cannot update policy for ${POLICY_NAME}"
-      exit 1
-    fi
+  consul acl policy update -no-merge -name "${POLICY_NAME}" -description "${POLICY_DESCRIPTION}" -rules @"${SERVICE_BASE_DIR}/policies.json"
+  if [[ "$?" != "0" ]]; then
+    echo "Setup failed: Cannot update policy for ${POLICY_NAME}"
+    exit 1
+  fi
 fi
 
 trap 'echo Script for ${SERVICE_COMMON_NAME} terminated with error' EXIT
@@ -53,10 +53,10 @@ consul config write "${SERVICE_BASE_DIR}/service-protocol.json"
 consul config write "${SERVICE_BASE_DIR}/intentions.json"
 
 if [[ ! -f "${SERVICE_BASE_DIR}/token" ]]; then
-    # Create the token
-    consul acl token create -format json -policy-name "${POLICY_NAME}" -description "Token for
+  # Create the token
+  consul acl token create -format json -policy-name "${POLICY_NAME}" -description "Token for
     ${SERVICE_NAME}/$(hostname -A)" |
-      jq -r '.SecretID' > ${SERVICE_BASE_DIR}/token;
+    jq -r '.SecretID' >${SERVICE_BASE_DIR}/token
 fi
 
 chown ${SERVICE_USER}:${SERVICE_GROUP} ${SERVICE_BASE_DIR}/token
