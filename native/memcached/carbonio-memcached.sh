@@ -47,8 +47,10 @@ fi
 
 trap 'echo Script for ${SERVICE_COMMON_NAME} terminated with error' EXIT
 set -e
+
 # Declare the service protocol
 consul config write "${SERVICE_BASE_DIR}/service-protocol.json"
+consul config write "${SERVICE_BASE_DIR}/intentions.json"
 
 if [[ ! -f "${SERVICE_BASE_DIR}/token" ]]; then
     # Create the token
