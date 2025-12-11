@@ -2,8 +2,8 @@
 SERVICE="memcached"
 SERVICE_COMMON_NAME="Carbonio ${SERVICE}"
 SERVICE_NAME="carbonio-${SERVICE}"
-SERVICE_USER="carbonio-${SERVICE}"
-SERVICE_GROUP="carbonio-${SERVICE}"
+SERVICE_USER="zextras"
+SERVICE_GROUP="zextras"
 SERVICE_BASE_DIR="/etc/carbonio/${SERVICE}/service-discover/"
 
 if [[ $(id -u) -ne 0 ]]; then
