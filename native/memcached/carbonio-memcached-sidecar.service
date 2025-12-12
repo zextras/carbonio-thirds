@@ -1,0 +1,21 @@
+[Unit]
+Description=Carbonio Memcached sidecar
+Documentation=https://docs.zextras.com/
+Requires=network-online.target
+After=network-online.target
+PartOf=carbonio-proxy.target
+
+[Service]
+User=zextras
+ExecStart=/usr/bin/consul connect envoy \
+    -token-file /etc/carbonio/memcached/service-discover/token \
+    -admin-bind localhost:0 \
+    -sidecar-for carbonio-memcached
+Restart=on-failure
+RestartSec=15
+ExecReload=/usr/bin/kill -HUP $MAINPID
+KillSignal=SIGINT
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target

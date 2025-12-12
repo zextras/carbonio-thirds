@@ -1,6 +1,6 @@
 pkgname="carbonio-memcached"
 pkgver="1.6.39" # renovate: datasource=github-tags depName=memcached/memcached
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Distributed memory object caching system"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -21,11 +21,25 @@ section="utils"
 priority="optional"
 source=(
   "https://www.memcached.org/files/memcached-${pkgver}.tar.gz"
+  "411-${pkgname}-setup.sh"
+  "${pkgname}-intentions.json"
+  "${pkgname}-policies.json"
+  "${pkgname}-service-protocol.json"
+  "${pkgname}-sidecar.service"
+  "${pkgname}.hcl"
   "${pkgname}.service"
+  "${pkgname}.sh"
 )
 sha256sums=(
   '23e5507e933b15463161d4c5d3921b0c5f340b542d6edd7f6c5e17c34f11a363'
+  '0cd06de30fe49858f1d0457ee5d8874bd8a688d110ce16d155e28d7804c4acaa'
+  '0dac2d242e7b000e2fcff6c0dd1aac050e0005af37149d71eebe0dc6bf88f399'
+  '8d25760595a59a5ca1f014093693caf911f5397ebce00752abcfa0db4a505c36'
+  '50743f955abb8b550c5fd9384a7421e8b85631dfaa7e2d8e39259aa7fbcab7ee'
+  '047663a9352f7dd1ac75f93e9ba34e4ec1b39fa4482eac3a543a7cf569923454'
+  'fbcb9ef7d28ac846a7411cc745a95a36c8e4c62095d6e42a40cb904174dd85f0'
   '274547ead8e3dc022ce0e716463063ae0fe56d90483c06841503409d5cfeb697'
+  '7bdc7bd2cae5d4459906b2aa8299d16936ca8fb2cd5a125b31a2eb8cd1a795ea'
 )
 
 build() {
@@ -46,4 +60,27 @@ package() {
   # systemd unit
   install -D -m 644 "${srcdir}/${pkgname}.service" \
     "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
+
+  # start install service registration files for consul
+  install -Dm644 "${srcdir}/411-${pkgname}-setup.sh" \
+    "${pkgdir}/etc/zextras/pending-setups.d/411-${pkgname}-setup.sh"
+
+  install -Dm755 "${srcdir}/${pkgname}.sh" \
+    "${pkgdir}/usr/bin/${pkgname}"
+
+  install -Dm644 "${srcdir}/${pkgname}-sidecar.service" \
+    "${pkgdir}/usr/lib/systemd/system/${pkgname}-sidecar.service"
+
+  install -Dm644 "${srcdir}/${pkgname}-policies.json" \
+    "${pkgdir}/etc/carbonio/memcached/service-discover/policies.json"
+
+  install -Dm644 "${srcdir}/${pkgname}-intentions.json" \
+    "${pkgdir}/etc/carbonio/memcached/service-discover/intentions.json"
+
+  install -Dm644 "${srcdir}/${pkgname}-service-protocol.json" \
+    "${pkgdir}/etc/carbonio/memcached/service-discover/service-protocol.json"
+
+  install -Dm644 "${srcdir}/${pkgname}.hcl" \
+    "${pkgdir}/etc/zextras/service-discover/${pkgname}.hcl"
+  # end install service registration files for consul
 }

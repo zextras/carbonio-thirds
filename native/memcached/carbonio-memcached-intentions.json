@@ -1,0 +1,10 @@
+{
+  "Kind": "service-intentions",
+  "Name": "carbonio-memcached",
+  "Sources": [
+    {
+      "Name": "carbonio-mailbox",
+      "Action": "allow"
+    }
+  ]
+}
