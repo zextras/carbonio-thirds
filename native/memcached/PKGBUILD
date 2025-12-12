@@ -62,25 +62,25 @@ package() {
     "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
 
   # start install service registration files for consul
-  install -Dm644 "411-${pkgname}-setup.sh" \
+  install -Dm644 "${srcdir}/411-${pkgname}-setup.sh" \
     "${pkgdir}/etc/zextras/pending-setups.d/411-${pkgname}-setup.sh"
 
-  install -Dm755 "${pkgname}.sh" \
+  install -Dm755 "${srcdir}/${pkgname}.sh" \
     "${pkgdir}/usr/bin/${pkgname}"
 
-  install -Dm644 "${pkgname}-sidecar.service" \
+  install -Dm644 "${srcdir}/${pkgname}-sidecar.service" \
     "${pkgdir}/usr/lib/systemd/system/${pkgname}-sidecar.service"
 
-  install -Dm644 "${pkgname}-policies.json" \
+  install -Dm644 "${srcdir}/${pkgname}-policies.json" \
     "${pkgdir}/etc/carbonio/memcached/service-discover/policies.json"
 
-  install -Dm644 "${pkgname}-intentions.json" \
+  install -Dm644 "${srcdir}/${pkgname}-intentions.json" \
     "${pkgdir}/etc/carbonio/memcached/service-discover/intentions.json"
 
-  install -Dm644 "${pkgname}-service-protocol.json" \
+  install -Dm644 "${srcdir}/${pkgname}-service-protocol.json" \
     "${pkgdir}/etc/carbonio/memcached/service-discover/service-protocol.json"
 
-  install -Dm644 "${pkgname}.hcl" \
+  install -Dm644 "${srcdir}/${pkgname}.hcl" \
     "${pkgdir}/etc/zextras/service-discover/${pkgname}.hcl"
   # end install service registration files for consul
 }
