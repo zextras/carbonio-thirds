@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-mail-dkim"
-pkgver="1.20230911" # renovate: datasource=cpan depName=Mail::DKIM
+pkgver="1.20240923" # renovate: datasource=cpan depName=Mail::DKIM
 pkgrel="2"
 pkgdesc="Signs/verifies Internet mail with DKIM/DomainKey signatures"
 arch=('x86_64')
