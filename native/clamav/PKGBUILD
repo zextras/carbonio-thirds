@@ -1,6 +1,6 @@
 pkgname="carbonio-clamav"
-pkgver="1.4.3" # renovate: datasource=github-releases depName=Cisco-Talos/clamav
-pkgrel="5"
+pkgver="1.5.1" # renovate: datasource=repology depName=arch/clamav
+pkgrel="1"
 pkgdesc="Anti-virus toolkit for Unix"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -23,7 +23,6 @@ depends__ubuntu_jammy=(
 )
 makedepends__apt=(
   "alien"
-  "cargo"
   "check"
   "libjson-c-dev"
   "libncursesw5-dev"
@@ -40,7 +39,6 @@ depends__yum=(
 )
 makedepends__yum=(
   "alien"
-  "cargo"
   "check-devel"
   "json-c-devel"
   "ncurses-devel"
@@ -51,7 +49,7 @@ section="utils"
 priority="optional"
 source=(
   "https://www.clamav.net/downloads/production/clamav-${pkgver}.tar.gz"
-  "https://dl.fedoraproject.org/pub/fedora/linux/development/rawhide/Everything/x86_64/os/Packages/c/clamav-data-1.4.3-3.fc44.noarch.rpm"
+  "https://dl.fedoraproject.org/pub/fedora/linux/development/rawhide/Everything/x86_64/os/Packages/c/clamav-data-1.4.3-6.fc44.noarch.rpm"
   "211-carbonio-clamav-setup.sh"
   "carbonio-antivirus.service"
   "carbonio-clamav"
@@ -62,9 +60,8 @@ source=(
   "policies.json"
   "service-protocol.json"
 )
-sha256sums=(
-  'd874cabf3d4765b35b518ef535658a1e6ec74802006a1d613f9f124aa1343210'
-  'SKIP'
+sha256sums=('64fe4a16a5622c1d71efe9ed7f2c2fbd37f8f237da9f11ff66b73038df71db91'
+  '6c6b6b1de2437d7296ba69247bee4f5cead391a3384edabf70f630fecd71d5ae'
   'cc36d9357d4434ff290e46a713da8246420750a5fafdf148ce0787b531a093a5'
   'ae25e9e1ab67db1d55a29221042851ba2a6d73bb190abe7635aee1169d69801a'
   'a82946b05bdc139b790492b345eda5648c0196ce605decab33d75f661b6ed812'
@@ -73,10 +70,25 @@ sha256sums=(
   '14d253334669b8ac76d4b72b66b95ba501fbc5f9f1f13abaed3a6448dd91cdd7'
   'df54edd32986b4213a09069681741ba7533dc40a034a6a2b080cdf380a69fb05'
   'd67bb7f9d98ccb033f632621accf3d8a3391aa3955074af958c0def644be0ef5'
-  '6c1f94857671bd044fe4dac20df1f927629c50bfbb0aa9991e6de1a73d1791a0'
-)
+  '6c1f94857671bd044fe4dac20df1f927629c50bfbb0aa9991e6de1a73d1791a0')
+
+prepare() {
+  # Install rustup if not present
+  if ! command -v rustup &>/dev/null; then
+    echo "Installing rustup..."
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable
+    source "$HOME/.cargo/env"
+  fi
+
+  # Ensure stable toolchain is installed and set as default
+  rustup default stable
+  rustup update stable
+}
 
 build() {
+  # Add cargo to PATH
+  export PATH="$HOME/.cargo/bin:$PATH"
+
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib"
   export CPPFLAGS="-I/opt/zextras/common/include"
   cd "${srcdir}/clamav-${pkgver}"
@@ -85,7 +97,8 @@ build() {
     -DCLAMAV_USER=zextras \
     -DCLAMAV_GROUP=zextras \
     -DAPP_CONFIG_DIRECTORY=/opt/zextras/conf \
-    -DENABLE_MILTER=false
+    -DENABLE_MILTER=false \
+    -DENABLE_TESTS=OFF
 
   make -j16
 }
