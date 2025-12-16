@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-exporter-tiny"
-pkgver="1.006002" # renovate: datasource=cpan depName=Exporter::Tiny
-pkgrel="2"
+pkgver="1.006003" # renovate: datasource=cpan depName=Exporter::Tiny
+pkgrel="1"
 pkgdesc="An exporter with the features of Sub::Exporter but only core dependencies"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -17,7 +17,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/T/TO/TOBYINK/Exporter-Tiny-${pkgver}.tar.gz"
 )
-sha256sums=('6f295e2cbffb1dbc15bdb9dadc341671c1e0cd2bdf2d312b17526273c322638d')
+sha256sums=('6499f09a6432cf87b133fb9580a8a9a9a6c566821346b1fdee95f7b64c0317b1')
 
 build() {
   cd "${srcdir}/Exporter-Tiny-${pkgver}"
