@@ -61,6 +61,8 @@ source=(
   "intentions.json"
   "policies.json"
   "service-protocol.json"
+  "systemd-sysuser.conf"
+  "systemd-tmpfile.conf"
 )
 sha256sums=(
   'd874cabf3d4765b35b518ef535658a1e6ec74802006a1d613f9f124aa1343210'
@@ -74,6 +76,8 @@ sha256sums=(
   'df54edd32986b4213a09069681741ba7533dc40a034a6a2b080cdf380a69fb05'
   'd67bb7f9d98ccb033f632621accf3d8a3391aa3955074af958c0def644be0ef5'
   '6c1f94857671bd044fe4dac20df1f927629c50bfbb0aa9991e6de1a73d1791a0'
+  '1532817e2cfefd6f0ff46fbd76e1e4a7f54b6f4cbf243944fa9721f36465c266'
+  'fb25055f0019d297f09c5fbd686543874b2ff1d93528c8f7ecab91aae00190f1'
 )
 
 build() {
@@ -120,6 +124,14 @@ package() {
   install -D -m 644 "${srcdir}/carbonio-clamav-sidecar.service" \
     "${pkgdir}/usr/lib/systemd/system/carbonio-clamav-sidecar.service"
 
+  # systemd tmpfiles.d configuration
+  install -D -m 644 "${srcdir}/systemd-tmpfile.conf" \
+    "${pkgdir}/usr/lib/tmpfiles.d/${pkgname}.conf"
+
+  # systemd sysusers.d configuration
+  install -D -m 644 "${srcdir}/systemd-sysuser.conf" \
+    "${pkgdir}/usr/lib/sysusers.d/${pkgname}.conf"
+
   # start install carbonio-clamav consul registration artifacts
   install -D -m 755 "${srcdir}/carbonio-clamav" \
     "${pkgdir}/usr/bin/carbonio-clamav"
@@ -142,15 +154,13 @@ package() {
 }
 
 postinst() {
-  # ClamAV consul registration
-  getent group 'carbonio-clamav' >/dev/null \
-    || groupadd -r 'carbonio-clamav'
-  getent passwd 'carbonio-clamav' >/dev/null \
-    || useradd -r -M -g 'carbonio-clamav' -s /sbin/nologin 'carbonio-clamav'
+  # Create users and groups via systemd-sysusers
+  systemd-sysusers /usr/lib/sysusers.d/carbonio-clamav.conf >/dev/null 2>&1 || :
 
   if [ -d /run/systemd/system ]; then
     systemctl daemon-reload >/dev/null 2>&1 || :
     systemctl enable carbonio-clamav-sidecar.service >/dev/null 2>&1 || :
+    systemd-tmpfiles --create /usr/lib/tmpfiles.d/carbonio-clamav.conf || :
   fi
 
   echo "======================================================"
