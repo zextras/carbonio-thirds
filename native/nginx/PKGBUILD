@@ -1,6 +1,6 @@
 pkgname="carbonio-nginx"
 pkgver="1.28.0" # renovate: datasource=github-tags depName=nginx/nginx extractVersion=^release-(?<version>.+)$ versioning=semver allowedVersions=/^1\.(2[0-9]*[02468]|[3-9][0-9]*[02468])\./
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Lightweight HTTP server and IMAP/POP3 proxy server"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -45,6 +45,7 @@ source=(
   "modules::git+https://github.com/zextras/carbonio-nginx-modules#commit=e62d730a1f5f23494fba7f0a45d3271c335fae6f"
   "${pkgname}.service"
   "${pkgname}-${pkgver}.patch"
+  "systemd-tmpfile.conf"
 )
 sha256sums=(
   'c6b5c6b086c0df9d3ca3ff5e084c1d0ef909e6038279c71c1c3e985f576ff76a'
@@ -53,6 +54,7 @@ sha256sums=(
   'SKIP'
   '49a203086ff15c647f9a05a6c10e008eea829ce05ed61a7ba5ccdb7f26ba243c'
   'fc1f424ddcceca647d2eb9e1d1f129f4fb09f42f74c7c0bbf818dadc5bb0509f'
+  '63d2bbce8257e7a3b64ad895d525a13f9966587728e5fde2031d17a2e3fc9ff6'
 )
 prepare() {
   cd "${srcdir}/nginx-brotli"
@@ -119,54 +121,39 @@ package() {
   install -D -m 644 "${srcdir}/${pkgname}.service" \
     "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
 
+  # systemd tmpfiles.d configuration
+  install -D -m 644 "${srcdir}/systemd-tmpfile.conf" \
+    "${pkgdir}/usr/lib/tmpfiles.d/${pkgname}.conf"
+
   rm -rf "${pkgdir}/run"
 }
 
 postinst__apt() {
-  if [ "$1" = "configure" ]; then
-    # creating zextras group if it isn't already there
-    if ! getent group zextras >/dev/null; then
-      addgroup --system --force-badname --quiet zextras
-    fi
+  # zextras user/group provided by carbonio-core via sysusers.d
+  # /opt/zextras/log ownership handled by carbonio-core tmpfiles.d
 
-    # creating zextras user if it isn't already there
-    if ! getent passwd zextras >/dev/null; then
-      adduser --system --force-badname --quiet \
-        --ingroup zextras \
-        --home /opt/zextras \
-        --shell /bin/bash \
-        zextras
-      usermod -c "zextras user" zextras
-    fi
+  # Apply tmpfiles.d configuration
+  if [ -d /run/systemd/system ]; then
+    systemd-tmpfiles --create /usr/lib/tmpfiles.d/carbonio-nginx.conf >/dev/null 2>&1 || :
   fi
 
+  # Note: chmod resets capabilities, so setcap must run after chmod
   chown root:zextras /opt/zextras/common/sbin/nginx
   chmod 750 /opt/zextras/common/sbin/nginx
-  # changing permission will reset capabilities so set it again
   setcap CAP_NET_BIND_SERVICE=+ep /opt/zextras/common/sbin/nginx
-
-  chown zextras:zextras /opt/zextras/log
 }
 
 postinst__yum() {
-  # creating zextras group if it isn't already there
-  if ! getent group zextras >/dev/null; then
-    groupadd --system zextras >/dev/null
-  fi
-  # creating zextras user if it isn't already there
-  if ! getent passwd zextras >/dev/null; then
-    useradd --system \
-      -g zextras \
-      -d /opt/zextras \
-      --shell /bin/bash \
-      zextras >/dev/null
-    usermod -c "zextras user" zextras
+  # zextras user/group provided by carbonio-core via sysusers.d
+  # /opt/zextras/log ownership handled by carbonio-core tmpfiles.d
+
+  # Apply tmpfiles.d configuration
+  if [ -d /run/systemd/system ]; then
+    systemd-tmpfiles --create /usr/lib/tmpfiles.d/carbonio-nginx.conf >/dev/null 2>&1 || :
   fi
 
+  # Note: chmod resets capabilities, so setcap must run after chmod
   chown root:zextras /opt/zextras/common/sbin/nginx
   chmod 750 /opt/zextras/common/sbin/nginx
-  # changing permission will reset capabilities so set it again
   setcap CAP_NET_BIND_SERVICE=+ep /opt/zextras/common/sbin/nginx
-
-  chown zextras:zextras /opt/zextras/log
 }
