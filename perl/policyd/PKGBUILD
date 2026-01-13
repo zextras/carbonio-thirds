@@ -1,6 +1,6 @@
 pkgname="carbonio-policyd"
 pkgver="2.1.0.0"
-pkgrel="4"
+pkgrel="5"
 pkgdesc="Multi-platform policy server for popular MTAs (aka ClueBringer)"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -41,10 +41,12 @@ source=(
   "git+https://gitlab.linux.community/policyd/policyd"
   "${pkgname}.patch"
   "${pkgname}.service"
+  "systemd-tmpfile.conf"
 )
 sha256sums=('SKIP'
   '2f71d4274585f8ae963e2e2b081a0b0d0780e9eb7aa0e44cd99b5b7f3271119f'
-  'de79eca4916b6377a610bb51d5439513d5f2ffc12ab6b1b15a32267ac0e6daf3')
+  'de79eca4916b6377a610bb51d5439513d5f2ffc12ab6b1b15a32267ac0e6daf3'
+  '2e1fae75ffbc49208adf9f2bf9d302ff39422849608720ce7d8166271e25bc5b')
 
 package() {
   cd "${srcdir}/policyd"
@@ -80,6 +82,10 @@ package() {
   # systemd units
   install -D -m 644 "${srcdir}/${pkgname}.service" \
     "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
+
+  # systemd tmpfiles.d configuration
+  install -D -m 644 "${srcdir}/systemd-tmpfile.conf" \
+    "${pkgdir}/usr/lib/tmpfiles.d/${pkgname}conf"
 }
 
 postinst__apt() {
@@ -99,11 +105,9 @@ postinst__apt() {
     fi
   fi
 
-  if [ ! -d /opt/zextras/data/cbpolicyd/db ]; then
-    mkdir -p /opt/zextras/data/cbpolicyd/db
+  if [ -d /run/systemd/system ]; then
+    systemd-tmpfiles --create /usr/lib/tmpfiles.d/carbonio-policyd.conf || :
   fi
-
-  chown -R zextras:zextras /opt/zextras/data/cbpolicyd
 }
 
 postinst__yum() {
@@ -121,9 +125,7 @@ postinst__yum() {
     usermod -c "zextras user" zextras
   fi
 
-  if [ ! -d /opt/zextras/data/cbpolicyd/db ]; then
-    mkdir -p /opt/zextras/data/cbpolicyd/db
+  if [ -d /run/systemd/system ]; then
+    systemd-tmpfiles --create /usr/lib/tmpfiles.d/carbonio-policyd.conf || :
   fi
-
-  chown -R zextras:zextras /opt/zextras/data/cbpolicyd
 }
