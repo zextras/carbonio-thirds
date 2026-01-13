@@ -1,6 +1,6 @@
 pkgname="carbonio-amavisd"
-pkgver="2.13.1" # renovate: datasource=gitlab-tags depName=amavis/amavis
-pkgrel="4"
+pkgver="2.14.0" # renovate: datasource=gitlab-tags depName=amavis/amavis
+pkgrel="1"
 pkgdesc="High-performance interface between mailer (MTA) and content checkers"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -59,12 +59,14 @@ source=(
   "carbonio-mailthreat-update.service"
   "carbonio-mailthreat-update.timer"
   "socket_and_misc.patch"
+  "systemd-tmpfile.conf"
 )
-sha256sums=('cd08d5b17e393873b79e72a843a672b9207fc4b577b9b8a07769d79bff0a845b'
+sha256sums=('6973ee582b193479ccb0e7d375ad208051236ee0318a17071d263397a2823189'
   '78118f4c93b5a797f8d8c50f2e5c2de6759094fd51d0c9bf67138317a34088ab'
   '2aae564745031515e80899115fb6f13ad0be86056a504b2c03cbd785980e7cf5'
   'c80d0a99da02ab4058ad4f5538c5905cc212b962e43446e2b678d665892fb1bf'
-  'b7f662752874a9d9035fe231adf809591b42b401b2a9d058ecb5ffb4b4cb2737')
+  '8466a63fcf6d1b6a52db0a2e2c22efdd23610615a1ae9d6c5eed00ee0a1e917b'
+  '07badc33beed071be8031a3e65ed93aeb26aceb2d839763145832bbf8e2434ce')
 
 package() {
   cd "${srcdir}/amavis-v${pkgver}"
@@ -90,6 +92,10 @@ package() {
     "${pkgdir}/usr/lib/systemd/system/carbonio-mailthreat-update.service"
   install -Dm644 "${srcdir}/carbonio-mailthreat-update.timer" \
     "${pkgdir}/usr/lib/systemd/system/carbonio-mailthreat-update.timer"
+
+  # systemd tmpfiles.d configuration
+  install -D -m 644 "${srcdir}/systemd-tmpfile.conf" \
+    "${pkgdir}/usr/lib/tmpfiles.d/carbonio-mailthreat.conf"
 }
 
 postinst__apt() {
@@ -109,19 +115,14 @@ postinst__apt() {
     fi
   fi
 
-  if [ ! -d /opt/zextras/data/amavisd/quarantine ]; then
-    mkdir -p /opt/zextras/data/amavisd/quarantine
-  fi
-  if [ ! -d /opt/zextras/data/amavisd/tmp ]; then
-    mkdir -p /opt/zextras/data/amavisd/tmp
-  else
-    find -p /opt/zextras/data/amavisd/tmp -maxdepth 1 -type d -name 'amavis-*' -exec rm -rf {} \; >/dev/null 2>&1
-  fi
-  if [ ! -d /opt/zextras/data/amavisd/var ]; then
-    mkdir -p /opt/zextras/data/amavisd/var
+  if [ -d /run/systemd/system ]; then
+    systemd-tmpfiles --create /usr/lib/tmpfiles.d/carbonio-mailthreat.conf || :
   fi
 
-  chown -R zextras:zextras /opt/zextras/data/amavisd
+  # Clean up temporary amavis work directories
+  if [ -d /opt/zextras/data/amavisd/tmp ]; then
+    find /opt/zextras/data/amavisd/tmp -maxdepth 1 -type d -name 'amavis-*' -exec rm -rf {} \; >/dev/null 2>&1
+  fi
 }
 
 postinst__yum() {
@@ -139,17 +140,12 @@ postinst__yum() {
     usermod -c "zextras user" zextras
   fi
 
-  if [ ! -d /opt/zextras/data/amavisd/quarantine ]; then
-    mkdir -p /opt/zextras/data/amavisd/quarantine
-  fi
-  if [ ! -d /opt/zextras/data/amavisd/tmp ]; then
-    mkdir -p /opt/zextras/data/amavisd/tmp
-  else
-    find -p /opt/zextras/data/amavisd/tmp -maxdepth 1 -type d -name 'amavis-*' -exec rm -rf {} \; >/dev/null 2>&1
-  fi
-  if [ ! -d /opt/zextras/data/amavisd/var ]; then
-    mkdir -p /opt/zextras/data/amavisd/var
+  if [ -d /run/systemd/system ]; then
+    systemd-tmpfiles --create /usr/lib/tmpfiles.d/carbonio-mailthreat.conf || :
   fi
 
-  chown -R zextras:zextras /opt/zextras/data/amavisd
+  # Clean up temporary amavis work directories
+  if [ -d /opt/zextras/data/amavisd/tmp ]; then
+    find /opt/zextras/data/amavisd/tmp -maxdepth 1 -type d -name 'amavis-*' -exec rm -rf {} \; >/dev/null 2>&1
+  fi
 }
