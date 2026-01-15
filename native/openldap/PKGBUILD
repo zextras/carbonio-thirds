@@ -1,6 +1,6 @@
 pkgname="carbonio-openldap"
 pkgver="2.6.10" # renovate: datasource=github-tags depName=openldap/openldap  extractVersion=^OPENLDAP_REL_ENG_(?<version>.+)$ versioning=regex:^(?<major>\d+)_(?<minor>\d+)(_(?<patch>\d+))?$
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Lightweight Directory Access Protocol (LDAP) library"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -31,10 +31,12 @@ source=(
   "https://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-${pkgver}.tgz"
   "${pkgname}.patch"
   "${pkgname}.service"
+  "systemd-tmpfile.conf"
 )
 sha256sums=('c065f04aad42737aebd60b2fe4939704ac844266bc0aeaa1609f0cad987be516'
   'a2ba7ee70d6caf8f21bdac376d95b1e98361874c4fcc62dd63356f9f2a1cae99'
-  'ea5035b346caa69b14d15b2fb205838164a86a752c1d9239a483f059183d8150')
+  'ea5035b346caa69b14d15b2fb205838164a86a752c1d9239a483f059183d8150'
+  'd64b270fd9863319863cd9fb5619d4386cfdb87d841d11a7e5dc4fcb558c1689')
 
 build() {
   cd "${srcdir}/openldap-${pkgver}"
@@ -88,6 +90,10 @@ package() {
   install -D -m 644 "${srcdir}/${pkgname}.service" \
     "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
 
+  # tmpfiles.d configuration
+  install -D -m 644 "${srcdir}/systemd-tmpfile.conf" \
+    "${pkgdir}/usr/lib/tmpfiles.d/${pkgname}.conf"
+
   # libexec .a and .la files should not be deleted
   # they are related to slapd plugins
   find "${pkgdir}/opt/zextras/common/lib" -name '*.a' -delete
@@ -95,45 +101,33 @@ package() {
 }
 
 postinst__apt() {
-  if [ "$1" = "configure" ]; then
-    # creating zextras group if it isn't already there
-    if ! getent group zextras >/dev/null; then
-      groupadd --system zextras >/dev/null
-    fi
-    # creating zextras user if it isn't already there
-    if ! getent passwd zextras >/dev/null; then
-      useradd --system \
-        -g zextras \
-        -d /opt/zextras \
-        --shell /bin/bash \
-        zextras >/dev/null
-      usermod -c "zextras user" zextras
-    fi
+  # Set permissions and capabilities on slapd binary
+  # Note: On fresh install, zextras group may not exist yet (created by carbonio-core).
+  # In that case, carbonio-core's postinst will set these permissions.
+  # On upgrade/reinstall, zextras exists and we can set permissions here.
+  if getent group zextras >/dev/null 2>&1; then
+    # Note: chmod resets capabilities, so setcap must run after chmod
+    chown root:zextras /opt/zextras/common/libexec/slapd
+    chmod 750 /opt/zextras/common/libexec/slapd
+    setcap CAP_NET_BIND_SERVICE=+ep /opt/zextras/common/libexec/slapd
   fi
 
-  chown root:zextras /opt/zextras/common/libexec/slapd
-  chmod 750 /opt/zextras/common/libexec/slapd
-  # changing permission will reset capabilities so set it again
-  setcap CAP_NET_BIND_SERVICE=+ep /opt/zextras/common/libexec/slapd
+  # Apply tmpfiles.d configuration
+  systemd-tmpfiles --create /usr/lib/tmpfiles.d/carbonio-openldap.conf >/dev/null 2>&1 || :
 }
 
 postinst__yum() {
-  # creating zextras group if it isn't already there
-  if ! getent group zextras >/dev/null; then
-    groupadd --system zextras >/dev/null
-  fi
-  # creating zextras user if it isn't already there
-  if ! getent passwd zextras >/dev/null; then
-    useradd --system \
-      -g zextras \
-      -d /opt/zextras \
-      --shell /bin/bash \
-      zextras >/dev/null
-    usermod -c "zextras user" zextras
+  # Set permissions and capabilities on slapd binary
+  # Note: On fresh install, zextras group may not exist yet (created by carbonio-core).
+  # In that case, carbonio-core's postinst will set these permissions.
+  # On upgrade/reinstall, zextras exists and we can set permissions here.
+  if getent group zextras >/dev/null 2>&1; then
+    # Note: chmod resets capabilities, so setcap must run after chmod
+    chown root:zextras /opt/zextras/common/libexec/slapd
+    chmod 750 /opt/zextras/common/libexec/slapd
+    setcap CAP_NET_BIND_SERVICE=+ep /opt/zextras/common/libexec/slapd
   fi
 
-  chown root:zextras /opt/zextras/common/libexec/slapd
-  chmod 750 /opt/zextras/common/libexec/slapd
-  # changing permission will reset capabilities so set it again
-  setcap CAP_NET_BIND_SERVICE=+ep /opt/zextras/common/libexec/slapd
+  # Apply tmpfiles.d configuration
+  systemd-tmpfiles --create /usr/lib/tmpfiles.d/carbonio-openldap.conf >/dev/null 2>&1 || :
 }

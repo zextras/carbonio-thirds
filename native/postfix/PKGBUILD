@@ -1,6 +1,6 @@
 pkgname="carbonio-postfix"
 pkgver="3.10.5" # renovate: datasource=repology depName=arch/postfix
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Fast, easy to administer, secure mail server"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -49,11 +49,15 @@ source=(
   "https://de.postfix.org/ftpmirror/official/postfix-${pkgver}.tar.gz"
   "${pkgname}.patch"
   "${pkgname}.service"
+  "systemd-sysuser.conf"
+  "systemd-tmpfile.conf"
 )
 sha256sums=(
   '6a926bf702173861b08e49bcb51fca3a2f269f9a337f72ef159bf46052087e35'
   '82f5ae29a6667aff05211acbb82667d77994ccce6fdeab89893d1356e9b796bd'
   '16775c587d70cf4f4f2e885bd4e209c8d97ac03d75ac69a6b9d3fc4b58ee8366'
+  '6ad170eece16c7ee4d947a84cf2efb153a4ed52ace02c70016829253dd70aa5e'
+  'edbd7857db1140e9995ab9d210797308c7b826035d06adde7d0d62755e8eb602'
 )
 
 build() {
@@ -110,8 +114,16 @@ package() {
     "${pkgdir}"/opt/zextras/common/sbin/qshape.pl
 
   # systemd unit
-  install -D -m 644 "${srcdir}/${pkgname}.service" \
+  install -Dm644 "${srcdir}/${pkgname}.service" \
     "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
+
+  # systemd sysusers.d configuration
+  install -Dm644 "${srcdir}/systemd-sysuser.conf" \
+    "${pkgdir}/usr/lib/sysusers.d/carbonio-postfix.conf"
+
+  # systemd tmpfiles.d configuration
+  install -Dm644 "${srcdir}/systemd-tmpfile.conf" \
+    "${pkgdir}/usr/lib/tmpfiles.d/${pkgname}.conf"
 
   cd "${pkgdir}"/opt/zextras/common/sbin
   rm -f newaliases
@@ -122,86 +134,18 @@ package() {
 
 postinst__apt() {
   if [ "$1" = "configure" ]; then
-    # creating postfix and postdrop groups if aren't already there
-    if ! getent group postdrop >/dev/null; then
-      groupadd --system postdrop
-    fi
-    if ! getent group postfix >/dev/null; then
-      groupadd --system postfix
-    fi
+    # Create postfix users and groups via sysusers.d
+    systemd-sysusers /usr/lib/sysusers.d/carbonio-postfix.conf >/dev/null 2>&1 || :
 
-    # creating postfix user if it isn't already there
-    if ! getent passwd postfix >/dev/null; then
-      useradd --system \
-        -g postfix \
-        -d /opt/zextras/postfix \
-        -c "postfix user" \
-        postfix
-    fi
+    # Create postfix directories and set SGID on binaries via tmpfiles.d
+    systemd-tmpfiles --create /usr/lib/tmpfiles.d/carbonio-postfix.conf >/dev/null 2>&1 || :
   fi
-
-  usermod -a -G postfix,tty zextras
-  chgrp -f postdrop /opt/zextras/common/sbin/postqueue
-  chmod -f u=rwx,g=rsx,o=rx /opt/zextras/common/sbin/postqueue
-  chgrp -f postdrop /opt/zextras/common/sbin/postdrop
-  chmod -f u=rwx,g=rsx,o=rx /opt/zextras/common/sbin/postdrop
-  chmod 755 /opt/zextras/data/postfix
-  chown -fR postfix:postfix /opt/zextras/data/postfix/spool
-  chown -f root /opt/zextras/data/postfix/spool
-  chown -f postfix /opt/zextras/data/postfix/spool/pid
-  chgrp -f root /opt/zextras/data/postfix/spool/pid
-  chgrp -f postdrop /opt/zextras/data/postfix/spool/public
-  chmod 730 /opt/zextras/data/postfix/spool/maildrop
-  chgrp -f postdrop /opt/zextras/data/postfix/spool/maildrop
-  chmod 730 /opt/zextras/data/postfix/spool/maildrop
-  chown -f postfix /opt/zextras/data/postfix
-  chown -f postfix /opt/zextras/data/postfix/* 2>/dev/null
-  chgrp -f postdrop /opt/zextras/data/postfix/data
-  chmod 755 /opt/zextras/data/postfix/data
-  chown -f postfix:postfix /opt/zextras/data/postfix/data/* 2>/dev/null
-  chmod -R go-w /opt/zextras/data/postfix/data
-  chown -f root /opt/zextras/data/postfix/spool
-  chgrp -f root /opt/zextras/data/postfix/spool
 }
 
 postinst__yum() {
-  # creating postfix and postdrop groups if aren't already there
-  if ! getent group postdrop >/dev/null; then
-    groupadd --system postdrop
-  fi
-  if ! getent group postfix >/dev/null; then
-    groupadd --system postfix
-  fi
+  # Create postfix users and groups via sysusers.d
+  systemd-sysusers /usr/lib/sysusers.d/carbonio-postfix.conf >/dev/null 2>&1 || :
 
-  # creating postfix user if it isn't already there
-  if ! getent passwd postfix >/dev/null; then
-    useradd --system \
-      -g postfix \
-      -d /opt/zextras/postfix \
-      -c "postfix user" \
-      postfix
-  fi
-
-  usermod -a -G postfix,tty zextras
-  chgrp -f postdrop /opt/zextras/common/sbin/postqueue
-  chmod -f u=rwx,g=rsx,o=rx /opt/zextras/common/sbin/postqueue
-  chgrp -f postdrop /opt/zextras/common/sbin/postdrop
-  chmod -f u=rwx,g=rsx,o=rx /opt/zextras/common/sbin/postdrop
-  chmod 755 /opt/zextras/data/postfix
-  chown -fR postfix:postfix /opt/zextras/data/postfix/spool
-  chown -f root /opt/zextras/data/postfix/spool
-  chown -f postfix /opt/zextras/data/postfix/spool/pid
-  chgrp -f root /opt/zextras/data/postfix/spool/pid
-  chgrp -f postdrop /opt/zextras/data/postfix/spool/public
-  chmod 730 /opt/zextras/data/postfix/spool/maildrop
-  chgrp -f postdrop /opt/zextras/data/postfix/spool/maildrop
-  chmod 730 /opt/zextras/data/postfix/spool/maildrop
-  chown -f postfix /opt/zextras/data/postfix
-  chown -f postfix /opt/zextras/data/postfix/* 2>/dev/null
-  chgrp -f postdrop /opt/zextras/data/postfix/data
-  chmod 755 /opt/zextras/data/postfix/data
-  chown -f postfix:postfix /opt/zextras/data/postfix/data/* 2>/dev/null
-  chmod -R go-w /opt/zextras/data/postfix/data
-  chown -f root /opt/zextras/data/postfix/spool
-  chgrp -f root /opt/zextras/data/postfix/spool
+  # Create postfix directories and set SGID on binaries via tmpfiles.d
+  systemd-tmpfiles --create /usr/lib/tmpfiles.d/carbonio-postfix.conf >/dev/null 2>&1 || :
 }
