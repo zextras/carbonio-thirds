@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-mail-spamassassin"
 pkgver="4.0.2" # renovate: datasource=cpan depName=Mail::SpamAssassin
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Spam detector and markup engine"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -53,8 +53,10 @@ section="libs"
 priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/G/GB/GBECHIS/Mail-SpamAssassin-${pkgver}.tar.gz"
+  "systemd-tmpfile.conf"
 )
-sha256sums=('c521be978cef3d49b1e139477ca60a0bd498345fc98274796e44161fae49a17f')
+sha256sums=('c521be978cef3d49b1e139477ca60a0bd498345fc98274796e44161fae49a17f'
+  'ba5d53441f35a96dedcfdf2625021f0148f9a1fc4c4a03c5d980b387c7d83261')
 
 build() {
   cd "${srcdir}/Mail-SpamAssassin-${pkgver}"
@@ -84,4 +86,14 @@ package() {
     "${pkgdir}"/opt/zextras/data/spamassassin/localrules/v310.pre
   sed -i -e 's/^#loadplugin Mail::SpamAssassin::Plugin::Rule2XSBody/loadplugin Mail::SpamAssassin::Plugin::Rule2XSBody/' \
     "${pkgdir}"/opt/zextras/data/spamassassin/localrules/v320.pre
+
+  # systemd tmpfiles.d configuration
+  install -D -m 644 "${srcdir}/systemd-tmpfile.conf" \
+    "${pkgdir}/usr/lib/tmpfiles.d/carbonio-spamassassin.conf"
+}
+
+postinst() {
+  if [ -d /run/systemd/system ]; then
+    systemd-tmpfiles --create /usr/lib/tmpfiles.d/carbonio-spamassassin.conf || :
+  fi
 }
