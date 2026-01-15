@@ -1,6 +1,6 @@
 diff '--color=auto' -Naur a/bin/amavisd b/bin/amavisd
---- a/bin/amavisd	2024-01-19 12:11:01.618696011 +0100
-+++ b/bin/amavisd	2024-01-19 12:12:35.692048464 +0100
+--- a/bin/amavisd	2026-01-09 18:17:30.326992298 +0100
++++ b/bin/amavisd	2026-01-09 18:17:43.464179021 +0100
 @@ -5,6 +5,8 @@
  ### #!/usr/bin/perl -d:NYTProf
  ###   NYTPROF=start=no:addpid=1:forkdepth=1 amavisd -m 5 foreground
@@ -11,8 +11,8 @@ diff '--color=auto' -Naur a/bin/amavisd b/bin/amavisd
  # This is amavis.
  # It is an interface between a message transfer agent (MTA) and virus
 diff '--color=auto' -Naur a/bin/amavisd-release b/bin/amavisd-release
---- a/bin/amavisd-release	2024-01-19 12:11:01.618696011 +0100
-+++ b/bin/amavisd-release	2024-01-19 12:12:35.692048464 +0100
+--- a/bin/amavisd-release	2026-01-09 18:17:30.327048541 +0100
++++ b/bin/amavisd-release	2026-01-09 18:17:43.464391905 +0100
 @@ -88,7 +88,7 @@
    $log_level = 1;
  # $socketname = '127.0.0.1:9998';
@@ -23,8 +23,8 @@ diff '--color=auto' -Naur a/bin/amavisd-release b/bin/amavisd-release
  ### END OF USER CONFIGURABLE
  }
 diff '--color=auto' -Naur a/bin/amavisd-status b/bin/amavisd-status
---- a/bin/amavisd-status	2024-01-19 12:11:01.618696011 +0100
-+++ b/bin/amavisd-status	2024-01-19 12:12:35.692048464 +0100
+--- a/bin/amavisd-status	2026-01-09 18:17:30.327154720 +0100
++++ b/bin/amavisd-status	2026-01-09 18:17:43.464523520 +0100
 @@ -48,6 +48,7 @@
  use warnings;
  use warnings FATAL => qw(utf8 void);
@@ -34,8 +34,8 @@ diff '--color=auto' -Naur a/bin/amavisd-status b/bin/amavisd-status
  use Errno qw(ESRCH ENOENT);
  use POSIX qw(strftime);
 diff '--color=auto' -Naur a/bin/amavis-mc b/bin/amavis-mc
---- a/bin/amavis-mc	2024-01-19 12:11:01.618696011 +0100
-+++ b/bin/amavis-mc	2024-01-19 12:12:35.692048464 +0100
+--- a/bin/amavis-mc	2026-01-09 18:17:30.326942894 +0100
++++ b/bin/amavis-mc	2026-01-09 18:17:43.464658648 +0100
 @@ -48,6 +48,7 @@
  use warnings;
  use warnings FATAL => qw(utf8 void);
@@ -66,8 +66,8 @@ diff '--color=auto' -Naur a/bin/amavis-mc b/bin/amavis-mc
  @services = (
    { cmd => 'amavis-services msg-forwarder' },
 diff '--color=auto' -Naur a/lib/Amavis/rfc2821_2822_Tools.pm b/lib/Amavis/rfc2821_2822_Tools.pm
---- a/lib/Amavis/rfc2821_2822_Tools.pm	2024-01-19 12:11:01.620695975 +0100
-+++ b/lib/Amavis/rfc2821_2822_Tools.pm	2024-01-19 12:14:02.440538664 +0100
+--- a/lib/Amavis/rfc2821_2822_Tools.pm	2026-01-09 18:17:30.329647054 +0100
++++ b/lib/Amavis/rfc2821_2822_Tools.pm	2026-01-09 18:17:43.464845520 +0100
 @@ -515,6 +515,9 @@
      my(@dkeys); my $d = $domain;
      for (;;) {            # (@).sub.example.com (@).example.com (@).com (@).
@@ -79,8 +79,8 @@ diff '--color=auto' -Naur a/lib/Amavis/rfc2821_2822_Tools.pm b/lib/Amavis/rfc282
        $d = ($d =~ /^([^.]*)\.(.*)\z/s) ? $2 : '';
      }
 diff '--color=auto' -Naur a/lib/Amavis.pm b/lib/Amavis.pm
---- a/lib/Amavis.pm	2024-01-19 12:11:01.618696011 +0100
-+++ b/lib/Amavis.pm	2024-01-19 12:12:35.693048446 +0100
+--- a/lib/Amavis.pm	2026-01-09 18:17:30.327665229 +0100
++++ b/lib/Amavis.pm	2026-01-09 18:18:20.328097909 +0100
 @@ -443,7 +443,7 @@
      P => sub {$MSGINFO->partition_tag}, # SQL partition tag
      partition_tag => sub {$MSGINFO->partition_tag},  # synonym for %P
@@ -99,7 +99,7 @@ diff '--color=auto' -Naur a/lib/Amavis.pm b/lib/Amavis.pm
        Convert::TNEF Convert::UUlib File::LibMagic
        MIME::Entity MIME::Parser MIME::Tools Mail::Header Mail::Internet
        Digest::MD5 Digest::SHA Digest::SHA1 Crypt::OpenSSL::RSA
-@@ -5968,6 +5968,15 @@
+@@ -5970,6 +5970,15 @@
      }
    }  # endfor per_recip_data
  
@@ -115,12 +115,12 @@ diff '--color=auto' -Naur a/lib/Amavis.pm b/lib/Amavis.pm
    if ($ccat == CC_SPAM) {
      my $sqbsm = ca('spam_quarantine_bysender_to_maps');
      if (@$sqbsm) {  # by-sender spam quarantine (hardly useful, rarely used)
-@@ -7007,7 +7016,7 @@
-   push(@{/^no_conf_file_writable_check\z/ ? \@known : \@unknown}, $_)
-     for grep($i_know_what_i_am_doing{$_}, keys %i_know_what_i_am_doing);
-   $unknown[0] = 'unknown: ' . $unknown[0]  if @unknown;
--  warn sprintf("I know what I'm doing: %s\n", join(', ',@known,@unknown));
-+  # warn sprintf("I know what I'm doing: %s\n", join(', ',@known,@unknown));
- }
+@@ -7010,7 +7019,7 @@
+     push(@{/^no_conf_file_writable_check\z/ ? \@known : \@unknown}, $_)
+       for grep($i_know_what_i_am_doing{$_}, keys %i_know_what_i_am_doing);
+     $unknown[0] = 'unknown: ' . $unknown[0]  if @unknown;
+-    warn sprintf("I know what I'm doing: %s\n", join(', ',@known,@unknown));
++    #warn sprintf("I know what I'm doing: %s\n", join(', ',@known,@unknown));
+   }
  
- # deal with debugging early, based on a command line arg
+   # deal with debugging early, based on a command line arg
