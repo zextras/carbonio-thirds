@@ -56,7 +56,7 @@ source=(
   "systemd-tmpfile.conf"
 )
 sha256sums=('c521be978cef3d49b1e139477ca60a0bd498345fc98274796e44161fae49a17f'
-  '2c23a3118108f805676b3f9190c5bd4f70bca32fdecbf8b0ceb13db237fe0124')
+  '3a55e88da081fda465c1db46dc9b5e4440a4a15ce3e3ecfd240c010d1de573f1')
 
 build() {
   cd "${srcdir}/Mail-SpamAssassin-${pkgver}"

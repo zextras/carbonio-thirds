@@ -54,7 +54,7 @@ sha256sums=(
   'SKIP'
   '49a203086ff15c647f9a05a6c10e008eea829ce05ed61a7ba5ccdb7f26ba243c'
   'fc1f424ddcceca647d2eb9e1d1f129f4fb09f42f74c7c0bbf818dadc5bb0509f'
-  '63d2bbce8257e7a3b64ad895d525a13f9966587728e5fde2031d17a2e3fc9ff6'
+  '0d9bf766db1f5e64bd6f8766f22735f7af5cffed4759e15b0d99dd9da4ce9ee2'
 )
 prepare() {
   cd "${srcdir}/nginx-brotli"
