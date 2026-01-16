@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-dbd-sqlite"
-pkgver="1.76" # renovate: datasource=cpan depName=DBD::SQLite
+pkgver="1.78" # renovate: datasource=cpan depName=DBD::SQLite
 pkgrel="1"
 pkgdesc="Self-contained RDBMS in a DBI Driver"
 arch=('x86_64')
@@ -25,7 +25,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/I/IS/ISHIGAKI/DBD-SQLite-${pkgver}.tar.gz"
 )
-sha256sums=('0a33a7a935be63371071dbe600cfaefa67cd971b67580a917bbf6ebaf723c584')
+sha256sums=('efbad7794bafaa4e7476c07445a33bbfe1040e380baa3395a02635eebe3859d5')
 
 build() {
   cd "${srcdir}/DBD-SQLite-${pkgver}"
