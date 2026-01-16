@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-dbd-mysql"
-pkgver="4.054" # renovate: datasource=cpan depName=DBD::mysql
+pkgver="5.013" # renovate: datasource=cpan depName=DBD::mysql
 pkgrel="1"
 pkgdesc="Perl/CPAN DBD::mysql module for interacting with MySQL via DBD"
 arch=('x86_64')
