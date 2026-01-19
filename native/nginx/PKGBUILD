@@ -40,7 +40,6 @@ section="utils"
 priority="optional"
 source=(
   "https://nginx.org/download/nginx-${pkgver}.tar.gz"
-  "nginx-tcp-keepalive::git+https://github.com/nviennot/nginx-tcp-keepalive#commit=19755fc0e22aa7d7ac2198f78b297951d31ea1dc"
   "nginx-brotli::git+https://github.com/google/ngx_brotli#commit=a71f9312c2deb28875acc7bacfdd5695a111aa53"
   "modules::git+https://github.com/zextras/carbonio-nginx-modules#commit=e62d730a1f5f23494fba7f0a45d3271c335fae6f"
   "${pkgname}.service"
@@ -49,7 +48,6 @@ source=(
 )
 sha256sums=(
   'c6b5c6b086c0df9d3ca3ff5e084c1d0ef909e6038279c71c1c3e985f576ff76a'
-  'SKIP'
   'SKIP'
   'SKIP'
   '49a203086ff15c647f9a05a6c10e008eea829ce05ed61a7ba5ccdb7f26ba243c'
@@ -71,7 +69,6 @@ build() {
 
   ./configure \
     --add-module="${srcdir}/nginx-brotli" \
-    --add-module="${srcdir}/nginx-tcp-keepalive" \
     --add-module="${srcdir}/modules/http/sso" \
     --add-module="${srcdir}/modules/http/upstreamzmauth" \
     --add-module="${srcdir}/modules/mail/zmauth" \
