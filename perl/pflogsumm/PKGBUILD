@@ -1,6 +1,6 @@
 pkgname="carbonio-pflogsumm"
-pkgver="1.1.5" # renovate: datasource=repology depName=arch/pflogsumm
-pkgrel="2"
+pkgver="1.1.6" # renovate: datasource=repology depName=arch/pflogsumm
+pkgrel="1"
 pkgdesc="Postfix log entry summarizer"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -13,11 +13,11 @@ priority="important"
 source=(
   "https://jimsun.linxnet.com/downloads/pflogsumm-${pkgver}.tar.gz"
 )
-sha256sums=('da6443679117de5109fd7d65fe915286c20ad1ecee63fe07d8cdddd0b75fe466')
+sha256sums=('5ccba9ec765720c79b9d8ae0f02e4c39f042d54e742a238ebb20b51a61915167')
 
 package() {
   cd "${srcdir}/pflogsumm-${pkgver}"
-  install -D -m755 pflogsumm.pl \
+  install -Dm755 pflogsumm \
     "${pkgdir}/opt/zextras/common/bin/pflogsumm"
   sed -i -e '/=head1 NAME/ i use lib qw(/opt/zextras/common/lib/perl5);' \
     "${pkgdir}"/opt/zextras/common/bin/pflogsumm
