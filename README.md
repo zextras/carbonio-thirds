@@ -19,9 +19,54 @@ The repository is organized into two main directories:
 
 - **`perl/`** - Build configurations for Perl modules required by Carbonio components
 
-## Building
+### Prerequisites
 
-This repository uses [YAP (Yet Another Packager)](https://github.com/M0RF30/yap) for building packages. Refer to the YAP documentation for build instructions.
+- Docker or Podman installed
+- Make
+
+### Quick Start
+
+```bash
+# Build all packages for Ubuntu 22.04
+make build TARGET=ubuntu-jammy
+
+# Build only native packages for Rocky Linux 9
+make build-native TARGET=rocky-9
+
+# Build only Perl packages for Ubuntu 24.04
+make build-perl TARGET=ubuntu-noble
+```
+
+### Available Commands
+
+| Command | Description |
+| ------- | ----------- |
+| `make build` | Build all packages (native and perl) |
+| `make build-native` | Build only native packages |
+| `make build-perl` | Build only Perl packages |
+| `make pull` | Pull the YAP container image |
+| `make clean` | Remove build artifacts |
+| `make list-targets` | List supported distribution targets |
+| `make help` | Show detailed help |
+
+### Supported Targets
+
+- `ubuntu-jammy` - Ubuntu 22.04 LTS
+- `ubuntu-noble` - Ubuntu 24.04 LTS
+- `rocky-8` - Rocky Linux 8
+- `rocky-9` - Rocky Linux 9
+
+### Configuration
+
+You can customize the build by setting environment variables:
+
+```bash
+# Use a specific container runtime
+make build TARGET=ubuntu-jammy CONTAINER_RUNTIME=docker
+
+# Use a different output directory
+make build TARGET=rocky-9 OUTPUT_DIR=./my-packages
+```
 
 ## License
 
