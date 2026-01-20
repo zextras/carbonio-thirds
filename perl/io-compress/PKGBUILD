@@ -5,6 +5,7 @@ pkgdesc="Low-Level Interface to compression libraries"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
+license=("Artistic-1.0-Perl OR GPL-1.0-or-later")
 depends__apt=(
   "carbonio-perl-compress-raw-bzip2"
   "carbonio-perl-compress-raw-zlib"

@@ -5,6 +5,7 @@ pkgdesc="P(ortable|ackageable) NaCl-based crypto library"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
+license=("ISC")
 section="libs"
 priority="important"
 source=(

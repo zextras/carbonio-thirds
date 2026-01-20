@@ -5,10 +5,7 @@ pkgdesc="The World-Wide Web library for Perl"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
-license=(
-  "Artistic-1.0-Perl"
-  "GPL-1.0-only"
-)
+license=("Artistic-1.0-Perl OR GPL-1.0-or-later")
 depends__apt=(
   "carbonio-perl-encode-locale"
   "carbonio-perl-file-listing"

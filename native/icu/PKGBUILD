@@ -5,6 +5,7 @@ pkgdesc="International Components for Unicode library"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
+license=("Unicode-3.0")
 depends__apt=(
   "libc6"
   "bash"

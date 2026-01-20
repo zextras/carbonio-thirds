@@ -5,6 +5,7 @@ pkgdesc="Lightweight Directory Access Protocol (LDAP) library"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
+license=("OLDAP-2.8")
 depends__apt=(
   "carbonio-cyrus-sasl"
   "carbonio-libsodium"

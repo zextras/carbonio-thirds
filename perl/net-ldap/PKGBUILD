@@ -5,6 +5,7 @@ pkgdesc="Lightweight Directory Access Protocol"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
+license=("Artistic-1.0-Perl OR GPL-1.0-or-later")
 depends__apt=(
   "carbonio-perl-convert-asn1"
   "perl"

@@ -5,6 +5,7 @@ pkgdesc="Multi-platform policy server for popular MTAs (aka ClueBringer)"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
+license=("GPL-2.0-or-later")
 depends__apt=(
   "carbonio-perl-cache-fastmmap"
   "carbonio-perl-config-inifiles"

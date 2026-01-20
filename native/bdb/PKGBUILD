@@ -5,6 +5,7 @@ pkgdesc="The Berkeley DB embedded database system"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
+license=("Sleepycat AND BSD-3-Clause AND CDDL-1.0")
 section="utils"
 priority="optional"
 source=(

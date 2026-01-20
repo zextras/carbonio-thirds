@@ -5,6 +5,7 @@ pkgdesc="Distributed memory object caching system"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
+license=("BSD-3-Clause")
 depends__apt=(
   "carbonio-libevent"
 )

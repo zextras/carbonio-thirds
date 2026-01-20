@@ -5,6 +5,7 @@ pkgdesc="MIME encoded email pack alteration tool"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
+license=("BSD-2-Clause")
 section="utils"
 priority="optional"
 source=(

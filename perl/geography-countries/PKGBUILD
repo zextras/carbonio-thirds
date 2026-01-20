@@ -5,6 +5,7 @@ pkgdesc="2-letter, 3-letter, and numerical codes for countries"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
+license=("Artistic-1.0-Perl OR GPL-1.0-or-later")
 depends__apt=(
   "perl"
 )

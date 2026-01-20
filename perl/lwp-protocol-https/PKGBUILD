@@ -5,6 +5,7 @@ pkgdesc="Provide https support for LWP::UserAgent"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
+license=("Artistic-1.0-Perl OR GPL-1.0-or-later")
 depends__apt=(
   "carbonio-perl-io-socket-ssl"
   "carbonio-perl-libwww"

@@ -5,6 +5,7 @@ pkgdesc="Fast, easy to administer, secure mail server"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
+license=("IPL-1.0 OR EPL-2.0")
 depends__apt=(
   "carbonio-cyrus-sasl"
   "carbonio-mariadb"
