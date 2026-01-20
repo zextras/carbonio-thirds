@@ -5,7 +5,7 @@ pkgdesc="Perl bindings for OpenSSL"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
-license=("Artistic-2.0")
+license=('Artistic-2.0')
 depends__apt=(
   "carbonio-openssl"
   "perl"

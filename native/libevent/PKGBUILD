@@ -5,7 +5,7 @@ pkgdesc="An event notification library"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
-license=("BSD-3-Clause-Modification")
+license=('BSD-3-Clause-Modification')
 depends=(
   "carbonio-openssl"
 )

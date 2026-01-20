@@ -5,7 +5,7 @@ pkgdesc="An open source implementation of the DKIM sender authentication system.
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
-license=("LicenseRef-custom")
+license=('LicenseRef-custom')
 depends__apt=(
   "carbonio-cyrus-sasl"
   "carbonio-bdb"

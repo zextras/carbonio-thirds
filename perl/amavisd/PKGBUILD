@@ -5,7 +5,7 @@ pkgdesc="High-performance interface between mailer (MTA) and content checkers"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
-license=("GPL-2.0-or-later")
+license=('GPL-2.0-or-later')
 depends=(
   "carbonio-perl-archive-zip"
   "carbonio-perl-berkeleydb"

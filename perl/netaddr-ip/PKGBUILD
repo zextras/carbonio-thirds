@@ -5,7 +5,7 @@ pkgdesc="Manages IPv4 and IPv6 addresses and subnets"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
-license=("Artistic-1.0-Perl OR GPL-1.0-or-later")
+license=('Artistic-1.0-Perl OR GPL-1.0-or-later')
 depends__apt=(
   "perl"
 )

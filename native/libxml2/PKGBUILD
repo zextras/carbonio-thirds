@@ -5,7 +5,7 @@ pkgdesc="XML parsing library, version 2"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
-license=("MIT")
+license=('MIT')
 depends__apt=(
   "carbonio-icu"
   "zlib1g"
