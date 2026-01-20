@@ -5,7 +5,7 @@ pkgdesc="Provides useful functions commonly found on BSD systems like strlcpy()"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
-license=("custom")
+license=("LicenseRef-custom")
 depends__apt=(
   "libc6"
 )
