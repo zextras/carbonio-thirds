@@ -5,6 +5,7 @@ pkgdesc="Implementation of the sendmail Mail Filter API"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
+license=('Sendmail-8.23')
 section="libs"
 priority="important"
 source=(

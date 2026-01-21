@@ -5,6 +5,7 @@ pkgdesc="RSA encoding and decoding, using the openSSL libraries"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
+license=('Artistic-1.0-Perl OR GPL-1.0-or-later')
 depends__apt=(
   "carbonio-perl-crypt-openssl-random"
   "carbonio-openssl"

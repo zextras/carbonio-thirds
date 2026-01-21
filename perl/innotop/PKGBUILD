@@ -5,6 +5,7 @@ pkgdesc="Postfix log entry summarizer"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
+license=('GPL-2.0-only')
 depends__apt=(
   "carbonio-perl-dbd-mysql"
   "carbonio-perl-term-readkey"
