@@ -5,6 +5,7 @@ pkgdesc="Spam detector and markup engine"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
+license=('Apache-2.0')
 depends=(
   "carbonio-openssl"
   "carbonio-perl-http-message"
