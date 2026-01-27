@@ -6,3 +6,5 @@ start
 artifacts
 .trunk
 .vscode*
+.ccache
+
