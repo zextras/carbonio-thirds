@@ -5,12 +5,35 @@ Wants=carbonio-mailthreat.service carbonio-configd.service
 PartOf=carbonio-mta.target
 
 [Service]
+Slice=carbonio-mta.slice
 User=zextras
-EnvironmentFile=-/opt/zextras/data/systemd.env
 ExecStartPre=bash -c "if [ ! -f "/opt/zextras/data/cbpolicyd/db/cbpolicyd.sqlitedb" ]; then /opt/zextras/libexec/zmcbpolicydinit; fi"
-ExecStartPre=echo REWRITE cbpolicyd | netcat -w $configd_rewrite_timeout localhost $configd_listen_port
+ExecStartPre=echo REWRITE cbpolicyd | netcat -w 120 localhost 7171
 ExecStart=/opt/zextras/common/bin/cbpolicyd --config /opt/zextras/conf/cbpolicyd.conf -fg
+ExecReload=/bin/kill -HUP $MAINPID
 LimitNOFILE=524288
+Restart=on-failure
+RestartSec=3s
+
+# Security hardening (enhanced profile - Perl policy daemon)
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+NoNewPrivileges=yes
+CapabilityBoundingSet=
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+ProtectKernelLogs=yes
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+SystemCallArchitectures=native
+ProtectHostname=yes
+ProtectClock=yes
 
 [Install]
 WantedBy=carbonio-mta.target

@@ -54,7 +54,10 @@ source=(
   "https://www.clamav.net/downloads/production/clamav-${pkgver}.tar.gz"
   "https://dl.fedoraproject.org/pub/fedora/linux/development/rawhide/Everything/x86_64/os/Packages/c/clamav-data-1.4.3-5.fc44.noarch.rpm"
   "211-carbonio-clamav-setup.sh"
+  "carbonio-antivirus.path"
   "carbonio-antivirus.service"
+  "carbonio-antivirus.slice"
+  "carbonio-antivirus-reload.service"
   "carbonio-clamav"
   "carbonio-clamav-sidecar.service"
   "carbonio-clamav.hcl"
@@ -69,11 +72,14 @@ sha256sums=(
   'd874cabf3d4765b35b518ef535658a1e6ec74802006a1d613f9f124aa1343210'
   'SKIP'
   'cc36d9357d4434ff290e46a713da8246420750a5fafdf148ce0787b531a093a5'
-  'ae25e9e1ab67db1d55a29221042851ba2a6d73bb190abe7635aee1169d69801a'
+  '44d8e7bb5b2667789b00ae311046cf98d624fd610942fe59ee4dbe66c8ced7df'
+  '2cb8ae5f18a7a514c710360b788282d15d68a0dca7cfb3779eb966f1cf03787f'
+  'eb306950a2c2b9cd8464e148e103028c146e2443258878325fbfc50fec02cbec'
+  '590b7e5036a3cbeae7f8796aec7e728a816f3924b4694442325c3c3759368ff8'
   'a82946b05bdc139b790492b345eda5648c0196ce605decab33d75f661b6ed812'
-  'a0120f980af3ea00adc923f191e8b8a078e7eaabd2c49544a9e21ccd08941fec'
+  'bffa76814e1a8dd1674f565a500787e83181f303306982cf7b36e4bb5627ca97'
   '08fa4a2b6cd15a5dc9394743692306d6762a21f3b94df28abcaee51d54b30250'
-  '14d253334669b8ac76d4b72b66b95ba501fbc5f9f1f13abaed3a6448dd91cdd7'
+  'fcc909b89d3af0537016e1a0aa049986f6230fc81a680d0e7f2622460edbab69'
   'df54edd32986b4213a09069681741ba7533dc40a034a6a2b080cdf380a69fb05'
   'd67bb7f9d98ccb033f632621accf3d8a3391aa3955074af958c0def644be0ef5'
   '6c1f94857671bd044fe4dac20df1f927629c50bfbb0aa9991e6de1a73d1791a0'
@@ -120,6 +126,12 @@ package() {
   # systemd units
   install -D -m 644 "${srcdir}/carbonio-antivirus.service" \
     "${pkgdir}/usr/lib/systemd/system/carbonio-antivirus.service"
+  install -D -m 644 "${srcdir}/carbonio-antivirus-reload.service" \
+    "${pkgdir}/usr/lib/systemd/system/carbonio-antivirus-reload.service"
+  install -D -m 644 "${srcdir}/carbonio-antivirus.path" \
+    "${pkgdir}/usr/lib/systemd/system/carbonio-antivirus.path"
+  install -D -m 644 "${srcdir}/carbonio-antivirus.slice" \
+    "${pkgdir}/usr/lib/systemd/system/carbonio-antivirus.slice"
   install -D -m 644 "${srcdir}/carbonio-freshclam.service" \
     "${pkgdir}/usr/lib/systemd/system/carbonio-freshclam.service"
   install -D -m 644 "${srcdir}/carbonio-clamav-sidecar.service" \

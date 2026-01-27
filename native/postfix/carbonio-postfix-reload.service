@@ -1,0 +1,37 @@
+# SPDX-FileCopyrightText: 2025 Zextras <https://www.zextras.com>
+# SPDX-License-Identifier: GPL-2.0-only
+
+# Triggered by carbonio-postfix.path when config changes
+
+[Unit]
+Description=Reload Carbonio Postfix on config change
+Documentation=https://zextras.com
+After=carbonio-postfix.service
+Requisite=carbonio-postfix.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/systemctl reload carbonio-postfix.service
+
+# Security hardening (strict profile - oneshot reload)
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+NoNewPrivileges=yes
+CapabilityBoundingSet=
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+ProtectKernelLogs=yes
+MemoryDenyWriteExecute=yes
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+RestrictAddressFamilies=AF_UNIX
+SystemCallFilter=@system-service
+SystemCallErrorNumber=EPERM
+SystemCallArchitectures=native
+ProtectHostname=yes
+ProtectClock=yes

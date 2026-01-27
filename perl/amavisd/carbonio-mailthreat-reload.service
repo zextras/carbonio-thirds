@@ -1,19 +1,20 @@
+# SPDX-FileCopyrightText: 2025 Zextras <https://www.zextras.com>
+# SPDX-License-Identifier: GPL-2.0-only
+
+# Triggered by carbonio-mailthreat.path when config changes
+
 [Unit]
-Description=Carbonio SASL Auth Daemon
-After=carbonio-configd.service
-Wants=carbonio-configd.service
-PartOf=carbonio-mta.target
+Description=Reload Carbonio Mailthreat on config change
+Documentation=https://zextras.com
+After=carbonio-mailthreat.service
+Requisite=carbonio-mailthreat.service
 
 [Service]
 Slice=carbonio-mta.slice
-User=zextras
-Type=forking
-ExecStartPre=echo REWRITE sasl | netcat -w 120 localhost 7171
-ExecStart=/opt/zextras/common/sbin/saslauthd -r -a zimbra
-Restart=on-failure
-RestartSec=3s
+Type=oneshot
+ExecStart=/usr/bin/systemctl reload carbonio-mailthreat.service
 
-# Security hardening (strict profile)
+# Security hardening (strict profile - oneshot reload)
 ProtectSystem=strict
 ProtectHome=yes
 PrivateTmp=yes
@@ -29,12 +30,9 @@ RestrictNamespaces=yes
 RestrictRealtime=yes
 RestrictSUIDSGID=yes
 LockPersonality=yes
-RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictAddressFamilies=AF_UNIX
 SystemCallFilter=@system-service
 SystemCallErrorNumber=EPERM
 SystemCallArchitectures=native
 ProtectHostname=yes
 ProtectClock=yes
-
-[Install]
-WantedBy=carbonio-mta.target

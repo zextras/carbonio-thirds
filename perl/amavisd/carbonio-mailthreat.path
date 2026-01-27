@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: 2025 Zextras <https://www.zextras.com>
+# SPDX-License-Identifier: GPL-2.0-only
+
+# Watch amavisd configuration for changes made by configd
+
+[Unit]
+Description=Watch Carbonio Mailthreat config for changes
+Documentation=https://zextras.com
+After=carbonio-mailthreat.service
+BindsTo=carbonio-mailthreat.service
+
+[Path]
+PathModified=/opt/zextras/conf/amavisd.conf
+Unit=carbonio-mailthreat-reload.service
+
+[Install]
+WantedBy=carbonio-mta.target

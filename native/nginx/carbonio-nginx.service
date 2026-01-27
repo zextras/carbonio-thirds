@@ -5,17 +5,37 @@ Wants=carbonio-memcached.service
 PartOf=carbonio-proxy.target
 
 [Service]
+Slice=carbonio-proxy.slice
 User=zextras
 Type=forking
 AmbientCapabilities=CAP_NET_BIND_SERVICE
-EnvironmentFile=-/opt/zextras/data/systemd.env
-ExecStartPre=echo REWRITE proxy | netcat -w $configd_rewrite_timeout localhost $configd_listen_port
+ExecStartPre=echo REWRITE proxy | netcat -w 120 localhost 7171
 ExecStart=/opt/zextras/common/sbin/nginx -c /opt/zextras/conf/nginx.conf
 ExecReload=/opt/zextras/common/sbin/nginx -c /opt/zextras/conf/nginx.conf -s reload
 ExecStop=/opt/zextras/common/sbin/nginx -c /opt/zextras/conf/nginx.conf -s stop
 RestartSec=5s
 Restart=on-failure
 LimitNOFILE=524288
+
+# Security hardening (enhanced profile - network service)
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+NoNewPrivileges=yes
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE CAP_SETGID CAP_SETUID
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+ProtectKernelLogs=yes
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+SystemCallArchitectures=native
+ProtectHostname=yes
+ProtectClock=yes
 
 [Install]
 WantedBy=carbonio-proxy.target

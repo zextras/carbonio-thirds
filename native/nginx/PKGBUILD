@@ -42,7 +42,9 @@ source=(
   "https://nginx.org/download/nginx-${pkgver}.tar.gz"
   "nginx-brotli::git+https://github.com/google/ngx_brotli#commit=a71f9312c2deb28875acc7bacfdd5695a111aa53"
   "modules::git+https://github.com/zextras/carbonio-nginx-modules#commit=e62d730a1f5f23494fba7f0a45d3271c335fae6f"
+  "${pkgname}.path"
   "${pkgname}.service"
+  "${pkgname}-reload.service"
   "${pkgname}-${pkgver}.patch"
   "systemd-tmpfile.conf"
 )
@@ -50,7 +52,9 @@ sha256sums=(
   'c6b5c6b086c0df9d3ca3ff5e084c1d0ef909e6038279c71c1c3e985f576ff76a'
   'SKIP'
   'SKIP'
-  '49a203086ff15c647f9a05a6c10e008eea829ce05ed61a7ba5ccdb7f26ba243c'
+  'd53cbfabd4db6640b4c882d9115db8d36f4e7122a4781ae5c9a58d9b046a7d07'
+  '27f96329f9380ebfd134f865bb5fe7ed34d389720476237f8800efbde0dd07bc'
+  '4d0642fb2df8ac0af96571e5f4fed7cff03db463ad847341a19073652a66f757'
   'fc1f424ddcceca647d2eb9e1d1f129f4fb09f42f74c7c0bbf818dadc5bb0509f'
   '0d9bf766db1f5e64bd6f8766f22735f7af5cffed4759e15b0d99dd9da4ce9ee2'
 )
@@ -117,6 +121,10 @@ package() {
   # systemd unit
   install -D -m 644 "${srcdir}/${pkgname}.service" \
     "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
+  install -D -m 644 "${srcdir}/${pkgname}-reload.service" \
+    "${pkgdir}/usr/lib/systemd/system/${pkgname}-reload.service"
+  install -D -m 644 "${srcdir}/${pkgname}.path" \
+    "${pkgdir}/usr/lib/systemd/system/${pkgname}.path"
 
   # systemd tmpfiles.d configuration
   install -D -m 644 "${srcdir}/systemd-tmpfile.conf" \

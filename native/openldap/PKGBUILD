@@ -31,13 +31,17 @@ priority="important"
 source=(
   "https://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-${pkgver}.tgz"
   "${pkgname}.patch"
+  "${pkgname}.slice"
   "${pkgname}.service"
   "systemd-tmpfile.conf"
 )
-sha256sums=('c065f04aad42737aebd60b2fe4939704ac844266bc0aeaa1609f0cad987be516'
+sha256sums=(
+  'c065f04aad42737aebd60b2fe4939704ac844266bc0aeaa1609f0cad987be516'
   'a2ba7ee70d6caf8f21bdac376d95b1e98361874c4fcc62dd63356f9f2a1cae99'
-  'ea5035b346caa69b14d15b2fb205838164a86a752c1d9239a483f059183d8150'
-  'd64b270fd9863319863cd9fb5619d4386cfdb87d841d11a7e5dc4fcb558c1689')
+  '1a6d37ba4a5bc1a6f5c432b5e9814ff5787a3edb7c61eed565b57f6d955aebe9'
+  '8580104611c0682a7dfa5e2c0c2722a85e8518283a92bb77b88d3dab2966c05b'
+  'd64b270fd9863319863cd9fb5619d4386cfdb87d841d11a7e5dc4fcb558c1689'
+)
 
 build() {
   cd "${srcdir}/openldap-${pkgver}"
@@ -90,6 +94,8 @@ package() {
   # systemd unit
   install -D -m 644 "${srcdir}/${pkgname}.service" \
     "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
+  install -D -m 644 "${srcdir}/${pkgname}.slice" \
+    "${pkgdir}/usr/lib/systemd/system/${pkgname}.slice"
 
   # tmpfiles.d configuration
   install -D -m 644 "${srcdir}/systemd-tmpfile.conf" \

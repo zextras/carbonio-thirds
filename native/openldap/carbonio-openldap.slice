@@ -1,0 +1,31 @@
+[Unit]
+Description=Carbonio OpenLDAP Slice
+Documentation=man:systemd.slice(5)
+Before=slices.target
+PartOf=carbonio-directory-server.target
+StopWhenUnneeded=yes
+
+[Slice]
+# OpenLDAP directory service
+# LDAP is critical infrastructure, needs reliable I/O
+#
+# Scaling guide:
+#   Small  (8GB RAM):   ~800MB effective (10% of 8GB)
+#   Medium (32GB RAM):  ~3.2GB effective (10% of 32GB)
+#   Large  (64GB RAM):  ~6.4GB effective (10% of 64GB)
+#
+# Note: LDAP caches benefit from more RAM in large deployments
+# Auth is critical path - needs headroom for peak loads
+
+# Memory controls - percentage-based for automatic scaling
+MemoryMax=10%
+MemoryHigh=8%
+
+# CPU weight: moderate (auth lookups, but not CPU intensive)
+CPUWeight=70
+
+# I/O weight: high (LDAP database must be responsive)
+IOWeight=90
+
+# Process/thread limit (slapd threads)
+TasksMax=256

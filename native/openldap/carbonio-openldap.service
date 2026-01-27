@@ -3,12 +3,41 @@ Description=Carbonio OpenLDAP Daemon
 PartOf=carbonio-directory-server.target
 
 [Service]
+Slice=carbonio-openldap.slice
 User=zextras
 AmbientCapabilities=CAP_NET_BIND_SERVICE
 EnvironmentFile=-/opt/zextras/data/systemd.env
 ExecStartPre=/opt/zextras/bin/systemd-envscript
-ExecStart=/opt/zextras/common/libexec/slapd -d 0 -l LOCAL0 -h '${bind_url} ldapi:///' -F /opt/zextras/data/ldap/config
+ExecStart=/opt/zextras/common/libexec/slapd -d 0 -l LOCAL0 -h "${bind_url} ldapi:///" -F /opt/zextras/data/ldap/config
+RuntimeDirectory=carbonio carbonio/run
+RuntimeDirectoryMode=0755
 LimitNOFILE=524288
+Restart=on-failure
+RestartSec=3s
+
+# Security hardening (standard profile - directory service)
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+NoNewPrivileges=yes
+RemoveIPC=yes
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE CAP_SETGID CAP_SETUID
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+ProtectKernelLogs=yes
+MemoryDenyWriteExecute=yes
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+SystemCallFilter=@system-service
+SystemCallErrorNumber=EPERM
+SystemCallArchitectures=native
+ProtectHostname=yes
+ProtectClock=yes
 
 [Install]
 WantedBy=carbonio-directory-server.target

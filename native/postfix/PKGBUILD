@@ -49,14 +49,18 @@ priority="optional"
 source=(
   "https://de.postfix.org/ftpmirror/official/postfix-${pkgver}.tar.gz"
   "${pkgname}.patch"
+  "${pkgname}.path"
   "${pkgname}.service"
+  "${pkgname}-reload.service"
   "systemd-sysuser.conf"
   "systemd-tmpfile.conf"
 )
 sha256sums=(
   '6a926bf702173861b08e49bcb51fca3a2f269f9a337f72ef159bf46052087e35'
   '82f5ae29a6667aff05211acbb82667d77994ccce6fdeab89893d1356e9b796bd'
-  '16775c587d70cf4f4f2e885bd4e209c8d97ac03d75ac69a6b9d3fc4b58ee8366'
+  '6bf6219f3ebd10cffa3b4cc7d173426b187e4a500316c1e788beb9eda0e8c4a8'
+  'ea0b33c9707fa05f548ed2a72909890d52aaa6c64a73a25bfd83e5b58305aff2'
+  'd169d009077e88ed1fddb5188d3f43eecfa2676d7af7436a2d5a1977faf7af13'
   '6ad170eece16c7ee4d947a84cf2efb153a4ed52ace02c70016829253dd70aa5e'
   'edbd7857db1140e9995ab9d210797308c7b826035d06adde7d0d62755e8eb602'
 )
@@ -117,6 +121,10 @@ package() {
   # systemd unit
   install -Dm644 "${srcdir}/${pkgname}.service" \
     "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
+  install -Dm644 "${srcdir}/${pkgname}-reload.service" \
+    "${pkgdir}/usr/lib/systemd/system/${pkgname}-reload.service"
+  install -Dm644 "${srcdir}/${pkgname}.path" \
+    "${pkgdir}/usr/lib/systemd/system/${pkgname}.path"
 
   # systemd sysusers.d configuration
   install -Dm644 "${srcdir}/systemd-sysuser.conf" \

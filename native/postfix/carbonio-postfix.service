@@ -5,9 +5,10 @@ Wants=carbonio-milter.service carbonio-saslauthd.service
 PartOf=carbonio-mta.target
 
 [Service]
+Slice=carbonio-mta.slice
 User=root
 Type=forking
-CapabilityBoundingSet=~ CAP_NET_ADMIN CAP_SYS_ADMIN CAP_SYS_BOOT CAP_SYS_MODULE
+CapabilityBoundingSet=~ CAP_NET_ADMIN CAP_SYS_ADMIN CAP_SYS_BOOT CAP_SYS_MODULE CAP_SYS_RAWIO CAP_SYS_PTRACE
 PIDFile=/opt/zextras/data/postfix/spool/pid/master.pid
 ExecStartPre=/opt/zextras/common/sbin/postalias /etc/aliases
 ExecStart=/opt/zextras/common/sbin/postfix start
@@ -15,6 +16,26 @@ ExecStop=/opt/zextras/common/sbin/postfix stop
 ExecReload=/opt/zextras/common/sbin/postfix reload
 Restart=always
 LimitNOFILE=524288
+
+# Security hardening (standard profile - MTA service)
+# Note: Runs as root for mail delivery privileges
+ProtectSystem=full
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+ProtectKernelLogs=yes
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+RemoveIPC=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX AF_NETLINK
+SystemCallArchitectures=native
+ProtectHostname=yes
+ProtectClock=yes
 
 [Install]
 WantedBy=carbonio-mta.target

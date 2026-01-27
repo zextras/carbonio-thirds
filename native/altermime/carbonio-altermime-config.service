@@ -4,13 +4,34 @@ PartOf=carbonio-mta.target
 After=network.target
 
 [Service]
+Slice=carbonio-mta.slice
 User=zextras
 Type=oneshot
 Environment=PERL5LIB="/opt/zextras/common/lib/perl5/x86_64-linux-gnu-thread-multi:/opt/zextras/common/lib/perl5/x86_64-linux-thread-multi:/opt/zextras/common/lib/perl5"
 ExecStart=/opt/zextras/libexec/zmaltermimeconfig
-RestartSec=3
+RestartSec=3s
 Restart=on-failure
 RemainAfterExit=yes
+
+# Security hardening (enhanced profile - config oneshot)
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+NoNewPrivileges=yes
+CapabilityBoundingSet=
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+ProtectKernelLogs=yes
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+SystemCallArchitectures=native
+ProtectHostname=yes
+ProtectClock=yes
 
 [Install]
 WantedBy=carbonio-mta.target

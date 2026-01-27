@@ -2,8 +2,10 @@
 Description=Carbonio Mail Threat Daemon
 PartOf=carbonio-mta.target
 After=network.target
+# Path unit started by target
 
 [Service]
+Slice=carbonio-mta.slice
 User=zextras
 EnvironmentFile=-/opt/zextras/data/systemd.env
 Environment=PERL5LIB="/opt/zextras/common/lib/perl5/x86_64-linux-gnu-thread-multi:/opt/zextras/common/lib/perl5/x86_64-linux-thread-multi:/opt/zextras/common/lib/perl5"
@@ -16,8 +18,28 @@ ExecStart=/opt/zextras/common/sbin/amavisd \
 ExecReload=/opt/zextras/common/sbin/amavisd \
   -X no_conf_file_writable_check \
   -c /opt/zextras/conf/amavisd.conf reload
-RestartSec=3
+RestartSec=3s
 Restart=on-failure
+
+# Security hardening (enhanced profile - Perl service)
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+NoNewPrivileges=yes
+CapabilityBoundingSet=
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+ProtectKernelLogs=yes
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+SystemCallArchitectures=native
+ProtectHostname=yes
+ProtectClock=yes
 
 [Install]
 WantedBy=carbonio-mta.target

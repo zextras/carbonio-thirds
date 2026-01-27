@@ -5,15 +5,38 @@ Wants=carbonio-antivirus.service carbonio-configd.service
 PartOf=carbonio-mta.target
 
 [Service]
+Slice=carbonio-antivirus.slice
 User=zextras
-EnvironmentFile=-/opt/zextras/data/systemd.env
-ExecStartPre=echo REWRITE antivirus | netcat -w $configd_rewrite_timeout localhost $configd_listen_port
+ExecStartPre=echo REWRITE antivirus | netcat -w 120 localhost 7171
 ExecStart=/opt/zextras/common/bin/freshclam \
   --config-file=/opt/zextras/conf/freshclam.conf \
-  --quiet -d --checks=12 --foreground=true\
-  >>${log_directory}/freshclam.log
+  --quiet -d --checks=12 --foreground=true \
+  >>/opt/zextras/log/freshclam.log
 Restart=on-failure
 RestartSec=3s
+
+# Security hardening (strict profile)
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+NoNewPrivileges=yes
+CapabilityBoundingSet=
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+ProtectKernelLogs=yes
+MemoryDenyWriteExecute=yes
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+SystemCallFilter=@system-service
+SystemCallErrorNumber=EPERM
+SystemCallArchitectures=native
+ProtectHostname=yes
+ProtectClock=yes
 
 [Install]
 WantedBy=carbonio-mta.target
