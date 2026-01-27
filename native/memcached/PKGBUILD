@@ -85,3 +85,23 @@ package() {
     "${pkgdir}/etc/zextras/service-discover/${pkgname}.hcl"
   # end install service registration files for consul
 }
+
+postinst() {
+  if [ -d /run/systemd/system ]; then
+    systemctl daemon-reload >/dev/null 2>&1 || :
+    systemctl enable carbonio-memcached-sidecar.service >/dev/null 2>&1 || :
+  fi
+}
+
+prerm() {
+  if [ -d /run/systemd/system ]; then
+    systemctl --no-reload disable carbonio-memcached-sidecar.service >/dev/null 2>&1 || :
+    systemctl stop carbonio-memcached-sidecar.service >/dev/null 2>&1 || :
+  fi
+}
+
+postrm() {
+  if [ -d /run/systemd/system ]; then
+    systemctl daemon-reload >/dev/null 2>&1 || :
+  fi
+}
