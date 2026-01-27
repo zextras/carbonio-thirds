@@ -58,18 +58,18 @@ make build TARGET=rocky-9 OUTPUT_DIR=./my-packages
 
 ## Installation
 
-This package is distributed as part of the [Carbonio platform](https://zextras.com/carbonio). To install:
+These packages are distributed as part of the [Carbonio platform](https://zextras.com/carbonio). To install:
 
 ### Ubuntu (Jammy/Noble)
 
 ```bash
-apt-get install carbonio-certbot
+apt-get install <package-name>
 ```
 
 ### Rocky Linux (8/9)
 
 ```bash
-yum install carbonio-certbot
+yum install <package-name>
 ```
 
 ## Contributing
