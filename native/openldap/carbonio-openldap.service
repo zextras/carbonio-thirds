@@ -3,12 +3,17 @@ Description=Carbonio OpenLDAP Daemon
 PartOf=carbonio-directory-server.target
 
 [Service]
+Slice=carbonio-openldap.slice
 User=zextras
 AmbientCapabilities=CAP_NET_BIND_SERVICE
 EnvironmentFile=-/opt/zextras/data/systemd.env
 ExecStartPre=/opt/zextras/bin/systemd-envscript
-ExecStart=/opt/zextras/common/libexec/slapd -d 0 -l LOCAL0 -h '${bind_url} ldapi:///' -F /opt/zextras/data/ldap/config
+ExecStart=/opt/zextras/common/libexec/slapd -d 0 -l LOCAL0 -h "${bind_url} ldapi:///" -F /opt/zextras/data/ldap/config
+RuntimeDirectory=carbonio carbonio/run
+RuntimeDirectoryMode=0755
 LimitNOFILE=524288
+Restart=on-failure
+RestartSec=3s
 
 [Install]
 WantedBy=carbonio-directory-server.target

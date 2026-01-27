@@ -1,0 +1,31 @@
+[Unit]
+Description=Carbonio Antivirus Services Slice
+Documentation=man:systemd.slice(5)
+Before=slices.target
+PartOf=carbonio-mta.target
+StopWhenUnneeded=yes
+
+[Slice]
+# Security services: antivirus (clamd), freshclam
+# Virus scanning is CPU intensive, can be throttled
+#
+# Scaling guide:
+#   Small  (8GB RAM):   ~1.4GB effective (17% of 8GB)
+#   Medium (32GB RAM):  ~5.4GB effective (17% of 32GB)
+#   Large  (64GB RAM):  ~10.9GB effective (17% of 64GB)
+#
+# Note: ClamAV loads ~1.5GB signatures into RAM as baseline
+# Virus definitions grow continuously - needs headroom
+
+# Memory controls - percentage-based for automatic scaling
+MemoryMax=17%
+MemoryHigh=14%
+
+# CPU weight: lower priority (scanning can be throttled under load)
+CPUWeight=40
+
+# I/O weight: moderate (signature DB access, scan temp files)
+IOWeight=60
+
+# Process/thread limit (clamd scanner threads)
+TasksMax=512

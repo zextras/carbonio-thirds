@@ -43,11 +43,17 @@ source=(
   "${pkgname}.patch"
   "${pkgname}.service"
   "systemd-tmpfile.conf"
+  "${pkgname}.path"
+  "${pkgname}-reload.service"
 )
-sha256sums=('SKIP'
+sha256sums=(
+  'SKIP'
   '2f71d4274585f8ae963e2e2b081a0b0d0780e9eb7aa0e44cd99b5b7f3271119f'
-  'de79eca4916b6377a610bb51d5439513d5f2ffc12ab6b1b15a32267ac0e6daf3'
-  '10734c3340cdc7cf75606449ebe3ab7a5779950d6d61d1e7adfca3b511d32efa')
+  '6bc1ea0200c4acff889c866ed1bb18175880fda76045c546ef51a54ea6ca4ce8'
+  '10734c3340cdc7cf75606449ebe3ab7a5779950d6d61d1e7adfca3b511d32efa'
+  'a1ac5262f4e4595bc5f1f56d1974f3446db5895781f80682de64c77afbbe9887'
+  '236228fdf608310c860046baac35d10380e3cb1c82c3baef90ff8abb6c2e127c'
+)
 
 package() {
   cd "${srcdir}/policyd"
@@ -83,6 +89,10 @@ package() {
   # systemd units
   install -D -m 644 "${srcdir}/${pkgname}.service" \
     "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
+  install -D -m 644 "${srcdir}/${pkgname}-reload.service" \
+    "${pkgdir}/usr/lib/systemd/system/${pkgname}-reload.service"
+  install -D -m 644 "${srcdir}/${pkgname}.path" \
+    "${pkgdir}/usr/lib/systemd/system/${pkgname}.path"
 
   # systemd tmpfiles.d configuration
   install -D -m 644 "${srcdir}/systemd-tmpfile.conf" \

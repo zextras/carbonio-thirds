@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: 2025 Zextras <https://www.zextras.com>
+# SPDX-License-Identifier: GPL-2.0-only
+
+# Triggered by carbonio-postfix.path when config changes
+
+[Unit]
+Description=Reload Carbonio Postfix on config change
+Documentation=https://zextras.com
+After=carbonio-postfix.service
+Requisite=carbonio-postfix.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/systemctl reload carbonio-postfix.service

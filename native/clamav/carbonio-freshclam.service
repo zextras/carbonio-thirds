@@ -5,13 +5,13 @@ Wants=carbonio-antivirus.service carbonio-configd.service
 PartOf=carbonio-mta.target
 
 [Service]
+Slice=carbonio-antivirus.slice
 User=zextras
-EnvironmentFile=-/opt/zextras/data/systemd.env
-ExecStartPre=echo REWRITE antivirus | netcat -w $configd_rewrite_timeout localhost $configd_listen_port
+ExecStartPre=echo REWRITE antivirus | netcat -w 120 localhost 7171
 ExecStart=/opt/zextras/common/bin/freshclam \
   --config-file=/opt/zextras/conf/freshclam.conf \
-  --quiet -d --checks=12 --foreground=true\
-  >>${log_directory}/freshclam.log
+  --quiet -d --checks=12 --foreground=true \
+  >>/opt/zextras/log/freshclam.log
 Restart=on-failure
 RestartSec=3s
 
