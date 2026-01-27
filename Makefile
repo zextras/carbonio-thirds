@@ -34,6 +34,7 @@ CONTAINER_OPTS = --rm -ti \
 	--name $(CONTAINER_NAME) \
 	--entrypoint bash \
 	-v $(CURDIR):/project \
+	-v $(CURDIR)/$(OUTPUT_DIR):/artifacts \
 	-v $(CCACHE_DIR):/root/.ccache \
 	-e CCACHE_DIR=/root/.ccache
 
