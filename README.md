@@ -2,8 +2,6 @@
 
 This repository contains build configurations and patches for third-party dependencies used by Carbonio.
 
-## Overview
-
 The repository is organized into two main directories:
 
 - **`native/`** - Build configurations for native system packages including:
@@ -19,12 +17,14 @@ The repository is organized into two main directories:
 
 - **`perl/`** - Build configurations for Perl modules required by Carbonio components
 
+## Quick Start
+
 ### Prerequisites
 
 - Docker or Podman installed
 - Make
 
-### Quick Start
+### Building Packages
 
 ```bash
 # Build all packages for Ubuntu 22.04
@@ -36,18 +36,6 @@ make build-native TARGET=rocky-9
 # Build only Perl packages for Ubuntu 24.04
 make build-perl TARGET=ubuntu-noble
 ```
-
-### Available Commands
-
-| Command | Description |
-| ------- | ----------- |
-| `make build` | Build all packages (native and perl) |
-| `make build-native` | Build only native packages |
-| `make build-perl` | Build only Perl packages |
-| `make pull` | Pull the YAP container image |
-| `make clean` | Remove build artifacts |
-| `make list-targets` | List supported distribution targets |
-| `make help` | Show detailed help |
 
 ### Supported Targets
 
@@ -68,8 +56,28 @@ make build TARGET=ubuntu-jammy CONTAINER_RUNTIME=docker
 make build TARGET=rocky-9 OUTPUT_DIR=./my-packages
 ```
 
+## Installation
+
+This package is distributed as part of the [Carbonio platform](https://zextras.com/carbonio). To install:
+
+### Ubuntu (Jammy/Noble)
+
+```bash
+apt-get install carbonio-certbot
+```
+
+### Rocky Linux (8/9)
+
+```bash
+yum install carbonio-certbot
+```
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for information on how to contribute to this project.
+
 ## License
 
-The build scripts, patches, and configuration files in this repository are licensed under the GNU Affero General Public License v3.0 - see the [COPYING](COPYING) file for details.
+The build scripts, patches, and configuration files in this repository are licensed under the GNU Affero General Public License v3.0 - see the [LICENSE.md](LICENSE.md) file for details.
 
 This repository does not contain the source code of the third-party projects it packages. The PKGBUILD scripts download upstream sources at build time from their original locations. Each upstream project retains its own license, and the resulting built packages are distributed under those original licenses. Please refer to each component's upstream documentation for specific licensing information.
