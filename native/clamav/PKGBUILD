@@ -52,7 +52,7 @@ section="utils"
 priority="optional"
 source=(
   "https://www.clamav.net/downloads/production/clamav-${pkgver}.tar.gz"
-  "https://dl.fedoraproject.org/pub/fedora/linux/development/rawhide/Everything/x86_64/os/Packages/c/clamav-data-1.4.3-3.fc44.noarch.rpm"
+  "https://dl.fedoraproject.org/pub/fedora/linux/development/rawhide/Everything/x86_64/os/Packages/c/clamav-data-1.4.3-5.fc44.noarch.rpm"
   "211-carbonio-clamav-setup.sh"
   "carbonio-antivirus.service"
   "carbonio-clamav"
