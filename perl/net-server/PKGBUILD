@@ -1,6 +1,6 @@
 pkgname="carbonio-perl-net-server"
-pkgver="2.014" # renovate: datasource=cpan depName=Net::Server
-pkgrel="2"
+pkgver="2.016" # renovate: datasource=cpan depName=Net::Server
+pkgrel="1"
 pkgdesc="Extensible, general Perl server engine"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -24,9 +24,9 @@ makedepends__yum=(
 section="libs"
 priority="important"
 source=(
-  "https://cpan.metacpan.org/authors/id/R/RH/RHANDOM/Net-Server-${pkgver}.tar.gz"
+  "https://cpan.metacpan.org/authors/id/B/BB/BBB/Net-Server-${pkgver}.tar.gz"
 )
-sha256sums=('3406b9ca5a662a0075eed47fb78de1316b601c94f62a0ee34a5544db9baa3720')
+sha256sums=('f6f82a2a36a715b6bfe0d1ca02d8ac4de695bcbdd0b39f3aa04be3c8135d3a47')
 
 build() {
   cd "${srcdir}/Net-Server-${pkgver}"
