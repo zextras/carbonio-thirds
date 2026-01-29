@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-net-server"
-pkgver="2.014" # renovate: datasource=cpan depName=Net::Server
+pkgver="2.016" # renovate: datasource=cpan depName=Net::Server
 pkgrel="2"
 pkgdesc="Extensible, general Perl server engine"
 arch=('x86_64')
