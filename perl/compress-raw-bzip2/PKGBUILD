@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-compress-raw-bzip2"
-pkgver="2.214" # renovate: datasource=cpan depName=Compress::Raw::Bzip2
+pkgver="2.217" # renovate: datasource=cpan depName=Compress::Raw::Bzip2
 pkgrel="1"
 pkgdesc="Low-Level Interface to bzip2 compression library"
 arch=('x86_64')
