@@ -18,7 +18,8 @@ build() {
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
   export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
 
-  ./configure --prefix=/opt/zextras/common
+  ./configure --prefix=/opt/zextras/common \
+    --disable-tests
   make -j16
 }
 

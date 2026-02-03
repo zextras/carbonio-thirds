@@ -30,7 +30,9 @@ build() {
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
   ./configure --prefix=/opt/zextras/common \
     --sysconfdir=/opt/zextras/common/etc \
-    --sbindir=/opt/zextras/common/bin
+    --sbindir=/opt/zextras/common/bin \
+    --disable-tests \
+    --disable-samples
   make -j16
 }
 

@@ -20,7 +20,8 @@ build() {
   cd "${srcdir}/libevent-${pkgver}-stable"
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
   export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
-  ./configure --prefix=/opt/zextras/common
+  ./configure --prefix=/opt/zextras/common \
+    --disable-samples
   make -j16
 }
 
