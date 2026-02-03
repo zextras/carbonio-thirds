@@ -70,7 +70,9 @@ build() {
     --with-tls=openssl
 
   LD_RUN_PATH=/opt/zextras/common/lib make depend
-  LD_RUN_PATH=/opt/zextras/common/lib make DEFINES="-DCHECK_CSN -DSLAP_SCHEMA_EXPOSE"
+  LD_RUN_PATH=/opt/zextras/common/lib make DEFINES="-DCHECK_CSN -DSLAP_SCHEMA_EXPOSE" -C libraries
+  LD_RUN_PATH=/opt/zextras/common/lib make DEFINES="-DCHECK_CSN -DSLAP_SCHEMA_EXPOSE" -C servers
+  LD_RUN_PATH=/opt/zextras/common/lib make DEFINES="-DCHECK_CSN -DSLAP_SCHEMA_EXPOSE" -C clients
   make -C libraries/liblmdb prefix=/opt/zextras/common
   make -C contrib/slapd-modules/noopsrch prefix=/opt/zextras/common
   make -C contrib/slapd-modules/passwd/sha2 prefix=/opt/zextras/common

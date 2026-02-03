@@ -30,7 +30,8 @@ build() {
     --disable-static \
     --enable-cxx \
     --enable-dbm \
-    --enable-stl
+    --enable-stl \
+    --disable-test
   make LIBSO_LIBS=-lpthread
 }
 
