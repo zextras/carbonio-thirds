@@ -3,7 +3,6 @@ Description=Carbonio Memcached Sidecar
 Documentation=https://docs.zextras.com/
 Requires=network-online.target
 After=network-online.target
-PartOf=carbonio-proxy.target
 
 [Service]
 User=zextras
@@ -18,4 +17,4 @@ KillSignal=SIGINT
 LimitNOFILE=65536
 
 [Install]
-WantedBy=carbonio-proxy.target
+WantedBy=multi-user.target

@@ -44,12 +44,14 @@ source=(
   "${pkgname}.service"
   "systemd-tmpfile.conf"
 )
-sha256sums=('SKIP'
+sha256sums=(
+  'SKIP'
   '2f71d4274585f8ae963e2e2b081a0b0d0780e9eb7aa0e44cd99b5b7f3271119f'
-  'de79eca4916b6377a610bb51d5439513d5f2ffc12ab6b1b15a32267ac0e6daf3'
-  '10734c3340cdc7cf75606449ebe3ab7a5779950d6d61d1e7adfca3b511d32efa')
+  '4ed43da17216bb25cd0b2defc6c3f7ee500a60baeaeda1190870a5b8d11dfa9a'
+  '10734c3340cdc7cf75606449ebe3ab7a5779950d6d61d1e7adfca3b511d32efa'
+)
 
-package() {
+_package() {
   cd "${srcdir}/policyd"
   git reset --hard cf484f1b93cf9965886cc89d33bdeee9c26426cb
 
@@ -80,49 +82,59 @@ package() {
   cp -r database "${pkgdir}/opt/zextras/common/share"
   cp -r webui "${pkgdir}/opt/zextras/common/share"
 
-  # systemd units
-  install -D -m 644 "${srcdir}/${pkgname}.service" \
-    "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
-
   # systemd tmpfiles.d configuration
-  install -D -m 644 "${srcdir}/systemd-tmpfile.conf" \
-    "${pkgdir}/usr/lib/tmpfiles.d/${pkgname}conf"
+  install -Dm644 "${srcdir}/systemd-tmpfile.conf" \
+    "${pkgdir}/usr/lib/tmpfiles.d/${pkgname}.conf"
+}
+
+_package_systemd() {
+  # systemd units
+  install -Dm644 "${srcdir}/${pkgname}.service" \
+    "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
+}
+
+_postinst() {
+  # creating zextras group if it isn't already there
+  getent group zextras >/dev/null \
+    || groupadd -r zextras
+  # creating zextras user if it isn't already there
+  getent passwd zextras >/dev/null \
+    || useradd -r -g zextras -d /opt/zextras -s /bin/bash -c "zextras user" zextras
+}
+
+package() {
+  _package
+  _package_systemd
+}
+
+package__rocky_8() {
+  _package
+}
+
+package__rocky_9() {
+  _package
+  _package_systemd
+}
+
+package__ubuntu_jammy() {
+  _package
+}
+
+package__ubuntu_noble() {
+  _package
+  _package_systemd
 }
 
 postinst__apt() {
   if [ "$1" = "configure" ]; then
-    # creating zextras group if it isn't already there
-    if ! getent group zextras >/dev/null; then
-      addgroup --system --force-badname --quiet zextras
-    fi
-    # creating zextras user if it isn't already there
-    if ! getent passwd zextras >/dev/null; then
-      adduser --system --force-badname --quiet \
-        --ingroup zextras \
-        --home /opt/zextras \
-        --shell /bin/bash \
-        zextras
-      usermod -c "zextras user" zextras
-    fi
+    _postinst
   fi
 
   systemd-tmpfiles --create /usr/lib/tmpfiles.d/carbonio-policyd.conf || :
 }
 
 postinst__yum() {
-  # creating zextras group if it isn't already there
-  if ! getent group zextras >/dev/null; then
-    groupadd --system zextras >/dev/null
-  fi
-  # creating zextras user if it isn't already there
-  if ! getent passwd zextras >/dev/null; then
-    useradd --system \
-      -g zextras \
-      -d /opt/zextras \
-      --shell /bin/bash \
-      zextras >/dev/null
-    usermod -c "zextras user" zextras
-  fi
+  _postinst
 
   systemd-tmpfiles --create /usr/lib/tmpfiles.d/carbonio-policyd.conf || :
 }

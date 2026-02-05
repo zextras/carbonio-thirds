@@ -1,21 +1,20 @@
 [Unit]
-Description=Carbonio Memcached Sidecar
+Description=Carbonio Clamav Sidecar
 Documentation=https://docs.zextras.com/
 Requires=network-online.target
 After=network-online.target
-PartOf=carbonio-proxy.target
 
 [Service]
-User=zextras
+User=carbonio-clamav
 ExecStart=/usr/bin/consul connect envoy \
-    -token-file /etc/carbonio/memcached/service-discover/token \
+    -token-file /etc/carbonio/clamav/service-discover/token \
     -admin-bind localhost:0 \
-    -sidecar-for carbonio-memcached
+    -sidecar-for carbonio-clamav
+ExecReload=/usr/bin/kill -HUP $MAINPID
 Restart=on-failure
 RestartSec=15s
-ExecReload=/usr/bin/kill -HUP $MAINPID
 KillSignal=SIGINT
 LimitNOFILE=65536
 
 [Install]
-WantedBy=carbonio-proxy.target
+WantedBy=multi-user.target

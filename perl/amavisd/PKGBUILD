@@ -62,14 +62,16 @@ source=(
   "socket_and_misc.patch"
   "systemd-tmpfile.conf"
 )
-sha256sums=('6973ee582b193479ccb0e7d375ad208051236ee0318a17071d263397a2823189'
-  '78118f4c93b5a797f8d8c50f2e5c2de6759094fd51d0c9bf67138317a34088ab'
+sha256sums=(
+  '6973ee582b193479ccb0e7d375ad208051236ee0318a17071d263397a2823189'
+  '883b33fdf848149c119d5554c974aa322097a23fb729aaa7260aca563bbda53f'
   '2aae564745031515e80899115fb6f13ad0be86056a504b2c03cbd785980e7cf5'
   'c80d0a99da02ab4058ad4f5538c5905cc212b962e43446e2b678d665892fb1bf'
   '8466a63fcf6d1b6a52db0a2e2c22efdd23610615a1ae9d6c5eed00ee0a1e917b'
-  '19bb2416f8afa0ed357018e245f24ddfd5c9ed23013f3b62a0ce53bec3156e1b')
+  '19bb2416f8afa0ed357018e245f24ddfd5c9ed23013f3b62a0ce53bec3156e1b'
+)
 
-package() {
+_package() {
   cd "${srcdir}/amavis-v${pkgver}"
 
   patch -Np1 -i "${srcdir}/socket_and_misc.patch"
@@ -86,6 +88,12 @@ package() {
   mkdir -p "${pkgdir}/opt/zextras/common/lib/"
   cp -pr lib "${pkgdir}/opt/zextras/common/lib/perl5"
 
+  # systemd tmpfiles.d configuration
+  install -Dm644 "${srcdir}/systemd-tmpfile.conf" \
+    "${pkgdir}/usr/lib/tmpfiles.d/carbonio-mailthreat.conf"
+}
+
+_package_systemd() {
   # systemd units
   install -Dm644 "${srcdir}/carbonio-mailthreat.service" \
     "${pkgdir}/usr/lib/systemd/system/carbonio-mailthreat.service"
@@ -93,27 +101,43 @@ package() {
     "${pkgdir}/usr/lib/systemd/system/carbonio-mailthreat-update.service"
   install -Dm644 "${srcdir}/carbonio-mailthreat-update.timer" \
     "${pkgdir}/usr/lib/systemd/system/carbonio-mailthreat-update.timer"
+}
 
-  # systemd tmpfiles.d configuration
-  install -D -m 644 "${srcdir}/systemd-tmpfile.conf" \
-    "${pkgdir}/usr/lib/tmpfiles.d/carbonio-mailthreat.conf"
+_postinst() {
+  # creating zextras group if it isn't already there
+  getent group zextras >/dev/null \
+    || groupadd -r zextras
+  # creating zextras user if it isn't already there
+  getent passwd zextras >/dev/null \
+    || useradd -r -g zextras -d /opt/zextras -s /bin/bash -c "zextras user" zextras
+}
+
+package() {
+  _package
+  _package_systemd
+}
+
+package__rocky_8() {
+  _package
+}
+
+package__rocky_9() {
+  _package
+  _package_systemd
+}
+
+package__ubuntu_jammy() {
+  _package
+}
+
+package__ubuntu_noble() {
+  _package
+  _package_systemd
 }
 
 postinst__apt() {
   if [ "$1" = "configure" ]; then
-    # creating zextras group if it isn't already there
-    if ! getent group zextras >/dev/null; then
-      addgroup --system --force-badname --quiet zextras
-    fi
-    # creating zextras user if it isn't already there
-    if ! getent passwd zextras >/dev/null; then
-      adduser --system --force-badname --quiet \
-        --ingroup zextras \
-        --home /opt/zextras \
-        --shell /bin/bash \
-        zextras
-      usermod -c "zextras user" zextras
-    fi
+    _postinst
   fi
 
   systemd-tmpfiles --create /usr/lib/tmpfiles.d/carbonio-mailthreat.conf || :
@@ -125,19 +149,7 @@ postinst__apt() {
 }
 
 postinst__yum() {
-  # creating zextras group if it isn't already there
-  if ! getent group zextras >/dev/null; then
-    groupadd --system zextras >/dev/null
-  fi
-  # creating zextras user if it isn't already there
-  if ! getent passwd zextras >/dev/null; then
-    useradd --system \
-      -g zextras \
-      -d /opt/zextras \
-      --shell /bin/bash \
-      zextras >/dev/null
-    usermod -c "zextras user" zextras
-  fi
+  _postinst
 
   systemd-tmpfiles --create /usr/lib/tmpfiles.d/carbonio-mailthreat.conf || :
 

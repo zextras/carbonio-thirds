@@ -47,7 +47,7 @@ makedepends__yum=(
 section="utils"
 priority="optional"
 source=(
-  "https://de.postfix.org/ftpmirror/official/postfix-${pkgver}.tar.gz"
+  "http://ftp.netclusive.de/pub/postfix/postfix-release/official/postfix-${pkgver}.tar.gz"
   "${pkgname}.patch"
   "${pkgname}.service"
   "systemd-sysuser.conf"
@@ -60,6 +60,33 @@ sha256sums=(
   '6ad170eece16c7ee4d947a84cf2efb153a4ed52ace02c70016829253dd70aa5e'
   'edbd7857db1140e9995ab9d210797308c7b826035d06adde7d0d62755e8eb602'
 )
+
+_package() {
+  cd "${srcdir}/postfix-${pkgver}"
+  sh postfix-install -non-interactive-package install_root="${pkgdir}"
+  install -Dm755 auxiliary/qshape/qshape.pl \
+    "${pkgdir}"/opt/zextras/common/sbin/qshape.pl
+
+  # systemd sysusers.d configuration
+  install -Dm644 "${srcdir}/systemd-sysuser.conf" \
+    "${pkgdir}/usr/lib/sysusers.d/carbonio-postfix.conf"
+
+  # systemd tmpfiles.d configuration
+  install -Dm644 "${srcdir}/systemd-tmpfile.conf" \
+    "${pkgdir}/usr/lib/tmpfiles.d/${pkgname}.conf"
+
+  cd "${pkgdir}"/opt/zextras/common/sbin
+  rm -f newaliases
+  rm -f mailq
+  ln -s sendmail mailq
+  ln -s sendmail newaliases
+}
+
+_package_systemd() {
+  # systemd unit
+  install -Dm644 "${srcdir}/${pkgname}.service" \
+    "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
+}
 
 build() {
   cd "${srcdir}/postfix-${pkgver}"
@@ -109,28 +136,26 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/postfix-${pkgver}"
-  sh postfix-install -non-interactive-package install_root="${pkgdir}"
-  install -Dm755 auxiliary/qshape/qshape.pl \
-    "${pkgdir}"/opt/zextras/common/sbin/qshape.pl
+  _package
+  _package_systemd
+}
 
-  # systemd unit
-  install -Dm644 "${srcdir}/${pkgname}.service" \
-    "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
+package__rocky_8() {
+  _package
+}
 
-  # systemd sysusers.d configuration
-  install -Dm644 "${srcdir}/systemd-sysuser.conf" \
-    "${pkgdir}/usr/lib/sysusers.d/carbonio-postfix.conf"
+package__rocky_9() {
+  _package
+  _package_systemd
+}
 
-  # systemd tmpfiles.d configuration
-  install -Dm644 "${srcdir}/systemd-tmpfile.conf" \
-    "${pkgdir}/usr/lib/tmpfiles.d/${pkgname}.conf"
+package__ubuntu_jammy() {
+  _package
+}
 
-  cd "${pkgdir}"/opt/zextras/common/sbin
-  rm -f newaliases
-  rm -f mailq
-  ln -s sendmail mailq
-  ln -s sendmail newaliases
+package__ubuntu_noble() {
+  _package
+  _package_systemd
 }
 
 postinst__apt() {
