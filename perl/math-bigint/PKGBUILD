@@ -27,7 +27,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/P/PJ/PJACKLAM/Math-BigInt-${pkgver}.tar.gz"
 )
-sha256sums=('54601c50c6993e7ee13d8c3ac3346cf15a4d8063149cdbbe86eb01e5610e4675')
+sha256sums=('c4adc1202349f7fcd14d01e6949fee0ec969049d45c9ca59aa29ec58a65966db')
 
 build() {
   cd "${srcdir}/Math-BigInt-${pkgver}"
