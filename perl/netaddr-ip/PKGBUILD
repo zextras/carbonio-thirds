@@ -1,5 +1,6 @@
+# renovate: datasource=cpan depName=NetAddr::IP
 pkgname="carbonio-perl-netaddr-ip"
-pkgver="4.079" # renovate: datasource=cpan depName=NetAddr::IP
+pkgver="4.079"
 pkgrel="3"
 pkgdesc="Manages IPv4 and IPv6 addresses and subnets"
 arch=('x86_64')

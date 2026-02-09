@@ -1,5 +1,6 @@
+# renovate: datasource=cpan depName=Net::HTTP
 pkgname="carbonio-perl-net-http"
-pkgver="6.24" # renovate: datasource=cpan depName=Net::HTTP
+pkgver="6.24"
 pkgrel="1"
 pkgdesc="Low-level HTTP connection"
 arch=('x86_64')

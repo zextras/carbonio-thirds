@@ -1,5 +1,6 @@
+# renovate: datasource=cpan depName=HTTP::Negotiate
 pkgname="carbonio-perl-http-negotiate"
-pkgver="6.01" # renovate: datasource=cpan depName=HTTP::Negotiate
+pkgver="6.01"
 pkgrel="3"
 pkgdesc="A complete implementation of the HTTP content negotiation algorithm"
 arch=('x86_64')

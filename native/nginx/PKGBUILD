@@ -1,5 +1,6 @@
+# renovate: datasource=github-tags depName=nginx/nginx extractVersion=^release-(?<version>.+)$ versioning=semver allowedVersions=/^1\.(2[0-9]*[02468]|[3-9][0-9]*[02468])\./
 pkgname="carbonio-nginx"
-pkgver="1.28.0" # renovate: datasource=github-tags depName=nginx/nginx extractVersion=^release-(?<version>.+)$ versioning=semver allowedVersions=/^1\.(2[0-9]*[02468]|[3-9][0-9]*[02468])\./
+pkgver="1.28.0"
 pkgrel="2"
 pkgdesc="Lightweight HTTP server and IMAP/POP3 proxy server"
 arch=('x86_64')

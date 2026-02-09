@@ -1,5 +1,6 @@
+# renovate: datasource=cpan depName=Encode::Locale
 pkgname="carbonio-perl-encode-locale"
-pkgver="1.05" # renovate: datasource=cpan depName=Encode::Locale
+pkgver="1.05"
 pkgrel="3"
 pkgdesc="Determine the locale encoding"
 arch=('x86_64')

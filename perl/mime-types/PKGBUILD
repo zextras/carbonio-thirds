@@ -1,5 +1,6 @@
+# renovate: datasource=cpan depName=MIME::Types
 pkgname="carbonio-perl-mime-types"
-pkgver="2.30" # renovate: datasource=cpan depName=MIME::Types
+pkgver="2.30"
 pkgrel="1"
 pkgdesc="Definition of MIME types"
 arch=('x86_64')

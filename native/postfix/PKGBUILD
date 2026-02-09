@@ -1,5 +1,6 @@
+# renovate: datasource=repology depName=arch/postfix
 pkgname="carbonio-postfix"
-pkgver="3.10.5" # renovate: datasource=repology depName=arch/postfix
+pkgver="3.10.5"
 pkgrel="2"
 pkgdesc="Fast, easy to administer, secure mail server"
 arch=('x86_64')

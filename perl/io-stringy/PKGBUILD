@@ -1,5 +1,6 @@
+# renovate: datasource=cpan depName=IO::Stringy
 pkgname="carbonio-perl-io-stringy"
-pkgver="2.113" # renovate: datasource=cpan depName=IO::Stringy
+pkgver="2.113"
 pkgrel="3"
 pkgdesc="I/O on in-core objects like strings and arrays"
 arch=('x86_64')

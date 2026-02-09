@@ -1,5 +1,6 @@
+# renovate: datasource=github-releases depName=curl/curl
 pkgname="carbonio-curl"
-pkgver="8.14.1" # renovate: datasource=github-releases depName=curl/curl
+pkgver="8.14.1"
 pkgrel="1"
 pkgdesc="An URL retrieval utility and library"
 arch=('x86_64')

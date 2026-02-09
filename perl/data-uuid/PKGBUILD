@@ -1,5 +1,6 @@
+# renovate: datasource=cpan depName=Data::UUID
 pkgname="carbonio-perl-data-uuid"
-pkgver="1.227" # renovate: datasource=cpan depName=Data::UUID
+pkgver="1.227"
 pkgrel="1"
 pkgdesc="Globally/Universally Unique Identifiers (GUIDs/UUIDs)"
 arch=('x86_64')

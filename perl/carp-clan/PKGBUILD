@@ -1,5 +1,6 @@
+# renovate: datasource=cpan depName=Carp::Clan
 pkgname="carbonio-perl-carp-clan"
-pkgver="6.08" # renovate: datasource=cpan depName=Carp::Clan
+pkgver="6.08"
 pkgrel="3"
 pkgdesc="Report errors from perspective of caller of a clan of modules"
 arch=('x86_64')

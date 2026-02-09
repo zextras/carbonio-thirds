@@ -1,5 +1,6 @@
+# renovate: datasource=cpan depName=Cache::FastMmap
 pkgname="carbonio-perl-cache-fastmmap"
-pkgver="1.60" # renovate: datasource=cpan depName=Cache::FastMmap
+pkgver="1.60"
 pkgrel="1"
 pkgdesc="Uses an mmap'ed file to act as a shared memory interprocess cache"
 arch=('x86_64')

@@ -1,5 +1,6 @@
+# renovate: datasource=cpan depName=JSON::PP
 pkgname="carbonio-perl-json-pp"
-pkgver="4.16" # renovate: datasource=cpan depName=JSON::PP
+pkgver="4.16"
 pkgrel="2"
 pkgdesc="JSON::XS compatible pure-Perl module"
 arch=('x86_64')

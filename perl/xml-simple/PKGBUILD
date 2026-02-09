@@ -1,5 +1,6 @@
+# renovate: datasource=cpan depName=XML::Simple
 pkgname="carbonio-perl-xml-simple"
-pkgver="2.25" # renovate: datasource=cpan depName=XML::Simple
+pkgver="2.25"
 pkgrel="3"
 pkgdesc="An API for simple XML files"
 arch=('x86_64')

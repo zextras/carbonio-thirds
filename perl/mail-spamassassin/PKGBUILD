@@ -1,5 +1,6 @@
+# renovate: datasource=cpan depName=Mail::SpamAssassin
 pkgname="carbonio-perl-mail-spamassassin"
-pkgver="4.0.2" # renovate: datasource=cpan depName=Mail::SpamAssassin
+pkgver="4.0.2"
 pkgrel="2"
 pkgdesc="Spam detector and markup engine"
 arch=('x86_64')

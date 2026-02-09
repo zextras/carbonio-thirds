@@ -1,5 +1,6 @@
+# renovate: datasource=cpan depName=Net::CIDR::Lite
 pkgname="carbonio-perl-net-cidr-lite"
-pkgver="0.22" # renovate: datasource=cpan depName=Net::CIDR::Lite
+pkgver="0.22"
 pkgrel="3"
 pkgdesc="Perl extension for merging IPv4 or IPv6 CIDR addresses"
 arch=('x86_64')

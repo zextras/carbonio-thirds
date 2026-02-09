@@ -1,5 +1,6 @@
+# renovate: datasource=cpan depName=Digest::SHA1
 pkgname="carbonio-perl-digest-sha1"
-pkgver="2.13" # renovate: datasource=cpan depName=Digest::SHA1
+pkgver="2.13"
 pkgrel="3"
 pkgdesc="Perl interface to the SHA-1 algorithm"
 arch=('x86_64')

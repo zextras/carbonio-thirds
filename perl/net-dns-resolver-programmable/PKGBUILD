@@ -1,5 +1,6 @@
+# renovate: datasource=cpan depName=Net::DNS::Resolver::Programmable
 pkgname="carbonio-perl-net-dns-resolver-programmable"
-pkgver="0.009" # renovate: datasource=cpan depName=Net::DNS::Resolver::Programmable
+pkgver="0.009"
 pkgrel="3"
 pkgdesc="Programmable DNS resolver class for offline emulation of DNS"
 arch=('x86_64')

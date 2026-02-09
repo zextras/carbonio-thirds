@@ -1,5 +1,6 @@
+# renovate: datasource=cpan depName=Filesys::Df
 pkgname="carbonio-perl-filesys-df"
-pkgver="0.92" # renovate: datasource=cpan depName=Filesys::Df
+pkgver="0.92"
 pkgrel="3"
 pkgdesc="Perl extension for filesystem disk space information."
 arch=('x86_64')

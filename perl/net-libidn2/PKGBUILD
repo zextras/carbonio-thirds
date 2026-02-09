@@ -1,5 +1,6 @@
+# renovate: datasource=cpan depName=Net::LibIDN2
 pkgname="carbonio-perl-net-libidn2"
-pkgver="1.02" # renovate: datasource=cpan depName=Net::LibIDN2
+pkgver="1.02"
 pkgrel="2"
 pkgdesc="Perl bindings for GNU Libidn2"
 arch=('x86_64')

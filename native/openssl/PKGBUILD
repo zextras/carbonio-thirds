@@ -1,5 +1,6 @@
+# renovate: datasource=repology depName=arch/openssl
 pkgname="carbonio-openssl"
-pkgver="3.6.1" # renovate: datasource=repology depName=arch/openssl
+pkgver="3.6.1"
 pkgrel="1"
 pkgdesc="Zextras's Secure Socket Layer build"
 arch=('x86_64')

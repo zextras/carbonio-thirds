@@ -1,5 +1,6 @@
+# renovate: datasource=cpan depName=Date::Format
 pkgname="carbonio-perl-timedate"
-pkgver="2.33" # renovate: datasource=cpan depName=Date::Format
+pkgver="2.33"
 pkgrel="3"
 pkgdesc="Date formatting subroutines"
 arch=('x86_64')

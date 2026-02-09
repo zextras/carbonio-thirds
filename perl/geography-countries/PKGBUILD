@@ -1,5 +1,6 @@
+# renovate: datasource=cpan depName=Geography::Countries
 pkgname="carbonio-perl-geography-countries"
-pkgver="2009041301" # renovate: datasource=cpan depName=Geography::Countries
+pkgver="2009041301"
 pkgrel="3"
 pkgdesc="2-letter, 3-letter, and numerical codes for countries"
 arch=('x86_64')

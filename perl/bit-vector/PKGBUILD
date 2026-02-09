@@ -1,5 +1,6 @@
+# renovate: datasource=cpan depName=Bit::Vector
 pkgname="carbonio-perl-bit-vector"
-pkgver="7.4" # renovate: datasource=cpan depName=Bit::Vector
+pkgver="7.4"
 pkgrel="3"
 pkgdesc="Efficient bit vector, set of integers and big int math library"
 arch=('x86_64')
