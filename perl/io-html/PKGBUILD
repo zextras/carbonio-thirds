@@ -1,5 +1,6 @@
+# renovate: datasource=cpan depName=IO::HTML
 pkgname="carbonio-perl-io-html"
-pkgver="1.004" # renovate: datasource=cpan depName=IO::HTML
+pkgver="1.004"
 pkgrel="3"
 pkgdesc="Open an HTML file with automatic charset detection"
 arch=('x86_64')

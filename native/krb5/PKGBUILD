@@ -1,5 +1,6 @@
+# renovate: datasource=repology depName=arch/krb5
 pkgname="carbonio-krb5"
-pkgver="1.21.2" # renovate: datasource=repology depName=arch/krb5
+pkgver="1.21.2"
 pkgrel="2"
 pkgdesc="The Kerberos network authentication system"
 arch=('x86_64')

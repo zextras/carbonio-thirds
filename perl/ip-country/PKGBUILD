@@ -1,5 +1,6 @@
+# renovate: datasource=cpan depName=IP::Country
 pkgname="carbonio-perl-ip-country"
-pkgver="2.28" # renovate: datasource=cpan depName=IP::Country
+pkgver="2.28"
 pkgrel="3"
 pkgdesc="Fast lookup of country codes from IP addresses"
 arch=('x86_64')

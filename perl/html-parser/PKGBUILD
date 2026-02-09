@@ -1,5 +1,6 @@
+# renovate: datasource=cpan depName=HTML::Parser
 pkgname="carbonio-perl-html-parser"
-pkgver="3.83" # renovate: datasource=cpan depName=HTML::Parser
+pkgver="3.83"
 pkgrel="1"
 pkgdesc="HTML parser class"
 arch=('x86_64')

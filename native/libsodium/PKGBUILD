@@ -1,5 +1,6 @@
+# renovate: datasource=github-releases depName=jedisct1/libsodium
 pkgname="carbonio-libsodium"
-pkgver="1.0.19" # renovate: datasource=github-releases depName=jedisct1/libsodium
+pkgver="1.0.19"
 pkgrel="2"
 pkgdesc="P(ortable|ackageable) NaCl-based crypto library"
 arch=('x86_64')

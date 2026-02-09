@@ -1,5 +1,6 @@
+# renovate: datasource=repology depName=arch/pflogsumm
 pkgname="carbonio-pflogsumm"
-pkgver="1.1.6" # renovate: datasource=repology depName=arch/pflogsumm
+pkgver="1.1.6"
 pkgrel="1"
 pkgdesc="Postfix log entry summarizer"
 arch=('x86_64')

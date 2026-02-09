@@ -1,5 +1,6 @@
+# renovate: datasource=cpan depName=File::Listing
 pkgname="carbonio-perl-file-listing"
-pkgver="6.16" # renovate: datasource=cpan depName=File::Listing
+pkgver="6.16"
 pkgrel="2"
 pkgdesc="Parse directory listing"
 arch=('x86_64')

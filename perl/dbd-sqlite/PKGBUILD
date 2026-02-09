@@ -1,5 +1,6 @@
+# renovate: datasource=cpan depName=DBD::SQLite
 pkgname="carbonio-perl-dbd-sqlite"
-pkgver="1.78" # renovate: datasource=cpan depName=DBD::SQLite
+pkgver="1.78"
 pkgrel="1"
 pkgdesc="Self-contained RDBMS in a DBI Driver"
 arch=('x86_64')

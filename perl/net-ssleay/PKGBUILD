@@ -1,5 +1,6 @@
+# renovate: datasource=cpan depName=Net::SSLeay
 pkgname="carbonio-perl-net-ssleay"
-pkgver="1.94" # renovate: datasource=cpan depName=Net::SSLeay
+pkgver="1.94"
 pkgrel="3"
 pkgdesc="Perl bindings for OpenSSL"
 arch=('x86_64')

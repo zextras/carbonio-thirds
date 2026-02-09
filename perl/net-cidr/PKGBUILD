@@ -1,5 +1,6 @@
+# renovate: datasource=cpan depName=Net::CIDR
 pkgname="carbonio-perl-net-cidr"
-pkgver="0.27" # renovate: datasource=cpan depName=Net::CIDR
+pkgver="0.27"
 pkgrel="1"
 pkgdesc="Manipulate IPv4/IPv6 netblocks in CIDR notation"
 arch=('x86_64')

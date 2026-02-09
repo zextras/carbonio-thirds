@@ -1,5 +1,6 @@
+# renovate: datasource=cpan depName=CryptX
 pkgname="carbonio-perl-cryptx"
-pkgver="0.087" # renovate: datasource=cpan depName=CryptX
+pkgver="0.087"
 pkgrel="1"
 pkgdesc="Cryptographic toolkit"
 arch=('x86_64')

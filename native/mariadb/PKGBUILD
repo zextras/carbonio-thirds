@@ -1,5 +1,6 @@
+# renovate: datasource=github-releases depName=MariaDB/server
 pkgname="carbonio-mariadb"
-pkgver="10.11.15" # renovate: datasource=github-releases depName=MariaDB/server
+pkgver="10.11.15"
 pkgrel="1"
 pkgdesc="Fast SQL database server, derived from MySQL"
 arch=('x86_64')

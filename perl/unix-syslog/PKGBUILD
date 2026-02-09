@@ -1,5 +1,6 @@
+# renovate: datasource=cpan depName=Unix::Syslog
 pkgname="carbonio-perl-unix-syslog"
-pkgver="1.1" # renovate: datasource=cpan depName=Unix::Syslog
+pkgver="1.1"
 pkgrel="4"
 pkgdesc="Perl interface to the UNIX syslog(3) calls"
 arch=('x86_64')

@@ -1,5 +1,6 @@
+# renovate: datasource=cpan depName=List::MoreUtils
 pkgname="carbonio-perl-list-moreutils"
-pkgver="0.430" # renovate: datasource=cpan depName=List::MoreUtils
+pkgver="0.430"
 pkgrel="3"
 pkgdesc="Provide the stuff missing in List::Util"
 arch=('x86_64')

@@ -1,5 +1,6 @@
+# renovate: datasource=github-tags depName=innotop/innotop
 pkgname="carbonio-innotop"
-pkgver="1.13.0" # renovate: datasource=github-tags depName=innotop/innotop
+pkgver="1.13.0"
 pkgrel="3"
 pkgdesc="Postfix log entry summarizer"
 arch=('x86_64')

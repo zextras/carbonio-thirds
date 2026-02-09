@@ -1,5 +1,6 @@
+# renovate: datasource=cpan depName=IO::Socket::IP
 pkgname="carbonio-perl-io-socket-ip"
-pkgver="0.43" # renovate: datasource=cpan depName=IO::Socket::IP
+pkgver="0.43"
 pkgrel="1"
 pkgdesc="Family-neutral IP socket supporting both IPv4 and IPv6"
 arch=('x86_64')

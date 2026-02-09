@@ -1,5 +1,6 @@
+# renovate: datasource=gitlab-tags depName=amavis/amavis
 pkgname="carbonio-amavisd"
-pkgver="2.14.0" # renovate: datasource=gitlab-tags depName=amavis/amavis
+pkgver="2.14.0"
 pkgrel="1"
 pkgdesc="High-performance interface between mailer (MTA) and content checkers"
 arch=('x86_64')

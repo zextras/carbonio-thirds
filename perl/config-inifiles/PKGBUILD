@@ -1,5 +1,6 @@
+# renovate: datasource=cpan depName=Config::IniFiles
 pkgname="carbonio-perl-config-inifiles"
-pkgver="3.000003" # renovate: datasource=cpan depName=Config::IniFiles
+pkgver="3.000003"
 pkgrel="3"
 pkgdesc="A module for reading .ini-style configuration files."
 arch=('x86_64')

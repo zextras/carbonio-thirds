@@ -1,5 +1,6 @@
+# renovate: datasource=cpan depName=Exporter::Tiny
 pkgname="carbonio-perl-exporter-tiny"
-pkgver="1.006003" # renovate: datasource=cpan depName=Exporter::Tiny
+pkgver="1.006003"
 pkgrel="1"
 pkgdesc="An exporter with the features of Sub::Exporter but only core dependencies"
 arch=('x86_64')

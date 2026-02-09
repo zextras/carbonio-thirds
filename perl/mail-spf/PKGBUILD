@@ -1,5 +1,6 @@
+# renovate: datasource=cpan depName=Mail::SPF
 pkgname="carbonio-perl-mail-spf"
-pkgver="2.9.0" # renovate: datasource=cpan depName=Mail::SPF
+pkgver="2.9.0"
 pkgrel="3"
 pkgdesc="An object-oriented implementation of Sender Policy Framework"
 arch=('x86_64')
