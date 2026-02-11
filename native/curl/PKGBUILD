@@ -32,8 +32,10 @@ source=(
   "https://curl.haxx.se/download/curl-${pkgver}.tar.gz"
   "https://github.com/nss-dev/nss/raw/refs/heads/master/lib/ckfw/builtins/certdata.txt"
 )
-sha256sums=('6766ada7101d292b42b8b15681120acd68effa4a9660935853cf6d61f0d984d4'
-  'SKIP')
+sha256sums=(
+  '6766ada7101d292b42b8b15681120acd68effa4a9660935853cf6d61f0d984d4'
+  'SKIP'
+)
 
 build() {
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
