@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: 2025 Zextras <https://www.zextras.com>
+# SPDX-License-Identifier: GPL-2.0-only
+
+# Watch nginx configuration for changes made by configd
+# When config changes, triggers reload of carbonio-nginx.service
+
+[Unit]
+Description=Watch Carbonio Nginx config for changes
+Documentation=https://zextras.com
+After=carbonio-nginx.service
+BindsTo=carbonio-nginx.service
+
+[Path]
+PathModified=/opt/zextras/conf/nginx.conf
+Unit=carbonio-nginx-reload.service
+
+[Install]
+WantedBy=carbonio-proxy.target

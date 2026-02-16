@@ -56,18 +56,24 @@ section="utils"
 priority="optional"
 source=(
   "https://gitlab.com/amavis/amavis/-/archive/v${pkgver}/amavis-v${pkgver}.tar.bz2"
+  "carbonio-mailthreat.path"
   "carbonio-mailthreat.service"
+  "carbonio-mailthreat-reload.service"
   "carbonio-mailthreat-update.service"
   "carbonio-mailthreat-update.timer"
   "socket_and_misc.patch"
   "systemd-tmpfile.conf"
 )
-sha256sums=('6973ee582b193479ccb0e7d375ad208051236ee0318a17071d263397a2823189'
-  '78118f4c93b5a797f8d8c50f2e5c2de6759094fd51d0c9bf67138317a34088ab'
-  '2aae564745031515e80899115fb6f13ad0be86056a504b2c03cbd785980e7cf5'
+sha256sums=(
+  '6973ee582b193479ccb0e7d375ad208051236ee0318a17071d263397a2823189'
+  'd1180646b5854ccb1305ba26abd73810353f105c3169ab0a9a707f53c0b6691e'
+  '8ebce07af754233821f49720be0a027019035c6ae1a3273c8302d3ad871852ad'
+  '2601870063b935a59b5d15a48134adba37f76a68b15b2e5449d20f757ea1a05c'
+  '0c9f77b01a90296d4af6ce736b44df8d0138fb342cd708d2c0f43108c8c35653'
   'c80d0a99da02ab4058ad4f5538c5905cc212b962e43446e2b678d665892fb1bf'
   '8466a63fcf6d1b6a52db0a2e2c22efdd23610615a1ae9d6c5eed00ee0a1e917b'
-  '19bb2416f8afa0ed357018e245f24ddfd5c9ed23013f3b62a0ce53bec3156e1b')
+  '19bb2416f8afa0ed357018e245f24ddfd5c9ed23013f3b62a0ce53bec3156e1b'
+)
 
 package() {
   cd "${srcdir}/amavis-v${pkgver}"
@@ -89,6 +95,10 @@ package() {
   # systemd units
   install -Dm644 "${srcdir}/carbonio-mailthreat.service" \
     "${pkgdir}/usr/lib/systemd/system/carbonio-mailthreat.service"
+  install -Dm644 "${srcdir}/carbonio-mailthreat-reload.service" \
+    "${pkgdir}/usr/lib/systemd/system/carbonio-mailthreat-reload.service"
+  install -Dm644 "${srcdir}/carbonio-mailthreat.path" \
+    "${pkgdir}/usr/lib/systemd/system/carbonio-mailthreat.path"
   install -Dm644 "${srcdir}/carbonio-mailthreat-update.service" \
     "${pkgdir}/usr/lib/systemd/system/carbonio-mailthreat-update.service"
   install -Dm644 "${srcdir}/carbonio-mailthreat-update.timer" \

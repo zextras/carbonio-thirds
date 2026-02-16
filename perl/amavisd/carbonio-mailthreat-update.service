@@ -5,6 +5,7 @@ After=carbonio-mailthreat.service network.target
 Wants=carbonio-mailthreat.service
 
 [Service]
+Slice=carbonio-mta.slice
 User=zextras
 Type=oneshot
 EnvironmentFile=-/opt/zextras/data/systemd.env

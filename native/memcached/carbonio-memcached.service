@@ -3,6 +3,7 @@ Description=Carbonio Memcached Daemon
 PartOf=carbonio-proxy.target
 
 [Service]
+Slice=carbonio-proxy.slice
 User=zextras
 ExecStart=/opt/zextras/common/bin/memcached -U 0 -l 127.0.1.1,127.0.0.1 -p 11211 -o modern,drop_privileges
 Restart=always

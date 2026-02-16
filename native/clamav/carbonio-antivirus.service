@@ -5,12 +5,14 @@ Wants=carbonio-configd.service
 PartOf=carbonio-mta.target
 
 [Service]
+Slice=carbonio-antivirus.slice
 User=zextras
-EnvironmentFile=-/opt/zextras/data/systemd.env
-ExecStartPre=echo REWRITE antivirus | netcat -w $configd_rewrite_timeout localhost $configd_listen_port
+RuntimeDirectory=carbonio
+RuntimeDirectoryMode=0755
+ExecStartPre=echo REWRITE antivirus | netcat -w 120 localhost 7171
 ExecStart=/opt/zextras/common/sbin/clamd \
   --config-file=/opt/zextras/conf/clamd.conf \
-  --log=${log_directory}/clamd.log --foreground=true
+  --log=/opt/zextras/log/clamd.log --foreground=true
 # Reload the database
 ExecReload=/bin/kill -USR2 $MAINPID
 Restart=on-failure

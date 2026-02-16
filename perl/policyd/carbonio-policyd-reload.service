@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: 2025 Zextras <https://www.zextras.com>
+# SPDX-License-Identifier: GPL-2.0-only
+
+# Triggered by carbonio-policyd.path when config changes
+
+[Unit]
+Description=Reload Carbonio Policyd on config change
+Documentation=https://zextras.com
+After=carbonio-policyd.service
+Requisite=carbonio-policyd.service
+
+[Service]
+Slice=carbonio-mta.slice
+Type=oneshot
+ExecStart=/usr/bin/systemctl reload carbonio-policyd.service

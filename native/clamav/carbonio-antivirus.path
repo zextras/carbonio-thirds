@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: 2025 Zextras <https://www.zextras.com>
+# SPDX-License-Identifier: GPL-2.0-only
+
+# Watch clamd configuration for changes made by configd
+
+[Unit]
+Description=Watch Carbonio Antivirus config for changes
+Documentation=https://zextras.com
+After=carbonio-antivirus.service
+BindsTo=carbonio-antivirus.service
+
+[Path]
+PathModified=/opt/zextras/conf/clamd.conf
+Unit=carbonio-antivirus-reload.service
+
+[Install]
+WantedBy=carbonio-mta.target

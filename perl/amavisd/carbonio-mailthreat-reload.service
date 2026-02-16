@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: 2025 Zextras <https://www.zextras.com>
+# SPDX-License-Identifier: GPL-2.0-only
+
+# Triggered by carbonio-mailthreat.path when config changes
+
+[Unit]
+Description=Reload Carbonio Mailthreat on config change
+Documentation=https://zextras.com
+After=carbonio-mailthreat.service
+Requisite=carbonio-mailthreat.service
+
+[Service]
+Slice=carbonio-mta.slice
+Type=oneshot
+ExecStart=/usr/bin/systemctl reload carbonio-mailthreat.service
