@@ -34,10 +34,68 @@ source=(
   "${pkgname}.service"
   "systemd-tmpfile.conf"
 )
-sha256sums=('c065f04aad42737aebd60b2fe4939704ac844266bc0aeaa1609f0cad987be516'
+sha256sums=(
+  'c065f04aad42737aebd60b2fe4939704ac844266bc0aeaa1609f0cad987be516'
   'a2ba7ee70d6caf8f21bdac376d95b1e98361874c4fcc62dd63356f9f2a1cae99'
   'ea5035b346caa69b14d15b2fb205838164a86a752c1d9239a483f059183d8150'
-  'd64b270fd9863319863cd9fb5619d4386cfdb87d841d11a7e5dc4fcb558c1689')
+  'd64b270fd9863319863cd9fb5619d4386cfdb87d841d11a7e5dc4fcb558c1689'
+)
+
+_package() {
+  cd "${srcdir}/openldap-${pkgver}"
+
+  make install DESTDIR="${pkgdir}" STRIP=""
+
+  make -C libraries/liblmdb install prefix=/opt/zextras/common DESTDIR="${pkgdir}"
+  make -C contrib/slapd-modules/noopsrch install prefix=/opt/zextras/common DESTDIR="${pkgdir}"
+  make -C contrib/slapd-modules/passwd/sha2 install prefix=/opt/zextras/common DESTDIR="${pkgdir}"
+
+  rm -rf "${pkgdir}/run"
+
+  # tmpfiles.d configuration
+  install -Dm644 "${srcdir}/systemd-tmpfile.conf" \
+    "${pkgdir}/usr/lib/tmpfiles.d/${pkgname}.conf"
+
+  # libexec .a and .la files should not be deleted
+  # they are related to slapd plugins
+  find "${pkgdir}/opt/zextras/common/lib" -name '*.a' -delete
+  find "${pkgdir}/opt/zextras/common/lib" -name '*.la' -delete
+}
+
+_package_systemd() {
+  # systemd unit
+  install -Dm644 "${srcdir}/${pkgname}.service" \
+    "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
+}
+
+_postinst() {
+  # Set permissions and capabilities on slapd binary
+  # Note: On fresh install, zextras group may not exist yet (created by carbonio-core).
+  # In that case, carbonio-core's postinst will set these permissions.
+  # On upgrade/reinstall, zextras exists and we can set permissions here.
+  if getent group zextras >/dev/null 2>&1; then
+    # Note: chmod resets capabilities, so setcap must run after chmod
+    chown root:zextras /opt/zextras/common/libexec/slapd
+    chmod 750 /opt/zextras/common/libexec/slapd
+    setcap CAP_NET_BIND_SERVICE=+ep /opt/zextras/common/libexec/slapd
+  fi
+
+  # Apply tmpfiles.d configuration
+  systemd-tmpfiles --create /usr/lib/tmpfiles.d/carbonio-openldap.conf >/dev/null 2>&1 || :
+}
+
+_postinst_systemd() {
+  if [ -d /run/systemd/system ]; then
+    systemctl daemon-reload &>/dev/null || :
+    systemctl enable carbonio-openldap.service &>/dev/null || :
+  fi
+}
+
+_prerm_systemd() {
+  if [ -d /run/systemd/system ]; then
+    systemctl --no-reload disable --now carbonio-openldap.service &>/dev/null || :
+  fi
+}
 
 build() {
   cd "${srcdir}/openldap-${pkgver}"
@@ -79,58 +137,58 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/openldap-${pkgver}"
-
-  make install DESTDIR="${pkgdir}" STRIP=""
-
-  make -C libraries/liblmdb install prefix=/opt/zextras/common DESTDIR="${pkgdir}"
-  make -C contrib/slapd-modules/noopsrch install prefix=/opt/zextras/common DESTDIR="${pkgdir}"
-  make -C contrib/slapd-modules/passwd/sha2 install prefix=/opt/zextras/common DESTDIR="${pkgdir}"
-
-  rm -rf "${pkgdir}/run"
-
-  # systemd unit
-  install -D -m 644 "${srcdir}/${pkgname}.service" \
-    "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
-
-  # tmpfiles.d configuration
-  install -D -m 644 "${srcdir}/systemd-tmpfile.conf" \
-    "${pkgdir}/usr/lib/tmpfiles.d/${pkgname}.conf"
-
-  # libexec .a and .la files should not be deleted
-  # they are related to slapd plugins
-  find "${pkgdir}/opt/zextras/common/lib" -name '*.a' -delete
-  find "${pkgdir}/opt/zextras/common/lib" -name '*.la' -delete
+  _package
+  _package_systemd
 }
 
-postinst__apt() {
-  # Set permissions and capabilities on slapd binary
-  # Note: On fresh install, zextras group may not exist yet (created by carbonio-core).
-  # In that case, carbonio-core's postinst will set these permissions.
-  # On upgrade/reinstall, zextras exists and we can set permissions here.
-  if getent group zextras >/dev/null 2>&1; then
-    # Note: chmod resets capabilities, so setcap must run after chmod
-    chown root:zextras /opt/zextras/common/libexec/slapd
-    chmod 750 /opt/zextras/common/libexec/slapd
-    setcap CAP_NET_BIND_SERVICE=+ep /opt/zextras/common/libexec/slapd
-  fi
-
-  # Apply tmpfiles.d configuration
-  systemd-tmpfiles --create /usr/lib/tmpfiles.d/carbonio-openldap.conf >/dev/null 2>&1 || :
+package__rocky_8() {
+  _package
 }
 
-postinst__yum() {
-  # Set permissions and capabilities on slapd binary
-  # Note: On fresh install, zextras group may not exist yet (created by carbonio-core).
-  # In that case, carbonio-core's postinst will set these permissions.
-  # On upgrade/reinstall, zextras exists and we can set permissions here.
-  if getent group zextras >/dev/null 2>&1; then
-    # Note: chmod resets capabilities, so setcap must run after chmod
-    chown root:zextras /opt/zextras/common/libexec/slapd
-    chmod 750 /opt/zextras/common/libexec/slapd
-    setcap CAP_NET_BIND_SERVICE=+ep /opt/zextras/common/libexec/slapd
-  fi
+package__rocky_9() {
+  _package
+  _package_systemd
+}
 
-  # Apply tmpfiles.d configuration
-  systemd-tmpfiles --create /usr/lib/tmpfiles.d/carbonio-openldap.conf >/dev/null 2>&1 || :
+package__ubuntu_jammy() {
+  _package
+}
+
+package__ubuntu_noble() {
+  _package
+  _package_systemd
+}
+
+postinst__ubuntu_jammy() {
+  _postinst
+}
+
+postinst__ubuntu_noble() {
+  _postinst
+  _postinst_systemd
+}
+
+postinst__rocky_8() {
+  _postinst
+}
+
+postinst__rocky_9() {
+  _postinst
+  _postinst_systemd
+}
+
+prerm__rocky_9() {
+  _prerm_systemd
+}
+
+prerm__ubuntu_noble() {
+  _prerm_systemd
+}
+
+postrm__rocky_9() {
+  [ -d /run/systemd/system ] && systemctl daemon-reload &>/dev/null || :
+}
+
+postrm__ubuntu_noble() {
+  [ -d /run/systemd/system ] && systemctl daemon-reload &>/dev/null || :
 }

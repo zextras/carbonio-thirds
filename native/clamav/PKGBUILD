@@ -55,6 +55,7 @@ source=(
   "carbonio-antivirus.service"
   "carbonio-clamav"
   "carbonio-clamav-sidecar.service"
+  "carbonio-clamav-sidecar-legacy.service"
   "carbonio-clamav.hcl"
   "carbonio-freshclam.service"
   "intentions.json"
@@ -67,17 +68,119 @@ sha256sums=(
   '64fe4a16a5622c1d71efe9ed7f2c2fbd37f8f237da9f11ff66b73038df71db91'
   'SKIP'
   'cc36d9357d4434ff290e46a713da8246420750a5fafdf148ce0787b531a093a5'
-  'ae25e9e1ab67db1d55a29221042851ba2a6d73bb190abe7635aee1169d69801a'
-  'a82946b05bdc139b790492b345eda5648c0196ce605decab33d75f661b6ed812'
-  'a0120f980af3ea00adc923f191e8b8a078e7eaabd2c49544a9e21ccd08941fec'
+  '598d2817cac1a70e78060c2a061249aa83758ccd0cef0d5459a3f54d959280fd'
+  '17eb4bc768694acdb4dd3a7b191cbcd185a1f7b14b417f5a351a5ab292cc14d3'
+  '0be6a07f0bf76c6120e85047b156e5e4028942cc073c89f1e1560582234e4b15'
+  '191620d8a28503df725af16da3a8894eaf6f27a15a7a1ca077fd8ba78802dcf5'
   '08fa4a2b6cd15a5dc9394743692306d6762a21f3b94df28abcaee51d54b30250'
-  '14d253334669b8ac76d4b72b66b95ba501fbc5f9f1f13abaed3a6448dd91cdd7'
+  '99ca99536e98d5a234c28b1dc63929dd3ac8c7744ed3310dbb88b74a714ecd69'
   'df54edd32986b4213a09069681741ba7533dc40a034a6a2b080cdf380a69fb05'
   'd67bb7f9d98ccb033f632621accf3d8a3391aa3955074af958c0def644be0ef5'
   '6c1f94857671bd044fe4dac20df1f927629c50bfbb0aa9991e6de1a73d1791a0'
   '1532817e2cfefd6f0ff46fbd76e1e4a7f54b6f4cbf243944fa9721f36465c266'
-  'ef5ba01dd11366c42ee75a636689ba265c538cbdc4b7c1b8f57347a52d4f8776'
+  'f8b61f9e923025c3a4ed7a70fb05a1ab68cd0889bf387c6d900aa8946a5a7bd0'
 )
+
+_package() {
+  cd "${srcdir}"
+  alien -t clamav-data-*.noarch.rpm
+
+  cd "${srcdir}/clamav-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+
+  mkdir -p "${pkgdir}/opt/zextras/data/clamav/db"
+  tar -xvf "${srcdir}"/clamav-data-*.tgz \
+    --strip-components=4 \
+    -C "${pkgdir}/opt/zextras/data/clamav/db"
+
+  find "${pkgdir}" -name '*.a' -delete
+  find "${pkgdir}" -name '*.la' -delete
+
+  rm -rf "${pkgdir}/usr"
+  rm -rf "${pkgdir}"/opt/zextras/common/bin/clamav-config
+  if [ -d "${pkgdir}/opt/zextras/common/lib64" ]; then
+    mv "${pkgdir}/opt/zextras/common/lib64" \
+      "${pkgdir}/opt/zextras/common/lib"
+  fi
+
+  # systemd tmpfiles.d configuration
+  install -Dm644 "${srcdir}/systemd-tmpfile.conf" \
+    "${pkgdir}/usr/lib/tmpfiles.d/${pkgname}.conf"
+
+  # systemd sysusers.d configuration
+  install -Dm644 "${srcdir}/systemd-sysuser.conf" \
+    "${pkgdir}/usr/lib/sysusers.d/${pkgname}.conf"
+
+  # start install carbonio-clamav consul registration artifacts
+  install -Dm755 "${srcdir}/carbonio-clamav" \
+    "${pkgdir}/usr/bin/carbonio-clamav"
+
+  install -Dm644 "${srcdir}/policies.json" \
+    "${pkgdir}/etc/carbonio/clamav/service-discover/policies.json"
+
+  install -Dm644 "${srcdir}/carbonio-clamav.hcl" \
+    "${pkgdir}/etc/zextras/service-discover/carbonio-clamav.hcl"
+
+  install -Dm644 "${srcdir}/intentions.json" \
+    "${pkgdir}/etc/carbonio/clamav/service-discover/intentions.json"
+
+  install -Dm644 "${srcdir}/service-protocol.json" \
+    "${pkgdir}/etc/carbonio/clamav/service-discover/service-protocol.json"
+
+  install -Dm755 "${srcdir}/211-carbonio-clamav-setup.sh" \
+    "${pkgdir}/etc/zextras/pending-setups.d/211-carbonio-clamav-setup.sh"
+  # end install carbonio-clamav consul registration artifacts
+}
+
+_package_systemd() {
+  # systemd units
+  install -Dm644 "${srcdir}/carbonio-antivirus.service" \
+    "${pkgdir}/usr/lib/systemd/system/carbonio-antivirus.service"
+  install -Dm644 "${srcdir}/carbonio-freshclam.service" \
+    "${pkgdir}/usr/lib/systemd/system/carbonio-freshclam.service"
+}
+
+_postinst() {
+  # Create users and groups via systemd-sysusers
+  systemd-sysusers /usr/lib/sysusers.d/carbonio-clamav.conf >/dev/null 2>&1 || :
+  systemd-tmpfiles --create /usr/lib/tmpfiles.d/carbonio-clamav.conf || :
+
+  echo "======================================================"
+  echo "Carbonio ClamAV installed successfully!"
+  echo "You must run pending-setups to configure it correctly."
+  echo "======================================================"
+}
+
+_postinst_legacy() {
+  if [ -d /run/systemd/system ]; then
+    systemctl daemon-reload >/dev/null 2>&1 || :
+    systemctl enable carbonio-clamav-sidecar.service >/dev/null 2>&1 || :
+  fi
+}
+
+_postinst_systemd() {
+  if [ -d /run/systemd/system ]; then
+    systemctl daemon-reload >/dev/null 2>&1 || :
+    systemctl enable carbonio-antivirus.service >/dev/null 2>&1 || :
+    systemctl enable carbonio-freshclam.service >/dev/null 2>&1 || :
+    systemctl enable carbonio-clamav-sidecar.service >/dev/null 2>&1 || :
+  fi
+}
+
+_prerm_legacy() {
+  if [ -d /run/systemd/system ]; then
+    systemctl --no-reload disable carbonio-clamav-sidecar.service >/dev/null 2>&1 || :
+    systemctl stop carbonio-clamav-sidecar.service >/dev/null 2>&1 || :
+  fi
+}
+
+_prerm_systemd() {
+  if [ -d /run/systemd/system ]; then
+    systemctl --no-reload disable --now carbonio-antivirus.service >/dev/null 2>&1 || :
+    systemctl --no-reload disable --now carbonio-freshclam.service >/dev/null 2>&1 || :
+    systemctl --no-reload disable --now carbonio-clamav-sidecar.service >/dev/null 2>&1 || :
+  fi
+}
 
 prepare() {
   # Install rustup if not present
@@ -104,6 +207,7 @@ build() {
     -DCLAMAV_USER=zextras \
     -DCLAMAV_GROUP=zextras \
     -DAPP_CONFIG_DIRECTORY=/opt/zextras/conf \
+    -DCVD_CERTS_DIRECTORY=/opt/zextras/conf/certs \
     -DENABLE_MILTER=false \
     -DENABLE_TESTS=OFF
 
@@ -111,85 +215,77 @@ build() {
 }
 
 package() {
-  cd "${srcdir}"
-  alien -t clamav-data-*.noarch.rpm
+  _package
+  _package_systemd
 
-  cd "${srcdir}/clamav-${pkgver}"
-  make DESTDIR="${pkgdir}" install
-
-  mkdir -p "${pkgdir}/opt/zextras/data/clamav/db"
-  tar -xvf "${srcdir}"/clamav-data-*.tgz \
-    --strip-components=4 \
-    -C "${pkgdir}/opt/zextras/data/clamav/db"
-
-  find "${pkgdir}" -name '*.a' -delete
-  find "${pkgdir}" -name '*.la' -delete
-
-  rm -rf "${pkgdir}/usr"
-  rm -rf "${pkgdir}"/opt/zextras/common/bin/clamav-config
-  if [ -d "${pkgdir}/opt/zextras/common/lib64" ]; then
-    mv "${pkgdir}/opt/zextras/common/lib64" \
-      "${pkgdir}/opt/zextras/common/lib"
-  fi
-
-  # systemd units
-  install -D -m 644 "${srcdir}/carbonio-antivirus.service" \
-    "${pkgdir}/usr/lib/systemd/system/carbonio-antivirus.service"
-  install -D -m 644 "${srcdir}/carbonio-freshclam.service" \
-    "${pkgdir}/usr/lib/systemd/system/carbonio-freshclam.service"
-  install -D -m 644 "${srcdir}/carbonio-clamav-sidecar.service" \
+  install -Dm644 "${srcdir}/carbonio-clamav-sidecar.service" \
     "${pkgdir}/usr/lib/systemd/system/carbonio-clamav-sidecar.service"
-
-  # systemd tmpfiles.d configuration
-  install -D -m 644 "${srcdir}/systemd-tmpfile.conf" \
-    "${pkgdir}/usr/lib/tmpfiles.d/${pkgname}.conf"
-
-  # systemd sysusers.d configuration
-  install -D -m 644 "${srcdir}/systemd-sysuser.conf" \
-    "${pkgdir}/usr/lib/sysusers.d/${pkgname}.conf"
-
-  # start install carbonio-clamav consul registration artifacts
-  install -D -m 755 "${srcdir}/carbonio-clamav" \
-    "${pkgdir}/usr/bin/carbonio-clamav"
-
-  install -D -m 644 "${srcdir}/policies.json" \
-    "${pkgdir}/etc/carbonio/clamav/service-discover/policies.json"
-
-  install -D -m 644 "${srcdir}/carbonio-clamav.hcl" \
-    "${pkgdir}/etc/zextras/service-discover/carbonio-clamav.hcl"
-
-  install -D -m 644 "${srcdir}/intentions.json" \
-    "${pkgdir}/etc/carbonio/clamav/service-discover/intentions.json"
-
-  install -D -m 644 "${srcdir}/service-protocol.json" \
-    "${pkgdir}/etc/carbonio/clamav/service-discover/service-protocol.json"
-
-  install -D -m 755 "${srcdir}/211-carbonio-clamav-setup.sh" \
-    "${pkgdir}/etc/zextras/pending-setups.d/211-carbonio-clamav-setup.sh"
-  # end install carbonio-clamav consul registration artifacts
 }
 
-postinst() {
-  # Create users and groups via systemd-sysusers
-  systemd-sysusers /usr/lib/sysusers.d/carbonio-clamav.conf >/dev/null 2>&1 || :
-  systemd-tmpfiles --create /usr/lib/tmpfiles.d/carbonio-clamav.conf || :
+package__rocky_8() {
+  _package
 
-  if [ -d /run/systemd/system ]; then
-    systemctl daemon-reload >/dev/null 2>&1 || :
-    systemctl enable carbonio-clamav-sidecar.service >/dev/null 2>&1 || :
-  fi
-
-  echo "======================================================"
-  echo "Carbonio ClamAV installed successfully!"
-  echo "You must run pending-setups to configure it correctly."
-  echo "======================================================"
+  install -Dm644 "${srcdir}/carbonio-clamav-sidecar-legacy.service" \
+    "${pkgdir}/usr/lib/systemd/system/carbonio-clamav-sidecar.service"
 }
 
-prerm() {
-  if [ -d /run/systemd/system ]; then
-    systemctl --no-reload disable carbonio-clamav-sidecar.service >/dev/null 2>&1 || :
-    systemctl stop carbonio-clamav-sidecar.service >/dev/null 2>&1 || :
-  fi
+package__rocky_9() {
+  _package
+  _package_systemd
+
+  install -Dm644 "${srcdir}/carbonio-clamav-sidecar.service" \
+    "${pkgdir}/usr/lib/systemd/system/carbonio-clamav-sidecar.service"
+}
+
+package__ubuntu_jammy() {
+  _package
+
+  install -Dm644 "${srcdir}/carbonio-clamav-sidecar-legacy.service" \
+    "${pkgdir}/usr/lib/systemd/system/carbonio-clamav-sidecar.service"
+}
+
+package__ubuntu_noble() {
+  _package
+  _package_systemd
+
+  install -Dm644 "${srcdir}/carbonio-clamav-sidecar.service" \
+    "${pkgdir}/usr/lib/systemd/system/carbonio-clamav-sidecar.service"
+}
+
+postinst__rocky_8() {
+  _postinst
+  _postinst_legacy
+}
+
+postinst__rocky_9() {
+  _postinst
+  _postinst_systemd
+}
+
+postinst__ubuntu_jammy() {
+  _postinst
+  _postinst_legacy
+}
+
+postinst__ubuntu_noble() {
+  _postinst
+  _postinst_systemd
+}
+
+prerm__rocky_8() {
+  _prerm_legacy
+}
+
+prerm__rocky_9() {
+  _prerm_systemd
+}
+
+prerm__ubuntu_jammy() {
+  _prerm_legacy
+}
+
+prerm__ubuntu_noble() {
+  _prerm_systemd
 }
 
 postrm() {

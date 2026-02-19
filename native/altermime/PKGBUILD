@@ -15,11 +15,38 @@ source=(
   "altermime-disclaimers.patch"
   "${pkgname}-config.service"
 )
-sha256sums=('8334da6b55d4a05dfe1492389dfe1f289953053a21773849b060d7c856ddc36e'
+sha256sums=(
+  '8334da6b55d4a05dfe1492389dfe1f289953053a21773849b060d7c856ddc36e'
   '2d9dadc9ccf529f1a778a3f21b315c96aa1e9c81dfacc9e4e705725682e581a0'
   '21b1db5e5851453cd95cd8a69b9cd53cb5767a0e1408f232cb4a156e79731762'
   '406e0481a01ffe1491e3b937626e92022013fe815194d88b143c7361abfc3fe0'
-  '89a02661fe33c11c61a53a9fcd4ea11177e172a69cec41b9edd245d2ab4d695f')
+  '7c722e405a77f4c66033024198a343816ba1188f30845d7c177c4895395c4ca6'
+)
+
+_package() {
+  cd "${srcdir}/altermime-${pkgver}"
+  install -d "${pkgdir}/opt/zextras/common/bin"
+  install -m 755 altermime "${pkgdir}/opt/zextras/common/bin/"
+}
+
+_package_systemd() {
+  # systemd unit
+  install -Dm644 "${srcdir}/${pkgname}-config.service" \
+    "${pkgdir}/usr/lib/systemd/system/${pkgname}-config.service"
+}
+
+_postinst_systemd() {
+  if [ -d /run/systemd/system ]; then
+    systemctl daemon-reload &>/dev/null || :
+    systemctl enable carbonio-altermime-config.service &>/dev/null || :
+  fi
+}
+
+_prerm_systemd() {
+  if [ -d /run/systemd/system ]; then
+    systemctl --no-reload disable --now carbonio-altermime-config.service &>/dev/null || :
+  fi
+}
 
 build() {
   cd "${srcdir}/altermime-${pkgver}"
@@ -32,11 +59,48 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/altermime-${pkgver}"
-  install -d "${pkgdir}/opt/zextras/common/bin"
-  install -m 755 altermime "${pkgdir}/opt/zextras/common/bin/"
+  _package
+  _package_systemd
+}
 
-  # systemd unit
-  install -Dm644 "${srcdir}/${pkgname}-config.service" \
-    "${pkgdir}/usr/lib/systemd/system/${pkgname}-config.service"
+package__rocky_8() {
+  _package
+}
+
+package__rocky_9() {
+  _package
+  _package_systemd
+}
+
+package__ubuntu_jammy() {
+  _package
+}
+
+package__ubuntu_noble() {
+  _package
+  _package_systemd
+}
+
+postinst__rocky_9() {
+  _postinst_systemd
+}
+
+postinst__ubuntu_noble() {
+  _postinst_systemd
+}
+
+prerm__rocky_9() {
+  _prerm_systemd
+}
+
+prerm__ubuntu_noble() {
+  _prerm_systemd
+}
+
+postrm__rocky_9() {
+  [ -d /run/systemd/system ] && systemctl daemon-reload &>/dev/null || :
+}
+
+postrm__ubuntu_noble() {
+  [ -d /run/systemd/system ] && systemctl daemon-reload &>/dev/null || :
 }

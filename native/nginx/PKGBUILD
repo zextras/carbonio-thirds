@@ -50,10 +50,58 @@ sha256sums=(
   'c6b5c6b086c0df9d3ca3ff5e084c1d0ef909e6038279c71c1c3e985f576ff76a'
   'SKIP'
   'SKIP'
-  '49a203086ff15c647f9a05a6c10e008eea829ce05ed61a7ba5ccdb7f26ba243c'
+  '53789dd07373db982d5376f497d456fedb7baaa1a6cc0fd29228975dcfbd50c8'
   'fc1f424ddcceca647d2eb9e1d1f129f4fb09f42f74c7c0bbf818dadc5bb0509f'
   '0d9bf766db1f5e64bd6f8766f22735f7af5cffed4759e15b0d99dd9da4ce9ee2'
 )
+_package() {
+  cd "${srcdir}/nginx-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  mkdir -p "${pkgdir}"/opt/zextras/data/nginx
+  mv "${pkgdir}"/opt/zextras/common/html "${pkgdir}"/opt/zextras/data/nginx/
+
+  # systemd tmpfiles.d configuration
+  install -Dm644 "${srcdir}/systemd-tmpfile.conf" \
+    "${pkgdir}/usr/lib/tmpfiles.d/${pkgname}.conf"
+
+  rm -rf "${pkgdir}/run"
+}
+
+_package_systemd() {
+  # systemd unit
+  install -Dm644 "${srcdir}/${pkgname}.service" \
+    "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
+}
+
+_postinst() {
+  # Apply tmpfiles.d configuration
+  systemd-tmpfiles --create /usr/lib/tmpfiles.d/carbonio-nginx.conf >/dev/null 2>&1 || :
+
+  # Set permissions and capabilities on nginx binary
+  # Note: On fresh install, zextras group may not exist yet (created by carbonio-core).
+  # In that case, carbonio-core's postinst will set these permissions.
+  # On upgrade/reinstall, zextras exists and we can set permissions here.
+  if getent group zextras >/dev/null 2>&1; then
+    # Note: chmod resets capabilities, so setcap must run after chmod
+    chown root:zextras /opt/zextras/common/sbin/nginx
+    chmod 750 /opt/zextras/common/sbin/nginx
+    setcap CAP_NET_BIND_SERVICE=+ep /opt/zextras/common/sbin/nginx
+  fi
+}
+
+_postinst_systemd() {
+  if [ -d /run/systemd/system ]; then
+    systemctl daemon-reload &>/dev/null || :
+    systemctl enable carbonio-nginx.service &>/dev/null || :
+  fi
+}
+
+_prerm_systemd() {
+  if [ -d /run/systemd/system ]; then
+    systemctl --no-reload disable --now carbonio-nginx.service &>/dev/null || :
+  fi
+}
+
 prepare() {
   cd "${srcdir}/nginx-brotli"
   git submodule update --init --recursive
@@ -109,50 +157,58 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/nginx-${pkgver}"
-  make DESTDIR="${pkgdir}" install
-  mkdir -p "${pkgdir}"/opt/zextras/data/nginx
-  mv "${pkgdir}"/opt/zextras/common/html "${pkgdir}"/opt/zextras/data/nginx/
-
-  # systemd unit
-  install -D -m 644 "${srcdir}/${pkgname}.service" \
-    "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
-
-  # systemd tmpfiles.d configuration
-  install -D -m 644 "${srcdir}/systemd-tmpfile.conf" \
-    "${pkgdir}/usr/lib/tmpfiles.d/${pkgname}.conf"
-
-  rm -rf "${pkgdir}/run"
+  _package
+  _package_systemd
 }
 
-postinst__apt() {
-  # Apply tmpfiles.d configuration
-  systemd-tmpfiles --create /usr/lib/tmpfiles.d/carbonio-nginx.conf >/dev/null 2>&1 || :
-
-  # Set permissions and capabilities on nginx binary
-  # Note: On fresh install, zextras group may not exist yet (created by carbonio-core).
-  # In that case, carbonio-core's postinst will set these permissions.
-  # On upgrade/reinstall, zextras exists and we can set permissions here.
-  if getent group zextras >/dev/null 2>&1; then
-    # Note: chmod resets capabilities, so setcap must run after chmod
-    chown root:zextras /opt/zextras/common/sbin/nginx
-    chmod 750 /opt/zextras/common/sbin/nginx
-    setcap CAP_NET_BIND_SERVICE=+ep /opt/zextras/common/sbin/nginx
-  fi
+package__rocky_8() {
+  _package
 }
 
-postinst__yum() {
-  # Apply tmpfiles.d configuration
-  systemd-tmpfiles --create /usr/lib/tmpfiles.d/carbonio-nginx.conf >/dev/null 2>&1 || :
+package__rocky_9() {
+  _package
+  _package_systemd
+}
 
-  # Set permissions and capabilities on nginx binary
-  # Note: On fresh install, zextras group may not exist yet (created by carbonio-core).
-  # In that case, carbonio-core's postinst will set these permissions.
-  # On upgrade/reinstall, zextras exists and we can set permissions here.
-  if getent group zextras >/dev/null 2>&1; then
-    # Note: chmod resets capabilities, so setcap must run after chmod
-    chown root:zextras /opt/zextras/common/sbin/nginx
-    chmod 750 /opt/zextras/common/sbin/nginx
-    setcap CAP_NET_BIND_SERVICE=+ep /opt/zextras/common/sbin/nginx
-  fi
+package__ubuntu_jammy() {
+  _package
+}
+
+package__ubuntu_noble() {
+  _package
+  _package_systemd
+}
+
+postinst__ubuntu_jammy() {
+  _postinst
+}
+
+postinst__ubuntu_noble() {
+  _postinst
+  _postinst_systemd
+}
+
+postinst__rocky_8() {
+  _postinst
+}
+
+postinst__rocky_9() {
+  _postinst
+  _postinst_systemd
+}
+
+prerm__rocky_9() {
+  _prerm_systemd
+}
+
+prerm__ubuntu_noble() {
+  _prerm_systemd
+}
+
+postrm__rocky_9() {
+  [ -d /run/systemd/system ] && systemctl daemon-reload &>/dev/null || :
+}
+
+postrm__ubuntu_noble() {
+  [ -d /run/systemd/system ] && systemctl daemon-reload &>/dev/null || :
 }

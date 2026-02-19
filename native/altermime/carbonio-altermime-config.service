@@ -8,7 +8,7 @@ User=zextras
 Type=oneshot
 Environment=PERL5LIB="/opt/zextras/common/lib/perl5/x86_64-linux-gnu-thread-multi:/opt/zextras/common/lib/perl5/x86_64-linux-thread-multi:/opt/zextras/common/lib/perl5"
 ExecStart=/opt/zextras/libexec/zmaltermimeconfig
-RestartSec=3
+RestartSec=3s
 Restart=on-failure
 RemainAfterExit=yes
 
