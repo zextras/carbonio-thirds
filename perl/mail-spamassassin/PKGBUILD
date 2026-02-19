@@ -89,7 +89,7 @@ package() {
     "${pkgdir}"/opt/zextras/data/spamassassin/localrules/v320.pre
 
   # systemd tmpfiles.d configuration
-  install -D -m 644 "${srcdir}/systemd-tmpfile.conf" \
+  install -Dm644 "${srcdir}/systemd-tmpfile.conf" \
     "${pkgdir}/usr/lib/tmpfiles.d/carbonio-spamassassin.conf"
 }
 

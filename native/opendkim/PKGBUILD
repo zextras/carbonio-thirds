@@ -34,8 +34,10 @@ source=(
   "https://github.com/trusteddomainproject/OpenDKIM/archive/14d54524e0a97d3fe9b80441907d7e356c9ded04.tar.gz"
   "${pkgname}.service"
 )
-sha256sums=('b9d033ac6ba4c14c42dd485e7dc8e03d6f415cb3d45a7fe8c020164636b9d23e'
-  '0711dfa98034a06b5ce32e2275499a4ed6e05ddcd10b155f0a699781e10a17e4')
+sha256sums=(
+  'b9d033ac6ba4c14c42dd485e7dc8e03d6f415cb3d45a7fe8c020164636b9d23e'
+  '3b7ea80e4995bcb0aca73b102646719b000955a323f1de9d77548924c65b600f'
+)
 
 build() {
   cd "${srcdir}/OpenDKIM-14d54524e0a97d3fe9b80441907d7e356c9ded04"
@@ -68,14 +70,39 @@ build() {
   make -j16
 }
 
-package() {
+_package() {
   cd "${srcdir}/OpenDKIM-14d54524e0a97d3fe9b80441907d7e356c9ded04"
   make DESTDIR="${pkgdir}" install
 
-  # systemd units
-  install -D -m 644 "${srcdir}/${pkgname}.service" \
-    "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
-
   rm -rf "${pkgdir}"/opt/zextras/common/lib/*.a
   rm -rf "${pkgdir}"/opt/zextras/common/lib/*.la
+}
+
+_package_systemd() {
+  # systemd units
+  install -Dm644 "${srcdir}/${pkgname}.service" \
+    "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
+}
+
+package() {
+  _package
+  _package_systemd
+}
+
+package__rocky_8() {
+  _package
+}
+
+package__rocky_9() {
+  _package
+  _package_systemd
+}
+
+package__ubuntu_jammy() {
+  _package
+}
+
+package__ubuntu_noble() {
+  _package
+  _package_systemd
 }
