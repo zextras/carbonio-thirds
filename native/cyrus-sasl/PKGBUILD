@@ -31,14 +31,48 @@ source=(
   "carbonio-auth.patch"
   "carbonio-saslauthd.service"
 )
-sha256sums=('7ccfc6abd01ed67c1a0924b353e526f1b766b21f42d4562ee635a8ebfc5bb38c'
+sha256sums=(
+  '7ccfc6abd01ed67c1a0924b353e526f1b766b21f42d4562ee635a8ebfc5bb38c'
   '2f624ccb8c5f351538bc990b9e72af18e8823fbc77a14bcd35cf66df4390cccc'
-  '98aba7c3e748ed43c144ef8d0071b5a28696d93cfa7d30f6423ff017f1b898c7')
+  '057045d736ce15b23a69479d3d49f50413f1125dd877c74c5ce917d1b3a6f01d'
+)
+
+_package() {
+  cd "${srcdir}/cyrus-sasl-${pkgver}"
+
+  make DESTDIR="${pkgdir}" install
+  find "${pkgdir}" -name '*.a' -delete
+  find "${pkgdir}" -name '*.la' -delete
+}
+
+_package_systemd() {
+  # systemd unit
+  install -Dm644 "${srcdir}/carbonio-saslauthd.service" \
+    "${pkgdir}/usr/lib/systemd/system/carbonio-saslauthd.service"
+}
+
+_postinst_systemd() {
+  if [ -d /run/systemd/system ]; then
+    systemctl daemon-reload &>/dev/null || :
+    systemctl enable carbonio-saslauthd.service &>/dev/null || :
+  fi
+}
+
+_prerm_systemd() {
+  if [ -d /run/systemd/system ]; then
+    systemctl --no-reload disable --now carbonio-saslauthd.service &>/dev/null || :
+  fi
+}
+
+prepare() {
+  cd "${srcdir}/cyrus-sasl-${pkgver}"
+
+  patch -Np1 -i "${srcdir}/carbonio-auth.patch"
+}
 
 build() {
   cd "${srcdir}/cyrus-sasl-${pkgver}"
 
-  patch -Np1 -i "${srcdir}/carbonio-auth.patch"
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib -lxml2"
   export CFLAGS="-D_REENTRANT -Wno-error -I/opt/zextras/common/include -I/opt/zextras/common/include/libxml2"
   export CPPFLAGS="-D_REENTRANT -Wno-error -I/opt/zextras/common/include"
@@ -91,13 +125,48 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/cyrus-sasl-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  _package
+  _package_systemd
+}
 
-  # systemd unit
-  install -D -m 644 "${srcdir}/carbonio-saslauthd.service" \
-    "${pkgdir}/usr/lib/systemd/system/carbonio-saslauthd.service"
+package__rocky_8() {
+  _package
+}
 
-  find "${pkgdir}" -name '*.a' -delete
-  find "${pkgdir}" -name '*.la' -delete
+package__rocky_9() {
+  _package
+  _package_systemd
+}
+
+package__ubuntu_jammy() {
+  _package
+}
+
+package__ubuntu_noble() {
+  _package
+  _package_systemd
+}
+
+postinst__rocky_9() {
+  _postinst_systemd
+}
+
+postinst__ubuntu_noble() {
+  _postinst_systemd
+}
+
+prerm__rocky_9() {
+  _prerm_systemd
+}
+
+prerm__ubuntu_noble() {
+  _prerm_systemd
+}
+
+postrm__rocky_9() {
+  [ -d /run/systemd/system ] && systemctl daemon-reload &>/dev/null || :
+}
+
+postrm__ubuntu_noble() {
+  [ -d /run/systemd/system ] && systemctl daemon-reload &>/dev/null || :
 }

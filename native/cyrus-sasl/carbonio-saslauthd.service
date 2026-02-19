@@ -7,8 +7,7 @@ PartOf=carbonio-mta.target
 [Service]
 User=zextras
 Type=forking
-EnvironmentFile=-/opt/zextras/data/systemd.env
-ExecStartPre=echo REWRITE sasl | netcat -w $configd_rewrite_timeout localhost $configd_listen_port
+ExecStartPre=echo REWRITE sasl | netcat -w 120 localhost 7171
 ExecStart=/opt/zextras/common/sbin/saslauthd -r -a zimbra
 Restart=on-failure
 RestartSec=3s
