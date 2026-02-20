@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-mime-tools"
-pkgver="5.515" # renovate: datasource=cpan depName=MIME::Tools
+pkgver="5.517" # renovate: datasource=cpan depName=MIME::Tools
 pkgrel="1"
 pkgdesc="Modules for parsing (and creating!) MIME entities"
 arch=('x86_64')
