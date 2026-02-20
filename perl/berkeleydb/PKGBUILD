@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-berkeleydb"
-pkgver="0.66" # renovate: datasource=cpan depName=BerkeleyDB
+pkgver="0.67" # renovate: datasource=cpan depName=BerkeleyDB
 pkgrel="1"
 pkgdesc="Perl5 Module Supporting LDAP API"
 arch=('x86_64')
@@ -20,7 +20,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/P/PM/PMQS/BerkeleyDB-${pkgver}.tar.gz"
 )
-sha256sums=('c64138df293afcd961fc6d5d4253992d94dcbbfbd54bf889565cc8be4fe6b291')
+sha256sums=('df5ee5dc71be1d941cb1931c7adf866ad38d2fc20826caecb797244102f0eeee')
 
 build() {
   cd "${srcdir}/BerkeleyDB-${pkgver}"
