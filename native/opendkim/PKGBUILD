@@ -1,6 +1,6 @@
 pkgname="carbonio-opendkim"
 pkgver="2.11.0" # renovate: datasource=github-tags depName=trusteddomainproject/OpenDKIM
-pkgrel="4"
+pkgrel="5"
 pkgdesc="An open source implementation of the DKIM sender authentication system. Based on a fork of dkim-milter"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
