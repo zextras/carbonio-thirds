@@ -1,0 +1,12 @@
+[Unit]
+Description=Carbonio AlterMIME Config Timer
+PartOf=carbonio-mta.target
+After=carbonio-mta.target
+
+[Timer]
+OnActiveSec=5min
+OnUnitActiveSec=5min
+Unit=carbonio-altermime-config.service
+
+[Install]
+WantedBy=carbonio-mta.target
