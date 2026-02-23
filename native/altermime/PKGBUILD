@@ -14,13 +14,15 @@ source=(
   "altermime-0.3.10-cflags.patch"
   "altermime-disclaimers.patch"
   "${pkgname}-config.service"
+  "${pkgname}-config.timer"
 )
 sha256sums=(
   '8334da6b55d4a05dfe1492389dfe1f289953053a21773849b060d7c856ddc36e'
   '2d9dadc9ccf529f1a778a3f21b315c96aa1e9c81dfacc9e4e705725682e581a0'
   '21b1db5e5851453cd95cd8a69b9cd53cb5767a0e1408f232cb4a156e79731762'
   '406e0481a01ffe1491e3b937626e92022013fe815194d88b143c7361abfc3fe0'
-  '7c722e405a77f4c66033024198a343816ba1188f30845d7c177c4895395c4ca6'
+  '31c664be391a980fd10557d6b475b1501da115c9d730d0a51032aead0c8f6906'
+  'c7f4d76c2572c0bf4b43c1165ab799fedb3f7030ff0395e3fcad6d74b14b291a'
 )
 
 _package() {
@@ -33,17 +35,21 @@ _package_systemd() {
   # systemd unit
   install -Dm644 "${srcdir}/${pkgname}-config.service" \
     "${pkgdir}/usr/lib/systemd/system/${pkgname}-config.service"
+  install -Dm644 "${srcdir}/${pkgname}-config.timer" \
+    "${pkgdir}/usr/lib/systemd/system/${pkgname}-config.timer"
 }
 
 _postinst_systemd() {
   if [ -d /run/systemd/system ]; then
     systemctl daemon-reload &>/dev/null || :
     systemctl enable carbonio-altermime-config.service &>/dev/null || :
+    systemctl enable carbonio-altermime-config.timer &>/dev/null || :
   fi
 }
 
 _prerm_systemd() {
   if [ -d /run/systemd/system ]; then
+    systemctl --no-reload disable --now carbonio-altermime-config.timer &>/dev/null || :
     systemctl --no-reload disable --now carbonio-altermime-config.service &>/dev/null || :
   fi
 }

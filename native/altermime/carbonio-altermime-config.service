@@ -10,7 +10,6 @@ Environment=PERL5LIB="/opt/zextras/common/lib/perl5/x86_64-linux-gnu-thread-mult
 ExecStart=/opt/zextras/libexec/zmaltermimeconfig
 RestartSec=3s
 Restart=on-failure
-RemainAfterExit=yes
 
 [Install]
 WantedBy=carbonio-mta.target
