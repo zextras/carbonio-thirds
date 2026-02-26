@@ -1,7 +1,6 @@
 [Unit]
 Description=Carbonio AlterMIME Config Timer
 PartOf=carbonio-mta.target
-After=carbonio-mta.target
 
 [Timer]
 OnActiveSec=5min
