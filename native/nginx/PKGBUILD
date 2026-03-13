@@ -11,6 +11,7 @@ depends__apt=(
   "carbonio-openssl"
   "libbrotli1"
   "libcap2-bin"
+  "libluajit-5.1-2"
   "libpcre3"
   "libsystemd0"
   "zlib1g"
@@ -19,6 +20,7 @@ makedepends__apt=(
   "git"
   "libbrotli-dev"
   "libcap2-bin"
+  "libluajit-5.1-dev"
   "libpcre3-dev"
   "libsystemd-dev"
   "zlib1g-dev"
@@ -28,6 +30,7 @@ depends__yum=(
   "carbonio-openssl"
   "brotli"
   "libcap"
+  "luajit"
   "pcre"
   "systemd-libs"
   "zlib"
@@ -36,6 +39,7 @@ makedepends__yum=(
   "brotli-devel"
   "git"
   "libcap"
+  "luajit-devel"
   "pcre-devel"
   "systemd-devel"
   "zlib-devel"
@@ -44,21 +48,41 @@ section="utils"
 priority="optional"
 source=(
   "https://nginx.org/download/nginx-${pkgver}.tar.gz"
-  "nginx-brotli::git+https://github.com/google/ngx_brotli#commit=a71f9312c2deb28875acc7bacfdd5695a111aa53"
+  "lua-nginx-module::git+https://github.com/openresty/lua-nginx-module#commit=c81c9517034aa7868fc333df5d53af9c860056eb"
+  "lua-resty-openssl-aux-module::git+https://github.com/fffonion/lua-resty-openssl-aux-module#commit=9d39a905c30e9b8626b5e787accd99d4333edfba"
   "modules::git+https://github.com/zextras/carbonio-nginx-modules#commit=79b2a956fab93a9769d5a0d8d0adc34343d06900"
+  "nginx-brotli::git+https://github.com/google/ngx_brotli#commit=a71f9312c2deb28875acc7bacfdd5695a111aa53"
+  "ngx_devel_kit::git+https://github.com/vision5/ngx_devel_kit#commit=bd44d16302273052d6005d7bdb55f74e23813de3"
+  "lua-resty-core::git+https://github.com/openresty/lua-resty-core#commit=04c564acc22c90f9650fe42fec74879ae4b656a6"
+  "lua-resty-lrucache::git+https://github.com/openresty/lua-resty-lrucache#commit=0bb1eff11d248ad22026b935b28453ec7f1b27c5"
+  "stream-lua-nginx-module::git+https://github.com/openresty/stream-lua-nginx-module#commit=ba83956f27b38bc90f9aa843f8ca856ab6212151"
   "${pkgname}.service"
   "${pkgname}-${pkgver}.patch"
-  "systemd-tmpfile.conf"
+  "lua_default_path.patch"
+  "lua_luajit_warning.patch"
   "sd_notify.patch"
+  "stream_lua_default_path.patch"
+  "stream_lua_luajit_warning.patch"
+  "systemd-tmpfile.conf"
 )
 sha256sums=(
   '2c96a946bfb0882a21744ed429770a2123ae1828c7c48665092993ddee91a918'
   'SKIP'
   'SKIP'
-  'd0f74f21fcf2936f61f9fd8462b138c6ea271faef20705c1d7f154414d436b5d'
+  'SKIP'
+  'SKIP'
+  'SKIP'
+  'SKIP'
+  'SKIP'
+  'SKIP'
+  'afddf78cd7e8a7715940bc189e0016c58bd7197e13e497402c6ef36c2522ec1f'
   'ba83cd36d49f281227fb96de3870d10f3a51374a18d648bb1d85574a26c15893'
-  '0d9bf766db1f5e64bd6f8766f22735f7af5cffed4759e15b0d99dd9da4ce9ee2'
+  '5ee2be98ad3619ec851f697fc0b32cd6c5d7e4ceb81d266e26a03bf627c59fbe'
+  '0934df2c7cc8288c99293c383abedcea7ac05aac9209dedaf3d65641e2fc726f'
   'cc267b5da6f6de46ac5164e0d40ef880bf6678e2257b78378be26fe115d98650'
+  '921afab08ef59372abb079337acbb3d995c03595113eabdc97f2f8041a26aae2'
+  '47bdb8793c109e6aed69b1d47b3c665508b21133169cc123012a0328223ef2d3'
+  '0d9bf766db1f5e64bd6f8766f22735f7af5cffed4759e15b0d99dd9da4ce9ee2'
 )
 
 _package() {
@@ -66,6 +90,12 @@ _package() {
   make DESTDIR="${pkgdir}" install
   mkdir -p "${pkgdir}"/opt/zextras/data/nginx
   mv "${pkgdir}"/opt/zextras/common/html "${pkgdir}"/opt/zextras/data/nginx/
+
+  # lua-resty-core and lua-resty-lrucache libraries
+  cd "${srcdir}/lua-resty-core"
+  make install DESTDIR="${pkgdir}" LUA_LIB_DIR=/opt/zextras/common/share/lua/5.1
+  cd "${srcdir}/lua-resty-lrucache"
+  make install DESTDIR="${pkgdir}" LUA_LIB_DIR=/opt/zextras/common/share/lua/5.1
 
   # systemd tmpfiles.d configuration
   install -Dm644 "${srcdir}/systemd-tmpfile.conf" \
@@ -116,16 +146,29 @@ prepare() {
   cd "${srcdir}/nginx-${pkgver}"
   patch -Np1 -i "${srcdir}/${pkgname}-${pkgver}.patch"
   patch -Np1 -i "${srcdir}/sd_notify.patch"
+
+  cd "${srcdir}/lua-nginx-module"
+  patch -Np1 -i "${srcdir}/lua_default_path.patch"
+  patch -Np1 -i "${srcdir}/lua_luajit_warning.patch"
+
+  cd "${srcdir}/stream-lua-nginx-module"
+  patch -Np1 -i "${srcdir}/stream_lua_default_path.patch"
+  patch -Np1 -i "${srcdir}/stream_lua_luajit_warning.patch"
 }
 
 build() {
-
-  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib"
   export CFLAGS="-g -O2 -ffile-prefix-map=${srcdir}=. -fdebug-prefix-map=/etc=. -fstack-protector-strong"
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib"
+  export LUAJIT_INC="$(pkg-config --variable=includedir luajit)"
+  export LUAJIT_LIB="$(pkg-config --variable=libdir luajit)"
 
   cd "${srcdir}/nginx-${pkgver}"
   ./configure \
+    --add-module="${srcdir}/ngx_devel_kit" \
+    --add-module="${srcdir}/lua-nginx-module" \
+    --add-module="${srcdir}/lua-resty-openssl-aux-module" \
     --add-module="${srcdir}/nginx-brotli" \
+    --add-module="${srcdir}/stream-lua-nginx-module" \
     --add-module="${srcdir}/modules/http/sso" \
     --add-module="${srcdir}/modules/http/upstreamzmauth" \
     --add-module="${srcdir}/modules/mail/zmauth" \
@@ -137,10 +180,8 @@ build() {
     --http-fastcgi-temp-path=/opt/zextras/data/tmp/nginx/fastcgi \
     --pid-path=/run/carbonio/nginx.pid \
     --prefix=/opt/zextras/common \
-    --with-cc-opt="-g -I/opt/zextras/common/include -DNGX_HAVE_SYSTEMD=1" \
+    --with-cc-opt="-g -I/opt/zextras/common/include -I${srcdir}/lua-nginx-module/src -DNGX_HAVE_SYSTEMD=1" \
     --with-ld-opt="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib -lsystemd" \
-    --with-http_ssl_module \
-    --with-http_stub_status_module \
     --with-pcre \
     --with-http_addition_module \
     --with-http_auth_request_module \
@@ -162,7 +203,7 @@ build() {
     --with-mail_ssl_module \
     --without-http_scgi_module \
     --without-http_uwsgi_module
-  make -j"$(( $(nproc) / 2 ))"
+  make -j"$(($(nproc) / 2))"
 }
 
 package() {
