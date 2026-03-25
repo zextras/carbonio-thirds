@@ -1,6 +1,6 @@
 pkgname="carbonio-clamav"
 pkgver="1.5.1" # renovate: datasource=repology depName=arch/clamav
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Anti-virus toolkit for Unix"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -50,7 +50,7 @@ section="utils"
 priority="optional"
 source=(
   "https://www.clamav.net/downloads/production/clamav-${pkgver}.tar.gz"
-  "https://dl.fedoraproject.org/pub/fedora/linux/development/rawhide/Everything/x86_64/os/Packages/c/clamav-data-1.4.3-6.fc44.noarch.rpm"
+  "https://dl.fedoraproject.org/pub/fedora/linux/development/rawhide/Everything/x86_64/os/Packages/c/clamav-data-1.4.4-1.fc45.noarch.rpm"
   "211-carbonio-clamav-setup.sh"
   "carbonio-antivirus.service"
   "carbonio-clamav"
