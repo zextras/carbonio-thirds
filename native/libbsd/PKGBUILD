@@ -29,8 +29,7 @@ build() {
   autoreconf -fiv
   ./configure \
     --prefix=/opt/zextras/common \
-    --disable-static \
-    --disable-tests
+    --disable-static
   make -j16
 }
 

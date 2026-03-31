@@ -1,6 +1,6 @@
 pkgname="carbonio-opendkim"
 pkgver="2.11.0" # renovate: datasource=github-tags depName=trusteddomainproject/OpenDKIM
-pkgrel="5"
+pkgrel="6"
 pkgdesc="An open source implementation of the DKIM sender authentication system. Based on a fork of dkim-milter"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -10,6 +10,7 @@ depends__apt=(
   "carbonio-cyrus-sasl"
   "carbonio-bdb"
   "carbonio-libbsd"
+  "carbonio-libmilter"
   "carbonio-openldap"
   "carbonio-openssl"
   "zlib1g"
@@ -21,6 +22,7 @@ depends__yum=(
   "carbonio-cyrus-sasl"
   "carbonio-bdb"
   "carbonio-libbsd"
+  "carbonio-libmilter"
   "carbonio-openldap"
   "carbonio-openssl"
   "zlib"
@@ -36,7 +38,7 @@ source=(
 )
 sha256sums=(
   'b9d033ac6ba4c14c42dd485e7dc8e03d6f415cb3d45a7fe8c020164636b9d23e'
-  '3b7ea80e4995bcb0aca73b102646719b000955a323f1de9d77548924c65b600f'
+  '1486105dced14029c8e90688521bb8435cd47e643ab3c86116574aeba03f5423'
 )
 
 _postinst_systemd() {
@@ -61,7 +63,6 @@ build() {
   autoreconf -fiv
   ./configure --prefix=/opt/zextras/common \
     --enable-query_cache \
-    --enable-poll \
     --enable-atps \
     --enable-rate_limit \
     --enable-replace_rules \

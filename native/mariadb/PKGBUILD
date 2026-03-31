@@ -1,6 +1,6 @@
 pkgname="carbonio-mariadb"
 pkgver="10.11.16" # renovate: datasource=github-releases depName=MariaDB/server
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Fast SQL database server, derived from MySQL"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -17,6 +17,7 @@ depends__apt=(
   "libpam0g"
   "libpcre3"
   "libsnappy1v5"
+  "libsystemd0"
 )
 depends__ubuntu_noble=(
   "carbonio-curl"
@@ -29,6 +30,7 @@ depends__ubuntu_noble=(
   "libpam0g"
   "libpcre3"
   "libsnappy1v5"
+  "libsystemd0"
 )
 makedepends__apt=(
   "bison"
@@ -54,6 +56,7 @@ makedepends__apt=(
   "libpam0g-dev"
   "libpcre3-dev"
   "libsnappy-dev"
+  "libsystemd-dev"
   "libzstd-dev"
   "zlib1g-dev"
 )
@@ -67,6 +70,7 @@ depends__yum=(
   "pam"
   "pcre"
   "snappy"
+  "systemd-libs"
 )
 makedepends__yum=(
   "bison"
@@ -80,6 +84,7 @@ makedepends__yum=(
   "pam-devel"
   "pcre-devel"
   "snappy-devel"
+  "systemd-devel"
 )
 section="utils"
 priority="optional"
@@ -144,6 +149,7 @@ build() {
     -DWITH_JEMALLOC=ON \
     -DWITH_PCRE=system \
     -DWITH_SSL=yes \
+    -DWITH_SYSTEMD=yes \
     -DWITH_UNIT_TESTS=OFF \
     -DWITH_ZLIB=system \
     -Wno-dev

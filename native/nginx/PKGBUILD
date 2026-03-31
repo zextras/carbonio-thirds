@@ -1,6 +1,6 @@
 pkgname="carbonio-nginx"
 pkgver="1.28.3" # renovate: datasource=github-tags depName=nginx/nginx extractVersion=^release-(?<version>.+)$ versioning=semver allowedVersions=/^1\.(2[0-9]*[02468]|[3-9][0-9]*[02468])\./
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Lightweight HTTP server and IMAP/POP3 proxy server"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -50,7 +50,7 @@ sha256sums=(
   '2c96a946bfb0882a21744ed429770a2123ae1828c7c48665092993ddee91a918'
   'SKIP'
   'SKIP'
-  '53789dd07373db982d5376f497d456fedb7baaa1a6cc0fd29228975dcfbd50c8'
+  'c33324f9fb4fae4f07a9e7fcb448277ae2100d259245fe134a67cba5feb94889'
   'ba83cd36d49f281227fb96de3870d10f3a51374a18d648bb1d85574a26c15893'
   '0d9bf766db1f5e64bd6f8766f22735f7af5cffed4759e15b0d99dd9da4ce9ee2'
 )

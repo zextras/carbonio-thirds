@@ -7,14 +7,27 @@ PartOf=carbonio-mta.target
 [Service]
 User=root
 Type=forking
-CapabilityBoundingSet=~ CAP_NET_ADMIN CAP_SYS_ADMIN CAP_SYS_BOOT CAP_SYS_MODULE
 PIDFile=/opt/zextras/data/postfix/spool/pid/master.pid
+CapabilityBoundingSet=~ CAP_NET_ADMIN CAP_SYS_ADMIN CAP_SYS_BOOT CAP_SYS_MODULE
 ExecStartPre=/opt/zextras/common/sbin/postalias /etc/aliases
 ExecStart=/opt/zextras/common/sbin/postfix start
 ExecStop=/opt/zextras/common/sbin/postfix stop
 ExecReload=/opt/zextras/common/sbin/postfix reload
 Restart=always
 LimitNOFILE=524288
+
+# Hardening (root service — limited subset)
+ProtectHome=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+RestrictRealtime=yes
+RestrictNamespaces=yes
+LockPersonality=yes
+ProtectHostname=yes
+ProtectClock=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX AF_NETLINK
 
 [Install]
 WantedBy=carbonio-mta.target

@@ -7,14 +7,36 @@ PartOf=carbonio-proxy.target
 [Service]
 User=zextras
 Type=forking
+PIDFile=/run/carbonio/nginx.pid
 AmbientCapabilities=CAP_NET_BIND_SERVICE
-ExecStartPre=echo REWRITE proxy | netcat -w 120 localhost 7171
+ExecStartPre=/bin/sh -c 'echo REWRITE proxy | netcat -w 120 localhost 7171'
 ExecStart=/opt/zextras/common/sbin/nginx -c /opt/zextras/conf/nginx.conf
 ExecReload=/opt/zextras/common/sbin/nginx -c /opt/zextras/conf/nginx.conf -s reload
 ExecStop=/opt/zextras/common/sbin/nginx -c /opt/zextras/conf/nginx.conf -s stop
 RestartSec=5s
 Restart=on-failure
 LimitNOFILE=524288
+
+# Hardening
+PrivateTmp=yes
+ProtectSystem=strict
+ReadWritePaths=/opt/zextras/log /opt/zextras/data/tmp/nginx /run/carbonio
+NoNewPrivileges=yes
+PrivateDevices=yes
+ProtectHome=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+RestrictRealtime=yes
+RestrictNamespaces=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+ProtectHostname=yes
+ProtectClock=yes
+MemoryDenyWriteExecute=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE
 
 [Install]
 WantedBy=carbonio-proxy.target

@@ -1,6 +1,6 @@
 pkgname="carbonio-openldap"
 pkgver="2.6.10" # renovate: datasource=github-tags depName=openldap/openldap  extractVersion=^OPENLDAP_REL_ENG_(?<version>.+)$ versioning=regex:^(?<major>\d+)_(?<minor>\d+)(_(?<patch>\d+))?$
-pkgrel="2"
+pkgrel="3"
 pkgdesc="Lightweight Directory Access Protocol (LDAP) library"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -37,7 +37,7 @@ source=(
 sha256sums=(
   'c065f04aad42737aebd60b2fe4939704ac844266bc0aeaa1609f0cad987be516'
   'a2ba7ee70d6caf8f21bdac376d95b1e98361874c4fcc62dd63356f9f2a1cae99'
-  'ea5035b346caa69b14d15b2fb205838164a86a752c1d9239a483f059183d8150'
+  'ab07d0f5f9e3144a362d9ffff729f372a2935668946e190504d70e5a9462a60e'
   'd64b270fd9863319863cd9fb5619d4386cfdb87d841d11a7e5dc4fcb558c1689'
 )
 
@@ -109,7 +109,6 @@ build() {
   ./configure \
     --prefix=/opt/zextras/common \
     --localstatedir=/run/carbonio/ \
-    --disable-ndb \
     --disable-perl \
     --disable-sql \
     --disable-wt \

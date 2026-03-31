@@ -1,6 +1,6 @@
 pkgname="carbonio-clamav"
 pkgver="1.5.1" # renovate: datasource=repology depName=arch/clamav
-pkgrel="2"
+pkgrel="3"
 pkgdesc="Anti-virus toolkit for Unix"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -28,6 +28,8 @@ makedepends__apt=(
   "libjson-c-dev"
   "libncursesw5-dev"
   "libpcre2-dev"
+  "libsystemd-dev"
+  "systemd"
   "zlib1g-dev"
 )
 depends__yum=(
@@ -44,6 +46,7 @@ makedepends__yum=(
   "json-c-devel"
   "ncurses-devel"
   "pcre2-devel"
+  "systemd-devel"
   "zlib-devel"
 )
 section="utils"
@@ -68,12 +71,12 @@ sha256sums=(
   '64fe4a16a5622c1d71efe9ed7f2c2fbd37f8f237da9f11ff66b73038df71db91'
   'SKIP'
   'cc36d9357d4434ff290e46a713da8246420750a5fafdf148ce0787b531a093a5'
-  '598d2817cac1a70e78060c2a061249aa83758ccd0cef0d5459a3f54d959280fd'
+  'ae2fdd4aff09d610ebac511f369b23236d4ab2fb5accafe6beb0ce275eb1a600'
   '17eb4bc768694acdb4dd3a7b191cbcd185a1f7b14b417f5a351a5ab292cc14d3'
-  '0be6a07f0bf76c6120e85047b156e5e4028942cc073c89f1e1560582234e4b15'
+  '7e9e6ab9adbbc47dfaeafa418f0b8aef28eb6327190d9b04fdcbabef13724c8e'
   '191620d8a28503df725af16da3a8894eaf6f27a15a7a1ca077fd8ba78802dcf5'
   '08fa4a2b6cd15a5dc9394743692306d6762a21f3b94df28abcaee51d54b30250'
-  '99ca99536e98d5a234c28b1dc63929dd3ac8c7744ed3310dbb88b74a714ecd69'
+  '3e32adcb667bab2a29a1cc6491390d0105c617897802c468e34db1d00ef8d251'
   'df54edd32986b4213a09069681741ba7533dc40a034a6a2b080cdf380a69fb05'
   'd67bb7f9d98ccb033f632621accf3d8a3391aa3955074af958c0def644be0ef5'
   '6c1f94857671bd044fe4dac20df1f927629c50bfbb0aa9991e6de1a73d1791a0'
@@ -97,6 +100,7 @@ _package() {
   find "${pkgdir}" -name '*.la' -delete
 
   rm -rf "${pkgdir}/usr"
+  rm -rf "${pkgdir}/lib"
   rm -rf "${pkgdir}"/opt/zextras/common/bin/clamav-config
   if [ -d "${pkgdir}/opt/zextras/common/lib64" ]; then
     mv "${pkgdir}/opt/zextras/common/lib64" \
@@ -209,6 +213,7 @@ build() {
     -DAPP_CONFIG_DIRECTORY=/opt/zextras/conf \
     -DCVD_CERTS_DIRECTORY=/opt/zextras/conf/certs \
     -DENABLE_MILTER=false \
+    -DENABLE_SYSTEMD=ON \
     -DENABLE_TESTS=OFF
 
   make -j16
