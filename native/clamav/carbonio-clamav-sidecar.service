@@ -2,8 +2,8 @@
 Description=Carbonio ClamAV Sidecar
 Documentation=https://docs.zextras.com/
 Requires=network-online.target
-After=network-online.target
-PartOf=carbonio-mta.target carbonio-proxy.target
+After=network-online.target service-discover.service carbonio-antivirus.service
+PartOf=service-discover.target
 
 [Service]
 User=carbonio-clamav
@@ -37,4 +37,4 @@ MemoryDenyWriteExecute=yes
 RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
 
 [Install]
-WantedBy=carbonio-mta.target carbonio-proxy.target
+WantedBy=service-discover.target

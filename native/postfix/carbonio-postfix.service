@@ -1,7 +1,7 @@
 [Unit]
 Description=Carbonio Postfix Daemon
-After=carbonio-milter.service carbonio-saslauthd.service
-Wants=carbonio-milter.service carbonio-saslauthd.service
+After=carbonio-configd.service carbonio-milter.service carbonio-saslauthd.service
+Wants=carbonio-configd.service carbonio-milter.service carbonio-saslauthd.service
 PartOf=carbonio-mta.target
 
 [Service]
@@ -13,7 +13,8 @@ ExecStartPre=/opt/zextras/common/sbin/postalias /etc/aliases
 ExecStart=/opt/zextras/common/sbin/postfix start
 ExecStop=/opt/zextras/common/sbin/postfix stop
 ExecReload=/opt/zextras/common/sbin/postfix reload
-Restart=always
+Restart=on-failure
+RestartSec=3s
 LimitNOFILE=524288
 
 # Hardening (root service — limited subset)

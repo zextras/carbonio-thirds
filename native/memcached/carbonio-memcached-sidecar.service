@@ -2,8 +2,10 @@
 Description=Carbonio Memcached Sidecar
 Documentation=https://docs.zextras.com/
 Requires=network-online.target
-After=network-online.target
-PartOf=carbonio-proxy.target
+After=network-online.target service-discover.service
+PartOf=service-discover.target
+StartLimitBurst=5
+StartLimitIntervalSec=120s
 
 [Service]
 User=zextras
@@ -37,4 +39,4 @@ MemoryDenyWriteExecute=yes
 RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
 
 [Install]
-WantedBy=carbonio-proxy.target
+WantedBy=service-discover.target

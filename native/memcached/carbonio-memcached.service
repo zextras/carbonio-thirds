@@ -5,7 +5,8 @@ PartOf=carbonio-proxy.target
 [Service]
 User=zextras
 ExecStart=/opt/zextras/common/bin/memcached -U 0 -l 127.0.1.1,127.0.0.1 -p 11211 -o modern,drop_privileges
-Restart=always
+Restart=on-failure
+RestartSec=3s
 
 # Set up a new file system namespace and mounts private /tmp and /var/tmp
 # directories so this service cannot access the global directories and
@@ -14,7 +15,12 @@ PrivateTmp=true
 
 # Mounts the /usr, /boot, and /etc directories read-only for processes
 # invoked by this unit.
-ProtectSystem=full
+ProtectSystem=strict
+ProtectHome=yes
+LockPersonality=yes
+ProtectHostname=yes
+ProtectClock=yes
+RestrictSUIDSGID=yes
 
 # Ensures that the service process and all its children can never gain new
 # privileges
