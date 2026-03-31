@@ -1,6 +1,6 @@
 pkgname="carbonio-memcached"
 pkgver="1.6.41" # renovate: datasource=github-tags depName=memcached/memcached
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Distributed memory object caching system"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -38,7 +38,7 @@ sha256sums=(
   '0dac2d242e7b000e2fcff6c0dd1aac050e0005af37149d71eebe0dc6bf88f399'
   '8d25760595a59a5ca1f014093693caf911f5397ebce00752abcfa0db4a505c36'
   '50743f955abb8b550c5fd9384a7421e8b85631dfaa7e2d8e39259aa7fbcab7ee'
-  '46608544d66e837a725eaedabee08c7940bba81bf0dab11615ee9fac04f2aea3'
+  'e13a8498421c891f35f41b109e8451c528ed650704172d1fa1dcec34d53c4679'
   '6a74d9cfeaaccf182f26cf62666d56b42cdb94604d579dd0173a51e66d227e7a'
   'fbcb9ef7d28ac846a7411cc745a95a36c8e4c62095d6e42a40cb904174dd85f0'
   'add97e1128506ea31baeebc90979817f89245a0755de55c11e825d144869e9c5'
