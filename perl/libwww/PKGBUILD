@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-libwww"
-pkgver="6.81" # renovate: datasource=cpan depName=LWP
+pkgver="6.82" # renovate: datasource=cpan depName=LWP
 pkgrel="1"
 pkgdesc="The World-Wide Web library for Perl"
 arch=('x86_64')
@@ -42,7 +42,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/libwww-perl-${pkgver}.tar.gz"
 )
-sha256sums=('ab30552f194e8b5ae3ac0885132fd1d4ea04c4c7fe6555765b98f01af70c1736')
+sha256sums=('c53306fd1c93ca264693dcc44787ce96fb740c49cc419a837dfdea647fc58a98')
 
 build() {
   cd "${srcdir}/libwww-perl-${pkgver}"
