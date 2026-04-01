@@ -1,0 +1,25 @@
+diff '--color=auto' -Naur a/opendkim/opendkim.c b/opendkim/opendkim.c
+--- a/opendkim/opendkim.c	2026-04-02 22:36:30.564774168 +0200
++++ b/opendkim/opendkim.c	2026-04-02 23:53:55.162319888 +0200
+@@ -124,6 +124,9 @@
+ #include "opendkim-ar.h"
+ #include "opendkim-arf.h"
+ #include "opendkim-dns.h"
++#ifdef HAVE_SYSTEMD
++#include <systemd/sd-daemon.h>
++#endif
+ #ifdef USE_LUA
+ # include "opendkim-lua.h"
+ #endif /* USE_LUA */
+@@ -17119,6 +17122,11 @@
+ 
+ 	/* call the milter mainline */
+ 	errno = 0;
++	
++#ifdef HAVE_SYSTEMD
++	sd_notify(0, "READY=1\nSTATUS=opendkim milter is ready");
++#endif
++
+ 	status = smfi_main();
+ 
+ 	if (curconf->conf_dolog)

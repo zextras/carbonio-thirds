@@ -9,7 +9,9 @@ StartLimitIntervalSec=120s
 
 [Service]
 User=zextras
-ExecStart=/usr/bin/consul connect envoy \
+Type=notify
+NotifyAccess=all
+ExecStart=/usr/bin/service-discover-wrapper.sh \
     -token-file /etc/carbonio/memcached/service-discover/token \
     -admin-bind localhost:0 \
     -sidecar-for carbonio-memcached

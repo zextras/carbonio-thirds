@@ -1,11 +1,12 @@
 [Unit]
 Description=Carbonio Anti-virus Daemon
 After=carbonio-configd.service
-Wants=carbonio-configd.service
+Wants=carbonio-configd.service carbonio-clamav-sidecar.service
 PartOf=carbonio-mta.target
 
 [Service]
 User=zextras
+Type=notify
 ExecStartPre=/bin/sh -c 'echo REWRITE antivirus | netcat -w 120 localhost 7171'
 ExecStart=/opt/zextras/common/sbin/clamd \
   --config-file=/opt/zextras/conf/clamd.conf \

@@ -13,9 +13,11 @@ depends__apt=(
   "carbonio-libmilter"
   "carbonio-openldap"
   "carbonio-openssl"
+  "libsystemd0"
   "zlib1g"
 )
 makedepends__apt=(
+  "libsystemd-dev"
   "zlib1g-dev"
 )
 depends__yum=(
@@ -25,9 +27,11 @@ depends__yum=(
   "carbonio-libmilter"
   "carbonio-openldap"
   "carbonio-openssl"
+  "systemd-libs"
   "zlib"
 )
 makedepends__yum=(
+  "systemd-devel"
   "zlib-devel"
 )
 section="utils"
@@ -35,10 +39,12 @@ priority="optional"
 source=(
   "https://github.com/trusteddomainproject/OpenDKIM/archive/14d54524e0a97d3fe9b80441907d7e356c9ded04.tar.gz"
   "${pkgname}.service"
+  "sd_notify.patch"
 )
 sha256sums=(
   'b9d033ac6ba4c14c42dd485e7dc8e03d6f415cb3d45a7fe8c020164636b9d23e'
-  '1486105dced14029c8e90688521bb8435cd47e643ab3c86116574aeba03f5423'
+  'c72ef572e0ad83e801357c61908b20dce309d1fd5072858ad36e9379d5832636'
+  'aaf9a6317cf7a272c2e231beb416865937855d8c3f1b765fc11ba4b925481fdf'
 )
 
 _postinst_systemd() {
@@ -52,6 +58,11 @@ _prerm_systemd() {
   if [ -d /run/systemd/system ]; then
     systemctl --no-reload disable --now carbonio-opendkim.service &>/dev/null || :
   fi
+}
+
+prepare() {
+  cd "${srcdir}/OpenDKIM-14d54524e0a97d3fe9b80441907d7e356c9ded04"
+  patch -Np1 -i "${srcdir}/sd_notify.patch"
 }
 
 build() {
@@ -79,7 +90,9 @@ build() {
     --with-sasl=/opt/zextras/common \
     --with-lmdb=/opt/zextras/common \
     --with-libcurl=/opt/zextras/common \
-    --with-db=/opt/zextras/common
+    --with-db=/opt/zextras/common \
+    CFLAGS="${CFLAGS} -DHAVE_SYSTEMD" \
+    LIBS="-lsystemd"
 
   make -j16
 }

@@ -6,6 +6,8 @@ PartOf=carbonio-mta.target
 
 [Service]
 User=zextras
+Type=notify
+NotifyAccess=all
 ExecStartPre=/bin/sh -c 'echo REWRITE opendkim | netcat -w 120 localhost 7171'
 ExecStart=/opt/zextras/common/sbin/opendkim -f -x /opt/zextras/conf/opendkim.conf -u zextras
 RestartSec=3s

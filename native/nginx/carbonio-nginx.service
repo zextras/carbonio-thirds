@@ -1,7 +1,7 @@
 [Unit]
 Description=Carbonio Web and Reverse Proxy Server
 After=carbonio-memcached.service network.target network-online.target nss-lookup.target
-Wants=carbonio-memcached.service
+Wants=carbonio-memcached.service carbonio-proxy-sidecar.service
 PartOf=carbonio-proxy.target
 
 [Service]

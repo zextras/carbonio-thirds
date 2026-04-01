@@ -23,5 +23,24 @@ ExecStart=!/bin/sh -c 'if [ "${antispam_enable_restarts}" = "true" ]; then \
   /usr/bin/systemctl -q --no-block try-restart carbonio-mailthreat.service; \
 fi'
 
+# Hardening
+PrivateTmp=yes
+ProtectSystem=strict
+ReadWritePaths=/opt/zextras/data /opt/zextras/log /opt/zextras/common/share/spamassassin
+NoNewPrivileges=yes
+PrivateDevices=yes
+ProtectHome=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+RestrictRealtime=yes
+RestrictNamespaces=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+ProtectHostname=yes
+ProtectClock=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+
 [Install]
 WantedBy=carbonio-mta.target

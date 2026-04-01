@@ -12,6 +12,7 @@ depends__apt=(
   "libbrotli1"
   "libcap2-bin"
   "libpcre3"
+  "libsystemd0"
   "zlib1g"
 )
 makedepends__apt=(
@@ -19,6 +20,7 @@ makedepends__apt=(
   "libbrotli-dev"
   "libcap2-bin"
   "libpcre3-dev"
+  "libsystemd-dev"
   "zlib1g-dev"
 )
 depends__yum=(
@@ -27,6 +29,7 @@ depends__yum=(
   "brotli"
   "libcap"
   "pcre"
+  "systemd-libs"
   "zlib"
 )
 makedepends__yum=(
@@ -34,6 +37,7 @@ makedepends__yum=(
   "git"
   "libcap"
   "pcre-devel"
+  "systemd-devel"
   "zlib-devel"
 )
 section="utils"
@@ -45,14 +49,16 @@ source=(
   "${pkgname}.service"
   "${pkgname}-${pkgver}.patch"
   "systemd-tmpfile.conf"
+  "sd_notify.patch"
 )
 sha256sums=(
   '2c96a946bfb0882a21744ed429770a2123ae1828c7c48665092993ddee91a918'
   'SKIP'
   'SKIP'
-  'c33324f9fb4fae4f07a9e7fcb448277ae2100d259245fe134a67cba5feb94889'
-  'ba83cd36d49f281227fb96de3870d10f3a51374a18d648bb1d85574a26c15893'
+  'SKIP'
+  'SKIP'
   '0d9bf766db1f5e64bd6f8766f22735f7af5cffed4759e15b0d99dd9da4ce9ee2'
+  'cc267b5da6f6de46ac5164e0d40ef880bf6678e2257b78378be26fe115d98650'
 )
 
 _package() {
@@ -106,6 +112,10 @@ _prerm_systemd() {
 prepare() {
   cd "${srcdir}/nginx-brotli"
   git submodule update --init --recursive
+
+  cd "${srcdir}/nginx-${pkgver}"
+  patch -Np1 -i "${srcdir}/${pkgname}-${pkgver}.patch"
+  patch -Np1 -i "${srcdir}/sd_notify.patch"
 }
 
 build() {
@@ -114,8 +124,6 @@ build() {
   export CFLAGS="-g -O2 -fdebug-prefix-map=/etc=. -fstack-protector-strong"
 
   cd "${srcdir}/nginx-${pkgver}"
-  patch -Np1 -i "${srcdir}/${pkgname}-${pkgver}.patch"
-
   ./configure \
     --add-module="${srcdir}/nginx-brotli" \
     --add-module="${srcdir}/modules/http/sso" \
@@ -129,8 +137,8 @@ build() {
     --http-fastcgi-temp-path=/opt/zextras/data/tmp/nginx/fastcgi \
     --pid-path=/run/carbonio/nginx.pid \
     --prefix=/opt/zextras/common \
-    --with-cc-opt="-g -I/opt/zextras/common/include" \
-    --with-ld-opt="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib" \
+    --with-cc-opt="-g -I/opt/zextras/common/include -DNGX_HAVE_SYSTEMD=1" \
+    --with-ld-opt="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib -lsystemd" \
     --with-http_ssl_module \
     --with-http_stub_status_module \
     --with-pcre \

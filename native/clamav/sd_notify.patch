@@ -1,0 +1,52 @@
+diff --git a/clamd/clamd.c b/clamd/clamd.c
+--- a/clamd/clamd.c
++++ b/clamd/clamd.c
+@@ -58,6 +58,10 @@
+
+ #include "target.h"
+
++#ifdef HAVE_SYSTEMD
++#include <systemd/sd-daemon.h>
++#endif
++
+ // libclamav
+ #include "clamav.h"
+ #include "others.h"
+@@ -896,6 +900,11 @@
+             break;
+         }
+
++#ifdef HAVE_SYSTEMD
++        sd_notify(0, "READY=1\n"
++                      "STATUS=clamd is ready, scanning enabled");
++#endif
++
+         ret = recvloop(lsockets, nlsockets, engine, dboptions, opts);
+
+     } while (0);
+diff --git a/freshclam/freshclam.c b/freshclam/freshclam.c
+--- a/freshclam/freshclam.c
++++ b/freshclam/freshclam.c
+@@ -51,6 +51,10 @@
+
+ #include "target.h"
+
++#ifdef HAVE_SYSTEMD
++#include <systemd/sd-daemon.h>
++#endif
++
+ // libclamav
+ #include "clamav.h"
+ #include "others.h"
+@@ -2075,6 +2079,11 @@
+
+         logg(LOGG_INFO_NF, "freshclam daemon %s (OS: " TARGET_OS_TYPE ", ARCH: " TARGET_ARCH_TYPE ", CPU: " TARGET_CPU_TYPE ")\n", get_version());
+
++#ifdef HAVE_SYSTEMD
++        sd_notify(0, "READY=1\n"
++                      "STATUS=freshclam daemon started, updating signatures");
++#endif
++
+         while (!g_terminate) {
+             ret = perform_database_update(
+                 databaseList,

@@ -8,15 +8,19 @@ url="https://github.com/zextras"
 license=('BSD-3-Clause')
 depends__apt=(
   "carbonio-libevent"
+  "libsystemd0"
 )
 makedepends__apt=(
+  "libsystemd-dev"
   "pkg-config"
 )
 depends__yum=(
   "carbonio-libevent"
+  "systemd-libs"
 )
 makedepends__yum=(
   "pkgconfig"
+  "systemd-devel"
 )
 section="utils"
 priority="optional"
@@ -31,6 +35,7 @@ source=(
   "${pkgname}.hcl"
   "${pkgname}.service"
   "${pkgname}.sh"
+  "sd_notify.patch"
 )
 sha256sums=(
   'e097073c156eeff9e12655b054f446d57374cfba5c132dcdbe7fac64e728286a'
@@ -38,11 +43,12 @@ sha256sums=(
   '0dac2d242e7b000e2fcff6c0dd1aac050e0005af37149d71eebe0dc6bf88f399'
   '8d25760595a59a5ca1f014093693caf911f5397ebce00752abcfa0db4a505c36'
   '50743f955abb8b550c5fd9384a7421e8b85631dfaa7e2d8e39259aa7fbcab7ee'
-  'c5a8fde82c9e493098f8c2bf1b8b6fad1adc6a0a8985006e07b53a27824c0745'
+  '5bcdb27cc73c465fa829f7c383df8fa39b77ec309d854167430a980c9d9c3f87'
   'cc6da9417852693d51bfccfe3563631c1dbd6e4e1972f55dc72b547b660a4d13'
   'fbcb9ef7d28ac846a7411cc745a95a36c8e4c62095d6e42a40cb904174dd85f0'
-  '7fb16d59469d9d8f4184e66701efa934b0ac3576b41713cd15d7448c398a1be2'
+  '06593cb16902ad70c4ede358cd8477fa22f52228384e2b45e505b711d1c487d5'
   '7bdc7bd2cae5d4459906b2aa8299d16936ca8fb2cd5a125b31a2eb8cd1a795ea'
+  'e142295f2a9b35b4e353cb029b7c03d3408e8382ec852b14db86377df5b02a5e'
 )
 
 _package() {
@@ -105,13 +111,20 @@ _prerm_systemd() {
   fi
 }
 
+prepare() {
+  cd "${srcdir}/memcached-${pkgver}"
+  patch -Np1 -i "${srcdir}/sd_notify.patch"
+}
+
 build() {
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
   export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
 
   cd "${srcdir}/memcached-${pkgver}"
   autoreconf -fiv
-  ./configure --prefix=/opt/zextras/common
+  ./configure --prefix=/opt/zextras/common \
+    CFLAGS="${CFLAGS} -DHAVE_SYSTEMD" \
+    LIBS="-lsystemd"
   make -j16
 }
 

@@ -6,6 +6,7 @@ PartOf=carbonio-mta.target
 
 [Service]
 User=zextras
+Type=notify
 ExecStartPre=/bin/sh -c 'echo REWRITE antivirus | netcat -w 120 localhost 7171'
 ExecStart=/opt/zextras/common/bin/freshclam \
   --config-file=/opt/zextras/conf/freshclam.conf \

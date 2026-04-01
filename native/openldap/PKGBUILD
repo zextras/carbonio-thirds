@@ -12,6 +12,7 @@ depends__apt=(
   "carbonio-openssl"
   "libcap2-bin"
   "libltdl7"
+  "libsystemd0"
 )
 depends__yum=(
   "carbonio-cyrus-sasl"
@@ -19,12 +20,15 @@ depends__yum=(
   "carbonio-openssl"
   "libcap"
   "libtool-ltdl"
+  "systemd-libs"
 )
 makedepends__apt=(
   "libcap2-bin"
+  "libsystemd-dev"
 )
 makedepends__yum=(
   "libcap"
+  "systemd-devel"
 )
 section="libs"
 priority="important"
@@ -33,12 +37,14 @@ source=(
   "${pkgname}.patch"
   "${pkgname}.service"
   "systemd-tmpfile.conf"
+  "sd_notify.patch"
 )
 sha256sums=(
   'c065f04aad42737aebd60b2fe4939704ac844266bc0aeaa1609f0cad987be516'
   'a2ba7ee70d6caf8f21bdac376d95b1e98361874c4fcc62dd63356f9f2a1cae99'
-  'ab07d0f5f9e3144a362d9ffff729f372a2935668946e190504d70e5a9462a60e'
+  '25da8e5be9367a335f098c029be6bc3c5a391a4fdbddfa17fd434a4a9c0d1de8'
   'd64b270fd9863319863cd9fb5619d4386cfdb87d841d11a7e5dc4fcb558c1689'
+  '4466e1a9337bfdf031fcf16875aec5fcdda33106d40a9734c3a4e84d7d825707'
 )
 
 _package() {
@@ -97,9 +103,14 @@ _prerm_systemd() {
   fi
 }
 
-build() {
+prepare() {
   cd "${srcdir}/openldap-${pkgver}"
   patch -Np1 -i "${srcdir}/carbonio-openldap.patch"
+  patch -Np1 -i "${srcdir}/sd_notify.patch"
+}
+
+build() {
+  cd "${srcdir}/openldap-${pkgver}"
 
   export LDFLAGS="-L/opt/zextras/common/lib -Wl,-rpath,/opt/zextras/common/lib"
   export CFLAGS="-D_REENTRANT"
@@ -124,7 +135,8 @@ build() {
     --enable-spasswd \
     --with-cyrus-sasl \
     --with-threads \
-    --with-tls=openssl
+    --with-tls=openssl \
+    LIBS="-lsystemd"
 
   LD_RUN_PATH=/opt/zextras/common/lib make depend
   LD_RUN_PATH=/opt/zextras/common/lib make DEFINES="-DCHECK_CSN -DSLAP_SCHEMA_EXPOSE" -C libraries

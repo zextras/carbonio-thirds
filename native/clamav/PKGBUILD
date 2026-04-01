@@ -66,22 +66,24 @@ source=(
   "service-protocol.json"
   "systemd-sysuser.conf"
   "systemd-tmpfile.conf"
+  "sd_notify.patch"
 )
 sha256sums=(
   '64fe4a16a5622c1d71efe9ed7f2c2fbd37f8f237da9f11ff66b73038df71db91'
   'SKIP'
   'cc36d9357d4434ff290e46a713da8246420750a5fafdf148ce0787b531a093a5'
-  'ae2fdd4aff09d610ebac511f369b23236d4ab2fb5accafe6beb0ce275eb1a600'
+  '059cadd4bb34f426cb6ae2389fa81403fe8603a95ec33bbcde40c6a17cd2e0c3'
   '17eb4bc768694acdb4dd3a7b191cbcd185a1f7b14b417f5a351a5ab292cc14d3'
-  'a75e7d66ef8328da1cac605bbd72f41c6be65bca4abf900befef243910b99d70'
+  '372287e25befef39b4717865dcfe95c4a8a51586e53d9a3825bbea6d7522eb7e'
   'aff498813ef33623954fe8dc92cfba263cbe3bb0de3cfc9996bd82c180508734'
   '08fa4a2b6cd15a5dc9394743692306d6762a21f3b94df28abcaee51d54b30250'
-  '3e32adcb667bab2a29a1cc6491390d0105c617897802c468e34db1d00ef8d251'
+  'ee8c65508bad9c5bbf1f1fb5222e58b96a0d9945bd0399894424fc8d46251beb'
   'df54edd32986b4213a09069681741ba7533dc40a034a6a2b080cdf380a69fb05'
   'd67bb7f9d98ccb033f632621accf3d8a3391aa3955074af958c0def644be0ef5'
   '6c1f94857671bd044fe4dac20df1f927629c50bfbb0aa9991e6de1a73d1791a0'
   '1532817e2cfefd6f0ff46fbd76e1e4a7f54b6f4cbf243944fa9721f36465c266'
   'f8b61f9e923025c3a4ed7a70fb05a1ab68cd0889bf387c6d900aa8946a5a7bd0'
+  'a95fa31c2ff36cac10792c4e4b13f7dc998e4f3d5e38bcb58188a4d5b424efd9'
 )
 
 _package() {
@@ -197,6 +199,9 @@ prepare() {
   # Ensure stable toolchain is installed and set as default
   rustup default stable
   rustup update stable
+
+  cd "${srcdir}/clamav-${pkgver}"
+  patch -Np1 -i "${srcdir}/sd_notify.patch"
 }
 
 build() {
@@ -206,6 +211,7 @@ build() {
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib"
   export CPPFLAGS="-I/opt/zextras/common/include"
   cd "${srcdir}/clamav-${pkgver}"
+
   cmake . \
     -DCMAKE_INSTALL_PREFIX=/opt/zextras/common \
     -DCLAMAV_USER=zextras \

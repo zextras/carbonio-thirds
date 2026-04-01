@@ -1,13 +1,14 @@
 [Unit]
 Description=Carbonio Postfix Daemon
 After=carbonio-configd.service carbonio-milter.service carbonio-saslauthd.service
-Wants=carbonio-configd.service carbonio-milter.service carbonio-saslauthd.service
+Wants=carbonio-configd.service carbonio-milter.service carbonio-saslauthd.service carbonio-mta-sidecar.service
 PartOf=carbonio-mta.target
 
 [Service]
 User=root
 Type=forking
 PIDFile=/opt/zextras/data/postfix/spool/pid/master.pid
+NotifyAccess=all
 CapabilityBoundingSet=~ CAP_NET_ADMIN CAP_SYS_ADMIN CAP_SYS_BOOT CAP_SYS_MODULE
 ExecStartPre=/opt/zextras/common/sbin/postalias /etc/aliases
 ExecStart=/opt/zextras/common/sbin/postfix start
