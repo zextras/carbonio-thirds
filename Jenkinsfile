@@ -1,5 +1,5 @@
 library(
-    identifier: 'jenkins-lib-common@feat/diff-build-helper',
+    identifier: 'jenkins-lib-common@test-diff-debug',
     retriever: modernSCM([
         $class: 'GitSCMSource',
         credentialsId: 'jenkins-integration-with-github-account',
@@ -85,18 +85,25 @@ pipeline {
                             ? (env.DIFF_BUILD_DIRS ?: '').split(',').findAll { it } as List
                             : ['native', 'perl']
 
-                        def onlyFlag = (env.DIFF_BUILD == 'true' && env.DIFF_BUILD_PACKAGES)
-                            ? "--only ${env.DIFF_BUILD_PACKAGES}"
-                            : ''
-
                         buildStage(
+                            carbonioRepoCredentialId: 'artifactory-jenkins-gradle-properties-splitted',
                             buildDirs: buildDirs,
-                            buildFlags: onlyFlag,
+                            yapVersion: '1.51',
                             parallelBuilds: false,
                             prepare: true,
+                            debugSymbols: true,
                         )
                     }
                 }
+            }
+        }
+
+        stage('Debug Symbols') {
+            when {
+                expression { env.DIFF_BUILD != 'no-changes' }
+            }
+            steps {
+                debuginfodStage()
             }
         }
 
@@ -110,7 +117,7 @@ pipeline {
             }
             steps {
                 uploadStage(
-                    packages: yapHelper.getPackageNamesFromFiles(
+                    packages: yapHelper.resolvePackageNamesFromFiles(
                         diffBuildHelper.resolveYapFiles(
                             ['native/yap.json', 'perl/yap.json'] as Set
                         )
