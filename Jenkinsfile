@@ -1,5 +1,5 @@
 library(
-    identifier: 'jenkins-lib-common@1.4.0',
+    identifier: 'jenkins-lib-common@feat/diff-build-helper',
     retriever: modernSCM([
         $class: 'GitSCMSource',
         credentialsId: 'jenkins-integration-with-github-account',
@@ -14,6 +14,14 @@ pipeline {
         node {
             label 'base'
         }
+    }
+
+    parameters {
+        booleanParam(
+            name: 'FULL_BUILD',
+            defaultValue: false,
+            description: 'Force a full rebuild of all packages (ignore diff detection)'
+        )
     }
 
     options {
@@ -46,26 +54,66 @@ pipeline {
             }
         }
 
+        stage('Detect Changes') {
+            steps {
+                unstash 'project'
+                script {
+                    diffBuildHelper(
+                        buildDirs: ['native', 'perl'],
+                        fullBuild: params.FULL_BUILD,
+                    )
+                }
+                stash includes: '**', name: 'project'
+            }
+        }
+
         stage('Build deb/rpm') {
+            when {
+                expression { env.DIFF_BUILD != 'no-changes' }
+            }
             steps {
                 echo 'Building deb/rpm packages'
-                buildStage(
-                    buildDirs: ['native', 'perl'],
-                    parallelBuilds: false,
-                    prepare: true,
-                )
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'artifactory-jenkins-gradle-properties-splitted',
+                        passwordVariable: 'SECRET',
+                        usernameVariable: 'USERNAME'
+                    )
+                ]) {
+                    script {
+                        def buildDirs = (env.DIFF_BUILD == 'true')
+                            ? (env.DIFF_BUILD_DIRS ?: '').split(',').findAll { it } as List
+                            : ['native', 'perl']
+
+                        def onlyFlag = (env.DIFF_BUILD == 'true' && env.DIFF_BUILD_PACKAGES)
+                            ? "--only ${env.DIFF_BUILD_PACKAGES}"
+                            : ''
+
+                        buildStage(
+                            buildDirs: buildDirs,
+                            buildFlags: onlyFlag,
+                            parallelBuilds: false,
+                            prepare: true,
+                        )
+                    }
+                }
             }
         }
 
         stage('Upload artifacts')
         {
+            when {
+                expression { env.DIFF_BUILD != 'no-changes' }
+            }
             tools {
                 jfrog 'jfrog-cli'
             }
             steps {
                 uploadStage(
                     packages: yapHelper.getPackageNamesFromFiles(
-                        ['native/yap.json', 'perl/yap.json'] as Set
+                        diffBuildHelper.resolveYapFiles(
+                            ['native/yap.json', 'perl/yap.json'] as Set
+                        )
                     ),
                 )
             }
