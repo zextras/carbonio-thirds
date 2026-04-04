@@ -17,7 +17,10 @@ depends__apt=(
   "zlib1g"
 )
 makedepends__apt=(
+  "autoconf"
+  "automake"
   "libsystemd-dev"
+  "libtool"
   "zlib1g-dev"
 )
 depends__yum=(
@@ -31,6 +34,9 @@ depends__yum=(
   "zlib"
 )
 makedepends__yum=(
+  "autoconf"
+  "automake"
+  "libtool"
   "systemd-devel"
   "zlib-devel"
 )

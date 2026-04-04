@@ -11,7 +11,10 @@ depends__apt=(
   "libsystemd0"
 )
 makedepends__apt=(
+  "autoconf"
+  "automake"
   "libsystemd-dev"
+  "libtool"
   "pkg-config"
 )
 depends__yum=(
@@ -19,6 +22,9 @@ depends__yum=(
   "systemd-libs"
 )
 makedepends__yum=(
+  "autoconf"
+  "automake"
+  "libtool"
   "pkgconfig"
   "systemd-devel"
 )

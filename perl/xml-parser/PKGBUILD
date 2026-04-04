@@ -8,12 +8,20 @@ url="https://github.com/zextras"
 license=('Artistic-1.0-Perl OR GPL-1.0-or-later')
 depends__apt=(
   "carbonio-perl-libwww"
+  "libexpat1"
   "perl"
+)
+makedepends__apt=(
+  "libexpat1-dev"
 )
 depends__yum=(
   "carbonio-perl-libwww"
+  "expat"
   "perl-core"
   "perl"
+)
+makedepends__yum=(
+  "expat-devel"
 )
 section="libs"
 priority="important"
