@@ -131,7 +131,7 @@ build() {
   ./configure --prefix=/opt/zextras/common \
     CFLAGS="${CFLAGS} -DHAVE_SYSTEMD" \
     LIBS="-lsystemd"
-  make -j16
+  make -j"$(( $(nproc) / 2 ))"
 }
 
 package() {

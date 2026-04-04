@@ -22,7 +22,7 @@ build() {
   export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
   ./configure --prefix=/opt/zextras/common \
     --disable-samples
-  make -j16
+  make -j"$(( $(nproc) / 2 ))"
 }
 
 package() {

@@ -80,7 +80,7 @@ build() {
   cd "${srcdir}/cyrus-sasl-${pkgver}"
 
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib -lxml2"
-  export CFLAGS="-D_REENTRANT -Wno-error -I/opt/zextras/common/include -I/opt/zextras/common/include/libxml2"
+  export CFLAGS="-D_REENTRANT -Wno-error -ffile-prefix-map=${srcdir}=. -I/opt/zextras/common/include -I/opt/zextras/common/include/libxml2"
   export CPPFLAGS="-D_REENTRANT -Wno-error -I/opt/zextras/common/include"
 
   rm -f config/config.guess config/config.sub
@@ -127,7 +127,7 @@ build() {
 
   # prevent excessive overlinking by libtool
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
-  make -j16
+  make -j"$(( $(nproc) / 2 ))"
 }
 
 package() {

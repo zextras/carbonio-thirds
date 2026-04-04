@@ -19,8 +19,8 @@ sha256sums=('9560941a9d843c0243a71b17a7ac6fe31c7cebb5bce3983db79e52ae7e850491')
 build() {
 
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib"
-  export CFLAGS=" -fPIC -fno-strict-aliasing -fstack-protector-all -I/opt/zextras/common/include -I/usr/include"
-  export CPPFLAGS=" -fPIC -fno-strict-aliasing -fstack-protector-all -I/opt/zextras/common/include -I/usr/include"
+  export CFLAGS=" -fPIC -fno-strict-aliasing -fstack-protector-all -ffile-prefix-map=${srcdir}=. -I/opt/zextras/common/include -I/usr/include"
+  export CPPFLAGS=" -fPIC -fno-strict-aliasing -fstack-protector-all -ffile-prefix-map=${srcdir}=. -I/opt/zextras/common/include -I/usr/include"
   export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
 
   cd "${srcdir}/krb5-${pkgver}/src"
@@ -34,7 +34,7 @@ build() {
     --without-readline \
     --without-ldap \
     --without-system-verto
-  make -j16
+  make -j"$(( $(nproc) / 2 ))"
 }
 
 package() {

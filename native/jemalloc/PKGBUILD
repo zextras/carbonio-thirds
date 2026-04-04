@@ -20,7 +20,7 @@ build() {
   ./configure \
     --enable-autogen \
     --prefix=/opt/zextras/common
-  make -j16
+  make -j"$(( $(nproc) / 2 ))"
 }
 
 package() {

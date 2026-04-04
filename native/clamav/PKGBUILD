@@ -1,6 +1,7 @@
 pkgname="carbonio-clamav"
 pkgver="1.5.2" # renovate: datasource=repology depName=arch/clamav
 pkgrel="1"
+_rust_version="1.94.1" # renovate: datasource=github-releases depName=rust-lang/rust
 pkgdesc="Anti-virus toolkit for Unix"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -190,13 +191,12 @@ prepare() {
   # Install rustup if not present
   if ! command -v rustup &>/dev/null; then
     echo "Installing rustup..."
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain "${_rust_version}"
     source "$HOME/.cargo/env"
   fi
 
-  # Ensure stable toolchain is installed and set as default
-  rustup default stable
-  rustup update stable
+  # Ensure pinned toolchain is installed and set as default
+  rustup default "${_rust_version}"
 
   cd "${srcdir}/clamav-${pkgver}"
   patch -Np1 -i "${srcdir}/sd_notify.patch"
@@ -220,7 +220,7 @@ build() {
     -DENABLE_SYSTEMD=ON \
     -DENABLE_TESTS=OFF
 
-  make -j16
+  make -j"$(( $(nproc) / 2 ))"
 }
 
 package() {

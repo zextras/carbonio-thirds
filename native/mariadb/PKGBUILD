@@ -96,8 +96,8 @@ sha256sums=('e4f9f2035d38345464ae8abaeaf68380d1ceadbafb4e84744ed2ed5b7aab64e7')
 build() {
 
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib"
-  export CFLAGS="-fno-omit-frame-pointer -pipe -Wall -Wno-uninitialized -DNDEBUG -I/opt/zextras/common/include -I/usr/include"
-  export CXXFLAGS="-fno-omit-frame-pointer -pipe -Wall -Wno-uninitialized -DNDEBUG -I/opt/zextras/common/include -I/usr/include"
+  export CFLAGS="-fno-omit-frame-pointer -pipe -Wall -Wno-uninitialized -DNDEBUG -ffile-prefix-map=${srcdir}=. -I/opt/zextras/common/include -I/usr/include"
+  export CXXFLAGS="-fno-omit-frame-pointer -pipe -Wall -Wno-uninitialized -DNDEBUG -ffile-prefix-map=${srcdir}=. -I/opt/zextras/common/include -I/usr/include"
   export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
 
   cd "${srcdir}/mariadb-${pkgver}"
@@ -153,8 +153,8 @@ build() {
     -DWITH_UNIT_TESTS=OFF \
     -DWITH_ZLIB=system \
     -Wno-dev
-  make depend -j16
-  make -j16
+  make depend -j"$(( $(nproc) / 2 ))"
+  make -j"$(( $(nproc) / 2 ))"
 }
 
 package() {

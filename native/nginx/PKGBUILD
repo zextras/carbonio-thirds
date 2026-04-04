@@ -55,8 +55,8 @@ sha256sums=(
   '2c96a946bfb0882a21744ed429770a2123ae1828c7c48665092993ddee91a918'
   'SKIP'
   'SKIP'
-  'SKIP'
-  'SKIP'
+  'd0f74f21fcf2936f61f9fd8462b138c6ea271faef20705c1d7f154414d436b5d'
+  'ba83cd36d49f281227fb96de3870d10f3a51374a18d648bb1d85574a26c15893'
   '0d9bf766db1f5e64bd6f8766f22735f7af5cffed4759e15b0d99dd9da4ce9ee2'
   'cc267b5da6f6de46ac5164e0d40ef880bf6678e2257b78378be26fe115d98650'
 )
@@ -121,7 +121,7 @@ prepare() {
 build() {
 
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib"
-  export CFLAGS="-g -O2 -fdebug-prefix-map=/etc=. -fstack-protector-strong"
+  export CFLAGS="-g -O2 -ffile-prefix-map=${srcdir}=. -fdebug-prefix-map=/etc=. -fstack-protector-strong"
 
   cd "${srcdir}/nginx-${pkgver}"
   ./configure \
@@ -162,7 +162,7 @@ build() {
     --with-mail_ssl_module \
     --without-http_scgi_module \
     --without-http_uwsgi_module
-  make -j16
+  make -j"$(( $(nproc) / 2 ))"
 }
 
 package() {

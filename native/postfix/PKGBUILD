@@ -180,7 +180,7 @@ build() {
   -Wl,-rpath,/opt/zextras/common/lib \
   -L/opt/zextras/common/lib'
 
-  make -j16
+  make -j"$(( $(nproc) / 2 ))"
 }
 
 package() {

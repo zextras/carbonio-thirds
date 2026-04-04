@@ -100,7 +100,7 @@ build() {
     CFLAGS="${CFLAGS} -DHAVE_SYSTEMD" \
     LIBS="-lsystemd"
 
-  make -j16
+  make -j"$(( $(nproc) / 2 ))"
 }
 
 _package() {

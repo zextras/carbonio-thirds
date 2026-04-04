@@ -113,7 +113,7 @@ build() {
   cd "${srcdir}/openldap-${pkgver}"
 
   export LDFLAGS="-L/opt/zextras/common/lib -Wl,-rpath,/opt/zextras/common/lib"
-  export CFLAGS="-D_REENTRANT"
+  export CFLAGS="-D_REENTRANT -ffile-prefix-map=${srcdir}=."
   export CPPFLAGS="-I/opt/zextras/common/include"
   export PATH="/opt/zextras/common/bin:/usr/bin"
 

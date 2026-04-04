@@ -32,15 +32,15 @@ sha256sums=('00d0a39eb5334cae476be30027a63370cf9427242af66a70505699ffc83451d7')
 build() {
   cd "${srcdir}/libbsd-${pkgver}"
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
-  export CFLAGS="-fPIC -D_REENTRANT"
-  export CXXFLAGS="-fPIC -D_REENTRANT"
+  export CFLAGS="-fPIC -D_REENTRANT -ffile-prefix-map=${srcdir}=."
+  export CXXFLAGS="-fPIC -D_REENTRANT -ffile-prefix-map=${srcdir}=."
 
   echo "${pkgver}" >.dist-version
   autoreconf -fiv
   ./configure \
     --prefix=/opt/zextras/common \
     --disable-static
-  make -j16
+  make -j"$(( $(nproc) / 2 ))"
 }
 
 package() {

@@ -37,7 +37,7 @@ sha256sums=('fb9f90ca7cceb1930d2a890c1c222ef709352b0fea6e5430d03902133f1d476c')
 build() {
   cd "${srcdir}/libxml2-${pkgver}"
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
-  export CFLAGS="-I/opt/zextras/common/include"
+  export CFLAGS="-ffile-prefix-map=${srcdir}=. -I/opt/zextras/common/include"
   export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
 
   autoreconf -fiv
@@ -48,7 +48,7 @@ build() {
     --without-python \
     --without-iconv \
     --with-icu
-  make -j16
+  make -j"$(( $(nproc) / 2 ))"
 }
 
 package() {
