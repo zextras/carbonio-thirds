@@ -12,7 +12,10 @@ depends__apt=(
   "zlib1g"
 )
 makedepends__apt=(
+  "autoconf"
+  "automake"
   "groff-base"
+  "libtool"
   "zlib1g-dev"
 )
 depends__yum=(
@@ -21,7 +24,10 @@ depends__yum=(
   "zlib"
 )
 makedepends__yum=(
+  "autoconf"
+  "automake"
   "groff-base"
+  "libtool"
   "zlib-devel"
 )
 section="utils"
