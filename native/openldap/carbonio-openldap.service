@@ -16,7 +16,7 @@ LimitNOFILE=524288
 # Hardening
 PrivateTmp=yes
 ProtectSystem=strict
-ReadWritePaths=/opt/zextras/data/ldap /run/carbonio
+ReadWritePaths=/opt/zextras/data/ldap /opt/zextras/data/systemd.env /run/carbonio
 NoNewPrivileges=yes
 PrivateDevices=yes
 ProtectHome=yes
