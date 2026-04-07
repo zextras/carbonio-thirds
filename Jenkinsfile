@@ -1,5 +1,5 @@
 library(
-    identifier: 'jenkins-lib-common@1.4.0',
+    identifier: 'jenkins-lib-common@1.5.0',
     retriever: modernSCM([
         $class: 'GitSCMSource',
         credentialsId: 'jenkins-integration-with-github-account',
@@ -50,10 +50,19 @@ pipeline {
             steps {
                 echo 'Building deb/rpm packages'
                 buildStage(
+                    addCarbonioRepos: true,
+                    carbonioRepoCredentialId: 'artifactory-jenkins-gradle-properties-splitted',
                     buildDirs: ['native', 'perl'],
                     parallelBuilds: false,
                     prepare: true,
+                    debugSymbols: true,
                 )
+            }
+        }
+
+        stage('Debug Symbols') {
+            steps {
+                debuginfodStage()
             }
         }
 
