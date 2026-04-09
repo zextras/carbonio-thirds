@@ -7,6 +7,7 @@ maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('GPL-2.0-or-later')
 depends__apt=(
+  "carbonio-core"
   "carbonio-perl-cache-fastmmap"
   "carbonio-perl-config-inifiles"
   "carbonio-perl-dbd-sqlite"
@@ -20,6 +21,7 @@ depends__apt=(
   "perl"
 )
 depends__yum=(
+  "carbonio-core"
   "carbonio-perl-cache-fastmmap"
   "carbonio-perl-config-inifiles"
   "carbonio-perl-dbd-sqlite"

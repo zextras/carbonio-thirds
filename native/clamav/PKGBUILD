@@ -8,6 +8,7 @@ maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('GPL-2.0-or-later')
 depends__apt=(
+  "carbonio-core"
   "carbonio-curl"
   "carbonio-libxml2"
   "carbonio-openssl"
@@ -30,6 +31,7 @@ makedepends__apt=(
 )
 depends__yum=(
   "bzip2"
+  "carbonio-core"
   "carbonio-curl"
   "carbonio-libxml2"
   "carbonio-openssl"
@@ -220,7 +222,7 @@ build() {
     -DENABLE_SYSTEMD=ON \
     -DENABLE_TESTS=OFF
 
-  make -j"$(( $(nproc) / 2 ))"
+  make -j"$(($(nproc) / 2))"
 }
 
 package() {

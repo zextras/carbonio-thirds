@@ -7,6 +7,7 @@ maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('BSD-2-Clause')
 depends__apt=(
+  "carbonio-core"
   "carbonio-cyrus-sasl"
   "carbonio-openssl"
   "libbrotli1"
@@ -26,6 +27,7 @@ makedepends__apt=(
   "zlib1g-dev"
 )
 depends__yum=(
+  "carbonio-core"
   "carbonio-cyrus-sasl"
   "carbonio-openssl"
   "brotli"

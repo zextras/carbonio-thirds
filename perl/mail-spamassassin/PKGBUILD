@@ -7,6 +7,7 @@ maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('Apache-2.0')
 depends=(
+  "carbonio-core"
   "carbonio-openssl"
   "carbonio-perl-http-message"
   "carbonio-perl-io-socket-ip"
