@@ -11,7 +11,6 @@ ExecStartPre=/bin/sh -c 'echo REWRITE antivirus | netcat -w 120 localhost 7171'
 ExecStart=/opt/zextras/common/bin/freshclam \
   --config-file=/opt/zextras/conf/freshclam.conf \
   --quiet -d --checks=12 --foreground=true
-StandardOutput=append:/opt/zextras/log/freshclam.log
 Restart=on-failure
 RestartSec=3s
 

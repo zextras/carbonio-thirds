@@ -7,7 +7,6 @@ PartOf=carbonio-proxy.target
 [Service]
 User=zextras
 Type=notify
-PIDFile=/run/carbonio/nginx.pid
 AmbientCapabilities=CAP_NET_BIND_SERVICE
 ExecStartPre=/bin/sh -c 'echo REWRITE proxy | netcat -w 120 localhost 7171'
 ExecStart=/opt/zextras/common/sbin/nginx -g 'daemon off;' -c /opt/zextras/conf/nginx.conf
