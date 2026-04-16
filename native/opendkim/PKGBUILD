@@ -1,6 +1,6 @@
 pkgname="carbonio-opendkim"
 pkgver="2.11.0" # renovate: datasource=github-tags depName=trusteddomainproject/OpenDKIM
-pkgrel="5"
+pkgrel="6"
 pkgdesc="An open source implementation of the DKIM sender authentication system. Based on a fork of dkim-milter"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -10,22 +10,34 @@ depends__apt=(
   "carbonio-cyrus-sasl"
   "carbonio-bdb"
   "carbonio-libbsd"
+  "carbonio-libmilter"
   "carbonio-openldap"
   "carbonio-openssl"
+  "libsystemd0"
   "zlib1g"
 )
 makedepends__apt=(
+  "autoconf"
+  "automake"
+  "libsystemd-dev"
+  "libtool"
   "zlib1g-dev"
 )
 depends__yum=(
   "carbonio-cyrus-sasl"
   "carbonio-bdb"
   "carbonio-libbsd"
+  "carbonio-libmilter"
   "carbonio-openldap"
   "carbonio-openssl"
+  "systemd-libs"
   "zlib"
 )
 makedepends__yum=(
+  "autoconf"
+  "automake"
+  "libtool"
+  "systemd-devel"
   "zlib-devel"
 )
 section="utils"
@@ -33,10 +45,12 @@ priority="optional"
 source=(
   "https://github.com/trusteddomainproject/OpenDKIM/archive/14d54524e0a97d3fe9b80441907d7e356c9ded04.tar.gz"
   "${pkgname}.service"
+  "sd_notify.patch"
 )
 sha256sums=(
   'b9d033ac6ba4c14c42dd485e7dc8e03d6f415cb3d45a7fe8c020164636b9d23e'
-  '3b7ea80e4995bcb0aca73b102646719b000955a323f1de9d77548924c65b600f'
+  'c72ef572e0ad83e801357c61908b20dce309d1fd5072858ad36e9379d5832636'
+  'aaf9a6317cf7a272c2e231beb416865937855d8c3f1b765fc11ba4b925481fdf'
 )
 
 _postinst_systemd() {
@@ -52,6 +66,11 @@ _prerm_systemd() {
   fi
 }
 
+prepare() {
+  cd "${srcdir}/OpenDKIM-14d54524e0a97d3fe9b80441907d7e356c9ded04"
+  patch -Np1 -i "${srcdir}/sd_notify.patch"
+}
+
 build() {
   cd "${srcdir}/OpenDKIM-14d54524e0a97d3fe9b80441907d7e356c9ded04"
 
@@ -61,7 +80,6 @@ build() {
   autoreconf -fiv
   ./configure --prefix=/opt/zextras/common \
     --enable-query_cache \
-    --enable-poll \
     --enable-atps \
     --enable-rate_limit \
     --enable-replace_rules \
@@ -78,9 +96,11 @@ build() {
     --with-sasl=/opt/zextras/common \
     --with-lmdb=/opt/zextras/common \
     --with-libcurl=/opt/zextras/common \
-    --with-db=/opt/zextras/common
+    --with-db=/opt/zextras/common \
+    CFLAGS="${CFLAGS} -DHAVE_SYSTEMD" \
+    LIBS="-lsystemd"
 
-  make -j16
+  make -j"$(( $(nproc) / 2 ))"
 }
 
 _package() {

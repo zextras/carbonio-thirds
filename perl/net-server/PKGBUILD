@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-net-server"
-pkgver="2.016" # renovate: datasource=cpan depName=Net::Server
+pkgver="2.018" # renovate: datasource=cpan depName=Net::Server
 pkgrel="1"
 pkgdesc="Extensible, general Perl server engine"
 arch=('x86_64')
@@ -26,7 +26,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/B/BB/BBB/Net-Server-${pkgver}.tar.gz"
 )
-sha256sums=('f6f82a2a36a715b6bfe0d1ca02d8ac4de695bcbdd0b39f3aa04be3c8135d3a47')
+sha256sums=('4d6bd1adb0de600d6b44b9a8629b943fe86700b055186791ea397b7cf3a456b3')
 
 build() {
   cd "${srcdir}/Net-Server-${pkgver}"

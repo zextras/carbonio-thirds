@@ -1,5 +1,5 @@
 library(
-    identifier: 'jenkins-lib-common@1.3.2',
+    identifier: 'jenkins-lib-common@1.5.0',
     retriever: modernSCM([
         $class: 'GitSCMSource',
         credentialsId: 'jenkins-integration-with-github-account',
@@ -50,10 +50,19 @@ pipeline {
             steps {
                 echo 'Building deb/rpm packages'
                 buildStage(
+                    addCarbonioRepos: true,
+                    carbonioRepoCredentialId: 'artifactory-jenkins-gradle-properties-splitted',
                     buildDirs: ['native', 'perl'],
                     parallelBuilds: false,
                     prepare: true,
+                    debugSymbols: true,
                 )
+            }
+        }
+
+        stage('Debug Symbols') {
+            steps {
+                debuginfodStage()
             }
         }
 
@@ -67,10 +76,6 @@ pipeline {
                     packages: yapHelper.getPackageNamesFromFiles(
                         ['native/yap.json', 'perl/yap.json'] as Set
                     ),
-                    exclusionMap: [
-                        'carbonio-perl-xml-parser': ['*xml-parser-lite*.rpm'],
-                        'carbonio-perl-xml-sax'   : ['*xml-sax-base*.rpm', '*xml-sax-expat*.rp']
-                    ]
                 )
             }
         }

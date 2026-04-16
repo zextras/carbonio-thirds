@@ -1,0 +1,44 @@
+diff --git a/include/sd-notify.h b/include/sd-notify.h
+--- a/include/sd-notify.h
++++ b/include/sd-notify.h
+@@ -5,6 +5,8 @@
+  * https://www.freedesktop.org/software/systemd/man/latest/sd_notify.html
+  * This protocol is guaranteed to be stable as per:
+  * https://systemd.io/PORTABILITY_AND_STABILITY/ */
++
++#ifndef HAVE_SYSTEMD
+ #include <errno.h>
+ #include <stdlib.h>
+ #include <stdio.h>
+@@ -62,3 +64,5 @@
+     close(fd);
+     return rc;
+ }
++
++#endif /* !HAVE_SYSTEMD */
+diff --git a/servers/slapd/daemon.c b/servers/slapd/daemon.c
+--- a/servers/slapd/daemon.c
++++ b/servers/slapd/daemon.c
+@@ -36,6 +36,10 @@
+ #include <ac/unistd.h>
+ 
+ #include "slap.h"
++
++#ifdef HAVE_SYSTEMD
++#include <systemd/sd-daemon.h>
++#endif
+ #include "ldap_pvt_thread.h"
+ #include "lutil.h"
+ 
+@@ -2641,6 +2645,11 @@
+ 	slapd_ready = 1;
+ 	ldap_pvt_thread_cond_signal( &slapd_init_cond );
+ 	ldap_pvt_thread_mutex_unlock( &slapd_init_mutex );
++
++#ifdef HAVE_SYSTEMD
++	sd_notify(0, "READY=1\n"
++	              "STATUS=slapd is ready, accepting connections");
++#endif
+ 
+ #ifdef HAVE_NT_SERVICE_MANAGER
+ 	if ( started_event != NULL ) {

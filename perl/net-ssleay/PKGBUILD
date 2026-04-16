@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-net-ssleay"
-pkgver="1.94" # renovate: datasource=cpan depName=Net::SSLeay
+pkgver="1.96" # renovate: datasource=cpan depName=Net::SSLeay
 pkgrel="3"
 pkgdesc="Perl bindings for OpenSSL"
 arch=('x86_64')
@@ -20,7 +20,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/C/CH/CHRISN/Net-SSLeay-${pkgver}.tar.gz"
 )
-sha256sums=('9d7be8a56d1bedda05c425306cc504ba134307e0c09bda4a788c98744ebcd95d')
+sha256sums=('ab213691685fb2a576c669cbc8d9266f8165a31563ad15b7c4030b94adfc0753')
 
 build() {
   cd "${srcdir}/Net-SSLeay-${pkgver}"

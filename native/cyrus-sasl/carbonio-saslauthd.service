@@ -7,10 +7,30 @@ PartOf=carbonio-mta.target
 [Service]
 User=zextras
 Type=forking
-ExecStartPre=echo REWRITE sasl | netcat -w 120 localhost 7171
+PIDFile=/run/carbonio/saslauthd.pid
+ExecStartPre=/bin/sh -c 'echo REWRITE sasl | netcat -w 120 localhost 7171'
 ExecStart=/opt/zextras/common/sbin/saslauthd -r -a zimbra
 Restart=on-failure
 RestartSec=3s
+
+# Hardening
+PrivateTmp=yes
+ProtectSystem=strict
+ReadWritePaths=/run/carbonio
+NoNewPrivileges=yes
+PrivateDevices=yes
+ProtectHome=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+RestrictRealtime=yes
+RestrictNamespaces=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+ProtectHostname=yes
+ProtectClock=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
 
 [Install]
 WantedBy=carbonio-mta.target

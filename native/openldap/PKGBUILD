@@ -1,30 +1,36 @@
 pkgname="carbonio-openldap"
-pkgver="2.6.10" # renovate: datasource=github-tags depName=openldap/openldap  extractVersion=^OPENLDAP_REL_ENG_(?<version>.+)$ versioning=regex:^(?<major>\d+)_(?<minor>\d+)(_(?<patch>\d+))?$
-pkgrel="2"
+pkgver="2.6.13" # renovate: datasource=github-tags depName=openldap/openldap  extractVersion=^OPENLDAP_REL_ENG_(?<version>.+)$ versioning=regex:^(?<major>\d+)_(?<minor>\d+)(_(?<patch>\d+))?$
+pkgrel="1"
 pkgdesc="Lightweight Directory Access Protocol (LDAP) library"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('OLDAP-2.8')
 depends__apt=(
+  "carbonio-core"
   "carbonio-cyrus-sasl"
   "carbonio-libsodium"
   "carbonio-openssl"
   "libcap2-bin"
   "libltdl7"
+  "libsystemd0"
 )
 depends__yum=(
+  "carbonio-core"
   "carbonio-cyrus-sasl"
   "carbonio-libsodium"
   "carbonio-openssl"
   "libcap"
   "libtool-ltdl"
+  "systemd-libs"
 )
 makedepends__apt=(
   "libcap2-bin"
+  "libsystemd-dev"
 )
 makedepends__yum=(
   "libcap"
+  "systemd-devel"
 )
 section="libs"
 priority="important"
@@ -32,12 +38,14 @@ source=(
   "https://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-${pkgver}.tgz"
   "${pkgname}.patch"
   "${pkgname}.service"
+  "sd_notify.patch"
   "systemd-tmpfile.conf"
 )
 sha256sums=(
-  'c065f04aad42737aebd60b2fe4939704ac844266bc0aeaa1609f0cad987be516'
+  'd693b49517a42efb85a1a364a310aed16a53d428d1b46c0d31ef3fba78fcb656'
   'a2ba7ee70d6caf8f21bdac376d95b1e98361874c4fcc62dd63356f9f2a1cae99'
-  'ea5035b346caa69b14d15b2fb205838164a86a752c1d9239a483f059183d8150'
+  '435a315549af7b2ec841f82d71496ea8fc89d6ba6e528d7b91e079a21c81f8a8'
+  '4466e1a9337bfdf031fcf16875aec5fcdda33106d40a9734c3a4e84d7d825707'
   'd64b270fd9863319863cd9fb5619d4386cfdb87d841d11a7e5dc4fcb558c1689'
 )
 
@@ -97,19 +105,23 @@ _prerm_systemd() {
   fi
 }
 
-build() {
+prepare() {
   cd "${srcdir}/openldap-${pkgver}"
   patch -Np1 -i "${srcdir}/carbonio-openldap.patch"
+  patch -Np1 -i "${srcdir}/sd_notify.patch"
+}
+
+build() {
+  cd "${srcdir}/openldap-${pkgver}"
 
   export LDFLAGS="-L/opt/zextras/common/lib -Wl,-rpath,/opt/zextras/common/lib"
-  export CFLAGS="-D_REENTRANT"
+  export CFLAGS="-D_REENTRANT -ffile-prefix-map=${srcdir}=."
   export CPPFLAGS="-I/opt/zextras/common/include"
   export PATH="/opt/zextras/common/bin:/usr/bin"
 
   ./configure \
     --prefix=/opt/zextras/common \
     --localstatedir=/run/carbonio/ \
-    --disable-ndb \
     --disable-perl \
     --disable-sql \
     --disable-wt \
@@ -125,7 +137,8 @@ build() {
     --enable-spasswd \
     --with-cyrus-sasl \
     --with-threads \
-    --with-tls=openssl
+    --with-tls=openssl \
+    LIBS="-lsystemd"
 
   LD_RUN_PATH=/opt/zextras/common/lib make depend
   LD_RUN_PATH=/opt/zextras/common/lib make DEFINES="-DCHECK_CSN -DSLAP_SCHEMA_EXPOSE" -C libraries

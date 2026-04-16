@@ -1,0 +1,19 @@
+Sets the default Lua module search path for stream-lua-nginx-module to
+/opt/zextras/common/share/lua/5.1, enabling resty.core to be loaded
+without requiring lua_package_path in nginx config.
+
+--- a/src/ngx_stream_lua_util.c
++++ b/src/ngx_stream_lua_util.c
+@@ -130,9 +130,9 @@
+ #endif
+
+
+-#if !defined(LUA_DEFAULT_PATH) && (NGX_DEBUG)
+-#define LUA_DEFAULT_PATH "../lua-resty-core/lib/?.lua;"                      \
+-                         "../lua-resty-lrucache/lib/?.lua"
++#if !defined(LUA_DEFAULT_PATH)
++#define LUA_DEFAULT_PATH "/opt/zextras/common/share/lua/5.1/?.lua;"          \
++                         "/opt/zextras/common/share/lua/5.1/?/init.lua"
+ #endif
+
+

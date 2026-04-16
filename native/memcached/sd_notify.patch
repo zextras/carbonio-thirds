@@ -1,0 +1,26 @@
+diff --git a/memcached.c b/memcached.c
+--- a/memcached.c
++++ b/memcached.c
+@@ -48,6 +48,10 @@
+ #include <sysexits.h>
+ #include <stddef.h>
+
++#ifdef HAVE_SYSTEMD
++#include <systemd/sd-daemon.h>
++#endif
++
+ #ifdef HAVE_GETOPT_LONG
+ #include <getopt.h>
+ #endif
+@@ -6181,6 +6185,11 @@
+     /* Initialize the uriencode lookup table. */
+     uriencode_init();
+
++#ifdef HAVE_SYSTEMD
++    sd_notify(0, "READY=1\n"
++                  "STATUS=memcached is ready, accepting connections");
++#endif
++
+     /* enter the event loop */
+     while (!stop_main_loop) {
+         if (event_base_loop(main_base, EVLOOP_ONCE) != 0) {

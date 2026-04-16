@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-date-manip"
-pkgver="6.98" # renovate: datasource=cpan depName=Date::Manip
+pkgver="6.99" # renovate: datasource=cpan depName=Date::Manip
 pkgrel="1"
 pkgdesc="Date manipulation routines"
 arch=('x86_64')
@@ -18,7 +18,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/S/SB/SBECK/Date-Manip-${pkgver}.tar.gz"
 )
-sha256sums=('acfd8a60519ba4cd181c8a67a83d7f029c6d9ab4e8b0212dc47e41d6210fda49')
+sha256sums=('3239e5f671e1af74d4a91b8278f3ae64f214184f7fc27ed4f80409ec2e6c4f54')
 
 build() {
   cd "${srcdir}/Date-Manip-${pkgver}"

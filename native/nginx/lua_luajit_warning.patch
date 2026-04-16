@@ -1,0 +1,15 @@
+Downgrade stock LuaJIT warning from ALERT to INFO. The warning is expected
+when using the distro-provided LuaJIT instead of OpenResty's fork and does
+not indicate a problem.
+
+--- a/src/ngx_http_lua_module.c
++++ b/src/ngx_http_lua_module.c
+@@ -997,7 +997,7 @@
+
+ #ifndef OPENRESTY_LUAJIT
+         if (ngx_process != NGX_PROCESS_SIGNALLER && !ngx_test_config) {
+-            ngx_log_error(NGX_LOG_ALERT, cf->log, 0,
++            ngx_log_error(NGX_LOG_INFO, cf->log, 0,
+                           "detected a LuaJIT version which is not OpenResty's"
+                           "; many optimizations will be disabled and "
+                           "performance will be compromised (see "

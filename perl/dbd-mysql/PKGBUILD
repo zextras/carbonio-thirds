@@ -1,5 +1,5 @@
 pkgname="carbonio-perl-dbd-mysql"
-pkgver="4.054" # renovate: datasource=cpan depName=DBD::mysql
+pkgver="4.055" # renovate: datasource=cpan depName=DBD::mysql
 pkgrel="1"
 pkgdesc="Perl/CPAN DBD::mysql module for interacting with MySQL via DBD"
 arch=('x86_64')
@@ -28,7 +28,7 @@ priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/D/DV/DVEEDEN/DBD-mysql-${pkgver}.tar.gz"
 )
-sha256sums=('57873fe0e044a0d9f2860b88b1dcec69167224bd8cff98e85f7afe9a20312bdb')
+sha256sums=('fada24c4d36bc289f6238f277467fa037f7cafe9a17b4c90fdc5a24a36db5cbc')
 
 build() {
   cd "${srcdir}/DBD-mysql-${pkgver}"

@@ -14,6 +14,7 @@ depends__apt=(
 )
 makedepends__apt=(
   "libbrotli-dev"
+  "perl"
   "zlib1g-dev"
 )
 depends__yum=(
@@ -24,17 +25,18 @@ depends__yum=(
 )
 makedepends__yum=(
   "brotli-devel"
+  "perl"
   "zlib-devel"
 )
 section="utils"
 priority="optional"
 source=(
   "https://curl.haxx.se/download/curl-${pkgver}.tar.gz"
-  "https://github.com/nss-dev/nss/raw/refs/heads/master/lib/ckfw/builtins/certdata.txt"
+  "https://github.com/nss-dev/nss/raw/NSS_3_122_RTM/lib/ckfw/builtins/certdata.txt"
 )
 sha256sums=(
   '6766ada7101d292b42b8b15681120acd68effa4a9660935853cf6d61f0d984d4'
-  'SKIP'
+  '3b98d4e3ff57a326d9587c33633039c8c3a9cf0b55f7ca581d7598ff329eb1f3'
 )
 
 build() {
@@ -57,7 +59,7 @@ build() {
     --without-gnutls \
     --without-libidn2 \
     --without-libpsl
-  make -j16
+  make -j"$(( $(nproc) / 2 ))"
 }
 
 package() {

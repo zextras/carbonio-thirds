@@ -33,7 +33,7 @@ build() {
     --sbindir=/opt/zextras/common/bin \
     --disable-tests \
     --disable-samples
-  make -j16
+  make -j"$(( $(nproc) / 2 ))"
 }
 
 package() {
