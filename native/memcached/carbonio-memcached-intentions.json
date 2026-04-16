@@ -5,6 +5,10 @@
     {
       "Name": "carbonio-mailbox",
       "Action": "allow"
+    },
+    {
+      "Name": "carbonio-mailbox-internal-api",
+      "Action": "allow"
     }
   ]
 }
