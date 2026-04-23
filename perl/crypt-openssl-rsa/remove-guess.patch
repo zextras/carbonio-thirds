@@ -1,10 +1,10 @@
 diff '--color=auto' -Naur a/Makefile.PL b/Makefile.PL
---- a/Makefile.PL	2025-06-30 17:00:52.087453804 +0200
-+++ b/Makefile.PL	2025-06-30 17:04:28.169794344 +0200
+--- a/Makefile.PL	2026-04-24 09:17:25.289206656 +0200
++++ b/Makefile.PL	2026-04-24 09:20:20.044031558 +0200
 @@ -4,10 +4,7 @@
  
  use 5.006;
- use ExtUtils::MakeMaker 6.48;
+ use ExtUtils::MakeMaker 6.64;
 -use Crypt::OpenSSL::Guess qw(openssl_inc_paths openssl_lib_paths openssl_version);
  
 -my ($major, $minor, $patch) = openssl_version(); 
@@ -23,28 +23,26 @@ diff '--color=auto' -Naur a/Makefile.PL b/Makefile.PL
  WriteMakefile(
      'NAME'             => 'Crypt::OpenSSL::RSA',
      'AUTHOR'           => 'Ian Robertson <iroberts@cpan.org>',
-@@ -30,12 +31,11 @@
-         'Test::More'             => 0,
+@@ -36,10 +37,8 @@
+         'Test::More' => 0,
      },
      'OBJECT' => 'RSA.o',
 -    'LIBS'   => [openssl_lib_paths() . $libs],
 -    'LDDLFLAGS' => openssl_lib_paths() . ' ' . $Config{lddlflags},
-+    'LIBS'    => ($^O eq 'MSWin32') ? ['-lssl32 -leay32'] : ['-lssl -lcrypto'],
-     'DEFINE' => '-DPERL5 -DOPENSSL_NO_KRB5',
- 
-     # perl-5.8/gcc-3.2 needs -DPERL5, and redhat9 likes -DOPENSSL_NO_KRB5
 -    'INC' => openssl_inc_paths(),    # e.g., '-I/usr/include/other'
-+    'INC'	=> $include,     # e.g., '-I/usr/include/other'
- 
+-
++    'LIBS'    => ($^O eq 'MSWin32') ? ['-lssl32 -leay32'] : ['-lssl -lcrypto'],
++    'INC'	=> $include,
      'dist'  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
      'clean' => { FILES    => 'Crypt-OpenSSL-RSA-*' },
-@@ -43,9 +43,6 @@
-         recommends => {
-             'Crypt::OpenSSL::Bignum' => 0,
+     'META_MERGE' => {
+@@ -50,9 +49,6 @@
+                 version => MM->parse_version('RSA.pm'),
+             },
          },
 -        configure_requires => {
 -            'Crypt::OpenSSL::Guess' => '0.11',
 -        },
-         build_requires => {
-             'Test' => 0,    # For testing
-         },
+         resources => {
+             'license'    => ['https://dev.perl.org/licenses/'],
+             'homepage'   => 'https://github.com/cpan-authors/Crypt-OpenSSL-RSA',
