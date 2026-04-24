@@ -1,6 +1,6 @@
 pkgname="carbonio-nginx"
-pkgver="1.28.3" # renovate: datasource=github-tags depName=nginx/nginx extractVersion=^release-(?<version>.+)$ versioning=semver allowedVersions=/^1\.(2[0-9]*[02468]|[3-9][0-9]*[02468])\./
-pkgrel="2"
+pkgver="1.30.0" # renovate: datasource=github-tags depName=nginx/nginx extractVersion=^release-(?<version>.+)$ versioning=semver allowedVersions=/^1\.(2[0-9]*[02468]|[3-9][0-9]*[02468])\./
+pkgrel="1"
 pkgdesc="Lightweight HTTP server and IMAP/POP3 proxy server"
 arch=('x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -68,7 +68,7 @@ source=(
   "systemd-tmpfile.conf"
 )
 sha256sums=(
-  '2c96a946bfb0882a21744ed429770a2123ae1828c7c48665092993ddee91a918'
+  '058188c64bf22baecaa72b809a6318a4f9ba623889c554feab03f7cb853ab31b'
   'SKIP'
   'SKIP'
   'SKIP'
@@ -78,10 +78,10 @@ sha256sums=(
   'SKIP'
   'SKIP'
   'ce479ffa721306d960d8343cb0c970674fa9c49732b777bd3c293adf1e270776'
-  'ba83cd36d49f281227fb96de3870d10f3a51374a18d648bb1d85574a26c15893'
+  'b7c6b068b5a8ca5cfab7048a198d6106a011353d9ffadc89554637fcff9a10e6'
   '5ee2be98ad3619ec851f697fc0b32cd6c5d7e4ceb81d266e26a03bf627c59fbe'
   '0934df2c7cc8288c99293c383abedcea7ac05aac9209dedaf3d65641e2fc726f'
-  'cc267b5da6f6de46ac5164e0d40ef880bf6678e2257b78378be26fe115d98650'
+  'acbaaf5bf119bdf6b14408b01bb198c32f9ea7a382ae139aae02fbb76c0a6e40'
   '921afab08ef59372abb079337acbb3d995c03595113eabdc97f2f8041a26aae2'
   '47bdb8793c109e6aed69b1d47b3c665508b21133169cc123012a0328223ef2d3'
   '0d9bf766db1f5e64bd6f8766f22735f7af5cffed4759e15b0d99dd9da4ce9ee2'
