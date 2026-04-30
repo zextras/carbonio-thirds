@@ -9,6 +9,10 @@
       "install": true
     },
     {
+      "name": "crypt-openssl-bignum",
+      "install": true
+    },
+    {
       "name": "crypt-openssl-rsa",
       "install": true
     },
