@@ -2,12 +2,13 @@ pkgname="carbonio-bdb"
 pkgver="5.3.28" # renovate: datasource=repology depName=arch/db
 pkgrel="3"
 pkgdesc="The Berkeley DB embedded database system"
-arch=('x86_64')
+arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('Sleepycat AND BSD-3-Clause AND CDDL-1.0')
 section="utils"
 priority="optional"
+options=('!libtool')
 source=(
   "https://download.oracle.com/berkeley-db/db-${pkgver}.tar.gz"
   "atomic.patch"
@@ -23,6 +24,13 @@ build() {
 
   cd build_unix
 
+  _host_flag=""
+  _build_flag=""
+  if [ -n "${CROSS_COMPILE}" ]; then
+    _host_flag="--host=${CROSS_COMPILE_HOST}"
+    _build_flag="--build=$(gcc -dumpmachine)"
+  fi
+
   ../dist/configure \
     --prefix=/opt/zextras/common \
     --enable-compat185 \
@@ -31,7 +39,8 @@ build() {
     --enable-cxx \
     --enable-dbm \
     --enable-stl \
-    --disable-test
+    --disable-test \
+    ${_host_flag} ${_build_flag}
   make LIBSO_LIBS=-lpthread
 }
 
@@ -40,5 +49,4 @@ package() {
   cd build_unix
   make DESTDIR="${pkgdir}" install
   rm -r "${pkgdir}"/opt/zextras/common/docs
-  rm -rf "${pkgdir}"/opt/zextras/common/lib/*.la
 }

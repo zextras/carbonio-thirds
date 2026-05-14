@@ -2,12 +2,13 @@ pkgname="carbonio-krb5"
 pkgver="1.21.2" # renovate: datasource=repology depName=arch/krb5
 pkgrel="2"
 pkgdesc="The Kerberos network authentication system"
-arch=('x86_64')
+arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('BSD-2-Clause')
 makedepends=(
   "bison"
+  "byacc"
 )
 section="utils"
 priority="optional"
@@ -18,10 +19,26 @@ sha256sums=('9560941a9d843c0243a71b17a7ac6fe31c7cebb5bce3983db79e52ae7e850491')
 
 build() {
 
-  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib"
+  _libdir="x86_64-linux-gnu"
+  if [ -n "${CROSS_COMPILE}" ] && echo "${CROSS_COMPILE}" | grep -q "aarch64"; then
+    _libdir="aarch64-linux-gnu"
+  fi
+
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib -L/usr/lib/${_libdir} -L/usr/lib"
   export CFLAGS=" -fPIC -fno-strict-aliasing -fstack-protector-all -ffile-prefix-map=${srcdir}=. -I/opt/zextras/common/include -I/usr/include"
   export CPPFLAGS=" -fPIC -fno-strict-aliasing -fstack-protector-all -ffile-prefix-map=${srcdir}=. -I/opt/zextras/common/include -I/usr/include"
   export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
+
+  _host_flag=""
+  _build_flag=""
+  if [ -n "${CROSS_COMPILE}" ]; then
+    _host_flag="--host=${CROSS_COMPILE_HOST}"
+    _build_flag="--build=$(gcc -dumpmachine)"
+    # KRB5 configure cannot run test binaries when cross-compiling; cache the results
+    export krb5_cv_attr_constructor_destructor=yes,yes
+    export ac_cv_func_regcomp=yes
+    export ac_cv_printf_positional=yes
+  fi
 
   cd "${srcdir}/krb5-${pkgver}/src"
 
@@ -33,8 +50,9 @@ build() {
     --enable-dns-for-realm \
     --without-readline \
     --without-ldap \
-    --without-system-verto
-  make -j"$(( $(nproc) / 2 ))"
+    --without-system-verto \
+    ${_host_flag} ${_build_flag}
+  make -j"$(($(nproc) / 2))"
 }
 
 package() {

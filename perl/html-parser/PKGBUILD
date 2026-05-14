@@ -2,7 +2,7 @@ pkgname="carbonio-perl-html-parser"
 pkgver="3.83" # renovate: datasource=cpan depName=HTML::Parser
 pkgrel="1"
 pkgdesc="HTML parser class"
-arch=('x86_64')
+arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('Artistic-1.0-Perl OR GPL-1.0-or-later')
@@ -26,15 +26,33 @@ sha256sums=('7278ce9791256132b26a71a5719451844704bb9674b58302c3486df43584f8c0')
 
 build() {
   cd "${srcdir}/HTML-Parser-${pkgver}"
+
+  _cc_flag=""
+  if [ -n "${CROSS_COMPILE}" ]; then
+    # Export CC/LD before Makefile.PL so it generates the Makefile with the cross-compiler
+    export CC="${CROSS_COMPILE}gcc"
+    export LD="${CROSS_COMPILE}gcc"
+    _cc_flag="CC=${CROSS_COMPILE}gcc LD=${CROSS_COMPILE}gcc"
+    export ac_cv_func_malloc_0_nonnull=yes
+    export ac_cv_func_realloc_0_nonnull=yes
+  fi
+
   perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
     INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
     LIB=/opt/zextras/common/lib/perl5 LIBS="-L/opt/zextras/common/lib -lssl -lcrypto" INC="-I/opt/zextras/common/include"
-  make
+  make ${_cc_flag} -j"$(($(nproc) / 2))"
 }
 
 package() {
   cd "${srcdir}/HTML-Parser-${pkgver}"
   make install DESTDIR="${pkgdir}"
+  # Relocate arch-specific files from host arch dir to target arch dir
+  if [ -n "${CROSS_COMPILE}" ] && [ -d "${pkgdir}/opt/zextras/common/lib/perl5/x86_64-linux-gnu-thread-multi" ]; then
+    mkdir -p "${pkgdir}/opt/zextras/common/lib/perl5/aarch64-linux-gnu-thread-multi"
+    cp -a "${pkgdir}/opt/zextras/common/lib/perl5/x86_64-linux-gnu-thread-multi/." \
+      "${pkgdir}/opt/zextras/common/lib/perl5/aarch64-linux-gnu-thread-multi/"
+    rm -rf "${pkgdir}/opt/zextras/common/lib/perl5/x86_64-linux-gnu-thread-multi"
+  fi
   find "${pkgdir}" -name '.packlist' -delete
   find "${pkgdir}" -name '*.pod' -delete
 }

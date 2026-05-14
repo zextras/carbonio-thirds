@@ -1,0 +1,11 @@
+--- a/Makefile.PL
++++ b/Makefile.PL
+@@ -6,7 +6,7 @@
+     my $postamble =<<'END';
+ 
+ uulib/Makefile:
+-	cd uulib && ./configure --with-cc='$(CC)' --with-cflags='$(OPTIMIZE) $(CFLAGS) $(CCCDLFLAGS)'
++	cd uulib && ./configure $(CROSS_CONFIGURE_FLAGS) --with-cc='$(CC)' --with-cflags='$(OPTIMIZE) $(CFLAGS) $(CCCDLFLAGS)'
+ 
+ clean::
+ 	-cd uulib && make distclean

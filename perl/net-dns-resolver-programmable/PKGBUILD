@@ -2,7 +2,7 @@ pkgname="carbonio-perl-net-dns-resolver-programmable"
 pkgver="0.009" # renovate: datasource=cpan depName=Net::DNS::Resolver::Programmable
 pkgrel="3"
 pkgdesc="Programmable DNS resolver class for offline emulation of DNS"
-arch=('x86_64')
+arch=('any')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('Artistic-1.0-Perl OR GPL-1.0-or-later')

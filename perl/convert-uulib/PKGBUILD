@@ -2,7 +2,7 @@ pkgname="carbonio-perl-convert-uulib"
 pkgver="1.8" # renovate: datasource=cpan depName=Convert::UUlib
 pkgrel="4"
 pkgdesc="Decode uu/xx/b64/mime/yenc/etc-encoded data from a massive number of files"
-arch=('x86_64')
+arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('Artistic-1.0-Perl OR GPL-1.0-or-later')
@@ -21,20 +21,48 @@ section="libs"
 priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/M/ML/MLEHMANN/Convert-UUlib-${pkgver}.tar.gz"
+  "cross-configure-host.patch"
 )
-sha256sums=('98c314c50fb15bf53f89fcfe47ecaaf2b7bd3a87573638916c8a04cde9a8db3c')
+sha256sums=('98c314c50fb15bf53f89fcfe47ecaaf2b7bd3a87573638916c8a04cde9a8db3c'
+  '46bc1ebd58d2907f742f33c9dd436c11a3edccecfe915fe7a654909c4fd08046')
+
+prepare() {
+  cd "${srcdir}/Convert-UUlib-${pkgver}"
+  patch -Np1 -i "${srcdir}/cross-configure-host.patch"
+}
 
 build() {
   cd "${srcdir}/Convert-UUlib-${pkgver}"
+
+  _cc_flag=""
+  if [ -n "${CROSS_COMPILE}" ]; then
+    # Export CC/LD before Makefile.PL so it generates the Makefile with the cross-compiler
+    export CC="${CROSS_COMPILE}gcc"
+    export LD="${CROSS_COMPILE}gcc"
+    _cc_flag="CC=${CROSS_COMPILE}gcc LD=${CROSS_COMPILE}gcc"
+    export ac_cv_func_malloc_0_nonnull=yes
+    export ac_cv_func_realloc_0_nonnull=yes
+    # Tell uulib's autoconf configure we are cross-compiling (via patched
+    # CROSS_CONFIGURE_FLAGS variable in Makefile.PL).
+    export CROSS_CONFIGURE_FLAGS="--host=${CROSS_COMPILE%-}"
+  fi
+
   perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
     INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
     LIB=/opt/zextras/common/lib/perl5
-  make
+  make ${_cc_flag} -j"$(($(nproc) / 2))"
 }
 
 package() {
   cd "${srcdir}/Convert-UUlib-${pkgver}"
   make install DESTDIR="${pkgdir}"
+  # Relocate arch-specific files from host arch dir to target arch dir
+  if [ -n "${CROSS_COMPILE}" ] && [ -d "${pkgdir}/opt/zextras/common/lib/perl5/x86_64-linux-gnu-thread-multi" ]; then
+    mkdir -p "${pkgdir}/opt/zextras/common/lib/perl5/aarch64-linux-gnu-thread-multi"
+    cp -a "${pkgdir}/opt/zextras/common/lib/perl5/x86_64-linux-gnu-thread-multi/." \
+      "${pkgdir}/opt/zextras/common/lib/perl5/aarch64-linux-gnu-thread-multi/"
+    rm -rf "${pkgdir}/opt/zextras/common/lib/perl5/x86_64-linux-gnu-thread-multi"
+  fi
   find "${pkgdir}" -name '.packlist' -delete
   find "${pkgdir}" -name '*.pod' -delete
 }

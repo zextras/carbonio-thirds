@@ -2,7 +2,7 @@ pkgname="carbonio-openldap"
 pkgver="2.6.13" # renovate: datasource=github-tags depName=openldap/openldap  extractVersion=^OPENLDAP_REL_ENG_(?<version>.+)$ versioning=regex:^(?<major>\d+)_(?<minor>\d+)(_(?<patch>\d+))?$
 pkgrel="1"
 pkgdesc="Lightweight Directory Access Protocol (LDAP) library"
-arch=('x86_64')
+arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('OLDAP-2.8')
@@ -26,6 +26,7 @@ depends__yum=(
 )
 makedepends__apt=(
   "libcap2-bin"
+  "libltdl-dev"
   "libsystemd-dev"
 )
 makedepends__yum=(
@@ -34,6 +35,7 @@ makedepends__yum=(
 )
 section="libs"
 priority="important"
+options=('!libtool' '!staticlibs')
 source=(
   "https://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-${pkgver}.tgz"
   "${pkgname}.patch"
@@ -63,11 +65,6 @@ _package() {
   # tmpfiles.d configuration
   install -Dm644 "${srcdir}/systemd-tmpfile.conf" \
     "${pkgdir}/usr/lib/tmpfiles.d/${pkgname}.conf"
-
-  # libexec .a and .la files should not be deleted
-  # they are related to slapd plugins
-  find "${pkgdir}/opt/zextras/common/lib" -name '*.a' -delete
-  find "${pkgdir}/opt/zextras/common/lib" -name '*.la' -delete
 }
 
 _package_systemd() {
@@ -119,6 +116,23 @@ build() {
   export CPPFLAGS="-I/opt/zextras/common/include"
   export PATH="/opt/zextras/common/bin:/usr/bin"
 
+  _host_flag=""
+  _build_flag=""
+  _cross_flags=""
+  if [ -n "${CROSS_COMPILE}" ]; then
+    _host_flag="--host=${CROSS_COMPILE_HOST}"
+    _build_flag="--build=$(gcc -dumpmachine)"
+    # select() yields on Linux aarch64; cannot run test when cross-compiling
+    _cross_flags="--with-yielding_select=yes"
+  fi
+  # When cross-compiling, libtool does not absorb liblutil.a into libldap.so
+  # because UNIX_LINK_LIBS for libldap.la omits LDAP_LIBLUTIL_A. Patch the
+  # generated Makefile to add it so lutil_* symbols are resolved inside the .so.
+  _patch_liblutil_link() {
+    sed -i 's|^\(UNIX_LINK_LIBS\s*=.*\)|\1 $(LDAP_LIBLUTIL_A)|' \
+      libraries/libldap/Makefile
+  }
+
   ./configure \
     --prefix=/opt/zextras/common \
     --localstatedir=/run/carbonio/ \
@@ -138,15 +152,19 @@ build() {
     --with-cyrus-sasl \
     --with-threads \
     --with-tls=openssl \
-    LIBS="-lsystemd"
+    LIBS="-lsystemd" \
+    ${_host_flag} ${_build_flag} ${_cross_flags}
+
+  [ -n "${CROSS_COMPILE}" ] && _patch_liblutil_link
 
   LD_RUN_PATH=/opt/zextras/common/lib make depend
   LD_RUN_PATH=/opt/zextras/common/lib make DEFINES="-DCHECK_CSN -DSLAP_SCHEMA_EXPOSE" -C libraries
   LD_RUN_PATH=/opt/zextras/common/lib make DEFINES="-DCHECK_CSN -DSLAP_SCHEMA_EXPOSE" -C servers
   LD_RUN_PATH=/opt/zextras/common/lib make DEFINES="-DCHECK_CSN -DSLAP_SCHEMA_EXPOSE" -C clients
-  make -C libraries/liblmdb prefix=/opt/zextras/common
-  make -C contrib/slapd-modules/noopsrch prefix=/opt/zextras/common
-  make -C contrib/slapd-modules/passwd/sha2 prefix=/opt/zextras/common
+  _cc="${CC:-gcc}"
+  make -C libraries/liblmdb prefix=/opt/zextras/common CC="${_cc}"
+  make -C contrib/slapd-modules/noopsrch prefix=/opt/zextras/common CC="${_cc}"
+  make -C contrib/slapd-modules/passwd/sha2 prefix=/opt/zextras/common CC="${_cc}"
 }
 
 package() {

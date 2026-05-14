@@ -2,7 +2,7 @@ pkgname="carbonio-perl-net-dns"
 pkgver="1.54" # renovate: datasource=cpan depName=Net::DNS
 pkgrel="1"
 pkgdesc="Perl Interface to the Domain Name System"
-arch=('x86_64')
+arch=('any')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('Artistic-1.0-Perl OR GPL-1.0-or-later')
@@ -23,21 +23,19 @@ section="libs"
 priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/N/NL/NLNETLABS/Net-DNS-${pkgver}.tar.gz"
-  "remote-tests.patch"
 )
-sha256sums=('7abe0e03e8eead04bfe432d0d90ec0dd61b8ba71afad324a9c76acc6a6fbe2a4'
-            '485fd51f739315a559ddcea7c6defcf38ee61f153b3a3fb8e3863a5860380774')
+sha256sums=('7abe0e03e8eead04bfe432d0d90ec0dd61b8ba71afad324a9c76acc6a6fbe2a4')
 
 build() {
   cd "${srcdir}/Net-DNS-${pkgver}"
-  patch -Np1 -i ../remote-tests.patch
 
-  perl -I /opt/zextras/common/lib/perl5 Makefile.PL \
-    --noonline-tests \
-    INSTALL_BASE=/opt/zextras/common \
+  # Disable online tests in Makefile.PL (avoids network access during configure)
+  sed -i 's/my $online_tests = .*/my $online_tests = 0;/' Makefile.PL || true
+
+  perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
     INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
-    LIB=/opt/zextras/common/lib/perl5 LIBS="-L/opt/zextras/common/lib -lssl -lcrypto" INC="-I/opt/zextras/common/include"
-  LD_RUN_PATH=/opt/zextras/common/lib make
+    LIB=/opt/zextras/common/lib/perl5
+  make -j"$(( $(nproc) / 2 ))"
 }
 
 package() {

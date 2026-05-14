@@ -2,7 +2,7 @@ pkgname="carbonio-libevent"
 pkgver="2.1.12" # renovate: datasource=github-releases depName=libevent/libevent
 pkgrel="4"
 pkgdesc="An event notification library"
-arch=('x86_64')
+arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('BSD-3-Clause-Modification')
@@ -11,6 +11,7 @@ depends=(
 )
 section="libs"
 priority="important"
+options=('!libtool' '!staticlibs')
 source=(
   "https://github.com/libevent/libevent/releases/download/release-${pkgver}-stable/libevent-${pkgver}-stable.tar.gz"
 )
@@ -20,15 +21,22 @@ build() {
   cd "${srcdir}/libevent-${pkgver}-stable"
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
   export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
+
+  _host_flag=""
+  _build_flag=""
+  if [ -n "${CROSS_COMPILE}" ]; then
+    _host_flag="--host=${CROSS_COMPILE_HOST}"
+    _build_flag="--build=$(gcc -dumpmachine)"
+  fi
+
   ./configure --prefix=/opt/zextras/common \
-    --disable-samples
-  make -j"$(( $(nproc) / 2 ))"
+    --disable-samples \
+    ${_host_flag} ${_build_flag}
+  make -j"$(($(nproc) / 2))"
 }
 
 package() {
   cd "${srcdir}/libevent-${pkgver}-stable"
   make DESTDIR="${pkgdir}" install
   sed -i "s/env python/env python3/g" "${pkgdir}"/opt/zextras/common/bin/event_rpcgen.py
-  rm -rf "${pkgdir}"/opt/zextras/common/lib/*.a
-  rm -rf "${pkgdir}"/opt/zextras/common/lib/*.la
 }

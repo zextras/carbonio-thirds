@@ -2,7 +2,7 @@ pkgname="carbonio-perl-xml-sax-expat"
 pkgver="0.51" # renovate: datasource=cpan depName=XML::SAX::Expat
 pkgrel="3"
 pkgdesc="SAX2 Driver for Expat"
-arch=('x86_64')
+arch=('any')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('Artistic-1.0-Perl OR GPL-1.0-or-later')
@@ -36,15 +36,18 @@ sha256sums=('4c016213d0ce7db2c494e30086b59917b302db8c292dcd21f39deebd9780c83f')
 
 build() {
   cd "${srcdir}/XML-SAX-Expat-${pkgver}"
+
   perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
-    INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3
-  make
+    INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
+    LIB=/opt/zextras/common/lib/perl5
+  make -j"$(( $(nproc) / 2 ))"
 }
 
 package() {
   cd "${srcdir}/XML-SAX-Expat-${pkgver}"
-  PERL5LIB=/opt/zextras/common/lib/perl5:${pkgdir}/opt/zextras/common/lib/perl5 \
-    make install DESTDIR="${pkgdir}"
+  # Use pure-install to skip the SAX parser registration step which tries to
+  # load the arch-specific XML::Parser::Expat.so (registration happens at runtime)
+  make pure_install DESTDIR="${pkgdir}"
   find "${pkgdir}" -name '.packlist' -delete
   find "${pkgdir}" -name '*.pod' -delete
 }

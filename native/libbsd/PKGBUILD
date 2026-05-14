@@ -2,7 +2,7 @@ pkgname="carbonio-libbsd"
 pkgver="0.10.0" # renovate: datasource=github-tags depName=guillemj/libbsd
 pkgrel="3"
 pkgdesc="Provides useful functions commonly found on BSD systems like strlcpy()"
-arch=('x86_64')
+arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('BSD-2-Clause AND BSD-3-Clause AND Beerware AND ISC AND MIT AND LicenseRef-public-domain')
@@ -24,6 +24,7 @@ makedepends__yum=(
 )
 section="libs"
 priority="important"
+options=('!libtool' '!staticlibs')
 source=(
   "https://github.com/guillemj/libbsd/archive/refs/tags/${pkgver}.tar.gz"
 )
@@ -35,19 +36,25 @@ build() {
   export CFLAGS="-fPIC -D_REENTRANT -ffile-prefix-map=${srcdir}=."
   export CXXFLAGS="-fPIC -D_REENTRANT -ffile-prefix-map=${srcdir}=."
 
+  _host_flag=""
+  _build_flag=""
+  if [ -n "${CROSS_COMPILE}" ]; then
+    _host_flag="--host=${CROSS_COMPILE_HOST}"
+    _build_flag="--build=$(gcc -dumpmachine)"
+  fi
+
   echo "${pkgver}" >.dist-version
   autoreconf -fiv
   ./configure \
     --prefix=/opt/zextras/common \
-    --disable-static
-  make -j"$(( $(nproc) / 2 ))"
+    --disable-static \
+    ${_host_flag} ${_build_flag}
+  make -j"$(($(nproc) / 2))"
 }
 
 package() {
   cd "${srcdir}/libbsd-${pkgver}"
 
   make DESTDIR="${pkgdir}" install
-  rm -rf "${pkgdir}"/opt/zextras/common/lib/*.a
-  rm -rf "${pkgdir}"/opt/zextras/common/lib/*.la
   rm -rf "${pkgdir}"/opt/zextras/common/share/man/
 }

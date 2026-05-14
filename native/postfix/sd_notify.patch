@@ -1,6 +1,6 @@
-diff --git a/src/master/master.c b/src/master/master.c
---- a/src/master/master.c
-+++ b/src/master/master.c
+diff '--color=auto' -Naur a/src/master/master.c b/src/master/master.c
+--- a/src/master/master.c	2026-05-13 21:25:08.104913032 +0200
++++ b/src/master/master.c	2026-05-13 21:25:14.898743165 +0200
 @@ -225,6 +225,10 @@
  #include <watchdog.h>
  #include <clean_env.h>

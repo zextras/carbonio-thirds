@@ -1,0 +1,32 @@
+--- a/Lite/Util/Makefile.PL
++++ b/Lite/Util/Makefile.PL
+@@ -93,14 +93,18 @@
+ # fix bug in Andorid's sh
+   local $ENV{TMPDIR} = File::Spec->tmpdir() if $^O eq 'android';
+ 
++  my @_cross_args;
++  if ($ENV{CROSS_CONFIGURE_FLAGS}) {
++    push @_cross_args, split(' ', $ENV{CROSS_CONFIGURE_FLAGS});
++  }
+   unless (-e './config.h') {
+-    system $Config{sh}, 'configure.gcc';
++    system $Config{sh}, 'configure.gcc', @_cross_args;
+   }
+   my @LIBS;
+   unless (open(F,'config.h')) {
+     warn "Cannot read config.h built by 'gcc', trying 'cc'.\n";
+ # try to build with cc
+-    system $Config(sh), 'configure.cc';
++    system $Config{sh}, 'configure.cc', @_cross_args;
+     unless (open(F,'config.h')) {
+       warn "Cannot read config.h built by 'cc', using 'pure Perl'.\n";
+       $useXS = 0;
+@@ -141,7 +145,7 @@
+ 	@$(NOOP)
+ 
+ config.h :
+-	$(SHELL) configure
++	$(SHELL) configure $(CROSS_CONFIGURE_FLAGS)
+ |;
+   last;
+ }

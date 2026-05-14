@@ -2,7 +2,7 @@ pkgname="carbonio-policyd"
 pkgver="2.1.0.0"
 pkgrel="6"
 pkgdesc="Multi-platform policy server for popular MTAs (aka ClueBringer)"
-arch=('x86_64')
+arch=('any')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('GPL-2.0-or-later')
@@ -35,7 +35,10 @@ depends__yum=(
   "perl-Socket6"
   "perl"
 )
-makedepends=(
+makedepends__apt=(
+  "git"
+)
+makedepends__yum=(
   "git"
 )
 section="libs"

@@ -2,7 +2,7 @@ pkgname="carbonio-perl-netaddr-ip"
 pkgver="4.079" # renovate: datasource=cpan depName=NetAddr::IP
 pkgrel="3"
 pkgdesc="Manages IPv4 and IPv6 addresses and subnets"
-arch=('x86_64')
+arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('Artistic-1.0-Perl OR GPL-1.0-or-later')
@@ -17,20 +17,49 @@ section="libs"
 priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/M/MI/MIKER/NetAddr-IP-${pkgver}.tar.gz"
+  "cross-configure-host.patch"
 )
-sha256sums=('ec5a82dfb7028bcd28bb3d569f95d87dd4166cc19867f2184ed3a59f6d6ca0e7')
+sha256sums=('ec5a82dfb7028bcd28bb3d569f95d87dd4166cc19867f2184ed3a59f6d6ca0e7'
+  'd32500f427bdc17e129eae7612375a75f921b7228f5d670d19261799a0dfd660')
+
+prepare() {
+  cd "${srcdir}/NetAddr-IP-${pkgver}"
+  patch -Np1 -i "${srcdir}/cross-configure-host.patch"
+}
 
 build() {
   cd "${srcdir}/NetAddr-IP-${pkgver}"
+
+  _makemaker_overrides=()
+  if [ -n "${CROSS_COMPILE}" ]; then
+    export CC="${CROSS_COMPILE}gcc"
+    export LD="${CROSS_COMPILE}gcc"
+    export ac_cv_func_malloc_0_nonnull=yes
+    export ac_cv_func_realloc_0_nonnull=yes
+    export CROSS_CONFIGURE_FLAGS="--host=aarch64-linux-gnu"
+    # Only pass CC/LD to MakeMaker when cross-compiling. Passing CC="" or LD=""
+    # on native builds overrides Perl's Config.pm defaults with empty strings,
+    # causing 'make' to invoke the LDDLFLAGS as the linker ("-shared ..." →
+    # leading dash stripped → "shared: No such file or directory").
+    _makemaker_overrides=(CC="${CC}" LD="${LD}")
+  fi
+
   perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
     INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
-    LIB=/opt/zextras/common/lib/perl5 LIBS="-L/opt/zextras/common/lib -lssl -lcrypto" INC="-I/opt/zextras/common/include"
-  make
+    LIB=/opt/zextras/common/lib/perl5 "${_makemaker_overrides[@]}"
+  make "${_makemaker_overrides[@]}"
 }
 
 package() {
   cd "${srcdir}/NetAddr-IP-${pkgver}"
   make install DESTDIR="${pkgdir}"
+  # Relocate arch-specific files from host arch dir to target arch dir
+  if [ -n "${CROSS_COMPILE}" ] && [ -d "${pkgdir}/opt/zextras/common/lib/perl5/x86_64-linux-gnu-thread-multi" ]; then
+    mkdir -p "${pkgdir}/opt/zextras/common/lib/perl5/aarch64-linux-gnu-thread-multi"
+    cp -a "${pkgdir}/opt/zextras/common/lib/perl5/x86_64-linux-gnu-thread-multi/." \
+      "${pkgdir}/opt/zextras/common/lib/perl5/aarch64-linux-gnu-thread-multi/"
+    rm -rf "${pkgdir}/opt/zextras/common/lib/perl5/x86_64-linux-gnu-thread-multi"
+  fi
   find "${pkgdir}" -name '.packlist' -delete
   find "${pkgdir}" -name '*.pod' -delete
 }

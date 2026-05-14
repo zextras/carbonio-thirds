@@ -1,5 +1,5 @@
 library(
-    identifier: 'jenkins-lib-common@1.7.5',
+    identifier: 'jenkins-lib-common@v2.6.0',
     retriever: modernSCM([
         $class: 'GitSCMSource',
         credentialsId: 'jenkins-integration-with-github-account',
@@ -56,6 +56,14 @@ pipeline {
                     prepare: true,
                     debugSymbols: true,
                 )
+                buildStage(
+                    addCarbonioRepos: true,
+                    architecture: 'aarch64',
+                    buildDirs: ['native', 'perl'],
+                    distros: ['ubuntu-jammy'],
+                    parallelBuilds: false,
+                    prepare: true,
+                )
             }
         }
 
@@ -72,6 +80,13 @@ pipeline {
             }
             steps {
                 uploadStage(
+                    packages: yapHelper.getPackageNamesFromFiles(
+                        ['native/yap.json', 'perl/yap.json'] as Set
+                    ),
+                )
+                uploadStage(
+                    architecture: 'aarch64',
+                    distros: ['ubuntu-jammy'],
                     packages: yapHelper.getPackageNamesFromFiles(
                         ['native/yap.json', 'perl/yap.json'] as Set
                     ),

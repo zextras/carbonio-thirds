@@ -2,14 +2,14 @@ pkgname="carbonio-jemalloc"
 pkgver="5.3.1" # renovate: datasource=github-releases depName=jemalloc/jemalloc
 pkgrel="1"
 pkgdesc="General-purpose scalable concurrent malloc implementation"
-arch=('x86_64')
+arch=('aarch64' 'x86_64')
 license=('LicenseRef-BSD')
 section="mail"
 priority="extra"
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 depends__apt=(
-  "libgcc1"
+  "libgcc-s1"
   "libc6"
 )
 source=("https://github.com/jemalloc/jemalloc/releases/download/${pkgver}/jemalloc-${pkgver}.tar.bz2")
@@ -17,10 +17,22 @@ sha256sums=('3826bc80232f22ed5c4662f3034f799ca316e819103bdc7bb99018a421706f92')
 
 build() {
   cd "${srcdir}/jemalloc-${pkgver}"
+
+  _host_flag=""
+  _build_flag=""
+  if [ -n "${CROSS_COMPILE}" ]; then
+    _host_flag="--host=${CROSS_COMPILE_HOST}"
+    _build_flag="--build=$(gcc -dumpmachine)"
+    # sched_getcpu requires _GNU_SOURCE; cross-compiler sysroot needs it explicit
+    export CFLAGS="${CFLAGS} -D_GNU_SOURCE"
+    export CPPFLAGS="${CPPFLAGS} -D_GNU_SOURCE"
+  fi
+
   ./configure \
     --enable-autogen \
-    --prefix=/opt/zextras/common
-  make -j"$(( $(nproc) / 2 ))"
+    --prefix=/opt/zextras/common \
+    ${_host_flag} ${_build_flag}
+  make -j"$(($(nproc) / 2))"
 }
 
 package() {

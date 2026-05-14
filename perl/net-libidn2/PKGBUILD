@@ -2,7 +2,7 @@ pkgname="carbonio-perl-net-libidn2"
 pkgver="1.02" # renovate: datasource=cpan depName=Net::LibIDN2
 pkgrel="2"
 pkgdesc="Perl bindings for GNU Libidn2"
-arch=('x86_64')
+arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://zextras.com"
 license=('Artistic-1.0-Perl OR GPL-1.0-or-later')
@@ -33,16 +33,39 @@ sha256sums=('d1f30afc6acfa6541b00c09a7e4c74e7d8e4ba49e3277c0bbc41ae35c1390d07')
 build() {
   cd "${srcdir}/Net-LibIDN2-${pkgver}"
 
-  perl Build.PL install_base=/opt/zextras/common \
-    --extra_linker_flags="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib -lidn2"
+  if [ -n "${CROSS_COMPILE}" ]; then
+    export CC="${CROSS_COMPILE}gcc"
+    export LD="${CROSS_COMPILE}gcc"
+    export ac_cv_func_malloc_0_nonnull=yes
+    export ac_cv_func_realloc_0_nonnull=yes
+    # Patch bundled Devel::CheckLib to skip link test when cross-compiling
+    # (host linker cannot link aarch64 objects)
+    sed -i 's/^sub check_lib_or_exit/sub check_lib_or_exit_DISABLED/' \
+      inc/Devel/CheckLib.pm
+    echo 'sub check_lib_or_exit { return 1; }' >>inc/Devel/CheckLib.pm
+  fi
+
+  perl Build.PL --install_base /opt/zextras/common \
+    --install_path lib=/opt/zextras/common/lib/perl5 \
+    --install_path bindoc=/opt/zextras/common/share/man/man1 \
+    --install_path libdoc=/opt/zextras/common/share/man/man3 \
+    --extra_compiler_flags="-I/usr/include" \
+    --extra_linker_flags="-L/usr/lib/aarch64-linux-gnu -lidn2"
   perl Build
 }
 
 package() {
   cd "${srcdir}/Net-LibIDN2-${pkgver}"
 
-  perl Build install destdir="${pkgdir}"
+  perl Build install --destdir "${pkgdir}"
 
+  # Relocate arch-specific files from host arch dir to target arch dir
+  if [ -n "${CROSS_COMPILE}" ] && [ -d "${pkgdir}/opt/zextras/common/lib/perl5/x86_64-linux-gnu-thread-multi" ]; then
+    mkdir -p "${pkgdir}/opt/zextras/common/lib/perl5/aarch64-linux-gnu-thread-multi"
+    cp -a "${pkgdir}/opt/zextras/common/lib/perl5/x86_64-linux-gnu-thread-multi/." \
+      "${pkgdir}/opt/zextras/common/lib/perl5/aarch64-linux-gnu-thread-multi/"
+    rm -rf "${pkgdir}/opt/zextras/common/lib/perl5/x86_64-linux-gnu-thread-multi"
+  fi
   find "${pkgdir}" -name '.packlist' -delete
   find "${pkgdir}" -name '*.pod' -delete
 }

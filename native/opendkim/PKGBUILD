@@ -2,7 +2,7 @@ pkgname="carbonio-opendkim"
 pkgver="2.11.0" # renovate: datasource=github-tags depName=trusteddomainproject/OpenDKIM
 pkgrel="6"
 pkgdesc="An open source implementation of the DKIM sender authentication system. Based on a fork of dkim-milter"
-arch=('x86_64')
+arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('BSD-3-Clause AND Sendmail')
@@ -42,6 +42,7 @@ makedepends__yum=(
 )
 section="utils"
 priority="optional"
+options=('!libtool' '!staticlibs')
 source=(
   "https://github.com/trusteddomainproject/OpenDKIM/archive/14d54524e0a97d3fe9b80441907d7e356c9ded04.tar.gz"
   "${pkgname}.service"
@@ -77,6 +78,19 @@ build() {
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib"
   export CPPFLAGS="-I/opt/zextras/common/include"
 
+  _host_flag=""
+  _build_flag=""
+  if [ -n "${CROSS_COMPILE}" ]; then
+    _host_flag="--host=${CROSS_COMPILE_HOST}"
+    _build_flag="--build=$(gcc -dumpmachine)"
+    # autoconf marks malloc/realloc as "broken" when cross-compiling (can't run test)
+    # which causes rpl_malloc/rpl_realloc stubs to be generated but not provided
+    export ac_cv_func_malloc_0_nonnull=yes
+    export ac_cv_func_realloc_0_nonnull=yes
+    # libldap.so has unresolved lutil_memcmp (resolved at final link in openldap itself)
+    export LDFLAGS="${LDFLAGS} -Wl,--allow-shlib-undefined"
+  fi
+
   autoreconf -fiv
   ./configure --prefix=/opt/zextras/common \
     --enable-query_cache \
@@ -98,17 +112,15 @@ build() {
     --with-libcurl=/opt/zextras/common \
     --with-db=/opt/zextras/common \
     CFLAGS="${CFLAGS} -DHAVE_SYSTEMD" \
-    LIBS="-lsystemd"
+    LIBS="-lsystemd" \
+    ${_host_flag} ${_build_flag}
 
-  make -j"$(( $(nproc) / 2 ))"
+  make -j"$(($(nproc) / 2))"
 }
 
 _package() {
   cd "${srcdir}/OpenDKIM-14d54524e0a97d3fe9b80441907d7e356c9ded04"
   make DESTDIR="${pkgdir}" install
-
-  rm -rf "${pkgdir}"/opt/zextras/common/lib/*.a
-  rm -rf "${pkgdir}"/opt/zextras/common/lib/*.la
 }
 
 _package_systemd() {

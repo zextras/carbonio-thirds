@@ -2,7 +2,7 @@ pkgname="carbonio-perl-json-pp"
 pkgver="4.18" # renovate: datasource=cpan depName=JSON::PP
 pkgrel="2"
 pkgdesc="JSON::XS compatible pure-Perl module"
-arch=('x86_64')
+arch=('any')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('Artistic-1.0-Perl OR GPL-1.0-or-later')

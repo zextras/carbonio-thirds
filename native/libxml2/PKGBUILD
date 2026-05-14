@@ -2,7 +2,7 @@ pkgname="carbonio-libxml2"
 pkgver="2.10.1" # renovate: datasource=github-tags depName=GNOME/libxml2
 pkgrel="2"
 pkgdesc="XML parsing library, version 2"
-arch=('x86_64')
+arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('MIT')
@@ -29,6 +29,7 @@ makedepends__yum=(
 )
 section="libs"
 priority="important"
+options=('!libtool')
 source=(
   "https://github.com/GNOME/libxml2/archive/refs/tags/v${pkgver}.tar.gz"
 )
@@ -41,21 +42,40 @@ build() {
   export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
 
   autoreconf -fiv
+
+  _host_flag=""
+  _build_flag=""
+  if [ -n "${CROSS_COMPILE}" ]; then
+    _host_flag="--host=${CROSS_COMPILE_HOST}"
+    _build_flag="--build=$(gcc -dumpmachine)"
+
+    # Restrict pkg-config to only the carbonio prefix so it does not pick up
+    # the host amd64 ICU from /usr/lib/x86_64-linux-gnu/pkgconfig.
+    # PKG_CONFIG_LIBDIR replaces (rather than prepends to) the default search path.
+    export PKG_CONFIG_LIBDIR="/opt/zextras/common/lib/pkgconfig"
+
+    # Also add the arm64 system pkgconfig dir so cross-installed libs are found.
+    _cross_pkgconfig="/usr/${CROSS_COMPILE_HOST}/lib/pkgconfig"
+    if [ -d "${_cross_pkgconfig}" ]; then
+      export PKG_CONFIG_LIBDIR="${PKG_CONFIG_LIBDIR}:${_cross_pkgconfig}"
+    fi
+  fi
+
   ./configure \
     --prefix=/opt/zextras/common \
     --enable-shared=yes \
     --enable-static=no \
     --without-python \
     --without-iconv \
-    --with-icu
-  make -j"$(( $(nproc) / 2 ))"
+    --with-icu \
+    ${_host_flag} ${_build_flag}
+  make -j"$(($(nproc) / 2))"
 }
 
 package() {
   cd "${srcdir}/libxml2-${pkgver}"
   make DESTDIR="${pkgdir}" install
   rm -f "${pkgdir}"/opt/zextras/common/bin/xml2-config
-  rm -rf "${pkgdir}"/opt/zextras/common/lib/*.la
   rm -rf "${pkgdir}"/opt/zextras/common/share/man
   rm -rf "${pkgdir}"/opt/zextras/common/share/gtk-doc
 }
