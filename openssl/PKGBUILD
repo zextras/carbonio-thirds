@@ -1,0 +1,85 @@
+pkgname="carbonio-openssl"
+pkgver="3.6.2" # renovate: datasource=repology depName=arch/openssl
+pkgrel="1"
+pkgdesc="Zextras's Secure Socket Layer build"
+arch=('aarch64' 'x86_64')
+maintainer="Zextras <packages@zextras.com>"
+url="https://github.com/zextras"
+license=('Apache-2.0')
+makedepends__apt=(
+  "perl"
+)
+makedepends__yum=(
+  "perl"
+)
+section="libs"
+priority="important"
+options=('!staticlibs')
+source=(
+  "https://github.com/openssl/openssl/releases/download/openssl-${pkgver}/openssl-${pkgver}.tar.gz"
+)
+sha256sums=('aaf51a1fe064384f811daeaeb4ec4dce7340ec8bd893027eee676af31e83a04f')
+
+build() {
+  cd "${srcdir}/openssl-${pkgver}"
+
+  # Map CROSS_COMPILE (set by yap, e.g. aarch64-linux-gnu-) to OpenSSL's platform string.
+  _openssl_target="linux-x86_64"
+  _cross_prefix_flag=""
+  if [ -n "${CROSS_COMPILE}" ]; then
+    case "${CROSS_COMPILE_HOST}" in
+    aarch64-*) _openssl_target="linux-aarch64" ;;
+    arm-* | armv7-*) _openssl_target="linux-armv4" ;;
+    powerpc64le-*) _openssl_target="linux-ppc64le" ;;
+    s390x-*) _openssl_target="linux64-s390x" ;;
+    riscv64-*) _openssl_target="linux64-riscv64" ;;
+    i686-*) _openssl_target="linux-x86" ;;
+    *)
+      echo "openssl: unsupported CROSS_COMPILE_HOST=${CROSS_COMPILE_HOST}" >&2
+      exit 1
+      ;;
+    esac
+    _cross_prefix_flag="--cross-compile-prefix=${CROSS_COMPILE}"
+  fi
+
+  # OpenSSL Configure prefixes every tool itself; unset yap's pre-prefixed CC/AR/... so it can.
+  if [ -n "${CROSS_COMPILE}" ]; then
+    unset CC CXX AR RANLIB LD NM STRIP OBJDUMP OBJCOPY
+  fi
+
+  ./Configure \
+    --libdir=lib \
+    --openssldir=/opt/zextras/common/etc/ssl \
+    --prefix=/opt/zextras/common \
+    --with-rand-seed=devrandom,rdcpu,os,getrandom \
+    -DOPENSSL_NO_HEARTBEATS \
+    $([ "${_openssl_target}" = "linux-x86_64" ] && echo "enable-ec_nistp_64_gcc_128") \
+    ${_cross_prefix_flag} \
+    ${_openssl_target} \
+    no-idea \
+    no-mdc2 no-rc5 \
+    no-ssl3-method \
+    no-tests \
+    shared
+  LD_RUN_PATH=/opt/zextras/common/lib make depend
+  LD_RUN_PATH=/opt/zextras/common/lib make build_sw
+}
+
+package() {
+  cd "${srcdir}/openssl-${pkgver}"
+  LD_RUN_PATH=/opt/zextras/common/lib \
+    MANDIR="/opt/zextras/common/share/man" \
+    LIBS="" \
+    make DESTDIR="${pkgdir}" install_sw install_ssldirs
+
+  rm "${pkgdir}"/opt/zextras/common/etc/ssl/misc/tsget*
+  cp "${pkgdir}/opt/zextras/common/etc/ssl/openssl.cnf" \
+    "${pkgdir}/opt/zextras/common/etc/ssl/openssl-source.cnf"
+
+  # Til now, these symlinks are only required for carbonio-docs-editor
+  install -d "${pkgdir}/opt/zextras/common/lib64"
+  ln -s /opt/zextras/common/lib/libcrypto.so.3 \
+    "${pkgdir}/opt/zextras/common/lib64/libcrypto.so.3"
+  ln -s /opt/zextras/common/lib/libssl.so.3 \
+    "${pkgdir}/opt/zextras/common/lib64/libssl.so.3"
+}

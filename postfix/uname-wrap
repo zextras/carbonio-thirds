@@ -1,0 +1,8 @@
+#!/bin/sh
+case "$1" in
+  -s) echo "Linux" ;;
+  -r) echo "6.0" ;;
+  -v) echo "#1 SMP" ;;
+  -m) echo "aarch64" ;;
+  *)  /usr/bin/uname "$@" ;;
+esac

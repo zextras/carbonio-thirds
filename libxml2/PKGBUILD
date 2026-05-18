@@ -1,0 +1,81 @@
+pkgname="carbonio-libxml2"
+pkgver="2.10.1" # renovate: datasource=github-tags depName=GNOME/libxml2
+pkgrel="2"
+pkgdesc="XML parsing library, version 2"
+arch=('aarch64' 'x86_64')
+maintainer="Zextras <packages@zextras.com>"
+url="https://github.com/zextras"
+license=('MIT')
+depends__apt=(
+  "carbonio-icu"
+  "zlib1g"
+)
+depends__yum=(
+  "carbonio-icu"
+  "zlib"
+)
+makedepends__apt=(
+  "autoconf"
+  "automake"
+  "libtool"
+  "pkg-config"
+  "zlib1g-dev"
+)
+makedepends__yum=(
+  "autoconf"
+  "automake"
+  "libtool"
+  "zlib-devel"
+)
+section="libs"
+priority="important"
+options=('!libtool')
+source=(
+  "https://github.com/GNOME/libxml2/archive/refs/tags/v${pkgver}.tar.gz"
+)
+sha256sums=('fb9f90ca7cceb1930d2a890c1c222ef709352b0fea6e5430d03902133f1d476c')
+
+build() {
+  cd "${srcdir}/libxml2-${pkgver}"
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
+  export CFLAGS="-ffile-prefix-map=${srcdir}=. -I/opt/zextras/common/include"
+  export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig:/opt/zextras/common/lib64/pkgconfig"
+
+  autoreconf -fiv
+
+  _host_flag=""
+  _build_flag=""
+  if [ -n "${CROSS_COMPILE}" ]; then
+    _host_flag="--host=${CROSS_COMPILE_HOST}"
+    _build_flag="--build=$(gcc -dumpmachine)"
+
+    # PKG_CONFIG_LIBDIR replaces the default search path — keeps host ICU out.
+    export PKG_CONFIG_LIBDIR="/opt/zextras/common/lib/pkgconfig"
+
+    # Also add the arm64 system pkgconfig dir so cross-installed libs are found.
+    _cross_pkgconfig="/usr/${CROSS_COMPILE_HOST}/lib/pkgconfig"
+    if [ -d "${_cross_pkgconfig}" ]; then
+      export PKG_CONFIG_LIBDIR="${PKG_CONFIG_LIBDIR}:${_cross_pkgconfig}"
+    fi
+  fi
+
+  ./configure \
+    --prefix=/opt/zextras/common \
+    --enable-shared=yes \
+    --enable-static=no \
+    --without-python \
+    --without-iconv \
+    --with-icu \
+    ${_host_flag} ${_build_flag}
+  _jobs=$(($(nproc) / 2))
+  [ "$_jobs" -lt 1 ] && _jobs=1
+  make -j"$_jobs"
+}
+
+package() {
+  cd "${srcdir}/libxml2-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  rm -f "${pkgdir}"/opt/zextras/common/bin/xml2-config
+  rm -rf "${pkgdir}"/opt/zextras/common/share/man
+  rm -rf "${pkgdir}"/opt/zextras/common/share/gtk-doc
+}

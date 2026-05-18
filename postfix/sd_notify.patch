@@ -1,0 +1,28 @@
+diff '--color=auto' -Naur a/src/master/master.c b/src/master/master.c
+--- a/src/master/master.c	2026-05-13 21:25:08.104913032 +0200
++++ b/src/master/master.c	2026-05-13 21:25:14.898743165 +0200
+@@ -225,6 +225,10 @@
+ #include <watchdog.h>
+ #include <clean_env.h>
+ #include <argv.h>
++
++#ifdef USE_SYSTEMD
++#include <systemd/sd-daemon.h>
++#endif
+ #include <safe.h>
+ #include <set_eugid.h>
+ #include <set_ugid.h>
+@@ -559,6 +563,13 @@
+     }
+ 
+     /*
++     * Notify systemd that the master process is ready.
++     */
++#ifdef USE_SYSTEMD
++    sd_notify(0, "READY=1\nSTATUS=postfix master is ready");
++#endif
++
++    /*
+      * Process events. The event handler will execute the read/write/timer
+      * action routines. Whenever something has happened, see if we received
+      * any signal in the mean time. Although the master process appears to do

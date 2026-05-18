@@ -1,0 +1,321 @@
+pkgname="carbonio-nginx"
+pkgver="1.30.2" # renovate: datasource=github-tags depName=nginx/nginx extractVersion=^release-(?<version>.+)$ versioning=semver allowedVersions=/^1\.(2[0-9]*[02468]|[3-9][0-9]*[02468])\./
+pkgrel="1"
+pkgdesc="Lightweight HTTP server and IMAP/POP3 proxy server"
+arch=('aarch64' 'x86_64')
+maintainer="Zextras <packages@zextras.com>"
+url="https://github.com/zextras"
+license=('BSD-2-Clause')
+depends__apt=(
+  "carbonio-core"
+  "carbonio-cyrus-sasl"
+  "carbonio-openssl"
+  "libbrotli1"
+  "libcap2-bin"
+  "libluajit-5.1-2"
+  "libpcre3"
+  "libsystemd0"
+  "zlib1g"
+)
+makedepends__apt=(
+  "git"
+  "libbrotli-dev"
+  "libcap2-bin"
+  "libluajit-5.1-dev"
+  "libpcre3-dev"
+  "libsystemd-dev"
+  "zlib1g-dev"
+)
+depends__yum=(
+  "carbonio-core"
+  "carbonio-cyrus-sasl"
+  "carbonio-openssl"
+  "brotli"
+  "libcap"
+  "luajit"
+  "pcre"
+  "systemd-libs"
+  "zlib"
+)
+makedepends__yum=(
+  "brotli-devel"
+  "git"
+  "libcap"
+  "luajit-devel"
+  "pcre-devel"
+  "systemd-devel"
+  "zlib-devel"
+)
+section="utils"
+priority="optional"
+source=(
+  "https://nginx.org/download/nginx-${pkgver}.tar.gz"
+  "lua-nginx-module::git+https://github.com/openresty/lua-nginx-module#commit=c81c9517034aa7868fc333df5d53af9c860056eb"
+  "lua-resty-openssl-aux-module::git+https://github.com/fffonion/lua-resty-openssl-aux-module#commit=9d39a905c30e9b8626b5e787accd99d4333edfba"
+  "modules::git+https://github.com/zextras/carbonio-nginx-modules#commit=79b2a956fab93a9769d5a0d8d0adc34343d06900"
+  "nginx-brotli::git+https://github.com/google/ngx_brotli#commit=a71f9312c2deb28875acc7bacfdd5695a111aa53"
+  "ngx_devel_kit::git+https://github.com/vision5/ngx_devel_kit#commit=bd44d16302273052d6005d7bdb55f74e23813de3"
+  "lua-resty-core::git+https://github.com/openresty/lua-resty-core#commit=04c564acc22c90f9650fe42fec74879ae4b656a6"
+  "lua-resty-lrucache::git+https://github.com/openresty/lua-resty-lrucache#commit=0bb1eff11d248ad22026b935b28453ec7f1b27c5"
+  "stream-lua-nginx-module::git+https://github.com/openresty/stream-lua-nginx-module#commit=c5b3410939478069b2af6552205173fb8b6a43fd"
+  "${pkgname}.service"
+  "${pkgname}-${pkgver}.patch"
+  "lua_default_path.patch"
+  "lua_luajit_warning.patch"
+  "sd_notify.patch"
+  "stream_lua_default_path.patch"
+  "stream_lua_luajit_warning.patch"
+  "systemd-tmpfile.conf"
+)
+sha256sums=(
+  '7df3090907fca3cc0e456d6dc00ceb230da74ea88026ceff0affc29dbbd9ac4c'
+  'SKIP'
+  'SKIP'
+  'SKIP'
+  'SKIP'
+  'SKIP'
+  'SKIP'
+  'SKIP'
+  'SKIP'
+  'ce479ffa721306d960d8343cb0c970674fa9c49732b777bd3c293adf1e270776'
+  'b7c6b068b5a8ca5cfab7048a198d6106a011353d9ffadc89554637fcff9a10e6'
+  '5ee2be98ad3619ec851f697fc0b32cd6c5d7e4ceb81d266e26a03bf627c59fbe'
+  '0934df2c7cc8288c99293c383abedcea7ac05aac9209dedaf3d65641e2fc726f'
+  'acbaaf5bf119bdf6b14408b01bb198c32f9ea7a382ae139aae02fbb76c0a6e40'
+  '921afab08ef59372abb079337acbb3d995c03595113eabdc97f2f8041a26aae2'
+  '47bdb8793c109e6aed69b1d47b3c665508b21133169cc123012a0328223ef2d3'
+  '0d9bf766db1f5e64bd6f8766f22735f7af5cffed4759e15b0d99dd9da4ce9ee2'
+)
+
+_package() {
+  cd "${srcdir}/nginx-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  mkdir -p "${pkgdir}"/opt/zextras/data/nginx
+  mv "${pkgdir}"/opt/zextras/common/html "${pkgdir}"/opt/zextras/data/nginx/
+
+  # lua-resty-core and lua-resty-lrucache libraries
+  cd "${srcdir}/lua-resty-core"
+  make install DESTDIR="${pkgdir}" LUA_LIB_DIR=/opt/zextras/common/share/lua/5.1
+  cd "${srcdir}/lua-resty-lrucache"
+  make install DESTDIR="${pkgdir}" LUA_LIB_DIR=/opt/zextras/common/share/lua/5.1
+
+  # systemd tmpfiles.d configuration
+  install -Dm644 "${srcdir}/systemd-tmpfile.conf" \
+    "${pkgdir}/usr/lib/tmpfiles.d/${pkgname}.conf"
+
+  rm -rf "${pkgdir}/run"
+}
+
+_package_systemd() {
+  # systemd unit
+  install -Dm644 "${srcdir}/${pkgname}.service" \
+    "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
+}
+
+_postinst() {
+  # Apply tmpfiles.d configuration
+  systemd-tmpfiles --create /usr/lib/tmpfiles.d/carbonio-nginx.conf >/dev/null 2>&1 || :
+
+  # Set permissions and capabilities on nginx binary
+  # Note: On fresh install, zextras group may not exist yet (created by carbonio-core).
+  # In that case, carbonio-core's postinst will set these permissions.
+  # On upgrade/reinstall, zextras exists and we can set permissions here.
+  if getent group zextras >/dev/null 2>&1; then
+    # Note: chmod resets capabilities, so setcap must run after chmod
+    chown root:zextras /opt/zextras/common/sbin/nginx
+    chmod 750 /opt/zextras/common/sbin/nginx
+    setcap CAP_NET_BIND_SERVICE=+ep /opt/zextras/common/sbin/nginx
+  fi
+}
+
+_postinst_systemd() {
+  if [ -d /run/systemd/system ]; then
+    systemctl daemon-reload &>/dev/null || :
+    systemctl enable carbonio-nginx.service &>/dev/null || :
+  fi
+}
+
+_prerm_systemd() {
+  if [ -d /run/systemd/system ]; then
+    systemctl --no-reload disable --now carbonio-nginx.service &>/dev/null || :
+  fi
+}
+
+prepare() {
+  cd "${srcdir}/nginx-brotli"
+  # git submodule update only needed when cloned as a git repo;
+  # yap downloads sources as tarballs so deps/brotli is already present
+  if [ -d .git ]; then
+    git submodule update --init --recursive
+  fi
+
+  cd "${srcdir}/nginx-${pkgver}"
+  patch -Np1 --forward -r - -i "${srcdir}/${pkgname}-${pkgver}.patch" || [ $? -eq 1 ]
+  patch -Np1 --forward -r - -i "${srcdir}/sd_notify.patch" || [ $? -eq 1 ]
+
+  cd "${srcdir}/lua-nginx-module"
+  patch -Np1 --forward -r - -i "${srcdir}/lua_default_path.patch" || [ $? -eq 1 ]
+  patch -Np1 --forward -r - -i "${srcdir}/lua_luajit_warning.patch" || [ $? -eq 1 ]
+
+  cd "${srcdir}/stream-lua-nginx-module"
+  patch -Np1 --forward -r - -i "${srcdir}/stream_lua_default_path.patch" || [ $? -eq 1 ]
+  patch -Np1 --forward -r - -i "${srcdir}/stream_lua_luajit_warning.patch" || [ $? -eq 1 ]
+}
+
+build() {
+  export CFLAGS="-g -O2 -ffile-prefix-map=${srcdir}=. -fdebug-prefix-map=/etc=. -fstack-protector-strong"
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib -L/opt/zextras/common/lib64"
+  export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig:/opt/zextras/common/lib64/pkgconfig"
+  export LUAJIT_INC="$(pkg-config --variable=includedir luajit)"
+  export LUAJIT_LIB="$(pkg-config --variable=libdir luajit)"
+
+  _nginx_cross_flags=""
+  if [ -n "${CROSS_COMPILE}" ] && echo "${CROSS_COMPILE}" | grep -q "aarch64"; then
+    # Set CPP as env var (nginx's --with-cpp= can't handle spaces in the value)
+    export CPP="${CROSS_COMPILE}gcc -E"
+    # Use arm64 LuaJIT libraries for cross-compilation
+    export LUAJIT_INC="/usr/include/luajit-2.1"
+    export LUAJIT_LIB="/usr/lib/aarch64-linux-gnu"
+    _nginx_cross_flags="--crossbuild=Linux:aarch64 --with-cc=${CROSS_COMPILE}gcc"
+
+    # Force ngx_feature_run=no: target-arch test binaries can't run on the build host
+    # (configure would report "found but is not working" and abort).
+    sed -i 's|^if \[ -x \$NGX_AUTOTEST \]; then$|ngx_feature_run=no\n&|' \
+      "${srcdir}/nginx-${pkgver}/auto/feature"
+    grep -q '^ngx_feature_run=no$' "${srcdir}/nginx-${pkgver}/auto/feature" || {
+      echo "nginx: auto/feature cross patch did not apply — upstream may have changed" >&2
+      exit 1
+    }
+
+    # auto/types/sizeof execs the target-arch test binary; replace with a
+    # hardcoded aarch64 LP64 size table for every type queried from auto/unix.
+    sed -i '/^if \[ -x \$NGX_AUTOTEST \]; then$/,/^fi$/c\
+case "$ngx_type" in\
+    "int"|"sig_atomic_t") ngx_size=4 ;;\
+    "long"|"long long"|"void *"|"size_t"|"off_t"|"time_t") ngx_size=8 ;;\
+    *) [ -x "$NGX_AUTOTEST" ] \&\& ngx_size=`$NGX_AUTOTEST` ;;\
+esac\
+echo " $ngx_size bytes (crossbuild aarch64)"' \
+      "${srcdir}/nginx-${pkgver}/auto/types/sizeof"
+    grep -q 'crossbuild aarch64' "${srcdir}/nginx-${pkgver}/auto/types/sizeof" || {
+      echo "nginx: auto/types/sizeof cross patch did not apply — upstream may have changed" >&2
+      exit 1
+    }
+
+    # nginx-brotli hardcodes -L<bundled>/out for brotli libs; cross-build brotli
+    # for aarch64 using cmake toolchain and place libs in the expected out/ dir
+    _brotli_src="${srcdir}/nginx-brotli/deps/brotli"
+    mkdir -p "${_brotli_src}/out"
+    cmake -S "${_brotli_src}" -B "${_brotli_src}/out" \
+      -DCMAKE_TOOLCHAIN_FILE="${CMAKE_TOOLCHAIN_FILE}" \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DBROTLI_DISABLE_TESTS=ON \
+      -Wno-dev
+    _jobs=$(($(nproc) / 2))
+    [ "$_jobs" -lt 1 ] && _jobs=1
+    make -C "${_brotli_src}/out" -j"$_jobs"
+  fi
+
+  cd "${srcdir}/nginx-${pkgver}"
+  ./configure \
+    --add-module="${srcdir}/ngx_devel_kit" \
+    --add-module="${srcdir}/lua-nginx-module" \
+    --add-module="${srcdir}/lua-resty-openssl-aux-module" \
+    --add-module="${srcdir}/nginx-brotli" \
+    --add-module="${srcdir}/stream-lua-nginx-module" \
+    --add-module="${srcdir}/modules/http/sso" \
+    --add-module="${srcdir}/modules/http/upstreamzmauth" \
+    --add-module="${srcdir}/modules/mail/zmauth" \
+    --add-module="${srcdir}/modules/mail/throttle" \
+    --error-log-path=/opt/zextras/log/nginx.log \
+    --http-log-path=/opt/zextras/log/nginx.access.log \
+    --http-client-body-temp-path=/opt/zextras/data/tmp/nginx/client \
+    --http-proxy-temp-path=/opt/zextras/data/tmp/nginx/proxy \
+    --http-fastcgi-temp-path=/opt/zextras/data/tmp/nginx/fastcgi \
+    --pid-path=/run/carbonio/nginx.pid \
+    --prefix=/opt/zextras/common \
+    --with-cc-opt="-g -I/opt/zextras/common/include -I${srcdir}/lua-nginx-module/src -DNGX_HAVE_SYSTEMD=1" \
+    --with-ld-opt="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib -L/opt/zextras/common/lib64 -lsystemd" \
+    --with-pcre \
+    --with-http_addition_module \
+    --with-http_auth_request_module \
+    --with-http_degradation_module \
+    --with-http_gunzip_module \
+    --with-http_gzip_static_module \
+    --with-http_secure_link_module \
+    --with-http_slice_module \
+    --with-http_ssl_module \
+    --with-http_stub_status_module \
+    --with-http_sub_module \
+    --with-http_v2_module \
+    --with-stream \
+    --with-stream_ssl_module \
+    --with-stream_ssl_preread_module \
+    --with-threads \
+    --with-mail \
+    --with-mail-sasl \
+    --with-mail_ssl_module \
+    --without-http_scgi_module \
+    --without-http_uwsgi_module \
+    ${_nginx_cross_flags}
+  _jobs=$(($(nproc) / 2))
+  [ "$_jobs" -lt 1 ] && _jobs=1
+  make -j"$_jobs"
+}
+
+package() {
+  _package
+  _package_systemd
+}
+
+package__rocky_8() {
+  _package
+}
+
+package__rocky_9() {
+  _package
+  _package_systemd
+}
+
+package__ubuntu_jammy() {
+  _package
+}
+
+package__ubuntu_noble() {
+  _package
+  _package_systemd
+}
+
+postinst__ubuntu_jammy() {
+  _postinst
+}
+
+postinst__ubuntu_noble() {
+  _postinst
+  _postinst_systemd
+}
+
+postinst__rocky_8() {
+  _postinst
+}
+
+postinst__rocky_9() {
+  _postinst
+  _postinst_systemd
+}
+
+prerm__rocky_9() {
+  _prerm_systemd
+}
+
+prerm__ubuntu_noble() {
+  _prerm_systemd
+}
+
+postrm__rocky_9() {
+  [ -d /run/systemd/system ] && systemctl daemon-reload &>/dev/null || :
+}
+
+postrm__ubuntu_noble() {
+  [ -d /run/systemd/system ] && systemctl daemon-reload &>/dev/null || :
+}

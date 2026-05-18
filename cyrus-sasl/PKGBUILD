@@ -1,0 +1,192 @@
+pkgname="carbonio-cyrus-sasl"
+pkgver="2.1.28" # renovate: datasource=github-releases depName=cyrusimap/cyrus-sasl
+pkgrel="8"
+pkgdesc="Cyrus Simple Authentication Service Layer (SASL) library"
+arch=('aarch64' 'x86_64')
+maintainer="Zextras <packages@zextras.com>"
+url="https://github.com/zextras"
+license=('BSD-Attribution-HPND-disclaimer')
+depends__apt=(
+  "carbonio-krb5"
+  "carbonio-openssl"
+  "zlib1g"
+)
+makedepends__apt=(
+  "autoconf"
+  "automake"
+  "groff-base"
+  "libtool"
+  "zlib1g-dev"
+)
+depends__yum=(
+  "carbonio-krb5"
+  "carbonio-openssl"
+  "zlib"
+)
+makedepends__yum=(
+  "autoconf"
+  "automake"
+  "groff-base"
+  "libtool"
+  "zlib-devel"
+)
+section="utils"
+priority="optional"
+options=('!libtool' '!staticlibs')
+source=(
+  "https://github.com/cyrusimap/cyrus-sasl/releases/download/cyrus-sasl-${pkgver}/cyrus-sasl-${pkgver}.tar.gz"
+  "carbonio-auth.patch"
+  "carbonio-saslauthd.service"
+)
+sha256sums=(
+  '7ccfc6abd01ed67c1a0924b353e526f1b766b21f42d4562ee635a8ebfc5bb38c'
+  '2f624ccb8c5f351538bc990b9e72af18e8823fbc77a14bcd35cf66df4390cccc'
+  '3acbdf259de44670159e995377cfe42862761803ba7c85c9c4acae65c5d2beae'
+)
+
+_package() {
+  cd "${srcdir}/cyrus-sasl-${pkgver}"
+
+  make DESTDIR="${pkgdir}" install
+}
+
+_package_systemd() {
+  # systemd unit
+  install -Dm644 "${srcdir}/carbonio-saslauthd.service" \
+    "${pkgdir}/usr/lib/systemd/system/carbonio-saslauthd.service"
+}
+
+_postinst_systemd() {
+  if [ -d /run/systemd/system ]; then
+    systemctl daemon-reload &>/dev/null || :
+    systemctl enable carbonio-saslauthd.service &>/dev/null || :
+  fi
+}
+
+_prerm_systemd() {
+  if [ -d /run/systemd/system ]; then
+    systemctl --no-reload disable --now carbonio-saslauthd.service &>/dev/null || :
+  fi
+}
+
+prepare() {
+  cd "${srcdir}/cyrus-sasl-${pkgver}"
+
+  patch -Np1 -i "${srcdir}/carbonio-auth.patch"
+}
+
+build() {
+  cd "${srcdir}/cyrus-sasl-${pkgver}"
+
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib -L/opt/zextras/common/lib64 -lxml2"
+  export CFLAGS="-D_REENTRANT -Wno-error -ffile-prefix-map=${srcdir}=. -I/opt/zextras/common/include -I/opt/zextras/common/include/libxml2"
+  export CPPFLAGS="-D_REENTRANT -Wno-error -I/opt/zextras/common/include"
+  export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig:/opt/zextras/common/lib64/pkgconfig"
+
+  _host_flag=""
+  _build_flag=""
+  if [ -n "${CROSS_COMPILE}" ]; then
+    _host_flag="--host=${CROSS_COMPILE_HOST}"
+    _build_flag="--build=$(gcc -dumpmachine)"
+    # Cache run-tests that fail when cross-compiling
+    # MIT Kerberos supports SPNEGO
+    export ac_cv_gssapi_supports_spnego=yes
+    export PKG_CONFIG_LIBDIR="/opt/zextras/common/lib/pkgconfig:/opt/zextras/common/lib64/pkgconfig:/usr/lib/${CROSS_COMPILE_HOST}/pkgconfig:/usr/share/pkgconfig"
+    unset PKG_CONFIG_PATH
+  fi
+  rm -f config/config.guess config/config.sub
+  rm -f config/ltconfig config/ltmain.sh config/libtool.m4
+  rm -f saslauthd/config/ltconfig
+  rm -fr autom4te.cache
+  libtoolize -f -c
+  aclocal -I config -I m4
+  automake -a -c -f
+  autoheader
+  autoconf -f
+  sed -i.bak 's/-lRSAglue //' configure
+  ./configure --prefix=/opt/zextras/common \
+    --enable-static=no \
+    --enable-shared \
+    --enable-alwaystrue \
+    --enable-checkapop \
+    --enable-cram \
+    --enable-digest \
+    --disable-otp \
+    --disable-srp \
+    --disable-srp-setpass \
+    --disable-krb4 \
+    --with-gss_impl=mit \
+    --enable-gssapi \
+    --enable-auth-sasldb \
+    --enable-plain \
+    --enable-anon \
+    --enable-login \
+    --enable-ntlm \
+    --disable-passdss \
+    --enable-sql \
+    --enable-zimbra \
+    --without-pgsql \
+    --with-mysql=/opt/zextras/common \
+    --disable-macos-framework \
+    --with-saslauthd=/run/carbonio \
+    --with-plugindir=/opt/zextras/common/lib/sasl2 \
+    --with-lib-subdir=lib \
+    --with-openssl=/opt/zextras/common \
+    --with-dblib=no \
+    --with-configdir=/opt/zextras/conf/sasl2 \
+    --with-devrandom=/dev/urandom \
+    ${_host_flag} ${_build_flag}
+
+  # prevent excessive overlinking by libtool
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+  _jobs=$(($(nproc) / 2))
+  [ "$_jobs" -lt 1 ] && _jobs=1
+  make -j"$_jobs"
+}
+
+package() {
+  _package
+  _package_systemd
+}
+
+package__rocky_8() {
+  _package
+}
+
+package__rocky_9() {
+  _package
+  _package_systemd
+}
+
+package__ubuntu_jammy() {
+  _package
+}
+
+package__ubuntu_noble() {
+  _package
+  _package_systemd
+}
+
+postinst__rocky_9() {
+  _postinst_systemd
+}
+
+postinst__ubuntu_noble() {
+  _postinst_systemd
+}
+
+prerm__rocky_9() {
+  _prerm_systemd
+}
+
+prerm__ubuntu_noble() {
+  _prerm_systemd
+}
+
+postrm__rocky_9() {
+  [ -d /run/systemd/system ] && systemctl daemon-reload &>/dev/null || :
+}
+
+postrm__ubuntu_noble() {
+  [ -d /run/systemd/system ] && systemctl daemon-reload &>/dev/null || :
+}

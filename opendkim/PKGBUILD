@@ -1,0 +1,180 @@
+pkgname="carbonio-opendkim"
+pkgver="2.11.0" # renovate: datasource=github-tags depName=trusteddomainproject/OpenDKIM
+pkgrel="6"
+pkgdesc="An open source implementation of the DKIM sender authentication system. Based on a fork of dkim-milter"
+arch=('aarch64' 'x86_64')
+maintainer="Zextras <packages@zextras.com>"
+url="https://github.com/zextras"
+license=('BSD-3-Clause AND Sendmail')
+depends__apt=(
+  "carbonio-cyrus-sasl"
+  "carbonio-bdb"
+  "carbonio-libbsd"
+  "carbonio-libmilter"
+  "carbonio-openldap"
+  "carbonio-openssl"
+  "libsystemd0"
+  "zlib1g"
+)
+makedepends__apt=(
+  "autoconf"
+  "automake"
+  "libsystemd-dev"
+  "libtool"
+  "zlib1g-dev"
+)
+depends__yum=(
+  "carbonio-cyrus-sasl"
+  "carbonio-bdb"
+  "carbonio-libbsd"
+  "carbonio-libmilter"
+  "carbonio-openldap"
+  "carbonio-openssl"
+  "systemd-libs"
+  "zlib"
+)
+makedepends__yum=(
+  "autoconf"
+  "automake"
+  "libtool"
+  "systemd-devel"
+  "zlib-devel"
+)
+section="utils"
+priority="optional"
+options=('!libtool' '!staticlibs')
+source=(
+  "https://github.com/trusteddomainproject/OpenDKIM/archive/14d54524e0a97d3fe9b80441907d7e356c9ded04.tar.gz"
+  "${pkgname}.service"
+  "sd_notify.patch"
+)
+sha256sums=(
+  'b9d033ac6ba4c14c42dd485e7dc8e03d6f415cb3d45a7fe8c020164636b9d23e'
+  'c72ef572e0ad83e801357c61908b20dce309d1fd5072858ad36e9379d5832636'
+  'aaf9a6317cf7a272c2e231beb416865937855d8c3f1b765fc11ba4b925481fdf'
+)
+
+_postinst_systemd() {
+  if [ -d /run/systemd/system ]; then
+    systemctl daemon-reload &>/dev/null || :
+    systemctl enable carbonio-opendkim.service &>/dev/null || :
+  fi
+}
+
+_prerm_systemd() {
+  if [ -d /run/systemd/system ]; then
+    systemctl --no-reload disable --now carbonio-opendkim.service &>/dev/null || :
+  fi
+}
+
+prepare() {
+  cd "${srcdir}/OpenDKIM-14d54524e0a97d3fe9b80441907d7e356c9ded04"
+  patch -Np1 -i "${srcdir}/sd_notify.patch"
+}
+
+build() {
+  cd "${srcdir}/OpenDKIM-14d54524e0a97d3fe9b80441907d7e356c9ded04"
+
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib -L/opt/zextras/common/lib64"
+  export CPPFLAGS="-I/opt/zextras/common/include"
+  export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig:/opt/zextras/common/lib64/pkgconfig"
+
+  _host_flag=""
+  _build_flag=""
+  if [ -n "${CROSS_COMPILE}" ]; then
+    _host_flag="--host=${CROSS_COMPILE_HOST}"
+    _build_flag="--build=$(gcc -dumpmachine)"
+    # autoconf marks malloc/realloc as "broken" when cross-compiling (can't run test)
+    # which causes rpl_malloc/rpl_realloc stubs to be generated but not provided
+    export ac_cv_func_malloc_0_nonnull=yes
+    export ac_cv_func_realloc_0_nonnull=yes
+    export PKG_CONFIG_LIBDIR="/opt/zextras/common/lib/pkgconfig:/opt/zextras/common/lib64/pkgconfig:/usr/lib/${CROSS_COMPILE_HOST}/pkgconfig:/usr/share/pkgconfig"
+    unset PKG_CONFIG_PATH
+  fi
+
+  autoreconf -fiv
+  ./configure --prefix=/opt/zextras/common \
+    --enable-query_cache \
+    --enable-atps \
+    --enable-rate_limit \
+    --enable-replace_rules \
+    --enable-resign \
+    --enable-sender_macro \
+    --enable-vbr \
+    --enable-default_sender \
+    --enable-rpath \
+    --with-openssl=/opt/zextras/common \
+    --with-milter=/opt/zextras/common \
+    --with-libevent=/opt/zextras/common/lib \
+    --with-sql-backend=/opt/zextras/common \
+    --with-openldap=/opt/zextras/common \
+    --with-sasl=/opt/zextras/common \
+    --with-lmdb=/opt/zextras/common \
+    --with-libcurl=/opt/zextras/common \
+    --with-db=/opt/zextras/common \
+    CFLAGS="${CFLAGS} -DHAVE_SYSTEMD" \
+    LIBS="-lsystemd" \
+    ${_host_flag} ${_build_flag}
+
+  _jobs=$(($(nproc) / 2))
+  [ "$_jobs" -lt 1 ] && _jobs=1
+  make -j"$_jobs"
+}
+
+_package() {
+  cd "${srcdir}/OpenDKIM-14d54524e0a97d3fe9b80441907d7e356c9ded04"
+  make DESTDIR="${pkgdir}" install
+}
+
+_package_systemd() {
+  # systemd units
+  install -Dm644 "${srcdir}/${pkgname}.service" \
+    "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
+}
+
+package() {
+  _package
+  _package_systemd
+}
+
+package__rocky_8() {
+  _package
+}
+
+package__rocky_9() {
+  _package
+  _package_systemd
+}
+
+package__ubuntu_jammy() {
+  _package
+}
+
+package__ubuntu_noble() {
+  _package
+  _package_systemd
+}
+
+postinst__rocky_9() {
+  _postinst_systemd
+}
+
+postinst__ubuntu_noble() {
+  _postinst_systemd
+}
+
+prerm__rocky_9() {
+  _prerm_systemd
+}
+
+prerm__ubuntu_noble() {
+  _prerm_systemd
+}
+
+postrm__rocky_9() {
+  [ -d /run/systemd/system ] && systemctl daemon-reload &>/dev/null || :
+}
+
+postrm__ubuntu_noble() {
+  [ -d /run/systemd/system ] && systemctl daemon-reload &>/dev/null || :
+}

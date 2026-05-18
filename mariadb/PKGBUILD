@@ -1,0 +1,502 @@
+pkgname="carbonio-mariadb"
+pkgver="10.11.17" # renovate: datasource=github-releases depName=MariaDB/server
+pkgrel="1"
+pkgdesc="Fast SQL database server, derived from MySQL"
+arch=('aarch64' 'x86_64')
+maintainer="Zextras <packages@zextras.com>"
+url="https://github.com/zextras"
+license=('GPL-2.0-only')
+depends__apt=(
+  "carbonio-curl"
+  "carbonio-jemalloc"
+  "carbonio-libxml2"
+  "carbonio-openssl"
+  "libaio1"
+  "libbz2-1.0"
+  "libcrack2"
+  "libpam0g"
+  "libpcre3"
+  "libsnappy1v5"
+  "libsystemd0"
+)
+depends__ubuntu_noble=(
+  "carbonio-curl"
+  "carbonio-jemalloc"
+  "carbonio-libxml2"
+  "carbonio-openssl"
+  "libaio1t64"
+  "libbz2-1.0"
+  "libcrack2"
+  "libpam0g"
+  "libpcre3"
+  "libsnappy1v5"
+  "libsystemd0"
+)
+makedepends__apt=(
+  "bison"
+  "cmake"
+  "cracklib-runtime"
+  "flex"
+  "libaio-dev"
+  "libboost-atomic-dev"
+  "libboost-chrono-dev"
+  "libboost-date-time-dev"
+  "libboost-dev"
+  "libboost-filesystem-dev"
+  "libboost-regex-dev"
+  "libboost-system-dev"
+  "libboost-thread-dev"
+  "libbz2-dev"
+  "libcrack2-dev"
+  "libedit-dev"
+  "libjudy-dev"
+  "liblz4-dev"
+  "libncurses-dev"
+  "libnuma-dev"
+  "libpam0g-dev"
+  "libpcre2-dev"
+  "libpcre3-dev"
+  "libsnappy-dev"
+  "libsystemd-dev"
+  "libzstd-dev"
+  "pkg-config"
+  "zlib1g-dev"
+)
+depends__yum=(
+  "bzip2"
+  "carbonio-jemalloc"
+  "carbonio-openssl"
+  "cracklib"
+  "libaio"
+  "libzstd"
+  "pam"
+  "pcre"
+  "pcre2"
+  "snappy"
+  "systemd-libs"
+)
+makedepends__yum=(
+  "bison"
+  "bzip2-devel"
+  "cmake"
+  "cracklib-devel"
+  "flex"
+  "libaio-devel"
+  "libzstd-devel"
+  "ncurses-devel"
+  "pam-devel"
+  "pcre-devel"
+  "pcre2-devel"
+  "snappy-devel"
+  "systemd-devel"
+)
+section="utils"
+priority="optional"
+options=('!staticlibs')
+source=("https://archive.mariadb.org/mariadb-${pkgver}/source/mariadb-${pkgver}.tar.gz")
+sha256sums=('2c54afc85e5f592efcec19042fb0baec8de0332bd3da55b4418fe2bfdf343de4')
+
+build() {
+
+  _cmake_cross_flags=""
+  _multiarch_libdir=""
+  _with_systemd="yes"
+  if command -v dpkg-architecture >/dev/null 2>&1; then
+    _multiarch_libdir="$(dpkg-architecture -qDEB_HOST_MULTIARCH 2>/dev/null || true)"
+  fi
+  if [ -n "${CROSS_COMPILE}" ] && echo "${CROSS_COMPILE}" | grep -q "aarch64"; then
+    _with_systemd="no"
+    _multiarch_libdir="${CROSS_COMPILE_HOST}"
+    _native_build_dir="${srcdir}/mariadb-${pkgver}-native-build"
+    rm -rf "${_native_build_dir}"
+    mkdir -p "${_native_build_dir}"
+    # Native bootstrap in a subshell so the unset/export below does not
+    # leak into the cross-build env (yap's CFLAGS/LDFLAGS/CMAKE_TOOLCHAIN_FILE
+    # must stay intact for the actual arm64 build that follows).
+    (cd "${srcdir}/mariadb-${pkgver}" && rm -rf plugin/hashicorp_key_management)
+    (
+      cd "${_native_build_dir}"
+      unset CFLAGS CXXFLAGS LDFLAGS CPPFLAGS AR RANLIB LD NM STRIP OBJDUMP OBJCOPY PKG_CONFIG_LIBDIR PKG_CONFIG_SYSROOT_DIR PKG_CONFIG_PATH CMAKE_TOOLCHAIN_FILE
+      export CC=gcc CXX=g++
+      export CFLAGS="-I/opt/zextras/common/include"
+      export CXXFLAGS="-I/opt/zextras/common/include"
+      export LDFLAGS="-L/opt/zextras/common/lib -Wl,-rpath,/opt/zextras/common/lib"
+      cmake -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ \
+        "${srcdir}/mariadb-${pkgver}" \
+        -DBUILD_CONFIG=mysql_release \
+        -DCMAKE_INSTALL_PREFIX="/opt/zextras/common" \
+        -DPLUGIN_ARCHIVE=NO -DPLUGIN_AUTH_PAM=NO -DPLUGIN_AUTH_PAM_V1=NO \
+        -DPLUGIN_AWS_KEY_MANAGEMENT=NO -DPLUGIN_BINLOG=NO -DPLUGIN_BLACKHOLE=NO \
+        -DPLUGIN_COLUMNSTORE=NO -DPLUGIN_CONNECT=NO -DPLUGIN_EXAMPLE=NO \
+        -DPLUGIN_FEDERATED=NO -DPLUGIN_FEDERATEDX=NO -DPLUGIN_MROONGA=NO \
+        -DPLUGIN_S3=NO -DPLUGIN_SPHINX=NO -DPLUGIN_SPIDER=NO -DPLUGIN_TOKUDB=NO \
+        -DWITH_EMBEDDED_SERVER=OFF -DWITH_UNIT_TESTS=OFF \
+        -DWITH_SSL=yes \
+        -DOPENSSL_ROOT_DIR=/opt/zextras/common \
+        -DOPENSSL_INCLUDE_DIR=/opt/zextras/common/include \
+        -DOPENSSL_CRYPTO_LIBRARY=/opt/zextras/common/lib/libcrypto.so \
+        -DOPENSSL_SSL_LIBRARY=/opt/zextras/common/lib/libssl.so \
+        -DCURSES_LIBRARY=/usr/lib/x86_64-linux-gnu/libncurses.so \
+        -DCURSES_INCLUDE_PATH=/usr/include \
+        -DIGNORE_AIO_CHECK=YES \
+        -Wno-dev
+      _jobs=$(($(nproc) / 2))
+      [ "$_jobs" -lt 1 ] && _jobs=1
+      make -j"$_jobs" import_executables
+    )
+
+    # Use yap's CMAKE_TOOLCHAIN_FILE for the cross build
+    _cmake_cross_flags="-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE} \
+      -DIMPORT_EXECUTABLES=${_native_build_dir}/import_executables.cmake \
+      -DIGNORE_AIO_CHECK=YES"
+  fi
+
+  _ldflags="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib -L/opt/zextras/common/lib64"
+  [ -n "${_multiarch_libdir}" ] && _ldflags="${_ldflags} -L/usr/lib/${_multiarch_libdir}"
+  [ -d /usr/lib64 ] && _ldflags="${_ldflags} -L/usr/lib64"
+  _ldflags="${_ldflags} -L/usr/lib"
+  export LDFLAGS="${_ldflags}"
+  export CFLAGS="-fno-omit-frame-pointer -pipe -Wall -Wno-uninitialized -DNDEBUG -ffile-prefix-map=${srcdir}=. -I/opt/zextras/common/include -I/usr/include"
+  export CXXFLAGS="-fno-omit-frame-pointer -pipe -Wall -Wno-uninitialized -DNDEBUG -ffile-prefix-map=${srcdir}=. -I/opt/zextras/common/include -I/usr/include"
+  if [ -n "${_multiarch_libdir}" ]; then
+    export PKG_CONFIG_LIBDIR="/opt/zextras/common/lib/pkgconfig:/opt/zextras/common/lib64/pkgconfig:/usr/lib/${_multiarch_libdir}/pkgconfig:/usr/share/pkgconfig"
+  else
+    export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig:/opt/zextras/common/lib64/pkgconfig${PKG_CONFIG_PATH:+:${PKG_CONFIG_PATH}}"
+  fi
+
+  cd "${srcdir}/mariadb-${pkgver}"
+
+  cmake . \
+    -DBUILD_CONFIG=mysql_release \
+    -DCMAKE_BUILD_WITH_INSTALL_RPATH=FALSE \
+    -DCMAKE_INSTALL_PREFIX="/opt/zextras/common" \
+    -DCMAKE_INSTALL_RPATH="/opt/zextras/common/lib" \
+    -DCMAKE_PREFIX_PATH="/opt/zextras/common" \
+    -DCMAKE_SKIP_BUILD_RPATH=FALSE \
+    -DCOMPILATION_COMMENT="Zextras MariaDB binary distribution" \
+    -DCURL_INCLUDE_DIR=/opt/zextras/common/include \
+    -DCURL_LIBRARY=/opt/zextras/common/lib/libcurl.so \
+    -DCURSES_LIBRARY=/usr/lib/${_multiarch_libdir:-x86_64-linux-gnu}/libncurses.so \
+    -DCURSES_INCLUDE_PATH=/usr/include \
+    -DINSTALL_DOCDIR=share/mysql/docs \
+    -DINSTALL_DOCREADMEDIR=share/mysql/docs \
+    -DINSTALL_INFODIR=share/mysql/docs \
+    -DINSTALL_MANDIR=share/man \
+    -DINSTALL_MYSQLSHAREDIR=share/mysql \
+    -DINSTALL_SBINDIR=sbin \
+    -DINSTALL_SCRIPTDIR=share/mysql/scripts \
+    -DINSTALL_SHAREDIR=share/mysql \
+    -DINSTALL_SYSCONFDIR=/opt/zextras/conf \
+    -DINSTALL_UNIX_ADDRDIR=/run/carbonio/mysql.sock \
+    -DLIBXML2_INCLUDE_DIR=/opt/zextras/common/include/libxml2 \
+    -DLIBXML2_LIBRARY=/opt/zextras/common/lib/libxml2.so \
+    -DPLUGIN_ARCHIVE=NO \
+    -DPLUGIN_AUTH_PAM=NO \
+    -DPLUGIN_AUTH_PAM_V1=YES \
+    -DPLUGIN_AWS_KEY_MANAGEMENT=NO \
+    -DPLUGIN_BINLOG=NO \
+    -DPLUGIN_BLACKHOLE=NO \
+    -DPLUGIN_COLUMNSTORE=NO \
+    -DPLUGIN_CONNECT=NO \
+    -DPLUGIN_EXAMPLE=NO \
+    -DPLUGIN_FEDERATED=NO \
+    -DPLUGIN_FEDERATEDX=NO \
+    -DPLUGIN_MROONGA=NO \
+    -DPLUGIN_S3=NO \
+    -DPLUGIN_SPHINX=NO \
+    -DPLUGIN_SPIDER=NO \
+    -DPLUGIN_TOKUDB=NO \
+    -DPYTHON_SHEBANG=/usr/bin/python3 \
+    -DWITH_EMBEDDED_SERVER=OFF \
+    -DWITH_FAST_MUTEXES=ON \
+    -DWITH_JEMALLOC=ON \
+    -DWITH_PCRE=bundled \
+    -DWITH_SSL=yes \
+    -DOPENSSL_ROOT_DIR=/opt/zextras/common \
+    -DOPENSSL_INCLUDE_DIR=/opt/zextras/common/include \
+    -DOPENSSL_CRYPTO_LIBRARY=/opt/zextras/common/lib/libcrypto.so \
+    -DOPENSSL_SSL_LIBRARY=/opt/zextras/common/lib/libssl.so \
+    -DWITH_SYSTEMD=${_with_systemd} \
+    -DWITH_UNIT_TESTS=OFF \
+    -DWITH_ZLIB=system \
+    ${_cmake_cross_flags} \
+    -Wno-dev
+  _jobs=$(($(nproc) / 2))
+  [ "$_jobs" -lt 1 ] && _jobs=1
+  make depend -j"$_jobs"
+  make -j"$_jobs"
+}
+
+package() {
+  cd "${srcdir}/mariadb-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  rm -rf "${pkgdir}/opt/zextras/conf"
+  rm -rf "${pkgdir}/opt/zextras/common/data"
+  rm -rf "${pkgdir}/opt/zextras/common/mysql-test"
+  rm -rf "${pkgdir}/opt/zextras/common/sql-bench"
+  rm -rf "${pkgdir}/opt/zextras/common/support-files"
+  rm -f "${pkgdir}/opt/zextras/common/sbin/rcmysql"
+
+  # This should be dropped in the near future
+  ln -s /opt/zextras/common/lib/libmariadb.so.3 \
+    "${pkgdir}/opt/zextras/common/lib/libmysqlclient.so.18.0.0"
+  ln -s /opt/zextras/common/lib/libmariadb.so.3 \
+    "${pkgdir}/opt/zextras/common/lib/libmysqlclient.so.18"
+  ln -s /opt/zextras/common/lib/libmariadb.so.3 \
+    "${pkgdir}/opt/zextras/common/lib/libmysqlclient_r.so.18.0.0"
+  ln -s /opt/zextras/common/lib/libmariadb.so.3 \
+    "${pkgdir}/opt/zextras/common/lib/libmysqlclient_r.so.18"
+
+  # options=('!staticlibs') strips .a only from lib/ and usr/lib/; MariaDB
+  # also installs static libs under lib/plugin/ and lib/wsrep/ which yap's
+  # default cleanup misses.
+  find "${pkgdir}/opt/zextras/common/lib" -name '*.a' -delete
+}
+
+postinst__ubuntu_jammy() {
+  if [ "$1" = "configure" ]; then
+    # zmmycnf is only called at bootstrap.
+    # Here we take care of upgrading scenario.
+    if [ -f /opt/zextras/conf/my.cnf ]; then
+      if grep -q "tmp/mysql/mysql.sock" /opt/zextras/conf/my.cnf; then
+        sed -i 's!\/opt\/zextras\/data\/tmp\/mysql!\/run\/carbonio!' \
+          /opt/zextras/conf/my.cnf
+      fi
+
+      if grep -q "log/mysql.pid" /opt/zextras/conf/my.cnf; then
+        sed -i 's!\/opt\/zextras\/log\/mysql.pid!\/run\/carbonio/mysql.pid!' \
+          /opt/zextras/conf/my.cnf
+      fi
+    fi
+
+    # Handle MariaDB upgrade scenarios
+    if [ -f /opt/zextras/db/data/mysql_upgrade_info ]; then
+      # Check if this is a major version upgrade
+      current_version="10.11.14"
+      installed_version=$(cat /opt/zextras/db/data/mysql_upgrade_info | head -n1 | cut -d'-' -f1)
+
+      # Compare major and minor version numbers
+      current_major=$(echo "$current_version" | cut -d'.' -f1)
+      current_minor=$(echo "$current_version" | cut -d'.' -f2)
+      installed_major=$(echo "$installed_version" | cut -d'.' -f1)
+      installed_minor=$(echo "$installed_version" | cut -d'.' -f2)
+
+      if [ "$current_major" -gt "$installed_major" ] || [ "$current_major" -eq "$installed_major" -a "$current_minor" -gt "$installed_minor" ]; then
+        # Perform upgrade tasks for major version upgrade
+        echo "Upgrading MariaDB from version $installed_version to $current_version"
+        echo "WARNING: This operation can take a considerable amount of time depending on the size of your database."
+
+        # Restart MariaDB to load new version
+        su - zextras -c 'zmmailboxdctl stop'
+        su - zextras -c 'mysql.server restart'
+
+        # Retrieve settings values from LocalConfigCLI.
+        # shutil is avoided cause of default use of "#!/bin/sh"
+        # in postinstall and shebang compatibility with shutil
+        eval "$(/opt/zextras/common/bin/java \
+          -client \
+          -cp '/opt/zextras/mailbox/jars/*' \
+          -Djava.library.path=/opt/zextras/lib \
+          -Dzimbra.home=/opt/zextras \
+          com.zimbra.cs.localconfig.LocalConfigCLI -q -m shell || :)"
+
+        /opt/zextras/common/bin/mariadb-upgrade \
+          --user="root" \
+          --host="${mysql_bind_address}" \
+          --port="${mysql_port}" \
+          --password="${mysql_root_password}" \
+          --socket="/run/carbonio/mysql.sock"
+
+        # Restart both appserver and its db
+        su - zextras -c 'mysql.server restart'
+        su - zextras -c 'zmmailboxdctl start'
+      fi
+    fi
+  fi
+}
+
+postinst__ubuntu_noble() {
+  if [ "$1" = "configure" ]; then
+    # zmmycnf is only called at bootstrap.
+    # Here we take care of upgrading scenario.
+    if [ -f /opt/zextras/conf/my.cnf ]; then
+      if grep -q "tmp/mysql/mysql.sock" /opt/zextras/conf/my.cnf; then
+        sed -i 's!\/opt\/zextras\/data\/tmp\/mysql!\/run\/carbonio!' \
+          /opt/zextras/conf/my.cnf
+      fi
+
+      if grep -q "log/mysql.pid" /opt/zextras/conf/my.cnf; then
+        sed -i 's!\/opt\/zextras\/log\/mysql.pid!\/run\/carbonio/mysql.pid!' \
+          /opt/zextras/conf/my.cnf
+      fi
+    fi
+
+    # Handle MariaDB upgrade scenarios
+    if [ -f /opt/zextras/db/data/mysql_upgrade_info ]; then
+      # Check if this is a major version upgrade
+      current_version="10.11.14"
+      installed_version=$(cat /opt/zextras/db/data/mysql_upgrade_info | head -n1 | cut -d'-' -f1)
+
+      # Compare major and minor version numbers
+      current_major=$(echo "$current_version" | cut -d'.' -f1)
+      current_minor=$(echo "$current_version" | cut -d'.' -f2)
+      installed_major=$(echo "$installed_version" | cut -d'.' -f1)
+      installed_minor=$(echo "$installed_version" | cut -d'.' -f2)
+
+      if [ "$current_major" -gt "$installed_major" ] || [ "$current_major" -eq "$installed_major" -a "$current_minor" -gt "$installed_minor" ]; then
+        # Perform upgrade tasks for major version upgrade
+        echo "Upgrading MariaDB from version $installed_version to $current_version"
+        echo "WARNING: This operation can take a considerable amount of time depending on the size of your database."
+
+        # Restart MariaDB to load new version
+        systemctl stop carbonio-appserver.service &>/dev/null || :
+        systemctl restart carbonio-appserver-db.service &>/dev/null || :
+        sleep 10
+
+        # Retrieve settings values from LocalConfigCLI.
+        # shutil is avoided cause of default use of "#!/bin/sh"
+        # in postinstall and shebang compatibility with shutil
+        eval "$(/opt/zextras/common/bin/java \
+          -client \
+          -cp '/opt/zextras/mailbox/jars/*' \
+          -Djava.library.path=/opt/zextras/lib \
+          -Dzimbra.home=/opt/zextras \
+          com.zimbra.cs.localconfig.LocalConfigCLI -q -m shell || :)"
+
+        /opt/zextras/common/bin/mariadb-upgrade \
+          --user="root" \
+          --host="${mysql_bind_address}" \
+          --port="${mysql_port}" \
+          --password="${mysql_root_password}" \
+          --socket="/run/carbonio/mysql.sock"
+
+        # Restart both appserver and its db
+        systemctl restart carbonio-appserver-db.service &>/dev/null || :
+        sleep 10
+        systemctl start carbonio-appserver.service &>/dev/null || :
+      fi
+    fi
+  fi
+}
+
+postinst__rocky_8() {
+  # zmmycnf is only called at bootstrap.
+  # Here we take care of upgrading scenario.
+  if [ -f /opt/zextras/conf/my.cnf ]; then
+    if grep -q "tmp/mysql/mysql.sock" /opt/zextras/conf/my.cnf; then
+      sed -i 's!\/opt\/zextras\/data\/tmp\/mysql!\/run\/carbonio!' \
+        /opt/zextras/conf/my.cnf
+    fi
+
+    if grep -q "log/mysql.pid" /opt/zextras/conf/my.cnf; then
+      sed -i 's!\/opt\/zextras\/log\/mysql.pid!\/run\/carbonio/mysql.pid!' \
+        /opt/zextras/conf/my.cnf
+    fi
+  fi
+
+  # Handle MariaDB upgrade scenarios
+  if [ -f /opt/zextras/db/data/mysql_upgrade_info ]; then
+    # Check if this is a major version upgrade
+    current_version="10.11.14"
+    installed_version=$(cat /opt/zextras/db/data/mysql_upgrade_info | head -n1 | cut -d'-' -f1)
+
+    # Compare major and minor version numbers
+    current_major=$(echo "$current_version" | cut -d'.' -f1)
+    current_minor=$(echo "$current_version" | cut -d'.' -f2)
+    installed_major=$(echo "$installed_version" | cut -d'.' -f1)
+    installed_minor=$(echo "$installed_version" | cut -d'.' -f2)
+
+    if [ "$current_major" -gt "$installed_major" ] || [ "$current_major" -eq "$installed_major" -a "$current_minor" -gt "$installed_minor" ]; then
+      # Perform upgrade tasks for major version upgrade
+      echo "Upgrading MariaDB from version $installed_version to $current_version"
+      echo "WARNING: This operation can take a considerable amount of time depending on the size of your database."
+
+      # Restart MariaDB to load new version
+      su - zextras -c 'zmmailboxdctl stop'
+      su - zextras -c 'mysql.server restart'
+
+      # Retrieve settings values from LocalConfigCLI.
+      # shutil is avoided cause of default use of "#!/bin/sh"
+      # in postinstall and shebang compatibility with shutil
+      eval "$(/opt/zextras/common/bin/java \
+        -client \
+        -cp '/opt/zextras/mailbox/jars/*' \
+        -Djava.library.path=/opt/zextras/lib \
+        -Dzimbra.home=/opt/zextras \
+        com.zimbra.cs.localconfig.LocalConfigCLI -q -m shell || :)"
+
+      /opt/zextras/common/bin/mariadb-upgrade \
+        --user="root" \
+        --host="${mysql_bind_address}" \
+        --port="${mysql_port}" \
+        --password="${mysql_root_password}" \
+        --socket="/run/carbonio/mysql.sock"
+
+      # Restart both appserver and its db
+      su - zextras -c 'mysql.server restart'
+      su - zextras -c 'zmmailboxdctl start'
+    fi
+  fi
+}
+
+postinst__rocky_9() {
+  # zmmycnf is only called at bootstrap.
+  # Here we take care of upgrading scenario.
+  if [ -f /opt/zextras/conf/my.cnf ]; then
+    if grep -q "tmp/mysql/mysql.sock" /opt/zextras/conf/my.cnf; then
+      sed -i 's!\/opt\/zextras\/data\/tmp\/mysql!\/run\/carbonio!' \
+        /opt/zextras/conf/my.cnf
+    fi
+
+    if grep -q "log/mysql.pid" /opt/zextras/conf/my.cnf; then
+      sed -i 's!\/opt\/zextras\/log\/mysql.pid!\/run\/carbonio/mysql.pid!' \
+        /opt/zextras/conf/my.cnf
+    fi
+  fi
+
+  # Handle MariaDB upgrade scenarios
+  if [ -f /opt/zextras/db/data/mysql_upgrade_info ]; then
+    # Check if this is a major version upgrade
+    current_version="10.11.14"
+    installed_version=$(cat /opt/zextras/db/data/mysql_upgrade_info | head -n1 | cut -d'-' -f1)
+
+    # Compare major and minor version numbers
+    current_major=$(echo "$current_version" | cut -d'.' -f1)
+    current_minor=$(echo "$current_version" | cut -d'.' -f2)
+    installed_major=$(echo "$installed_version" | cut -d'.' -f1)
+    installed_minor=$(echo "$installed_version" | cut -d'.' -f2)
+
+    if [ "$current_major" -gt "$installed_major" ] || [ "$current_major" -eq "$installed_major" -a "$current_minor" -gt "$installed_minor" ]; then
+      # Perform upgrade tasks for major version upgrade
+      echo "Upgrading MariaDB from version $installed_version to $current_version"
+      echo "WARNING: This operation can take a considerable amount of time depending on the size of your database."
+
+      # Restart MariaDB to load new version
+      systemctl stop carbonio-appserver.service &>/dev/null || :
+      systemctl restart carbonio-appserver-db.service &>/dev/null || :
+      sleep 10
+
+      # Retrieve settings values from LocalConfigCLI.
+      # shutil is avoided cause of default use of "#!/bin/sh"
+      # in postinstall and shebang compatibility with shutil
+      eval "$(/opt/zextras/common/bin/java \
+        -client \
+        -cp '/opt/zextras/mailbox/jars/*' \
+        -Djava.library.path=/opt/zextras/lib \
+        -Dzimbra.home=/opt/zextras \
+        com.zimbra.cs.localconfig.LocalConfigCLI -q -m shell || :)"
+
+      /opt/zextras/common/bin/mariadb-upgrade \
+        --user="root" \
+        --host="${mysql_bind_address}" \
+        --port="${mysql_port}" \
+        --password="${mysql_root_password}" \
+        --socket="/run/carbonio/mysql.sock"
+
+      # Restart both appserver and its db
+      systemctl restart carbonio-appserver-db.service &>/dev/null || :
+      sleep 10
+      systemctl start carbonio-appserver.service &>/dev/null || :
+    fi
+  fi
+}

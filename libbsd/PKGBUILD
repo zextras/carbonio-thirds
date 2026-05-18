@@ -1,0 +1,62 @@
+pkgname="carbonio-libbsd"
+pkgver="0.10.0" # renovate: datasource=github-tags depName=guillemj/libbsd
+pkgrel="3"
+pkgdesc="Provides useful functions commonly found on BSD systems like strlcpy()"
+arch=('aarch64' 'x86_64')
+maintainer="Zextras <packages@zextras.com>"
+url="https://github.com/zextras"
+license=('BSD-2-Clause AND BSD-3-Clause AND Beerware AND ISC AND MIT AND LicenseRef-public-domain')
+depends__apt=(
+  "libc6"
+)
+depends__yum=(
+  "glibc"
+)
+makedepends__apt=(
+  "autoconf"
+  "automake"
+  "libtool"
+)
+makedepends__yum=(
+  "autoconf"
+  "automake"
+  "libtool"
+)
+section="libs"
+priority="important"
+options=('!libtool' '!staticlibs')
+source=(
+  "https://github.com/guillemj/libbsd/archive/refs/tags/${pkgver}.tar.gz"
+)
+sha256sums=('00d0a39eb5334cae476be30027a63370cf9427242af66a70505699ffc83451d7')
+
+build() {
+  cd "${srcdir}/libbsd-${pkgver}"
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
+  export CFLAGS="-fPIC -D_REENTRANT -ffile-prefix-map=${srcdir}=."
+  export CXXFLAGS="-fPIC -D_REENTRANT -ffile-prefix-map=${srcdir}=."
+
+  _host_flag=""
+  _build_flag=""
+  if [ -n "${CROSS_COMPILE}" ]; then
+    _host_flag="--host=${CROSS_COMPILE_HOST}"
+    _build_flag="--build=$(gcc -dumpmachine)"
+  fi
+
+  echo "${pkgver}" >.dist-version
+  autoreconf -fiv
+  ./configure \
+    --prefix=/opt/zextras/common \
+    --disable-static \
+    ${_host_flag} ${_build_flag}
+  _jobs=$(($(nproc) / 2))
+  [ "$_jobs" -lt 1 ] && _jobs=1
+  make -j"$_jobs"
+}
+
+package() {
+  cd "${srcdir}/libbsd-${pkgver}"
+
+  make DESTDIR="${pkgdir}" install
+  rm -rf "${pkgdir}"/opt/zextras/common/share/man/
+}

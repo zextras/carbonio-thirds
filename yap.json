@@ -1,0 +1,82 @@
+{
+  "name": "carbonio-thirds",
+  "description": "This is the manifest to build native third-party packages",
+  "buildDir": "/tmp/carbonio-thirds-build/",
+  "output": "artifacts",
+  "skipDeps": ["carbonio-core"],
+  "projects": [
+    {
+      "name": "icu",
+      "install": true
+    },
+    {
+      "name": "openssl",
+      "install": true
+    },
+    {
+      "name": "libxml2",
+      "install": true
+    },
+    {
+      "name": "libbsd",
+      "install": true
+    },
+    {
+      "name": "libevent",
+      "install": true
+    },
+    {
+      "name": "libsodium",
+      "install": true
+    },
+    {
+      "name": "libmilter",
+      "install": true
+    },
+    {
+      "name": "altermime",
+      "install": true
+    },
+    {
+      "name": "bdb",
+      "install": true
+    },
+    {
+      "name": "krb5",
+      "install": true
+    },
+    {
+      "name": "curl",
+      "install": true
+    },
+    {
+      "name": "jemalloc",
+      "install": true
+    },
+    {
+      "name": "mariadb",
+      "install": true
+    },
+    {
+      "name": "cyrus-sasl",
+      "install": true
+    },
+    {
+      "name": "openldap",
+      "install": true
+    },
+    {
+      "name": "postfix"
+    },
+    {
+      "name": "memcached"
+    },
+    {
+      "name": "nginx"
+    },
+    {
+      "name": "opendkim",
+      "install": true
+    }
+  ]
+}

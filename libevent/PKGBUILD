@@ -1,0 +1,47 @@
+pkgname="carbonio-libevent"
+pkgver="2.1.12" # renovate: datasource=github-releases depName=libevent/libevent
+pkgrel="4"
+pkgdesc="An event notification library"
+arch=('aarch64' 'x86_64')
+maintainer="Zextras <packages@zextras.com>"
+url="https://github.com/zextras"
+license=('BSD-3-Clause-Modification')
+depends=(
+  "carbonio-openssl"
+)
+section="libs"
+priority="important"
+options=('!libtool' '!staticlibs')
+source=(
+  "https://github.com/libevent/libevent/releases/download/release-${pkgver}-stable/libevent-${pkgver}-stable.tar.gz"
+)
+sha256sums=('92e6de1be9ec176428fd2367677e61ceffc2ee1cb119035037a27d346b0403bb')
+
+build() {
+  cd "${srcdir}/libevent-${pkgver}-stable"
+  export CFLAGS="-I/opt/zextras/common/include"
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib -L/opt/zextras/common/lib64"
+  export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig:/opt/zextras/common/lib64/pkgconfig"
+
+  _host_flag=""
+  _build_flag=""
+  if [ -n "${CROSS_COMPILE}" ]; then
+    _host_flag="--host=${CROSS_COMPILE_HOST}"
+    _build_flag="--build=$(gcc -dumpmachine)"
+    export PKG_CONFIG_LIBDIR="/opt/zextras/common/lib/pkgconfig:/opt/zextras/common/lib64/pkgconfig:/usr/lib/${CROSS_COMPILE_HOST}/pkgconfig:/usr/share/pkgconfig"
+    unset PKG_CONFIG_PATH
+  fi
+
+  ./configure --prefix=/opt/zextras/common \
+    --disable-samples \
+    ${_host_flag} ${_build_flag}
+  _jobs=$(($(nproc) / 2))
+  [ "$_jobs" -lt 1 ] && _jobs=1
+  make -j"$_jobs"
+}
+
+package() {
+  cd "${srcdir}/libevent-${pkgver}-stable"
+  make DESTDIR="${pkgdir}" install
+  sed -i "s/env python/env python3/g" "${pkgdir}"/opt/zextras/common/bin/event_rpcgen.py
+}

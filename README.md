@@ -1,21 +1,27 @@
 # Carbonio Third-Party Dependencies
 
-This repository contains build configurations and patches for third-party dependencies used by Carbonio.
+This repository contains build configurations and patches for native third-party
+dependencies used by Carbonio.
 
-The repository is organized into two main directories:
+Each dependency lives in its own top-level directory containing a `PKGBUILD`
+together with any patches, systemd units, and helper files it needs. The
+top-level [`yap.json`](yap.json) manifest lists every project and drives the
+build order.
 
-- **`native/`** - Build configurations for native system packages including:
-  - Mail Transfer Agent (Postfix)
-  - Web Server (Nginx)
-  - Directory Services (OpenLDAP)
-  - Database (MariaDB)
-  - Caching (Memcached)
-  - Antivirus (ClamAV)
-  - Authentication (Cyrus-SASL, Kerberos)
-  - Cryptography (OpenSSL, libsodium)
-  - And other supporting libraries
+Included components:
 
-- **`perl/`** - Build configurations for Perl modules required by Carbonio components
+- Mail Transfer Agent (Postfix)
+- Web Server (Nginx)
+- Directory Services (OpenLDAP)
+- Database (MariaDB)
+- Caching (Memcached)
+- Mail filtering (OpenDKIM, libmilter, altermime)
+- Authentication (Cyrus-SASL, Kerberos)
+- Cryptography (OpenSSL, libsodium)
+- And other supporting libraries (ICU, libxml2, libbsd, libevent, BDB, curl, jemalloc)
+
+> **Note:** ClamAV and the Perl modules are built from separate repositories
+> (`carbonio-thirds-clamav` and `carbonio-thirds-perl`).
 
 ## Quick Start
 
@@ -30,11 +36,8 @@ The repository is organized into two main directories:
 # Build all packages for Ubuntu 22.04
 make build TARGET=ubuntu-jammy
 
-# Build only native packages for Rocky Linux 9
-make build-native TARGET=rocky-9
-
-# Build only Perl packages for Ubuntu 24.04
-make build-perl TARGET=ubuntu-noble
+# Build all packages for Rocky Linux 9
+make build TARGET=rocky-9
 ```
 
 ### Supported Targets
@@ -43,6 +46,8 @@ make build-perl TARGET=ubuntu-noble
 - `ubuntu-noble` - Ubuntu 24.04 LTS
 - `rocky-8` - Rocky Linux 8
 - `rocky-9` - Rocky Linux 9
+
+Run `make list-targets` to see this list, or `make help` for all options.
 
 ### Configuration
 

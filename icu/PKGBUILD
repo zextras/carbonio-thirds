@@ -1,0 +1,91 @@
+pkgname="carbonio-icu"
+pkgver="74.2" # renovate: datasource=github-releases depName=unicode-org/icu
+pkgrel="3"
+pkgdesc="International Components for Unicode library"
+arch=('aarch64' 'x86_64')
+maintainer="Zextras <packages@zextras.com>"
+url="https://github.com/zextras"
+license=('Unicode-3.0')
+depends__apt=(
+  "libc6"
+  "bash"
+)
+depends__yum=(
+  "glibc"
+  "bash"
+)
+makedepends=(
+  "python3"
+)
+section="libs"
+priority="important"
+source=(
+  "https://github.com/unicode-org/icu/releases/download/release-74-2/icu4c-74_2-src.tgz"
+)
+sha256sums=('68db082212a96d6f53e35d60f47d38b962e9f9d207a74cfac78029ae8ff5e08c')
+
+build() {
+  cd "${srcdir}/icu/source"
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
+
+  if [ -n "${CROSS_COMPILE}" ]; then
+    # ICU cross-compile needs a same-version native build to point --with-cross-build at.
+    mkdir -p "${srcdir}/icu-native"
+    cd "${srcdir}/icu-native"
+    unset CFLAGS CXXFLAGS LDFLAGS CPPFLAGS AR RANLIB LD NM STRIP OBJDUMP OBJCOPY PKG_CONFIG_LIBDIR PKG_CONFIG_SYSROOT_DIR PKG_CONFIG_PATH
+    export CC=gcc CXX=g++
+    "${srcdir}/icu/source/configure" \
+      --disable-tests \
+      --disable-samples
+    make -j"$(nproc)"
+
+    # Locate the cross sysroot (Debian: /usr/aarch64-linux-gnu/; Rocky: .../sys-root).
+    _sysroot=""
+    for _candidate in \
+      "/usr/${CROSS_COMPILE_HOST}/sys-root" \
+      "/usr/${CROSS_COMPILE_HOST}"; do
+      if [ -f "${_candidate}/usr/lib64/crt1.o" ] || [ -f "${_candidate}/usr/lib/crt1.o" ]; then
+        _sysroot="${_candidate}"
+        break
+      fi
+    done
+
+    cd "${srcdir}/icu/source"
+    _sysroot_flag=""
+    [ -n "${_sysroot}" ] && _sysroot_flag="--sysroot=${_sysroot}"
+    # Pre-set autoconf cache for probes that need to run target binaries (aarch64 Linux values).
+    if echo "${CROSS_COMPILE}" | grep -q aarch64; then
+      export ac_cv_c_bigendian=no
+    fi
+    CC="${CROSS_COMPILE}gcc" \
+      CXX="${CROSS_COMPILE}g++" \
+      CFLAGS="${_sysroot_flag}" \
+      CXXFLAGS="${_sysroot_flag}" \
+      LDFLAGS="${_sysroot_flag} -Wl,-rpath,/opt/zextras/common/lib" \
+      ./configure --prefix=/opt/zextras/common \
+      --sysconfdir=/opt/zextras/common/etc \
+      --sbindir=/opt/zextras/common/bin \
+      --disable-tests \
+      --disable-samples \
+      --host="${CROSS_COMPILE_HOST}" \
+      --build="$(gcc -dumpmachine)" \
+      --with-cross-build="${srcdir}/icu-native"
+  else
+    ./configure --prefix=/opt/zextras/common \
+      --sysconfdir=/opt/zextras/common/etc \
+      --sbindir=/opt/zextras/common/bin \
+      --disable-tests \
+      --disable-samples
+  fi
+
+  _jobs=$(($(nproc) / 2))
+  [ "$_jobs" -lt 1 ] && _jobs=1
+  make -j"$_jobs"
+}
+
+package() {
+  cd "${srcdir}/icu"
+  cd source
+  make DESTDIR="${pkgdir}" install
+  rm -rf "${pkgdir}/opt/zextras/common/share/man/"
+}

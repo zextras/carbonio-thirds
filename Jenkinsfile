@@ -1,5 +1,5 @@
 library(
-    identifier: 'jenkins-lib-common@v2.8.7',
+    identifier: 'jenkins-lib-common@v2.9.2',
     retriever: modernSCM([
         $class: 'GitSCMSource',
         credentialsId: 'jenkins-integration-with-github-account',
@@ -51,17 +51,23 @@ pipeline {
                 echo 'Building deb/rpm packages'
                 buildStage(
                     addCarbonioRepos: true,
-                    buildDirs: ['native', 'perl'],
                     parallelBuilds: false,
                     prepare: true,
-                    debugSymbols: true,
+                    debugSymbols: env.TAG_NAME as boolean,
+                )
+                buildStage(
+                    addCarbonioRepos: true,
+                    architecture: 'aarch64',
+                    distros: ['ubuntu-jammy'],
+                    parallelBuilds: false,
+                    prepare: true,
                 )
             }
         }
 
         stage('Debug Symbols') {
             steps {
-                debuginfodStage()
+                debuginfodStage(tagOnly: true)
             }
         }
 
@@ -72,7 +78,12 @@ pipeline {
             }
             steps {
                 uploadStage(
-                    yapPaths: ['native/yap.json', 'perl/yap.json'] as Set,
+                    yapPath: 'yap.json',
+                )
+                uploadStage(
+                    architecture: 'aarch64',
+                    distros: ['ubuntu-jammy'],
+                    yapPath: 'yap.json',
                 )
             }
         }
