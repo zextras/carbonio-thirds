@@ -2,7 +2,7 @@ pkgname="carbonio-perl-xml-sax-base"
 pkgver="1.09" # renovate: datasource=cpan depName=XML::SAX::Base
 pkgrel="3"
 pkgdesc="Base class SAX Drivers and Filters"
-arch=('x86_64')
+arch=('any')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('Artistic-1.0-Perl OR GPL-1.0-or-later')

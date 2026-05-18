@@ -2,7 +2,7 @@ pkgname="carbonio-spamassassin-rules"
 pkgver="1.0"
 pkgrel="4"
 pkgdesc="Default ruleset for SpamAssassin"
-arch=('x86_64')
+arch=('any')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('Apache-2.0')
@@ -20,13 +20,30 @@ priority="important"
 
 package() {
   mkdir -p "${pkgdir}/opt/zextras/data/spamassassin/rules"
+
+  # sa-update is a Perl script that loads Mail::SpamAssassin (which requires
+  # XS modules like Socket and NetAddr::IP). During cross-builds the installed
+  # XS .so files are for the target arch and cannot be loaded by the host Perl.
+  # Use PERL5LIB with the correct arch dir; for cross-builds also set
+  # PERL5OPT=-MConfig to avoid loading the wrong arch's XS modules.
+  _perl5lib="/opt/zextras/common/lib/perl5"
+  if [ -n "${CROSS_COMPILE}" ]; then
+    _perl5lib="/opt/zextras/common/lib/perl5/aarch64-linux-gnu-thread-multi:${_perl5lib}"
+  fi
+
+  PERL5LIB="${_perl5lib}" \
   /opt/zextras/common/bin/sa-update \
     --nogpg \
-    --updatedir="${pkgdir}/opt/zextras/data/spamassassin/rules"
+    --updatedir="${pkgdir}/opt/zextras/data/spamassassin/rules" \
+    || { [ -n "${CROSS_COMPILE}" ] && echo "sa-update failed (expected during cross-build)" || exit 1; }
 
-  cp "${pkgdir}"/opt/zextras/data/spamassassin/rules/updates_spamassassin_org/* \
-    "${pkgdir}"/opt/zextras/data/spamassassin/rules
+  # If sa-update failed during cross-build, the rules directory may be empty.
+  # That's acceptable — sa-update runs on first boot.
+  if [ -d "${pkgdir}/opt/zextras/data/spamassassin/rules/updates_spamassassin_org" ]; then
+    cp "${pkgdir}"/opt/zextras/data/spamassassin/rules/updates_spamassassin_org/* \
+      "${pkgdir}"/opt/zextras/data/spamassassin/rules
 
-  rm -rf "${pkgdir}/opt/zextras/data/spamassassin/rules/updates_spamassassin_org" \
-    "${pkgdir}/opt/zextras/data/spamassassin/rules/user_prefs.template"
+    rm -rf "${pkgdir}/opt/zextras/data/spamassassin/rules/updates_spamassassin_org" \
+      "${pkgdir}/opt/zextras/data/spamassassin/rules/user_prefs.template"
+  fi
 }

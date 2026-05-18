@@ -2,7 +2,7 @@ pkgname="carbonio-icu"
 pkgver="74.2" # renovate: datasource=github-releases depName=unicode-org/icu
 pkgrel="3"
 pkgdesc="International Components for Unicode library"
-arch=('x86_64')
+arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('Unicode-3.0')
@@ -25,15 +25,62 @@ source=(
 sha256sums=('68db082212a96d6f53e35d60f47d38b962e9f9d207a74cfac78029ae8ff5e08c')
 
 build() {
-  cd "${srcdir}/icu"
-  cd source
+  cd "${srcdir}/icu/source"
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
-  ./configure --prefix=/opt/zextras/common \
-    --sysconfdir=/opt/zextras/common/etc \
-    --sbindir=/opt/zextras/common/bin \
-    --disable-tests \
-    --disable-samples
-  make -j"$(( $(nproc) / 2 ))"
+
+  if [ -n "${CROSS_COMPILE}" ]; then
+    # ICU cross-compilation requires a native build of the same version as
+    # the cross-build root (--with-cross-build).  Build it first in a
+    # separate directory using the host compiler, then configure the real
+    # cross build pointing at it.
+    mkdir -p "${srcdir}/icu-native"
+    cd "${srcdir}/icu-native"
+    CC=gcc CXX=g++ "${srcdir}/icu/source/configure" \
+      --disable-tests \
+      --disable-samples
+    make -j"$(nproc)"
+
+    # Determine the cross-compiler sysroot (populated by yap prepare or Dockerfile).
+    # On Debian/Ubuntu: /usr/aarch64-linux-gnu/  (libc6-dev-arm64-cross)
+    # On Rocky/Fedora:  /usr/aarch64-linux-gnu/sys-root  (populated from aarch64 RPMs)
+    _sysroot=""
+    for _candidate in \
+      "/usr/${CROSS_COMPILE_HOST}/sys-root" \
+      "/usr/${CROSS_COMPILE_HOST}"; do
+      if [ -f "${_candidate}/usr/lib64/crt1.o" ] || [ -f "${_candidate}/usr/lib/crt1.o" ]; then
+        _sysroot="${_candidate}"
+        break
+      fi
+    done
+
+    cd "${srcdir}/icu/source"
+    _sysroot_flag=""
+    [ -n "${_sysroot}" ] && _sysroot_flag="--sysroot=${_sysroot}"
+    # Pre-set configure cache variables that require running target binaries
+    # (impossible during cross-compilation).  Values are correct for aarch64 Linux.
+    export ac_cv_c_bigendian=no
+    CC="${CROSS_COMPILE}gcc" \
+      CXX="${CROSS_COMPILE}g++" \
+      CFLAGS="${_sysroot_flag}" \
+      CXXFLAGS="${_sysroot_flag}" \
+      LDFLAGS="${_sysroot_flag} -Wl,-rpath,/opt/zextras/common/lib" \
+      ./configure --prefix=/opt/zextras/common \
+      --sysconfdir=/opt/zextras/common/etc \
+      --sbindir=/opt/zextras/common/bin \
+      --disable-tests \
+      --disable-samples \
+      --host="${CROSS_COMPILE_HOST}" \
+      --build="$(gcc -dumpmachine)" \
+      --with-cross-build="${srcdir}/icu-native"
+  else
+    ./configure --prefix=/opt/zextras/common \
+      --sysconfdir=/opt/zextras/common/etc \
+      --sbindir=/opt/zextras/common/bin \
+      --disable-tests \
+      --disable-samples
+  fi
+
+  make -j"$(($(nproc) / 2))"
 }
 
 package() {

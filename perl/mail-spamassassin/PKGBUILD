@@ -2,7 +2,7 @@ pkgname="carbonio-perl-mail-spamassassin"
 pkgver="4.0.2" # renovate: datasource=cpan depName=Mail::SpamAssassin
 pkgrel="2"
 pkgdesc="Spam detector and markup engine"
-arch=('x86_64')
+arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('Apache-2.0')
@@ -62,32 +62,67 @@ sha256sums=('c521be978cef3d49b1e139477ca60a0bd498345fc98274796e44161fae49a17f'
 
 build() {
   cd "${srcdir}/Mail-SpamAssassin-${pkgver}"
-  perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE="/opt/zextras/common" \
-    INSTALLSITEMAN1DIR="/opt/zextras/common/share/man/man1" INSTALLSITEMAN3DIR="/opt/zextras/common/share/man/man3" \
-    INSTALLMAN3DIR="/opt/zextras/common/share/man/man1" INSTALLVENDORMAN3DIR="/opt/zextras/common/share/man/man1" \
-    INSTALLMAN3DIR="/opt/zextras/common/share/man/man3" INSTALLVENDORMAN3DIR="/opt/zextras/common/share/man/man3" \
-    LIB="/opt/zextras/common/lib/perl5" DATADIR="/opt/zextras/data/spamassassin/rules" \
-    CONFDIR="/opt/zextras/data/spamassassin/localrules" \
-    DATADIR="/opt/zextras/data/spamassassin/rules" \
-    LOCALSTATEDIR="/opt/zextras/data/spamassassin/state" \
-    CONTACT_ADDRESS=""
-  PERL5LIB="/opt/zextras/common/lib/perl5" \
-    make
+
+  _cc_flag=""
+  _perl_inc="-I /opt/zextras/common/lib/perl5"
+  if [ -n "${CROSS_COMPILE}" ]; then
+    # Export CC/LD before Makefile.PL so it generates the Makefile with the cross-compiler
+    export CC="${CROSS_COMPILE}gcc"
+    export LD="${CROSS_COMPILE}gcc"
+    _cc_flag="CC=${CROSS_COMPILE}gcc LD=${CROSS_COMPILE}gcc"
+    export ac_cv_func_malloc_0_nonnull=yes
+    export ac_cv_func_realloc_0_nonnull=yes
+    # Add target arch dir so Perl finds cross-compiled dependencies (e.g. NetAddr::IP)
+    _perl_inc="-I /opt/zextras/common/lib/perl5/aarch64-linux-gnu-thread-multi ${_perl_inc}"
+  fi
+
+  perl ${_perl_inc} Makefile.PL INSTALL_BASE=/opt/zextras/common \
+    INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
+    LIB=/opt/zextras/common/lib/perl5
+  # build_rules fails when rulesrc/ is absent (CPAN tarball doesn't include it).
+  # Override the target to be a no-op.
+  sed -i 's|^build_rules:.*|build_rules:|; /^build_rules:/{ n; s|.*$(PERL).*mkrules.*||; }' Makefile
+  if [ -n "${CROSS_COMPILE}" ]; then
+    # Pre-create spamc/version.h and skip version.h.pl in configure.pl.
+    # version.h.pl tries to load Mail::SpamAssassin which pulls in aarch64
+    # XS modules (Socket.so, NetAddr::IP) that can't run on the x86_64 host.
+    _sa_version=$(perl -ne 'if (/VERSION\s*=\s*"([^"]+)"/) { print $1; exit }' lib/Mail/SpamAssassin.pm)
+    sed "s/VERSION_STRING \"3.x\"/VERSION_STRING \"${_sa_version}\"/" \
+      spamc/version.h.in > spamc/version.h
+    # Replace version.h.pl with a no-op since we already created version.h
+    echo '1;' > spamc/version.h.pl
+    # Pass --host to spamc's autoconf configure for proper cross-compilation.
+    # Disable zlib: the cross-linker finds libz but zlib.h is missing (no
+    # zlib1g-dev:arm64), causing HAVE_LIBZ without HAVE_ZLIB_H → compile error.
+    sed -i 's|$(CONFIGURE)|$(CONFIGURE) --host=aarch64-linux-gnu ac_cv_header_zlib_h=no ac_cv_lib_z_deflate=no|' Makefile
+  fi
+  make ${_cc_flag} -j"$(($(nproc) / 2))"
 }
 
 package() {
   cd "${srcdir}/Mail-SpamAssassin-${pkgver}"
   PERL5LIB="/opt/zextras/common/lib/perl5" \
     make install DESTDIR="${pkgdir}"
+  # Relocate arch-specific files from host arch dir to target arch dir
+  if [ -n "${CROSS_COMPILE}" ] && [ -d "${pkgdir}/opt/zextras/common/lib/perl5/x86_64-linux-gnu-thread-multi" ]; then
+    mkdir -p "${pkgdir}/opt/zextras/common/lib/perl5/aarch64-linux-gnu-thread-multi"
+    cp -a "${pkgdir}/opt/zextras/common/lib/perl5/x86_64-linux-gnu-thread-multi/." \
+      "${pkgdir}/opt/zextras/common/lib/perl5/aarch64-linux-gnu-thread-multi/"
+    rm -rf "${pkgdir}/opt/zextras/common/lib/perl5/x86_64-linux-gnu-thread-multi"
+  fi
   find "${pkgdir}" -name '.packlist' -delete
   find "${pkgdir}" -name '*.pod' -delete
   rm -rf "${pkgdir}"/opt/zextras/common/data/spamassassin/rules \
     "${pkgdir}"/opt/zextras/data/spamassassin/rules/*
 
-  sed -i -e 's/^#loadplugin Mail::SpamAssassin::Plugin::DCC/loadplugin Mail::SpamAssassin::Plugin::DCC/' \
-    "${pkgdir}"/opt/zextras/data/spamassassin/localrules/v310.pre
-  sed -i -e 's/^#loadplugin Mail::SpamAssassin::Plugin::Rule2XSBody/loadplugin Mail::SpamAssassin::Plugin::Rule2XSBody/' \
-    "${pkgdir}"/opt/zextras/data/spamassassin/localrules/v320.pre
+  if [ -f "${pkgdir}"/opt/zextras/data/spamassassin/localrules/v310.pre ]; then
+    sed -i -e 's/^#loadplugin Mail::SpamAssassin::Plugin::DCC/loadplugin Mail::SpamAssassin::Plugin::DCC/' \
+      "${pkgdir}"/opt/zextras/data/spamassassin/localrules/v310.pre
+  fi
+  if [ -f "${pkgdir}"/opt/zextras/data/spamassassin/localrules/v320.pre ]; then
+    sed -i -e 's/^#loadplugin Mail::SpamAssassin::Plugin::Rule2XSBody/loadplugin Mail::SpamAssassin::Plugin::Rule2XSBody/' \
+      "${pkgdir}"/opt/zextras/data/spamassassin/localrules/v320.pre
+  fi
 
   # systemd tmpfiles.d configuration
   install -Dm644 "${srcdir}/systemd-tmpfile.conf" \

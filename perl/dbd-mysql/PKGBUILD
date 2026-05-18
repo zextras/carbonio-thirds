@@ -2,7 +2,7 @@ pkgname="carbonio-perl-dbd-mysql"
 pkgver="4.055" # renovate: datasource=cpan depName=DBD::mysql
 pkgrel="1"
 pkgdesc="Perl/CPAN DBD::mysql module for interacting with MySQL via DBD"
-arch=('x86_64')
+arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('Artistic-1.0-Perl OR GPL-1.0-or-later')
@@ -27,21 +27,77 @@ section="libs"
 priority="important"
 source=(
   "https://cpan.metacpan.org/authors/id/D/DV/DVEEDEN/DBD-mysql-${pkgver}.tar.gz"
+  "cross-mysql-config.patch"
+  "devel-checklib-stub.pm"
 )
-sha256sums=('fada24c4d36bc289f6238f277467fa037f7cafe9a17b4c90fdc5a24a36db5cbc')
+sha256sums=('fada24c4d36bc289f6238f277467fa037f7cafe9a17b4c90fdc5a24a36db5cbc'
+  'e9e61d4ec839309cec7afc7132cc57b729d7144e417ff7aa4cab736b2bb73fe0'
+  '7ce5e39096d188ab1848d25474795e3a23c25173ded0515a959101cda582a396')
+
+prepare() {
+  cd "${srcdir}/DBD-mysql-${pkgver}"
+  patch -Np1 -i "${srcdir}/cross-mysql-config.patch"
+}
 
 build() {
   cd "${srcdir}/DBD-mysql-${pkgver}"
-  perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
+
+  _cc_flag=""
+  _extra_inc=""
+  _mysql_config_flag="--mysql_config=/opt/zextras/common/bin/mysql_config"
+  _perl_inc="-I /opt/zextras/common/lib/perl5"
+  if [ -n "${CROSS_COMPILE}" ]; then
+    # Export CC/LD before Makefile.PL so it generates the Makefile with the cross-compiler
+    export CC="${CROSS_COMPILE}gcc"
+    export LD="${CROSS_COMPILE}gcc"
+    _cc_flag="CC=${CROSS_COMPILE}gcc LD=${CROSS_COMPILE}gcc"
+    export ac_cv_func_malloc_0_nonnull=yes
+    export ac_cv_func_realloc_0_nonnull=yes
+    # Add target arch dir so Perl finds cross-compiled dependencies (e.g. DBI)
+    _perl_inc="-I /opt/zextras/common/lib/perl5/aarch64-linux-gnu-thread-multi ${_perl_inc}"
+    # DBI_PUREPERL=2 prevents host perl from trying to dlopen the aarch64 DBI.so
+    export DBI_PUREPERL=2
+    # Skip mysql_config (aarch64 mariadb_config can't run on x86_64 host)
+    export DBD_MYSQL_CROSS=1
+    _mysql_config_flag=""
+    # Provide libz.so symlink inside srcdir (the arm64 zlib runtime package
+    # ships only libz.so.1; the dev package would supply libz.so but we don't
+    # want to mutate /usr/lib/aarch64-linux-gnu globally).
+    mkdir -p "${srcdir}/_cross_libs"
+    if [ ! -e "${srcdir}/_cross_libs/libz.so" ]; then
+      ln -s /usr/lib/aarch64-linux-gnu/libz.so.1 "${srcdir}/_cross_libs/libz.so"
+    fi
+    # Stub out Devel::CheckLib link test inside srcdir (host linker can't link
+    # aarch64 objects). Keep the stub scoped to this package to avoid polluting
+    # /tmp and breaking sibling perl builds that legitimately need CheckLib.
+    mkdir -p "${srcdir}/_perl_cross_stub/Devel"
+    cp "${srcdir}/devel-checklib-stub.pm" "${srcdir}/_perl_cross_stub/Devel/CheckLib.pm"
+    _extra_inc="-I ${srcdir}/_perl_cross_stub"
+  fi
+
+  _libs="-L/opt/zextras/common/lib -lmysqlclient -lpthread -lz -lm -lrt -lssl -lcrypto -ldl"
+  if [ -n "${CROSS_COMPILE}" ]; then
+    _libs="-L${srcdir}/_cross_libs -L/usr/lib/aarch64-linux-gnu ${_libs}"
+  fi
+  _cflags="-I/opt/zextras/common/include/mysql -I/opt/zextras/common/include"
+
+  perl ${_perl_inc} ${_extra_inc} Makefile.PL INSTALL_BASE=/opt/zextras/common \
     INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
-    LIB=/opt/zextras/common/lib/perl5 --ssl --nocatchstderr --mysql_config=/opt/zextras/common/bin/mysql_config \
-    LIBS="-L/opt/zextras/common/lib -lmysqlclient -lpthread -lz -lm -lrt -lssl -lcrypto -ldl"
-  make
+    LIB=/opt/zextras/common/lib/perl5 --ssl --nocatchstderr ${_mysql_config_flag} \
+    --cflags="${_cflags}" --libs="${_libs}"
+  make ${_cc_flag} -j"$(($(nproc) / 2))"
 }
 
 package() {
   cd "${srcdir}/DBD-mysql-${pkgver}"
   make install DESTDIR="${pkgdir}"
+  # Relocate arch-specific files from host arch dir to target arch dir
+  if [ -n "${CROSS_COMPILE}" ] && [ -d "${pkgdir}/opt/zextras/common/lib/perl5/x86_64-linux-gnu-thread-multi" ]; then
+    mkdir -p "${pkgdir}/opt/zextras/common/lib/perl5/aarch64-linux-gnu-thread-multi"
+    cp -a "${pkgdir}/opt/zextras/common/lib/perl5/x86_64-linux-gnu-thread-multi/." \
+      "${pkgdir}/opt/zextras/common/lib/perl5/aarch64-linux-gnu-thread-multi/"
+    rm -rf "${pkgdir}/opt/zextras/common/lib/perl5/x86_64-linux-gnu-thread-multi"
+  fi
   find "${pkgdir}" -name '.packlist' -delete
   find "${pkgdir}" -name '*.pod' -delete
 }

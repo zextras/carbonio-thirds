@@ -2,7 +2,7 @@ pkgname="carbonio-nginx"
 pkgver="1.30.1" # renovate: datasource=github-tags depName=nginx/nginx extractVersion=^release-(?<version>.+)$ versioning=semver allowedVersions=/^1\.(2[0-9]*[02468]|[3-9][0-9]*[02468])\./
 pkgrel="1"
 pkgdesc="Lightweight HTTP server and IMAP/POP3 proxy server"
-arch=('x86_64')
+arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('BSD-2-Clause')
@@ -143,26 +143,76 @@ _prerm_systemd() {
 
 prepare() {
   cd "${srcdir}/nginx-brotli"
-  git submodule update --init --recursive
+  # git submodule update only needed when cloned as a git repo;
+  # yap downloads sources as tarballs so deps/brotli is already present
+  if [ -d .git ]; then
+    git submodule update --init --recursive
+  fi
 
   cd "${srcdir}/nginx-${pkgver}"
-  patch -Np1 -i "${srcdir}/${pkgname}-${pkgver}.patch"
-  patch -Np1 -i "${srcdir}/sd_notify.patch"
+  patch -Np1 --forward -r - -i "${srcdir}/${pkgname}-${pkgver}.patch" || [ $? -eq 1 ]
+  patch -Np1 --forward -r - -i "${srcdir}/sd_notify.patch" || [ $? -eq 1 ]
 
   cd "${srcdir}/lua-nginx-module"
-  patch -Np1 -i "${srcdir}/lua_default_path.patch"
-  patch -Np1 -i "${srcdir}/lua_luajit_warning.patch"
+  patch -Np1 --forward -r - -i "${srcdir}/lua_default_path.patch" || [ $? -eq 1 ]
+  patch -Np1 --forward -r - -i "${srcdir}/lua_luajit_warning.patch" || [ $? -eq 1 ]
 
   cd "${srcdir}/stream-lua-nginx-module"
-  patch -Np1 -i "${srcdir}/stream_lua_default_path.patch"
-  patch -Np1 -i "${srcdir}/stream_lua_luajit_warning.patch"
+  patch -Np1 --forward -r - -i "${srcdir}/stream_lua_default_path.patch" || [ $? -eq 1 ]
+  patch -Np1 --forward -r - -i "${srcdir}/stream_lua_luajit_warning.patch" || [ $? -eq 1 ]
 }
 
 build() {
   export CFLAGS="-g -O2 -ffile-prefix-map=${srcdir}=. -fdebug-prefix-map=/etc=. -fstack-protector-strong"
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib"
+  export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig"
   export LUAJIT_INC="$(pkg-config --variable=includedir luajit)"
   export LUAJIT_LIB="$(pkg-config --variable=libdir luajit)"
+
+  _nginx_cross_flags=""
+  if [ -n "${CROSS_COMPILE}" ] && echo "${CROSS_COMPILE}" | grep -q "aarch64"; then
+    # Set CPP as env var (nginx's --with-cpp= can't handle spaces in the value)
+    export CPP="${CROSS_COMPILE}gcc -E"
+    # Use arm64 LuaJIT libraries for cross-compilation
+    export LUAJIT_INC="/usr/include/luajit-2.1"
+    export LUAJIT_LIB="/usr/lib/aarch64-linux-gnu"
+    _nginx_cross_flags="--crossbuild=Linux:aarch64 --with-cc=${CROSS_COMPILE}gcc"
+
+    # nginx auto/feature sets ngx_feature_run=yes for the C compiler check
+    # (auto/cc/name) and many subsequent feature tests, then executes the test
+    # binary. The target-arch binary cannot run on the build host, producing
+    # "found but is not working" and aborting configure. Force ngx_feature_run=no
+    # before the executable check so compile-only success counts as "found".
+    sed -i 's|^if \[ -x \$NGX_AUTOTEST \]; then$|ngx_feature_run=no\n&|' \
+      "${srcdir}/nginx-${pkgver}/auto/feature"
+
+    # auto/types/sizeof runs the compiled autotest binary to read sizeof().
+    # Cross-built aarch64 binary fails with "Exec format error" on x86_64 host
+    # and configure aborts ("can not detect int size"). Replace the exec block
+    # with a hardcoded aarch64 LP64 size table covering every type queried
+    # from auto/unix (int, long, long long, void *, size_t, off_t, time_t,
+    # sig_atomic_t). typedef/uintptr_t scripts only test the file's exec bit,
+    # so they cross-build without changes.
+    sed -i '/^if \[ -x \$NGX_AUTOTEST \]; then$/,/^fi$/c\
+case "$ngx_type" in\
+    "int"|"sig_atomic_t") ngx_size=4 ;;\
+    "long"|"long long"|"void *"|"size_t"|"off_t"|"time_t") ngx_size=8 ;;\
+    *) [ -x "$NGX_AUTOTEST" ] \&\& ngx_size=`$NGX_AUTOTEST` ;;\
+esac\
+echo " $ngx_size bytes (crossbuild aarch64)"' \
+      "${srcdir}/nginx-${pkgver}/auto/types/sizeof"
+
+    # nginx-brotli hardcodes -L<bundled>/out for brotli libs; cross-build brotli
+    # for aarch64 using cmake toolchain and place libs in the expected out/ dir
+    _brotli_src="${srcdir}/nginx-brotli/deps/brotli"
+    mkdir -p "${_brotli_src}/out"
+    cmake -S "${_brotli_src}" -B "${_brotli_src}/out" \
+      -DCMAKE_TOOLCHAIN_FILE="${CMAKE_TOOLCHAIN_FILE}" \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DBROTLI_DISABLE_TESTS=ON \
+      -Wno-dev
+    make -C "${_brotli_src}/out" -j"$(($(nproc) / 2))"
+  fi
 
   cd "${srcdir}/nginx-${pkgver}"
   ./configure \
@@ -204,7 +254,8 @@ build() {
     --with-mail-sasl \
     --with-mail_ssl_module \
     --without-http_scgi_module \
-    --without-http_uwsgi_module
+    --without-http_uwsgi_module \
+    ${_nginx_cross_flags}
   make -j"$(($(nproc) / 2))"
 }
 

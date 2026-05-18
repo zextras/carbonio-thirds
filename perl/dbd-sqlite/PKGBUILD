@@ -2,7 +2,7 @@ pkgname="carbonio-perl-dbd-sqlite"
 pkgver="1.78" # renovate: datasource=cpan depName=DBD::SQLite
 pkgrel="1"
 pkgdesc="Self-contained RDBMS in a DBI Driver"
-arch=('x86_64')
+arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('Artistic-1.0-Perl OR GPL-1.0-or-later')
@@ -32,15 +32,37 @@ sha256sums=('efbad7794bafaa4e7476c07445a33bbfe1040e380baa3395a02635eebe3859d5')
 
 build() {
   cd "${srcdir}/DBD-SQLite-${pkgver}"
-  perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
+
+  _cc_flag=""
+  _perl_inc="-I /opt/zextras/common/lib/perl5"
+  if [ -n "${CROSS_COMPILE}" ]; then
+    export CC="${CROSS_COMPILE}gcc"
+    export LD="${CROSS_COMPILE}gcc"
+    _cc_flag="CC=${CROSS_COMPILE}gcc LD=${CROSS_COMPILE}gcc"
+    export ac_cv_func_malloc_0_nonnull=yes
+    export ac_cv_func_realloc_0_nonnull=yes
+    # Add target arch dir so Perl finds cross-compiled dependencies (e.g. DBI)
+    _perl_inc="-I /opt/zextras/common/lib/perl5/aarch64-linux-gnu-thread-multi ${_perl_inc}"
+    # DBI_PUREPERL=2 prevents host perl from trying to dlopen the aarch64 DBI.so
+    export DBI_PUREPERL=2
+  fi
+
+  perl ${_perl_inc} Makefile.PL INSTALL_BASE=/opt/zextras/common \
     INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
-    LIB=/opt/zextras/common/lib/perl5 LIBS="-L/opt/zextras/common/lib -lssl -lcrypto" INC="-I/opt/zextras/common/include"
-  make
+    LIB=/opt/zextras/common/lib/perl5
+  make ${_cc_flag} -j"$(($(nproc) / 2))"
 }
 
 package() {
   cd "${srcdir}/DBD-SQLite-${pkgver}"
   make install DESTDIR="${pkgdir}"
+  # Relocate arch-specific files from host arch dir to target arch dir
+  if [ -n "${CROSS_COMPILE}" ] && [ -d "${pkgdir}/opt/zextras/common/lib/perl5/x86_64-linux-gnu-thread-multi" ]; then
+    mkdir -p "${pkgdir}/opt/zextras/common/lib/perl5/aarch64-linux-gnu-thread-multi"
+    cp -a "${pkgdir}/opt/zextras/common/lib/perl5/x86_64-linux-gnu-thread-multi/." \
+      "${pkgdir}/opt/zextras/common/lib/perl5/aarch64-linux-gnu-thread-multi/"
+    rm -rf "${pkgdir}/opt/zextras/common/lib/perl5/x86_64-linux-gnu-thread-multi"
+  fi
   find "${pkgdir}" -name '.packlist' -delete
   find "${pkgdir}" -name '*.pod' -delete
 }

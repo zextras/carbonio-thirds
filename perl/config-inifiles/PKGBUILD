@@ -2,7 +2,7 @@ pkgname="carbonio-perl-config-inifiles"
 pkgver="3.000003" # renovate: datasource=cpan depName=Config::IniFiles
 pkgrel="3"
 pkgdesc="A module for reading .ini-style configuration files."
-arch=('x86_64')
+arch=('any')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('Artistic-1.0-Perl OR GPL-1.0-or-later')

@@ -2,7 +2,7 @@ pkgname="carbonio-perl-net-ldap"
 pkgver="0.68" # renovate: datasource=cpan depName=Net::LDAP
 pkgrel="3"
 pkgdesc="Lightweight Directory Access Protocol"
-arch=('x86_64')
+arch=('any')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('Artistic-1.0-Perl OR GPL-1.0-or-later')
@@ -24,10 +24,11 @@ sha256sums=('e2f389fe3e7a9e4b61488692919ad723b98f3b479b5288f610daa8c27995b351')
 
 build() {
   cd "${srcdir}/perl-ldap-${pkgver}"
+
   perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
     INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
-    LIB=/opt/zextras/common/lib/perl5 LIBS="-L/opt/zextras/common/lib -lssl -lcrypto" INC="-I/opt/zextras/common/include"
-  make
+    LIB=/opt/zextras/common/lib/perl5
+  make -j"$(( $(nproc) / 2 ))"
 }
 
 package() {

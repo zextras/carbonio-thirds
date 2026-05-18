@@ -2,7 +2,7 @@ pkgname="carbonio-cyrus-sasl"
 pkgver="2.1.28" # renovate: datasource=github-releases depName=cyrusimap/cyrus-sasl
 pkgrel="8"
 pkgdesc="Cyrus Simple Authentication Service Layer (SASL) library"
-arch=('x86_64')
+arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('BSD-Attribution-HPND-disclaimer')
@@ -32,6 +32,7 @@ makedepends__yum=(
 )
 section="utils"
 priority="optional"
+options=('!libtool' '!staticlibs')
 source=(
   "https://github.com/cyrusimap/cyrus-sasl/releases/download/cyrus-sasl-${pkgver}/cyrus-sasl-${pkgver}.tar.gz"
   "carbonio-auth.patch"
@@ -47,8 +48,6 @@ _package() {
   cd "${srcdir}/cyrus-sasl-${pkgver}"
 
   make DESTDIR="${pkgdir}" install
-  find "${pkgdir}" -name '*.a' -delete
-  find "${pkgdir}" -name '*.la' -delete
 }
 
 _package_systemd() {
@@ -82,6 +81,18 @@ build() {
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib -lxml2"
   export CFLAGS="-D_REENTRANT -Wno-error -ffile-prefix-map=${srcdir}=. -I/opt/zextras/common/include -I/opt/zextras/common/include/libxml2"
   export CPPFLAGS="-D_REENTRANT -Wno-error -I/opt/zextras/common/include"
+
+  _host_flag=""
+  _build_flag=""
+   if [ -n "${CROSS_COMPILE}" ]; then
+     _host_flag="--host=${CROSS_COMPILE_HOST}"
+     _build_flag="--build=$(gcc -dumpmachine)"
+     # Cache run-tests that fail when cross-compiling
+     # MIT Kerberos supports SPNEGO
+     export ac_cv_gssapi_supports_spnego=yes
+     # Note: YAP does not set TARGET_ARCH to avoid conflicting with
+     # GNU make's implicit LINK.c = $(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TARGET_ARCH)
+   fi
 
   rm -f config/config.guess config/config.sub
   rm -f config/ltconfig config/ltmain.sh config/libtool.m4
@@ -123,11 +134,12 @@ build() {
     --with-openssl=/opt/zextras/common \
     --with-dblib=no \
     --with-configdir=/opt/zextras/conf/sasl2 \
-    --with-devrandom=/dev/urandom
+    --with-devrandom=/dev/urandom \
+    ${_host_flag} ${_build_flag}
 
   # prevent excessive overlinking by libtool
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
-  make -j"$(( $(nproc) / 2 ))"
+  make -j"$(($(nproc) / 2))"
 }
 
 package() {

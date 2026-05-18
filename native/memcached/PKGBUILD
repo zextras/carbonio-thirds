@@ -2,7 +2,7 @@ pkgname="carbonio-memcached"
 pkgver="1.6.41" # renovate: datasource=github-tags depName=memcached/memcached
 pkgrel="2"
 pkgdesc="Distributed memory object caching system"
-arch=('x86_64')
+arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('BSD-3-Clause')
@@ -123,15 +123,24 @@ prepare() {
 }
 
 build() {
-  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
+  export LDFLAGS="-L/opt/zextras/common/lib -Wl,-rpath,/opt/zextras/common/lib"
   export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
+
+  _host_flag=""
+  _build_flag=""
+  if [ -n "${CROSS_COMPILE}" ]; then
+    _host_flag="--host=${CROSS_COMPILE_HOST}"
+    _build_flag="--build=$(gcc -dumpmachine)"
+  fi
 
   cd "${srcdir}/memcached-${pkgver}"
   autoreconf -fiv
   ./configure --prefix=/opt/zextras/common \
+    --with-libevent=/opt/zextras/common \
     CFLAGS="${CFLAGS} -DHAVE_SYSTEMD" \
-    LIBS="-lsystemd"
-  make -j"$(( $(nproc) / 2 ))"
+    LIBS="-lsystemd" \
+    ${_host_flag} ${_build_flag}
+  make -j"$(($(nproc) / 2))"
 }
 
 package() {

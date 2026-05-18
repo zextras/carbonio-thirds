@@ -2,7 +2,7 @@ pkgname="carbonio-perl-dbi"
 pkgver="1.644" # renovate: datasource=cpan depName=DBI
 pkgrel="2"
 pkgdesc="Database independent interface for Perl"
-arch=('x86_64')
+arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('Artistic-1.0-Perl OR GPL-1.0-or-later')
@@ -24,10 +24,24 @@ sha256sums=('2297b99de09e67086640b590699e0e982fb469da63a93fe28dc14782db7a53c8')
 
 build() {
   cd "${srcdir}/DBI-${pkgver}"
+
+  _cc_flag=""
+  _makefilepl_cc=""
+  if [ -n "${CROSS_COMPILE}" ]; then
+    export CC="${CROSS_COMPILE}gcc"
+    export LD="${CROSS_COMPILE}gcc"
+    _cc_flag="CC=${CROSS_COMPILE}gcc LD=${CROSS_COMPILE}gcc"
+    # Pass CC/LD as Makefile.PL args so ExtUtils::MakeMaker writes them into the
+    # generated Makefile (it ignores the CC env var and defaults to the host perl's compiler)
+    _makefilepl_cc="CC=${CROSS_COMPILE}gcc LD=${CROSS_COMPILE}gcc"
+    export ac_cv_func_malloc_0_nonnull=yes
+    export ac_cv_func_realloc_0_nonnull=yes
+  fi
+
   perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
     INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
-    LIB=/opt/zextras/common/lib/perl5 LIBS="-L/opt/zextras/common/lib" INC="-I/opt/zextras/common/include"
-  LD_RUN_PATH=/opt/zextras/common/lib make
+    LIB=/opt/zextras/common/lib/perl5 ${_makefilepl_cc}
+  make ${_cc_flag} -j"$(($(nproc) / 2))"
 }
 
 package() {
@@ -35,6 +49,13 @@ package() {
   make install DESTDIR="${pkgdir}"
   cp -r blib/arch/auto/DBI \
     "${pkgdir}"/opt/zextras/common/include
+  # Relocate arch-specific files from host arch dir to target arch dir
+  if [ -n "${CROSS_COMPILE}" ] && [ -d "${pkgdir}/opt/zextras/common/lib/perl5/x86_64-linux-gnu-thread-multi" ]; then
+    mkdir -p "${pkgdir}/opt/zextras/common/lib/perl5/aarch64-linux-gnu-thread-multi"
+    cp -a "${pkgdir}/opt/zextras/common/lib/perl5/x86_64-linux-gnu-thread-multi/." \
+      "${pkgdir}/opt/zextras/common/lib/perl5/aarch64-linux-gnu-thread-multi/"
+    rm -rf "${pkgdir}/opt/zextras/common/lib/perl5/x86_64-linux-gnu-thread-multi"
+  fi
   find "${pkgdir}" -name '.packlist' -delete
   find "${pkgdir}" -name '*.pod' -delete
 }

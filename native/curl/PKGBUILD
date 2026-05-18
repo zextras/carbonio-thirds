@@ -2,7 +2,7 @@ pkgname="carbonio-curl"
 pkgver="8.14.1" # renovate: datasource=github-releases depName=curl/curl
 pkgrel="1"
 pkgdesc="An URL retrieval utility and library"
-arch=('x86_64')
+arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('curl')
@@ -30,6 +30,7 @@ makedepends__yum=(
 )
 section="utils"
 priority="optional"
+options=('!libtool')
 source=(
   "https://curl.haxx.se/download/curl-${pkgver}.tar.gz"
   "https://github.com/nss-dev/nss/raw/NSS_3_122_RTM/lib/ckfw/builtins/certdata.txt"
@@ -43,6 +44,16 @@ build() {
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
   export CPPFLAGS="-I/opt/zextras/common/include"
   export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
+
+  _host_flag=""
+  _build_flag=""
+  if [ -n "${CROSS_COMPILE}" ]; then
+    _host_flag="--host=${CROSS_COMPILE_HOST}"
+    _build_flag="--build=$(gcc -dumpmachine)"
+    # accept4 requires _GNU_SOURCE; cross-compiler sysroot needs it explicit
+    export CFLAGS="${CFLAGS} -D_GNU_SOURCE"
+    export CPPFLAGS="${CPPFLAGS} -D_GNU_SOURCE"
+  fi
 
   cd "${srcdir}/curl-${pkgver}"
 
@@ -58,8 +69,9 @@ build() {
     --with-zlib \
     --without-gnutls \
     --without-libidn2 \
-    --without-libpsl
-  make -j"$(( $(nproc) / 2 ))"
+    --without-libpsl \
+    ${_host_flag} ${_build_flag}
+  make -j"$(($(nproc) / 2))"
 }
 
 package() {
@@ -75,5 +87,4 @@ package() {
 
   mkdir -p "${pkgdir}/opt/zextras/common/share/curl"
   cp -f lib/ca-bundle.crt "${pkgdir}/opt/zextras/common/share/curl/ca-bundle.crt"
-  rm -rf "${pkgdir}"/opt/zextras/common/lib/*.la
 }

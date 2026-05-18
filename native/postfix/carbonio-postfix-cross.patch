@@ -1,0 +1,150 @@
+--- a/postfix-install
++++ b/postfix-install
+@@ -254,6 +254,93 @@
+     exit 1
+ }
+ 
++# === BEGIN carbonio cross-compile shim ===
++# bin/postconf is built for the target architecture and cannot execute on
++# the build host during cross-compilation. Define a POSIX shell function
++# `bin/postconf` that emulates the subset of postconf behavior that this
++# script uses, sourcing values from conf/makedefs.out (built-in defaults)
++# and from the on-disk main.cf (installed values / writes).
++#
++# Supported call shapes:
++#   bin/postconf -dhx <name>            built-in default for <name>
++#   bin/postconf -c conf -h -d <name>   built-in default for <name>
++#   bin/postconf -c conf -d -hx <name>  built-in default for <name>
++#   bin/postconf -qc <DIR> -hx <name>   installed value for <name> in <DIR>/main.cf
++#   bin/postconf -qc <DIR> -e "k=v" ... write key=value pairs to <DIR>/main.cf
++postconf() {
++    _pc_conf=conf
++    _pc_edit=0
++    _pc_mode=defaults
++    _pc_name=""
++    while [ $# -gt 0 ]; do
++        case "$1" in
++            -c)        _pc_conf="$2"; shift 2 ;;
++            -qc)       _pc_conf="$2"; _pc_mode=installed; shift 2 ;;
++            -q)        _pc_mode=installed; shift ;;
++            -e)        _pc_edit=1; shift; break ;;
++            -d|-dh|-dx|-dhx|-dxh) _pc_mode=defaults; shift ;;
++            -h|-x|-hx|-xh) shift ;;
++            -*)        shift ;;
++            *)         _pc_name="$1"; shift ;;
++        esac
++    done
++    _pc_file="$_pc_conf"
++    [ -d "$_pc_conf" ] && _pc_file="$_pc_conf/main.cf"
++    if [ "$_pc_edit" = "1" ]; then
++        [ -f "$_pc_file" ] || : > "$_pc_file"
++        for _pc_kv in "$@"; do
++            _pc_k=`echo "$_pc_kv" | sed 's/[ 	]*=.*//'`
++            _pc_v=`echo "$_pc_kv" | sed 's/^[^=]*=[ 	]*//'`
++            _pc_tmp="${_pc_file}.tmp.$$"
++            awk -v k="$_pc_k" -v v="$_pc_v" '
++                BEGIN { rewrote = 0 }
++                $0 ~ "^[ \t]*"k"[ \t]*=" { if (!rewrote) { print k " = " v; rewrote = 1 }; next }
++                { print }
++                END { if (!rewrote) print k " = " v }
++            ' "$_pc_file" > "$_pc_tmp" || return 1
++            mv "$_pc_tmp" "$_pc_file" || return 1
++        done
++        return 0
++    fi
++    if [ "$_pc_name" = "mail_version" ]; then
++        awk -F\" '/MAIL_VERSION_NUMBER[ \t]/{print $2; exit}' src/global/mail_version.h
++        return 0
++    fi
++    if [ "$_pc_mode" = "defaults" ] && [ -f conf/makedefs.out ]; then
++        _pc_val=`awk -v k="$_pc_name" '
++            $0 ~ "^#[ \t]*"k"=" { sub(/^#[ \t]*[^=]+=/, ""); print; exit }
++        ' conf/makedefs.out`
++        if [ -n "$_pc_val" ]; then
++            printf '%s\n' "$_pc_val"
++            return 0
++        fi
++    fi
++    if [ "$_pc_mode" = "installed" ] && [ -f "$_pc_file" ]; then
++        _pc_val=`awk -v k="$_pc_name" '
++            $0 ~ "^[ \t]*"k"[ \t]*=" { sub(/^[ \t]*[^=]+=[ \t]*/, ""); print; exit }
++        ' "$_pc_file"`
++        if [ -n "$_pc_val" ]; then
++            printf '%s\n' "$_pc_val"
++            return 0
++        fi
++    fi
++    # Compile-time defaults from src/global/mail_params.h that are not
++    # settable via 'make makefiles'. Values mirror DEF_* macros for the
++    # parameters needed by postfix-install validation and write-back.
++    case "$_pc_name" in
++        mail_owner)    echo postfix  ;;
++        setgid_group)  echo postdrop ;;
++    esac
++    return 0
++}
++
++# Shadow `bin/postconf` invocations: run our function instead of the
++# target-arch binary. Postfix-install always calls it via the literal
++# string "bin/postconf"; alias it as a shell builtin name.
++bin_postconf() { postconf "$@"; }
++# === END carbonio cross-compile shim ===
++
++
+ CONFIG_PARAMS="command_directory daemon_directory data_directory \
+ html_directory mail_owner mailq_path manpage_directory newaliases_path \
+ queue_directory readme_directory sendmail_path setgid_group shlib_directory \
+@@ -271,7 +358,7 @@
+     case "$junk" in
+     *MAIL_VERSION*) 
+ 	case "$mail_version" in
+-	"") mail_version="`bin/postconf -dhx mail_version`" || exit 1
++	"") mail_version="`postconf -dhx mail_version`" || exit 1
+ 	esac
+ 	val=`echo "$junk" | sed 's/MAIL_VERSION$/'"$mail_version/g"` || exit 1
+ 	case "$val" in
+@@ -459,7 +546,7 @@
+ 
+ : ${install_root=/}
+ : ${tempdir=`pwd`}
+-: ${config_directory=`bin/postconf -c conf -h -d config_directory`}
++: ${config_directory=`postconf -c conf -h -d config_directory`}
+ 
+ # Find out the location of installed configuration files.
+ 
+@@ -525,7 +612,7 @@
+ 	case "$junk" in
+ 	"") eval unset $name;;
+ 	esac
+-	eval : \${$name=\`bin/postconf -qc $CONFIG_DIRECTORY -hx $name\`} ||
++	eval : \${$name=\`postconf -qc $CONFIG_DIRECTORY -hx $name\`} ||
+ 	    exit 1
+     done
+ }
+@@ -538,7 +625,7 @@
+     case "$junk" in
+     "") eval unset $name;;
+     esac
+-    eval : \${$name=\`bin/postconf -c conf -d -hx $name\`} || exit 1
++    eval : \${$name=\`postconf -c conf -d -hx $name\`} || exit 1
+ done
+ 
+ # Override settings manually.
+@@ -846,7 +933,7 @@
+ # the wrong place when Postfix is being upgraded.
+ 
+ case "$mail_version" in
+-"") mail_version="`bin/postconf -dhx mail_version`" || exit 1
++"") mail_version="`postconf -dhx mail_version`" || exit 1
+ esac
+ 
+ # Undo MAIL_VERSION expansion at the end of a parameter value. If
+@@ -866,7 +953,7 @@
+     esac
+ done
+ 
+-bin/postconf -qc $CONFIG_DIRECTORY -e \
++postconf -qc $CONFIG_DIRECTORY -e \
+     "daemon_directory = $daemon_directory" \
+     "data_directory = $data_directory" \
+     "command_directory = $command_directory" \

@@ -2,7 +2,7 @@ pkgname="carbonio-perl-crypt-openssl-bignum"
 pkgver="0.09" # renovate: datasource=cpan depName=Crypt::OpenSSL::Bignum
 pkgrel="1"
 pkgdesc="OpenSSL multiprecision integer arithmetic for Crypt::OpenSSL::RSA"
-arch=('x86_64')
+arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('Artistic-1.0-Perl OR GPL-1.0-or-later')
@@ -24,16 +24,33 @@ sha256sums=('234e72fb8396d45527e6fd45e43759c5c3f3a208cf8f29e6a22161a996fd42dc')
 
 build() {
   cd "${srcdir}/Crypt-OpenSSL-Bignum-${pkgver}"
-  OPENSSL_PREFIX=/opt/zextras/common \
-    perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
+
+  _cc_flag=""
+  if [ -n "${CROSS_COMPILE}" ]; then
+    # Export CC/LD before Makefile.PL so it generates the Makefile with the cross-compiler
+    export CC="${CROSS_COMPILE}gcc"
+    export LD="${CROSS_COMPILE}gcc"
+    _cc_flag="CC=${CROSS_COMPILE}gcc LD=${CROSS_COMPILE}gcc"
+    export ac_cv_func_malloc_0_nonnull=yes
+    export ac_cv_func_realloc_0_nonnull=yes
+  fi
+
+  perl -I /opt/zextras/common/lib/perl5 Makefile.PL INSTALL_BASE=/opt/zextras/common \
     INSTALLSITEMAN1DIR=/opt/zextras/common/share/man/man1 INSTALLSITEMAN3DIR=/opt/zextras/common/share/man/man3 \
-    LIB=/opt/zextras/common/lib/perl5
-  LD_RUN_PATH=/opt/zextras/common/lib make
+    LIB=/opt/zextras/common/lib/perl5 LIBS="-L/opt/zextras/common/lib -lssl -lcrypto" INC="-I/opt/zextras/common/include"
+  make ${_cc_flag} -j"$(($(nproc) / 2))"
 }
 
 package() {
   cd "${srcdir}/Crypt-OpenSSL-Bignum-${pkgver}"
   make install DESTDIR="${pkgdir}"
+  # Relocate arch-specific files from host arch dir to target arch dir
+  if [ -n "${CROSS_COMPILE}" ] && [ -d "${pkgdir}/opt/zextras/common/lib/perl5/x86_64-linux-gnu-thread-multi" ]; then
+    mkdir -p "${pkgdir}/opt/zextras/common/lib/perl5/aarch64-linux-gnu-thread-multi"
+    cp -a "${pkgdir}/opt/zextras/common/lib/perl5/x86_64-linux-gnu-thread-multi/." \
+      "${pkgdir}/opt/zextras/common/lib/perl5/aarch64-linux-gnu-thread-multi/"
+    rm -rf "${pkgdir}/opt/zextras/common/lib/perl5/x86_64-linux-gnu-thread-multi"
+  fi
   find "${pkgdir}" -name '.packlist' -delete
   find "${pkgdir}" -name '*.pod' -delete
 }

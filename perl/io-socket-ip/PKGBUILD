@@ -2,7 +2,7 @@ pkgname="carbonio-perl-io-socket-ip"
 pkgver="0.43" # renovate: datasource=cpan depName=IO::Socket::IP
 pkgrel="1"
 pkgdesc="Family-neutral IP socket supporting both IPv4 and IPv6"
-arch=('x86_64')
+arch=('any')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('Artistic-1.0-Perl OR GPL-1.0-or-later')

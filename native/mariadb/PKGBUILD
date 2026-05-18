@@ -88,6 +88,7 @@ makedepends__yum=(
 )
 section="utils"
 priority="optional"
+options=('!staticlibs')
 source=(
   "https://mirrors.ircam.fr/pub/mariadb/mariadb-${pkgver}/source/mariadb-${pkgver}.tar.gz"
 )
@@ -95,7 +96,49 @@ sha256sums=('e4f9f2035d38345464ae8abaeaf68380d1ceadbafb4e84744ed2ed5b7aab64e7')
 
 build() {
 
-  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib"
+  _libdir="x86_64-linux-gnu"
+  _cmake_cross_flags=""
+  if [ -n "${CROSS_COMPILE}" ] && echo "${CROSS_COMPILE}" | grep -q "aarch64"; then
+    _libdir="aarch64-linux-gnu"
+    # MariaDB requires a native build first to generate import_executables.cmake
+    # when cross-compiling (same pattern as ICU)
+    rm -rf "${srcdir}/mariadb-${pkgver}-native-build"
+    mkdir -p "${srcdir}/mariadb-${pkgver}-native-build"
+    cd "${srcdir}/mariadb-${pkgver}-native-build"
+    rm -rf plugin/hashicorp_key_management 2>/dev/null || true
+    # Native build must use host compiler, not cross-compiler.
+    # Unset CC/CXX and CMAKE_TOOLCHAIN_FILE so yap's cross env doesn't leak in.
+    CC=gcc CXX=g++ CMAKE_TOOLCHAIN_FILE="" \
+      cmake -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ \
+      "${srcdir}/mariadb-${pkgver}" \
+      -DBUILD_CONFIG=mysql_release \
+      -DCMAKE_INSTALL_PREFIX="/opt/zextras/common" \
+      -DPLUGIN_ARCHIVE=NO -DPLUGIN_AUTH_PAM=NO -DPLUGIN_AUTH_PAM_V1=NO \
+      -DPLUGIN_AWS_KEY_MANAGEMENT=NO -DPLUGIN_BINLOG=NO -DPLUGIN_BLACKHOLE=NO \
+      -DPLUGIN_COLUMNSTORE=NO -DPLUGIN_CONNECT=NO -DPLUGIN_EXAMPLE=NO \
+      -DPLUGIN_FEDERATED=NO -DPLUGIN_FEDERATEDX=NO -DPLUGIN_MROONGA=NO \
+      -DPLUGIN_S3=NO -DPLUGIN_SPHINX=NO -DPLUGIN_SPIDER=NO -DPLUGIN_TOKUDB=NO \
+      -DWITH_EMBEDDED_SERVER=OFF -DWITH_UNIT_TESTS=OFF \
+      -DWITH_SSL=yes \
+      -DOPENSSL_ROOT_DIR=/opt/zextras/common \
+      -DOPENSSL_INCLUDE_DIR=/opt/zextras/common/include \
+      -DOPENSSL_CRYPTO_LIBRARY=/opt/zextras/common/lib/libcrypto.so \
+      -DOPENSSL_SSL_LIBRARY=/opt/zextras/common/lib/libssl.so \
+      -DCURSES_LIBRARY=/usr/lib/x86_64-linux-gnu/libncurses.so \
+      -DCURSES_INCLUDE_PATH=/usr/include \
+      -DIGNORE_AIO_CHECK=YES \
+      -Wno-dev
+    make -j"$(( $(nproc) / 2 ))" import_executables
+    _native_build_dir="${srcdir}/mariadb-${pkgver}-native-build"
+
+    # Use yap's CMAKE_TOOLCHAIN_FILE for the cross build
+    _cmake_cross_flags="-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE} \
+      -DIMPORT_EXECUTABLES=${_native_build_dir}/import_executables.cmake \
+      -DIGNORE_AIO_CHECK=YES \
+      -DWITH_PCRE=bundled"
+  fi
+
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib -L/opt/zextras/common/lib -L/usr/lib/${_libdir} -L/usr/lib"
   export CFLAGS="-fno-omit-frame-pointer -pipe -Wall -Wno-uninitialized -DNDEBUG -ffile-prefix-map=${srcdir}=. -I/opt/zextras/common/include -I/usr/include"
   export CXXFLAGS="-fno-omit-frame-pointer -pipe -Wall -Wno-uninitialized -DNDEBUG -ffile-prefix-map=${srcdir}=. -I/opt/zextras/common/include -I/usr/include"
   export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
@@ -149,9 +192,14 @@ build() {
     -DWITH_JEMALLOC=ON \
     -DWITH_PCRE=system \
     -DWITH_SSL=yes \
+    -DOPENSSL_ROOT_DIR=/opt/zextras/common \
+    -DOPENSSL_INCLUDE_DIR=/opt/zextras/common/include \
+    -DOPENSSL_CRYPTO_LIBRARY=/opt/zextras/common/lib/libcrypto.so \
+    -DOPENSSL_SSL_LIBRARY=/opt/zextras/common/lib/libssl.so \
     -DWITH_SYSTEMD=yes \
     -DWITH_UNIT_TESTS=OFF \
     -DWITH_ZLIB=system \
+    ${_cmake_cross_flags} \
     -Wno-dev
   make depend -j"$(( $(nproc) / 2 ))"
   make -j"$(( $(nproc) / 2 ))"
@@ -177,7 +225,10 @@ package() {
   ln -s /opt/zextras/common/lib/libmariadb.so.3 \
     "${pkgdir}/opt/zextras/common/lib/libmysqlclient_r.so.18"
 
-  rm -rf "${pkgdir}"/opt/zextras/common/lib/*.a
+  # options=('!staticlibs') strips .a only from lib/ and usr/lib/; MariaDB
+  # also installs static libs under lib/plugin/ and lib/wsrep/ which yap's
+  # default cleanup misses.
+  find "${pkgdir}/opt/zextras/common/lib" -name '*.a' -delete
 }
 
 postinst__ubuntu_jammy() {

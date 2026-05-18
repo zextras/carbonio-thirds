@@ -2,7 +2,7 @@ pkgname="carbonio-perl-mailtools"
 pkgver="2.22" # renovate: datasource=cpan depName=MailTools
 pkgrel="1"
 pkgdesc="Various e-mail related modules"
-arch=('x86_64')
+arch=('any')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('Artistic-1.0-Perl OR GPL-1.0-or-later')

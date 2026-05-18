@@ -2,7 +2,7 @@ pkgname="carbonio-libmilter"
 pkgver="8.17.1" # renovate: datasource=repology depName=arch/libmilter
 pkgrel="2"
 pkgdesc="Implementation of the sendmail Mail Filter API"
-arch=('x86_64')
+arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('Sendmail-8.23')
@@ -20,6 +20,16 @@ build() {
 
   cp "${srcdir}/site.config.m4" devtools/Site
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
+
+  # Sendmail's Build script reads confCC from site.config.m4, not the CC env var.
+  # Append cross-compiler settings when cross-compiling.
+  if [ -n "${CROSS_COMPILE}" ]; then
+    printf "define(\`confCC', \`%sgcc')\ndefine(\`confLIBSEARCHPATH', \`/opt/zextras/common/lib')\n" \
+      "${CROSS_COMPILE}" >>devtools/Site/site.config.m4
+    export AR="${CROSS_COMPILE}ar"
+    export RANLIB="${CROSS_COMPILE}ranlib"
+  fi
+
   cd libmilter
   ./Build
 }
@@ -30,5 +40,10 @@ package() {
   cd libmilter
   install -d "${pkgdir}/opt/zextras/common/lib"
   install -d "${pkgdir}/opt/zextras/common/include"
+  if [ -n "${CROSS_COMPILE}" ]; then
+    export CC="${CROSS_COMPILE}gcc"
+    export AR="${CROSS_COMPILE}ar"
+    export RANLIB="${CROSS_COMPILE}ranlib"
+  fi
   ./Build DESTDIR="${pkgdir}" install
 }

@@ -1,0 +1,38 @@
+Skip mysql_config validation and calls when cross-compiling.
+
+When DBD_MYSQL_CROSS=1 is set, the Makefile.PL skips all attempts to
+execute mysql_config (which may be built for the target arch and cannot
+run on the build host).  The caller must supply --cflags and --libs
+explicitly.
+
+--- a/Makefile.PL
++++ b/Makefile.PL
+@@ -62,6 +62,7 @@
+   #Check for mysql_config first
+   $source->{'mysql_config'} = "guessed";
+ 
++unless ($ENV{DBD_MYSQL_CROSS}) {
+   if ($opt->{'mysql_config'}) {
+     $source->{'mysql_config'} = 'Users choice';
+   }
+@@ -95,6 +96,11 @@
+     $opt->{'mysql_config'} = "mysql_config";
+   }
+ 
++} else {
++  $source->{'mysql_config'} = 'cross-disabled';
++  $opt->{'mysql_config'} = '';
++}
++
+ for my $key (qw/testdb testhost testuser testpassword testsocket testport
+                     cflags embedded libs nocatchstderr nossl nofoundrows
+                     ps-protocol bind-type-guessing force-embedded/)
+@@ -596,7 +602,7 @@
+     my @mysql_config_options = qw(
+       cflags include libs libs_r plugindir socket port version libmysqld-libs embedded
+     );
+-    if ( grep {$_ eq $param} @mysql_config_options ) {
++    if ( !$ENV{DBD_MYSQL_CROSS} && grep {$_ eq $param} @mysql_config_options ) {
+         my $command = $opt->{'mysql_config'} . " --$param";
+         eval
+         {

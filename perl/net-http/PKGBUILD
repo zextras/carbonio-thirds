@@ -2,7 +2,7 @@ pkgname="carbonio-perl-net-http"
 pkgver="6.24" # renovate: datasource=cpan depName=Net::HTTP
 pkgrel="1"
 pkgdesc="Low-level HTTP connection"
-arch=('x86_64')
+arch=('any')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('Artistic-1.0-Perl OR GPL-1.0-or-later')

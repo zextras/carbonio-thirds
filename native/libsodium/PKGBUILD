@@ -2,12 +2,13 @@ pkgname="carbonio-libsodium"
 pkgver="1.0.19" # renovate: datasource=github-releases depName=jedisct1/libsodium
 pkgrel="3"
 pkgdesc="P(ortable|ackageable) NaCl-based crypto library"
-arch=('x86_64')
+arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('ISC')
 section="libs"
 priority="important"
+options=('!libtool' '!staticlibs')
 source=(
   "https://github.com/jedisct1/libsodium/releases/download/${pkgver}-RELEASE/libsodium-${pkgver}.tar.gz"
 )
@@ -18,13 +19,19 @@ build() {
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
   export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
 
-  ./configure --prefix=/opt/zextras/common
-  make -j"$(( $(nproc) / 2 ))"
+  _host_flag=""
+  _build_flag=""
+  if [ -n "${CROSS_COMPILE}" ]; then
+    _host_flag="--host=${CROSS_COMPILE_HOST}"
+    _build_flag="--build=$(gcc -dumpmachine)"
+  fi
+
+  ./configure --prefix=/opt/zextras/common \
+    ${_host_flag} ${_build_flag}
+  make -j"$(($(nproc) / 2))"
 }
 
 package() {
   cd "${srcdir}/libsodium-stable"
   make DESTDIR="${pkgdir}" install
-  rm -rf "${pkgdir}"/opt/zextras/common/lib/*.a
-  rm -rf "${pkgdir}"/opt/zextras/common/lib/*.la
 }
