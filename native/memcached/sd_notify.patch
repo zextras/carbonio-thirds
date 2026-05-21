@@ -1,10 +1,10 @@
-diff --git a/memcached.c b/memcached.c
---- a/memcached.c
-+++ b/memcached.c
-@@ -48,6 +48,10 @@
+diff '--color=auto' -Naur a/memcached.c b/memcached.c
+--- a/memcached.c	2026-05-21 12:59:53.421431751 +0200
++++ b/memcached.c	2026-05-21 12:59:59.771552489 +0200
+@@ -47,6 +47,10 @@
  #include <sysexits.h>
  #include <stddef.h>
-
+ 
 +#ifdef HAVE_SYSTEMD
 +#include <systemd/sd-daemon.h>
 +#endif
@@ -12,10 +12,10 @@ diff --git a/memcached.c b/memcached.c
  #ifdef HAVE_GETOPT_LONG
  #include <getopt.h>
  #endif
-@@ -6181,6 +6185,11 @@
+@@ -6180,6 +6184,11 @@
      /* Initialize the uriencode lookup table. */
      uriencode_init();
-
+ 
 +#ifdef HAVE_SYSTEMD
 +    sd_notify(0, "READY=1\n"
 +                  "STATUS=memcached is ready, accepting connections");
