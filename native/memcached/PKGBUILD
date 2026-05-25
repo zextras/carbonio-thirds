@@ -9,6 +9,7 @@ license=('BSD-3-Clause')
 depends__apt=(
   "carbonio-libevent"
   "libsystemd0"
+  "service-discover-base"
 )
 makedepends__apt=(
   "autoconf"
@@ -19,6 +20,7 @@ makedepends__apt=(
 )
 depends__yum=(
   "carbonio-libevent"
+  "service-discover-base"
   "systemd-libs"
 )
 makedepends__yum=(
@@ -131,7 +133,7 @@ build() {
   ./configure --prefix=/opt/zextras/common \
     CFLAGS="${CFLAGS} -DHAVE_SYSTEMD" \
     LIBS="-lsystemd"
-  make -j"$(( $(nproc) / 2 ))"
+  make -j"$(($(nproc) / 2))"
 }
 
 package() {

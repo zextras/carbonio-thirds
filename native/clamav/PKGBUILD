@@ -15,6 +15,7 @@ depends__apt=(
   "libbz2-1.0"
   "libjson-c5"
   "libpcre2-8-0"
+  "service-discover-base"
   "zlib1g"
 )
 makedepends__apt=(
@@ -37,6 +38,7 @@ depends__yum=(
   "carbonio-openssl"
   "json-c"
   "pcre2"
+  "service-discover-base"
   "zlib"
 )
 makedepends__yum=(
