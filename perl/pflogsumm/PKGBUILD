@@ -1,5 +1,5 @@
 pkgname="carbonio-pflogsumm"
-pkgver="1.1.6" # renovate: datasource=repology depName=arch/pflogsumm
+pkgver="1.2.0" # renovate: datasource=repology depName=arch/pflogsumm
 pkgrel="1"
 pkgdesc="Postfix log entry summarizer"
 arch=('x86_64')
@@ -11,10 +11,8 @@ depends=(
 )
 section="libs"
 priority="important"
-source=(
-  "https://jimsun.linxnet.com/downloads/pflogsumm-${pkgver}.tar.gz"
-)
-sha256sums=('5ccba9ec765720c79b9d8ae0f02e4c39f042d54e742a238ebb20b51a61915167')
+source=("https://athena.linxnet.com/downloads/pflogsumm-${pkgver}.tar.gz")
+sha256sums=('82a1b5558aad4e15ba2b46124fccc6a56a55610d80b43df6eee5f5fb0677ea6b')
 
 package() {
   cd "${srcdir}/pflogsumm-${pkgver}"
