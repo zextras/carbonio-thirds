@@ -72,9 +72,7 @@ pipeline {
             }
             steps {
                 uploadStage(
-                    packages: yapHelper.getPackageNamesFromFiles(
-                        ['native/yap.json', 'perl/yap.json'] as Set
-                    ),
+                    yapPaths: ['native/yap.json', 'perl/yap.json'] as Set,
                 )
             }
         }
