@@ -1,0 +1,318 @@
+---
+# WorkflowTemplate: carbonio-thirds-ci
+# Migrated from Jenkinsfile — builds native + perl third-party packages
+# and uploads them to Artifactory.
+#
+# Triggered by: Argo Events Sensor (GitHub push to devel/*)
+# Manual run:   argo submit --from workflowtemplate/carbonio-thirds-ci \
+#                 -p revision=main --watch -n argo
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: carbonio-thirds-ci
+  namespace: argo
+  labels:
+    app.kubernetes.io/part-of: carbonio-thirds
+spec:
+  entrypoint: ci
+  serviceAccountName: argo-workflow
+
+  arguments:
+    parameters:
+      - name: repoUrl
+        value: git@github.com:zextras/carbonio-thirds.git
+      - name: revision
+        value: main
+      # PR base branch, set by the github-ci-pr Sensor trigger. Empty on push/tag
+      # builds — ci-diff-build then uses HEAD~1 instead of the merge-base.
+      - name: changeTarget
+        value: ""
+
+  # Store intermediate artifacts in S3 without compression (faster for large packages)
+  artifactGC:
+    strategy: OnWorkflowDeletion
+
+  templates:
+
+    # ─── Entry point ────────────────────────────────────────────────────────────
+    - name: ci
+      steps:
+        # Step 1: clone the repository
+        - - name: clone
+            templateRef:
+              name: ci-git-clone
+              clusterScope: true
+              template: clone
+            arguments:
+              parameters:
+                - name: repoUrl
+                  value: "{{workflow.parameters.repoUrl}}"
+                - name: revision
+                  value: "{{workflow.parameters.revision}}"
+
+        # Step 2: extract git metadata
+        - - name: git-metadata
+            templateRef:
+              name: ci-git-metadata
+              clusterScope: true
+              template: extract
+            arguments:
+              parameters:
+                # Deterministic default-branch (ci-git-clone is a shallow clone,
+                # so origin/HEAD auto-detection is unreliable). Uploads gate on
+                # this branch via isDefaultBranch.
+                - name: defaultBranch
+                  value: main
+              artifacts:
+                - name: workspace
+                  from: "{{steps.clone.outputs.artifacts.workspace}}"
+
+        # Step 2b: SonarQube analysis (Jenkinsfile 'SonarQube analysis' stage).
+        # Standalone sonar-scanner CLI reading the repo's sonar-project.properties
+        # (this is NOT a Maven project, so it does not use maven-build's sonar).
+        # Gated OFF until a SonarQube server exists and the 'sonarqube-token'
+        # Secret (keys: host, token) is created in ns argo — then flip enabled.
+        # changeTarget/prKey enable PR decoration on PR-triggered builds.
+        - - name: sonar-scan
+            templateRef:
+              name: ci-sonar-scan
+              clusterScope: true
+              template: scan
+            arguments:
+              parameters:
+                - name: enabled
+                  value: "true"
+                - name: branch
+                  value: "{{steps.git-metadata.outputs.parameters.branch}}"
+                - name: changeTarget
+                  value: "{{workflow.parameters.changeTarget}}"
+              artifacts:
+                - name: workspace
+                  from: "{{steps.clone.outputs.artifacts.workspace}}"
+
+        # Step 3: build all 4 distros in parallel
+        #         native/ then perl/ are built sequentially inside each distro container
+        - - name: build-ubuntu-jammy
+            templateRef:
+              name: ci-build-packages
+              clusterScope: true
+              template: build-single-distro
+            arguments:
+              parameters:
+                - name: distro
+                  value: ubuntu-jammy
+                - name: buildDirs
+                  value: '["."]'
+                - name: prepare
+                  value: "true"
+                # Jenkinsfile: buildStage(addCarbonioRepos: true, debugSymbols: env.TAG_NAME)
+                - name: addCarbonioRepos
+                  value: "true"
+                - name: debugSymbols
+                  value: "{{steps.git-metadata.outputs.parameters.isTag}}"
+              artifacts:
+                - name: workspace
+                  from: "{{steps.clone.outputs.artifacts.workspace}}"
+
+          - name: build-ubuntu-noble
+            templateRef:
+              name: ci-build-packages
+              clusterScope: true
+              template: build-single-distro
+            arguments:
+              parameters:
+                - name: distro
+                  value: ubuntu-noble
+                - name: buildDirs
+                  value: '["."]'
+                - name: prepare
+                  value: "true"
+                - name: addCarbonioRepos
+                  value: "true"
+                - name: debugSymbols
+                  value: "{{steps.git-metadata.outputs.parameters.isTag}}"
+              artifacts:
+                - name: workspace
+                  from: "{{steps.clone.outputs.artifacts.workspace}}"
+
+          - name: build-rocky-8
+            templateRef:
+              name: ci-build-packages
+              clusterScope: true
+              template: build-single-distro
+            arguments:
+              parameters:
+                - name: distro
+                  value: rocky-8
+                - name: buildDirs
+                  value: '["."]'
+                - name: prepare
+                  value: "true"
+                - name: addCarbonioRepos
+                  value: "true"
+                - name: debugSymbols
+                  value: "{{steps.git-metadata.outputs.parameters.isTag}}"
+              artifacts:
+                - name: workspace
+                  from: "{{steps.clone.outputs.artifacts.workspace}}"
+
+          - name: build-rocky-9
+            templateRef:
+              name: ci-build-packages
+              clusterScope: true
+              template: build-single-distro
+            arguments:
+              parameters:
+                - name: distro
+                  value: rocky-9
+                - name: buildDirs
+                  value: '["."]'
+                - name: prepare
+                  value: "true"
+                - name: addCarbonioRepos
+                  value: "true"
+                - name: debugSymbols
+                  value: "{{steps.git-metadata.outputs.parameters.isTag}}"
+              artifacts:
+                - name: workspace
+                  from: "{{steps.clone.outputs.artifacts.workspace}}"
+
+          # Jenkinsfile 2nd buildStage call: aarch64 cross-build of ubuntu-jammy
+          # (architecture: 'aarch64' -> yap -t aarch64 on the same x86 node).
+          - name: build-ubuntu-jammy-aarch64
+            templateRef:
+              name: ci-build-packages
+              clusterScope: true
+              template: build-single-distro
+            arguments:
+              parameters:
+                - name: distro
+                  value: ubuntu-jammy
+                - name: architecture
+                  value: aarch64
+                - name: buildDirs
+                  value: '["."]'
+                - name: prepare
+                  value: "true"
+                - name: addCarbonioRepos
+                  value: "true"
+              artifacts:
+                - name: workspace
+                  from: "{{steps.clone.outputs.artifacts.workspace}}"
+
+        # Step 4: merge all distro artifacts into one directory
+        - - name: collect
+            template: collect-artifacts
+            arguments:
+              artifacts:
+                - name: pkgs-ubuntu-jammy
+                  from: "{{steps.build-ubuntu-jammy.outputs.artifacts.packages}}"
+                - name: pkgs-ubuntu-noble
+                  from: "{{steps.build-ubuntu-noble.outputs.artifacts.packages}}"
+                - name: pkgs-rocky-8
+                  from: "{{steps.build-rocky-8.outputs.artifacts.packages}}"
+                - name: pkgs-rocky-9
+                  from: "{{steps.build-rocky-9.outputs.artifacts.packages}}"
+                - name: pkgs-ubuntu-jammy-aarch64
+                  from: "{{steps.build-ubuntu-jammy-aarch64.outputs.artifacts.packages}}"
+
+        # Step 4b: upload debug symbols to debuginfod (Jenkinsfile
+        # 'Debug Symbols' stage: debuginfodStage(tagOnly: true)).
+        # tagOnly + isTag gates make this no-op on non-tag builds; the template
+        # also no-ops when no .build-id symbols were produced. Consumes the
+        # primary (x86 ubuntu-jammy) build's debug-symbols output. NOTE: only the
+        # primary distro's symbols are uploaded here; per-distro symbol
+        # aggregation across all 5 builds is a follow-up (debugSymbols is itself
+        # tag-only, so this covers the common release path).
+        - - name: debuginfod-upload
+            templateRef:
+              name: ci-debuginfod-upload
+              clusterScope: true
+              template: upload
+            arguments:
+              parameters:
+                - name: enabled
+                  value: "true"
+                - name: tagOnly
+                  value: "true"
+                - name: isTag
+                  value: "{{steps.git-metadata.outputs.parameters.isTag}}"
+                - name: repoName
+                  value: carbonio-thirds
+                - name: version
+                  value: "{{steps.git-metadata.outputs.parameters.tag}}"
+              artifacts:
+                - name: debug-symbols
+                  from: "{{steps.build-ubuntu-jammy.outputs.artifacts.debug-symbols}}"
+
+        # Step 5: upload to Artifactory
+        - - name: upload
+            templateRef:
+              name: ci-upload-artifacts
+              clusterScope: true
+              template: upload
+            arguments:
+              parameters:
+                - name: repoName
+                  value: carbonio-thirds
+                - name: gitBranch
+                  value: "{{steps.git-metadata.outputs.parameters.branch}}"
+                - name: gitTag
+                  value: "{{steps.git-metadata.outputs.parameters.tag}}"
+                - name: isDefaultBranch
+                  # ci-upload-artifacts gates uploads on default branch OR playground.
+                  value: "{{steps.git-metadata.outputs.parameters.isDefaultBranch}}"
+                - name: exclusions
+                  # Java/ERE regex (NOT globs): ci-upload-artifacts matches with grep -E,
+                  # mirroring artifactoryHelper which requires regex since v1.3.4.
+                  value: >-
+                    {"carbonio-perl-xml-parser":[".*xml-parser-lite.*\\.rpm"],
+                     "carbonio-perl-xml-sax":[".*xml-sax-base.*\\.rpm",".*xml-sax-expat.*\\.rpm"]}
+              artifacts:
+                - name: packages
+                  from: "{{steps.collect.outputs.artifacts.all-packages}}"
+
+    # ─── Inline: merge per-distro artifact dirs into one ───────────────────────
+    - name: collect-artifacts
+      inputs:
+        artifacts:
+          - name: pkgs-ubuntu-jammy
+            path: /tmp/pkgs/ubuntu-jammy
+          - name: pkgs-ubuntu-noble
+            path: /tmp/pkgs/ubuntu-noble
+          - name: pkgs-rocky-8
+            path: /tmp/pkgs/rocky-8
+          - name: pkgs-rocky-9
+            path: /tmp/pkgs/rocky-9
+          - name: pkgs-ubuntu-jammy-aarch64
+            path: /tmp/pkgs/ubuntu-jammy-aarch64
+      script:
+        image: alpine:3
+        command: [sh]
+        source: |
+          set -e
+          mkdir -p /tmp/all-packages
+          # Merge per-distro dirs. Warn (don't silently clobber) when the same
+          # filename appears in more than one distro — the per-distro stash in
+          # the Jenkins lib avoids collisions, so a duplicate here signals a
+          # genuinely ambiguous artifact (e.g. a noarch _all.deb built per distro).
+          for DIR in /tmp/pkgs/*/; do
+            [ -d "$DIR" ] || continue
+            for f in "$DIR"*; do
+              [ -e "$f" ] || continue
+              base=$(basename "$f")
+              if [ -e "/tmp/all-packages/$base" ]; then
+                echo "WARNING: duplicate artifact '$base' from $DIR — keeping first, skipping duplicate"
+                continue
+              fi
+              cp "$f" /tmp/all-packages/
+            done
+          done
+          echo "All packages:"
+          ls -lh /tmp/all-packages/
+      outputs:
+        artifacts:
+          - name: all-packages
+            path: /tmp/all-packages
+            archive:
+              none: {}
