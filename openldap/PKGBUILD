@@ -113,7 +113,7 @@ build() {
 
   export LDFLAGS="-L/opt/zextras/common/lib -L/opt/zextras/common/lib64 -Wl,-rpath,/opt/zextras/common/lib"
   export CFLAGS="-D_REENTRANT -ffile-prefix-map=${srcdir}=."
-  export CPPFLAGS="-I/opt/zextras/common/include"
+  export CPPFLAGS="-I/opt/zextras/common/include -DHAVE_SYSTEMD"
   export PATH="/opt/zextras/common/bin:/usr/bin"
   export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig:/opt/zextras/common/lib64/pkgconfig"
 
