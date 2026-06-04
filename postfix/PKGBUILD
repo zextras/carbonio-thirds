@@ -144,6 +144,8 @@ prepare() {
   patch -Np1 -i "${srcdir}/sd_notify.patch"
   # Shim bin/postconf with a POSIX-sh reader of makedefs.out/main.cf so the target-arch binary never runs on the host.
   patch -Np1 -i "${srcdir}/carbonio-postfix-cross.patch"
+  # makedefs only recognises Linux 3-6; extend to 7+ without a full patch file.
+  sed -i 's/Linux\.\[3456\]\.\*/Linux.[3-9].*/g' makedefs
 }
 
 build() {
