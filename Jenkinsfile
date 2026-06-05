@@ -1,5 +1,5 @@
 library(
-    identifier: 'jenkins-lib-common@v2.9.2',
+    identifier: 'jenkins-lib-common@IN-1096',
     retriever: modernSCM([
         $class: 'GitSCMSource',
         credentialsId: 'jenkins-integration-with-github-account',
@@ -73,9 +73,6 @@ pipeline {
 
         stage('Upload artifacts')
         {
-            tools {
-                jfrog 'jfrog-cli'
-            }
             steps {
                 uploadStage(
                     yapPath: 'yap.json',
