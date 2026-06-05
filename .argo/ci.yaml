@@ -27,6 +27,10 @@ spec:
       # builds — ci-diff-build then uses HEAD~1 instead of the merge-base.
       - name: changeTarget
         value: ""
+      # Commit SHA (push body.after / PR head.sha), set by the Sensor. Used by
+      # GitHub Checks reporting (ci-github-checks) once App auth is configured.
+      - name: commitSha
+        value: ""
 
   # Store intermediate artifacts in S3 without compression (faster for large packages)
   artifactGC:
