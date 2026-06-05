@@ -36,6 +36,54 @@ spec:
   artifactGC:
     strategy: OnWorkflowDeletion
 
+  # GitHub Checks: report this pipeline's status as a Check Run on the commit
+  # (the "dot"), deep-linked to the Argo run. `running` hook fires once at start
+  # (in_progress); `exit` hook fires at the end and maps the final workflow
+  # status to success/failure. No-op unless commitSha is set (Sensor-driven
+  # builds) and the github-app Secret exists.
+  hooks:
+    running:
+      expression: "workflow.status == \"Running\" && workflow.parameters.commitSha != \"\""
+      templateRef:
+        name: ci-github-checks
+        clusterScope: true
+        template: report
+      arguments:
+        parameters:
+          - name: repoFullName
+            value: zextras/carbonio-thirds
+          - name: headSha
+            value: "{{workflow.parameters.commitSha}}"
+          - name: name
+            value: "ci/argo"
+          - name: status
+            value: in_progress
+          - name: detailsUrl
+            value: "https://next.dev.zextras.com/workflows/argo/{{workflow.name}}"
+    exit:
+      expression: "workflow.parameters.commitSha != \"\""
+      templateRef:
+        name: ci-github-checks
+        clusterScope: true
+        template: report
+      arguments:
+        parameters:
+          - name: repoFullName
+            value: zextras/carbonio-thirds
+          - name: headSha
+            value: "{{workflow.parameters.commitSha}}"
+          - name: name
+            value: "ci/argo"
+          - name: status
+            value: completed
+          # Map Argo's terminal status to a GitHub conclusion.
+          - name: conclusion
+            value: "{{=workflow.status == 'Succeeded' ? 'success' : (workflow.status == 'Failed' || workflow.status == 'Error' ? 'failure' : 'neutral')}}"
+          - name: detailsUrl
+            value: "https://next.dev.zextras.com/workflows/argo/{{workflow.name}}"
+          - name: summary
+            value: "Argo pipeline {{workflow.status}}"
+
   templates:
 
     # ─── Entry point ────────────────────────────────────────────────────────────
