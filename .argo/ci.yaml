@@ -9,7 +9,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: carbonio-thirds-ci
+  name: carbonio-thirds
   namespace: argo
   labels:
     app.kubernetes.io/part-of: carbonio-thirds
