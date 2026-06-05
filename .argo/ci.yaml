@@ -36,6 +36,14 @@ spec:
   artifactGC:
     strategy: OnWorkflowDeletion
 
+  # Serialize builds of THIS repo: a newer push/PR build waits for the prior one
+  # to finish instead of running concurrently (avoids artifact/cache races and
+  # wasted work on superseded commits). Global concurrency is additionally
+  # capped by the argo-semaphores ConfigMap in workflowDefaults.
+  synchronization:
+    mutexes:
+      - name: carbonio-thirds-ci
+
   # GitHub Checks: report this pipeline's status as a Check Run on the commit
   # (the "dot"), deep-linked to the Argo run. `running` hook fires once at start
   # (in_progress); `exit` hook fires at the end and maps the final workflow
