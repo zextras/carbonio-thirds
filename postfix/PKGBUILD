@@ -1,6 +1,6 @@
 pkgname="carbonio-postfix"
 pkgver="3.11.3" # renovate: datasource=repology depName=arch/postfix
-pkgrel="1"
+pkgrel="2"
 pkgdesc="Fast, easy to administer, secure mail server"
 arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -70,7 +70,7 @@ source=(
 )
 sha256sums=(
   'bd11dcc463d7045e40f2c11cc00216489c73b58cc40b3d06c54265b088a173e1'
-  '46086d9bbaf372505097578533d750d5a74385033fa7d6c9a61c55379a9d61f9'
+  '1cb01fe1f452fd9b64db087e5e9f926d80fd265b48b5eae70b32a18f62255d03'
   '1cfe3fd5c8d8d0acdcd84b94c35479084bc8486a6cc7f4b4d83dd12dd09299f5'
   '2cb2fc12b76e21e5566e627dabc872628949f3f238750ed4c0c137b6f84d19a6'
   '6ad170eece16c7ee4d947a84cf2efb153a4ed52ace02c70016829253dd70aa5e'
@@ -82,6 +82,15 @@ sha256sums=(
 _package() {
   cd "${srcdir}/postfix-${pkgver}"
   sh postfix-install -non-interactive-package install_root="${pkgdir}"
+
+  # postfix-install re-injects directory params into the installed main.cf via
+  # `postconf -e`. The cross postconf shim can't resolve the compiled-in default
+  # for the obsolete `sample_directory`, so it writes an empty value, which is
+  # fatal at runtime ("postfix: fatal: bad string length 0 < 1: sample_directory =").
+  # Drop the empty active line so postfix falls back to its built-in default.
+  # NOTE: patching conf/main.cf is ineffective here — postfix-install overwrites it.
+  sed -i '/^sample_directory[[:space:]]*=[[:space:]]*$/d' \
+    "${pkgdir}/opt/zextras/common/conf/main.cf"
 
   install -Dm755 auxiliary/qshape/qshape.pl \
     "${pkgdir}"/opt/zextras/common/sbin/qshape.pl

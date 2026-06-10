@@ -1,6 +1,6 @@
-diff -Naur a/auxiliary/qshape/qshape.pl b/auxiliary/qshape/qshape.pl
+diff '--color=auto' -Naur a/auxiliary/qshape/qshape.pl b/auxiliary/qshape/qshape.pl
 --- a/auxiliary/qshape/qshape.pl	2021-12-20 00:24:29.000000000 +0100
-+++ b/auxiliary/qshape/qshape.pl	2026-06-03 11:48:21.718315223 +0200
++++ b/auxiliary/qshape/qshape.pl	2026-06-10 17:07:53.497123533 +0200
 @@ -169,7 +169,7 @@
  
  	$ENV{q{MAIL_CONFIG}} = $opts{"c"} if (exists $opts{"c"});
@@ -10,9 +10,9 @@ diff -Naur a/auxiliary/qshape/qshape.pl b/auxiliary/qshape/qshape.pl
  	die "$0: postconf failed\n" if ($? != 0);
  	warn "'queue_directory' variable expansion not supported: $qdir\n"
  	    if ($qdir =~ /\$/);
-diff -Naur a/conf/main.cf b/conf/main.cf
+diff '--color=auto' -Naur a/conf/main.cf b/conf/main.cf
 --- a/conf/main.cf	2026-03-05 16:59:44.000000000 +0100
-+++ b/conf/main.cf	2026-06-03 11:48:45.773668571 +0200
++++ b/conf/main.cf	2026-06-10 17:09:26.269675411 +0200
 @@ -89,7 +89,7 @@
  #default_privs = nobody
  
@@ -300,9 +300,9 @@ diff -Naur a/conf/main.cf b/conf/main.cf
 +smtputf8_enable = no
 +smtpd_forbid_bare_newline = yes
 +smtpd_forbid_bare_newline_exclusions = $mynetworks
-diff -Naur a/conf/postfix-script b/conf/postfix-script
+diff '--color=auto' -Naur a/conf/postfix-script b/conf/postfix-script
 --- a/conf/postfix-script	2026-03-10 23:57:57.000000000 +0100
-+++ b/conf/postfix-script	2026-06-03 11:48:21.718862941 +0200
++++ b/conf/postfix-script	2026-06-10 17:07:53.497769519 +0200
 @@ -337,7 +337,7 @@
  
  	# Check Postfix root-owned directory owner/permissions.
@@ -343,9 +343,9 @@ diff -Naur a/conf/postfix-script b/conf/postfix-script
  	    -exec $WARN group or other writable: {} \;
  
  	# Check Postfix mail_owner-owned directory tree owner/permissions.
-diff -Naur a/proto/ldap_table b/proto/ldap_table
+diff '--color=auto' -Naur a/proto/ldap_table b/proto/ldap_table
 --- a/proto/ldap_table	2026-02-20 20:35:13.000000000 +0100
-+++ b/proto/ldap_table	2026-06-03 11:48:21.719060154 +0200
++++ b/proto/ldap_table	2026-06-10 17:07:53.519423874 +0200
 @@ -148,6 +148,14 @@
  #	When the input key is an address of the form user@domain, \fB%d\fR
  #	is replaced by the (RFC 2253) quoted domain part of the address.
@@ -361,9 +361,9 @@ diff -Naur a/proto/ldap_table b/proto/ldap_table
  # .IP "\fB%[SUD]\fR"
  #	For the \fBsearch_base\fR parameter, the upper-case equivalents
  #	of the above expansions behave identically to their lower-case
-diff -Naur a/src/global/db_common.c b/src/global/db_common.c
+diff '--color=auto' -Naur a/src/global/db_common.c b/src/global/db_common.c
 --- a/src/global/db_common.c	2021-12-20 00:36:08.000000000 +0100
-+++ b/src/global/db_common.c	2026-06-03 11:48:21.719286396 +0200
++++ b/src/global/db_common.c	2026-06-10 17:07:53.532869094 +0200
 @@ -149,6 +149,7 @@
    * Utility library.
    */
@@ -419,9 +419,9 @@ diff -Naur a/src/global/db_common.c b/src/global/db_common.c
  	    case 's':
  		QUOTE_VAL(ctx->dict, quote_func, value, result);
  		break;
-diff -Naur a/src/global/db_common.h b/src/global/db_common.h
+diff '--color=auto' -Naur a/src/global/db_common.h b/src/global/db_common.h
 --- a/src/global/db_common.h	2024-10-11 00:15:18.000000000 +0200
-+++ b/src/global/db_common.h	2026-06-03 11:48:21.719430888 +0200
++++ b/src/global/db_common.h	2026-06-10 17:07:53.528246623 +0200
 @@ -18,6 +18,10 @@
  #include "dict.h"
  #include "string_list.h"
@@ -433,9 +433,9 @@ diff -Naur a/src/global/db_common.h b/src/global/db_common.h
  typedef void (*db_quote_callback_t) (DICT *, const char *, VSTRING *);
  
  extern int db_common_parse(DICT *, void **, const char *, int);
-diff -Naur a/src/global/dict_ldap.c b/src/global/dict_ldap.c
+diff '--color=auto' -Naur a/src/global/dict_ldap.c b/src/global/dict_ldap.c
 --- a/src/global/dict_ldap.c	2025-06-24 23:24:27.000000000 +0200
-+++ b/src/global/dict_ldap.c	2026-06-03 11:48:21.719629141 +0200
++++ b/src/global/dict_ldap.c	2026-06-10 17:07:53.528260443 +0200
 @@ -1347,8 +1347,9 @@
       * On to the search.
       */
@@ -466,9 +466,9 @@ diff -Naur a/src/global/dict_ldap.c b/src/global/dict_ldap.c
      db_common_parse_domain(dict_ldap->parser, dict_ldap->ctx);
  
      /*
-diff -Naur a/src/global/dict_memcache.c b/src/global/dict_memcache.c
+diff '--color=auto' -Naur a/src/global/dict_memcache.c b/src/global/dict_memcache.c
 --- a/src/global/dict_memcache.c	2025-06-23 23:41:49.000000000 +0200
-+++ b/src/global/dict_memcache.c	2026-06-03 11:48:21.719868268 +0200
++++ b/src/global/dict_memcache.c	2026-06-10 17:07:53.528511753 +0200
 @@ -630,7 +630,7 @@
       */
      dict_mc->dbc_ctxt = 0;
@@ -478,9 +478,9 @@ diff -Naur a/src/global/dict_memcache.c b/src/global/dict_memcache.c
      db_common_parse_domain(dict_mc->parser, dict_mc->dbc_ctxt);
      if (db_common_dict_partial(dict_mc->dbc_ctxt))
  	/* Breaks recipient delimiters */
-diff -Naur a/src/global/dict_mysql.c b/src/global/dict_mysql.c
+diff '--color=auto' -Naur a/src/global/dict_mysql.c b/src/global/dict_mysql.c
 --- a/src/global/dict_mysql.c	2025-06-24 23:24:27.000000000 +0200
-+++ b/src/global/dict_mysql.c	2026-06-03 11:48:21.720180622 +0200
++++ b/src/global/dict_mysql.c	2026-06-10 17:07:53.528542914 +0200
 @@ -732,8 +732,9 @@
       */
      dict_mysql->ctx = 0;
@@ -493,9 +493,9 @@ diff -Naur a/src/global/dict_mysql.c b/src/global/dict_mysql.c
      db_common_parse_domain(p, dict_mysql->ctx);
  
      /*
-diff -Naur a/src/global/dict_pgsql.c b/src/global/dict_pgsql.c
+diff '--color=auto' -Naur a/src/global/dict_pgsql.c b/src/global/dict_pgsql.c
 --- a/src/global/dict_pgsql.c	2026-05-01 20:53:40.000000000 +0200
-+++ b/src/global/dict_pgsql.c	2026-06-03 11:48:21.720368167 +0200
++++ b/src/global/dict_pgsql.c	2026-06-10 17:07:53.528608955 +0200
 @@ -666,8 +666,9 @@
       */
      dict_pgsql->ctx = 0;
@@ -508,9 +508,9 @@ diff -Naur a/src/global/dict_pgsql.c b/src/global/dict_pgsql.c
      db_common_parse_domain(p, dict_pgsql->ctx);
  
      /*
-diff -Naur a/src/global/dict_sqlite.c b/src/global/dict_sqlite.c
+diff '--color=auto' -Naur a/src/global/dict_sqlite.c b/src/global/dict_sqlite.c
 --- a/src/global/dict_sqlite.c	2025-06-24 23:24:27.000000000 +0200
-+++ b/src/global/dict_sqlite.c	2026-06-03 11:48:21.720619275 +0200
++++ b/src/global/dict_sqlite.c	2026-06-10 17:07:53.528642280 +0200
 @@ -320,8 +320,9 @@
       */
      dict_sqlite->ctx = 0;
@@ -523,9 +523,9 @@ diff -Naur a/src/global/dict_sqlite.c b/src/global/dict_sqlite.c
      db_common_parse_domain(dict_sqlite->parser, dict_sqlite->ctx);
  
      /*
-diff -Naur a/src/global/mail_params.h b/src/global/mail_params.h
+diff '--color=auto' -Naur a/src/global/mail_params.h b/src/global/mail_params.h
 --- a/src/global/mail_params.h	2026-03-10 23:57:57.000000000 +0100
-+++ b/src/global/mail_params.h	2026-06-03 11:48:56.177513501 +0200
++++ b/src/global/mail_params.h	2026-06-10 17:07:53.528703472 +0200
 @@ -2997,7 +2997,7 @@
  extern char *var_verify_service;
  
