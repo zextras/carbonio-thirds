@@ -82,9 +82,10 @@ sha256sums=(
 _package() {
   cd "${srcdir}/postfix-${pkgver}"
   # makedefs ignores sample_directory and the postconf shim resolves it to
-  # empty; pass it here or postfix refuses to start (bad string length 0 < 1).
+  # empty; set it here or postfix refuses to start (bad string length 0 < 1).
+  # "no" disables it like html_directory/readme_directory.
   sh postfix-install -non-interactive-package install_root="${pkgdir}" \
-    sample_directory=/opt/zextras/common/conf
+    sample_directory=no
 
   # Fail the build if the shim left any install parameter empty in main.cf.
   if grep -qE '^[a-z_]+_(directory|path|owner|group) *= *$' \
