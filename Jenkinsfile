@@ -1,5 +1,5 @@
 library(
-    identifier: 'jenkins-lib-common@v2.9.2',
+    identifier: 'jenkins-lib-common@v2.11.2',
     retriever: modernSCM([
         $class: 'GitSCMSource',
         credentialsId: 'jenkins-integration-with-github-account',
@@ -26,11 +26,19 @@ pipeline {
         stage('Setup') {
             steps {
                 checkout scm
-                script {
-                    gitMetadata()
-                }
+                gitMetadata()
                 stash includes: '**', name: 'project'
             }
+        }
+
+        stage('Skip CI') {
+            steps {
+                script { semanticRelease.guard() }
+            }
+        }
+
+        stage('Security Scan') {
+            steps { gitleaksStage() }
         }
 
         stage('SonarQube analysis') {
