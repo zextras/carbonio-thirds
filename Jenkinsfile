@@ -1,5 +1,5 @@
 library(
-    identifier: 'jenkins-lib-common@1.3.1',
+    identifier: 'jenkins-lib-common@v2.9.2',
     retriever: modernSCM([
         $class: 'GitSCMSource',
         credentialsId: 'jenkins-integration-with-github-account',
@@ -33,46 +33,24 @@ pipeline {
             }
         }
 
-        stage('SonarQube analysis') {
-            steps {
-                unstash 'project'
-                script {
-                    scannerHome = tool 'SonarScanner'
-                }
-                withSonarQubeEnv(credentialsId: 'sonarqube-user-token',
-                    installationName: 'SonarQube instance') {
-                    sh "${scannerHome}/bin/sonar-scanner"
-                }
-            }
-        }
-
         stage('Build deb/rpm') {
             steps {
                 echo 'Building deb/rpm packages'
                 buildStage(
-                    buildDirs: ['native', 'perl'],
+                    addCarbonioRepos: true,
+                    parallelBuilds: false,
+                    prepare: true,
+                    debugSymbols: env.TAG_NAME as boolean,
+                )
+                buildStage(
+                    addCarbonioRepos: true,
+                    architecture: 'aarch64',
+                    distros: ['ubuntu-jammy'],
                     parallelBuilds: false,
                     prepare: true,
                 )
             }
         }
 
-        stage('Upload artifacts')
-        {
-            tools {
-                jfrog 'jfrog-cli'
-            }
-            steps {
-                uploadStage(
-                    packages: yapHelper.getPackageNamesFromFiles(
-                        ['native/yap.json', 'perl/yap.json'] as Set
-                    ),
-                    exclusionMap: [
-                        'carbonio-perl-xml-parser': ['*xml-parser-lite*.rpm'],
-                        'carbonio-perl-xml-sax'   : ['*xml-sax-base*.rpm', '*xml-sax-expat*.rp']
-                    ]
-                )
-            }
-        }
     }
 }
