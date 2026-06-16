@@ -45,14 +45,14 @@ source=(
   "${pkgname}.service"
   "${pkgname}-${pkgver}.patch"
   "systemd-tmpfile.conf"
-  "cve/CVE-2026-9256.patch"
-  "cve/CVE-2026-40701.patch"
-  "cve/CVE-2026-40460.patch"
-  "cve/CVE-2026-42934.patch"
-  "cve/CVE-2026-42945.patch"
-  "cve/CVE-2026-42946-1.patch"
-  "cve/CVE-2026-42946-2.patch"
-  "cve/CVE-2026-49975.patch"
+  "CVE-2026-9256.patch"
+  "CVE-2026-40701.patch"
+  "CVE-2026-40460.patch"
+  "CVE-2026-42934.patch"
+  "CVE-2026-42945.patch"
+  "CVE-2026-42946-1.patch"
+  "CVE-2026-42946-2.patch"
+  "CVE-2026-49975.patch"
 )
 sha256sums=(
   '2c96a946bfb0882a21744ed429770a2123ae1828c7c48665092993ddee91a918'
@@ -133,14 +133,14 @@ build() {
   patch -Np1 -i "${srcdir}/${pkgname}-${pkgver}.patch"
 
   # Apply CVE patches
-  patch -Np1 -i "${srcdir}/cve/CVE-2026-9256.patch"
-  patch -Np1 -i "${srcdir}/cve/CVE-2026-40701.patch"
-  patch -Np1 -i "${srcdir}/cve/CVE-2026-40460.patch"
-  patch -Np1 -i "${srcdir}/cve/CVE-2026-42934.patch"
-  patch -Np1 -i "${srcdir}/cve/CVE-2026-42945.patch"
-  patch -Np1 -i "${srcdir}/cve/CVE-2026-42946-1.patch"
-  patch -Np1 -i "${srcdir}/cve/CVE-2026-42946-2.patch"
-  patch -Np1 -i "${srcdir}/cve/CVE-2026-49975.patch"
+  patch -Np1 -i "${srcdir}/CVE-2026-9256.patch"
+  patch -Np1 -i "${srcdir}/CVE-2026-40701.patch"
+  patch -Np1 -i "${srcdir}/CVE-2026-40460.patch"
+  patch -Np1 -i "${srcdir}/CVE-2026-42934.patch"
+  patch -Np1 -i "${srcdir}/CVE-2026-42945.patch"
+  patch -Np1 -i "${srcdir}/CVE-2026-42946-1.patch"
+  patch -Np1 -i "${srcdir}/CVE-2026-42946-2.patch"
+  patch -Np1 -i "${srcdir}/CVE-2026-49975.patch"
 
   ./configure \
     --add-module="${srcdir}/nginx-brotli" \
