@@ -333,12 +333,6 @@
       "name": "innotop"
     },
     {
-      "name": "pflogsumm"
-    },
-    {
-      "name": "policyd"
-    },
-    {
       "name": "spamassassin-rules"
     }
   ]
