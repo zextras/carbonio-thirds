@@ -121,6 +121,10 @@ _prerm_systemd() {
 
 build() {
   cd "${srcdir}/postfix-${pkgver}"
+
+	sed -Ei 's/(Linux.\[3456)/\17/g' makedefs
+	sed -i 's/|| defined(LINUX6)/|| defined(LINUX6) || defined(LINUX7)/g' src/util/sys_defs.h
+
   patch -Np1 -i "${srcdir}/carbonio-postfix.patch"
 
   make makefiles \

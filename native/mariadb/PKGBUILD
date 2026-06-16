@@ -83,9 +83,7 @@ makedepends__yum=(
 )
 section="utils"
 priority="optional"
-source=(
-  "https://mirrors.ircam.fr/pub/mariadb/mariadb-${pkgver}/source/mariadb-${pkgver}.tar.gz"
-)
+source=("https://mirror.mva-n.net/mariadb/mariadb-${pkgver}/source/mariadb-${pkgver}.tar.gz")
 sha256sums=('e4f9f2035d38345464ae8abaeaf68380d1ceadbafb4e84744ed2ed5b7aab64e7')
 
 build() {
