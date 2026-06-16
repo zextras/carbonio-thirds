@@ -1,5 +1,5 @@
 library(
-    identifier: 'jenkins-lib-common@v1.7.5',
+    identifier: 'jenkins-lib-common@1.7.5',
     retriever: modernSCM([
         $class: 'GitSCMSource',
         credentialsId: 'jenkins-integration-with-github-account',
@@ -38,16 +38,10 @@ pipeline {
                 echo 'Building deb/rpm packages'
                 buildStage(
                     addCarbonioRepos: true,
+                    buildDirs: ['native', 'perl'],
                     parallelBuilds: false,
                     prepare: true,
-                    debugSymbols: env.TAG_NAME as boolean,
-                )
-                buildStage(
-                    addCarbonioRepos: true,
-                    architecture: 'aarch64',
-                    distros: ['ubuntu-jammy'],
-                    parallelBuilds: false,
-                    prepare: true,
+                    debugSymbols: true,
                 )
             }
         }
