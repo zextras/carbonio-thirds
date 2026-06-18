@@ -28,16 +28,16 @@ build() {
   _cross_prefix_flag=""
   if [ -n "${CROSS_COMPILE}" ]; then
     case "${CROSS_COMPILE_HOST}" in
-    aarch64-*) _openssl_target="linux-aarch64" ;;
-    arm-* | armv7-*) _openssl_target="linux-armv4" ;;
-    powerpc64le-*) _openssl_target="linux-ppc64le" ;;
-    s390x-*) _openssl_target="linux64-s390x" ;;
-    riscv64-*) _openssl_target="linux64-riscv64" ;;
-    i686-*) _openssl_target="linux-x86" ;;
-    *)
-      echo "openssl: unsupported CROSS_COMPILE_HOST=${CROSS_COMPILE_HOST}" >&2
-      exit 1
-      ;;
+      aarch64-*) _openssl_target="linux-aarch64" ;;
+      arm-* | armv7-*) _openssl_target="linux-armv4" ;;
+      powerpc64le-*) _openssl_target="linux-ppc64le" ;;
+      s390x-*) _openssl_target="linux64-s390x" ;;
+      riscv64-*) _openssl_target="linux64-riscv64" ;;
+      i686-*) _openssl_target="linux-x86" ;;
+      *)
+        echo "openssl: unsupported CROSS_COMPILE_HOST=${CROSS_COMPILE_HOST}" >&2
+        exit 1
+        ;;
     esac
     _cross_prefix_flag="--cross-compile-prefix=${CROSS_COMPILE}"
   fi

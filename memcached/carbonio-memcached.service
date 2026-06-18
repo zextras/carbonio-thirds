@@ -16,7 +16,11 @@ PrivateTmp=true
 
 # Mounts the /usr, /boot, and /etc directories read-only for processes
 # invoked by this unit.
-ProtectSystem=strict
+#ProtectSystem=strict
+ProtectSystem=yes
+ReadOnlyPaths=/usr
+ReadOnlyPaths=/boot
+ReadOnlyPaths=/efi
 ProtectHome=yes
 LockPersonality=yes
 ProtectHostname=yes
