@@ -1,5 +1,7 @@
 [Unit]
 Description=Carbonio OpenLDAP Daemon
+After=network.target network-online.target nss-lookup.target
+Wants=network-online.target
 PartOf=carbonio-directory-server.target
 
 [Service]
