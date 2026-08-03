@@ -1,6 +1,6 @@
 pkgname="carbonio-openldap"
 pkgver="2.6.13" # renovate: datasource=github-tags depName=openldap/openldap  extractVersion=^OPENLDAP_REL_ENG_(?<version>.+)$ versioning=regex:^(?<major>\d+)_(?<minor>\d+)(_(?<patch>\d+))?$
-pkgrel="2"
+pkgrel="3"
 pkgdesc="Lightweight Directory Access Protocol (LDAP) library"
 arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -127,6 +127,19 @@ build() {
     _cross_flags="--with-yielding_select=yes"
     export PKG_CONFIG_LIBDIR="/opt/zextras/common/lib/pkgconfig:/opt/zextras/common/lib64/pkgconfig:/usr/lib/${CROSS_COMPILE_HOST}/pkgconfig:/usr/share/pkgconfig"
     unset PKG_CONFIG_PATH
+    # IN-1179: libtool's "can dlopen itself" probe (lt_cv_dlopen_self) is an
+    # AC_RUN_IFELSE test that cannot execute a target-arch binary while
+    # cross-compiling, so configure caches it as "cross" and the generated
+    # libtool script ends up with dlopen_self=unknown instead of yes. With
+    # that, libtool's handling of slapd's "-dlopen self" link flag (used for
+    # --enable-modules) never auto-appends -Wl,--export-dynamic, so the
+    # cross-built slapd exports almost no symbols and every backend/overlay
+    # .so fails to dlopen ("file not found" from libltdl is misleading — the
+    # real cause is unresolved slapd-internal symbols). dlopen(NULL) self-
+    # visibility is a glibc/Linux property independent of target CPU, so it
+    # is safe to pre-seed the same "yes" answer a native build would get.
+    export lt_cv_dlopen_self=yes
+    export lt_cv_dlopen_self_static=yes
   fi
   # Absorb liblutil.a into libldap.so so lutil_* symbols resolve on native + cross.
   _patch_liblutil_link() {
