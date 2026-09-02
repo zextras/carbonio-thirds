@@ -7,6 +7,10 @@
       "Action": "allow"
     },
     {
+      "Name": "carbonio-proxy",
+      "Action": "allow"
+    },
+    {
       "Name": "carbonio-mailbox-internal-api",
       "Action": "allow"
     }
