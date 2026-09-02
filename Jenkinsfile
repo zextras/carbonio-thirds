@@ -33,6 +33,12 @@ pipeline {
             }
         }
 
+        stage('Skip CI') {
+            steps {
+                script { semanticRelease.guard() }
+            }
+        }
+
         stage('SonarQube analysis') {
             steps {
                 unstash 'project'
