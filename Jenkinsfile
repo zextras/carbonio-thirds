@@ -33,6 +33,12 @@ pipeline {
             }
         }
 
+        stage('Skip CI') {
+            steps {
+                script { semanticRelease.guard() }
+            }
+        }
+
         stage('SonarQube analysis') {
             steps {
                 unstash 'project'
@@ -85,6 +91,12 @@ pipeline {
                     distros: ['ubuntu-jammy'],
                     yapPath: 'yap.json',
                 )
+            }
+        }
+
+        stage('Semantic Release') {
+            steps {
+                semanticRelease()
             }
         }
     }
