@@ -53,8 +53,8 @@ diff '--color=auto' -Naur a/lib/checkpw.c b/lib/checkpw.c
 +	clientipport="unknown;unknown";
 +    }
 +
-+    _sasl_log(conn, SASL_LOG_DEBUG, "saslauthd_verify_password: userid=%s, passwd=%s, service=%s, user_realm=%s, clientipport=%s",
-+        userid, passwd, service, user_realm, clientipport);
++    _sasl_log(conn, SASL_LOG_DEBUG, "saslauthd_verify_password: userid=%s, service=%s, user_realm=%s, clientipport=%s",
++        userid, service, user_realm, clientipport);
  
      /* check to see if the user configured a rundir */
      if (_sasl_getcallback(conn, SASL_CB_GETOPT,
@@ -956,8 +956,8 @@ diff '--color=auto' -Naur a/saslauthd/zmauth.c b/saslauthd/zmauth.c
 +        u = elect_zmurl (zmrr);
 +      } else {
 +          syslog (LOG_DEBUG,
-+            "zmpost: url='%s' returned buffer->data='%s', hti->error='%s'",
-+            hti->url, buffer->data, hti->error);
++            "zmpost: url='%s' returned %d bytes, hti->error='%s'",
++            hti->url, buffer->length, hti->error);
 +      }
 +  }
 +
