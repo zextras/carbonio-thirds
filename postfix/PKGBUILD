@@ -1,6 +1,6 @@
 pkgname="carbonio-postfix"
-pkgver="3.11.3" # renovate: datasource=repology depName=arch/postfix
-pkgrel="2"
+pkgver="3.11.7" # renovate: datasource=repology depName=arch/postfix
+pkgrel="1"
 pkgdesc="Fast, easy to administer, secure mail server"
 arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -69,7 +69,7 @@ source=(
   "uname-wrap"
 )
 sha256sums=(
-  'bd11dcc463d7045e40f2c11cc00216489c73b58cc40b3d06c54265b088a173e1'
+  'a2f3242345753448072177fae83c322a403c9263696996406201145dab8e8625'
   '1cb01fe1f452fd9b64db087e5e9f926d80fd265b48b5eae70b32a18f62255d03'
   '1cfe3fd5c8d8d0acdcd84b94c35479084bc8486a6cc7f4b4d83dd12dd09299f5'
   '2cb2fc12b76e21e5566e627dabc872628949f3f238750ed4c0c137b6f84d19a6'
