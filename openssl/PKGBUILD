@@ -1,5 +1,5 @@
 pkgname="carbonio-openssl"
-pkgver="3.6.3" # renovate: datasource=repology depName=arch/openssl
+pkgver="3.6.4" # renovate: datasource=repology depName=arch/openssl
 pkgrel="1"
 pkgdesc="Zextras's Secure Socket Layer build"
 arch=('aarch64' 'x86_64')
@@ -19,7 +19,7 @@ options=('!staticlibs')
 source=(
   "https://github.com/openssl/openssl/releases/download/openssl-${pkgver}/openssl-${pkgver}.tar.gz"
 )
-sha256sums=('243a86649cf6f23eeb6a2ff2456e09e5d77dd9018a54d3d96b0c6bdd6ba6c7f1')
+sha256sums=('9bffaa1ad1e07b354c21bd3324ec02fa15579f45a7d0494b3e74bc449b7333ef')
 
 build() {
   cd "${srcdir}/openssl-${pkgver}"
