@@ -202,6 +202,16 @@ echo " $ngx_size bytes (crossbuild aarch64)"' \
       exit 1
     }
 
+    # auto/endianness execs the target-arch test binary and, when that fails,
+    # reports "big endian": NGX_HAVE_LITTLE_ENDIAN stays undefined and the
+    # HTTP/2 HPACK Huffman encoder emits corrupt headers. aarch64 is little-endian.
+    sed -i 's|^    if \$NGX_AUTOTEST >/dev/null 2>&1; then$|    if true; then|' \
+      "${srcdir}/nginx-${pkgver}/auto/endianness"
+    grep -q '^    if true; then$' "${srcdir}/nginx-${pkgver}/auto/endianness" || {
+      echo "nginx: auto/endianness cross patch did not apply — upstream may have changed" >&2
+      exit 1
+    }
+
     # nginx-brotli hardcodes -L<bundled>/out for brotli libs; cross-build brotli
     # for aarch64 using cmake toolchain and place libs in the expected out/ dir
     _brotli_src="${srcdir}/nginx-brotli/deps/brotli"
