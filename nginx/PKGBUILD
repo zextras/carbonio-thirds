@@ -63,6 +63,7 @@ source=(
   "lua_default_path.patch"
   "lua_luajit_warning.patch"
   "sd_notify.patch"
+  "endianness_cross.patch"
   "stream_lua_default_path.patch"
   "stream_lua_luajit_warning.patch"
   "systemd-tmpfile.conf"
@@ -82,6 +83,7 @@ sha256sums=(
   '5ee2be98ad3619ec851f697fc0b32cd6c5d7e4ceb81d266e26a03bf627c59fbe'
   '0934df2c7cc8288c99293c383abedcea7ac05aac9209dedaf3d65641e2fc726f'
   'acbaaf5bf119bdf6b14408b01bb198c32f9ea7a382ae139aae02fbb76c0a6e40'
+  'c61a268071994d9985d584d50430c393d3e5604353f3b992b108adfafef905c7'
   '921afab08ef59372abb079337acbb3d995c03595113eabdc97f2f8041a26aae2'
   '47bdb8793c109e6aed69b1d47b3c665508b21133169cc123012a0328223ef2d3'
   '0d9bf766db1f5e64bd6f8766f22735f7af5cffed4759e15b0d99dd9da4ce9ee2'
@@ -152,6 +154,7 @@ prepare() {
   cd "${srcdir}/nginx-${pkgver}"
   patch -Np1 --forward -r - -i "${srcdir}/${pkgname}-${pkgver}.patch" || [ $? -eq 1 ]
   patch -Np1 --forward -r - -i "${srcdir}/sd_notify.patch" || [ $? -eq 1 ]
+  patch -Np1 --forward -r - -i "${srcdir}/endianness_cross.patch" || [ $? -eq 1 ]
 
   cd "${srcdir}/lua-nginx-module"
   patch -Np1 --forward -r - -i "${srcdir}/lua_default_path.patch" || [ $? -eq 1 ]
