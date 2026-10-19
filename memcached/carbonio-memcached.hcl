@@ -8,5 +8,5 @@ services {
     sidecar_service { }
   }
   name = "carbonio-memcached"
-  port = 443
+  port = 11211
 }
