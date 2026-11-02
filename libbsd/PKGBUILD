@@ -1,6 +1,6 @@
 pkgname="carbonio-libbsd"
-pkgver="0.10.0" # renovate: datasource=github-tags depName=guillemj/libbsd
-pkgrel="3"
+pkgver="0.12.2" # renovate: datasource=github-tags depName=guillemj/libbsd
+pkgrel="1"
 pkgdesc="Provides useful functions commonly found on BSD systems like strlcpy()"
 arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -28,7 +28,7 @@ options=('!libtool' '!staticlibs')
 source=(
   "https://github.com/guillemj/libbsd/archive/refs/tags/${pkgver}.tar.gz"
 )
-sha256sums=('00d0a39eb5334cae476be30027a63370cf9427242af66a70505699ffc83451d7')
+sha256sums=('d788da8d5d73f3f2575559233bb004615547f989322d0517a89411d1e08b5f7a')
 
 build() {
   cd "${srcdir}/libbsd-${pkgver}"
