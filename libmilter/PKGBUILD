@@ -1,6 +1,6 @@
 pkgname="carbonio-libmilter"
-pkgver="8.17.1" # renovate: datasource=repology depName=arch/libmilter
-pkgrel="2"
+pkgver="8.18.2" # renovate: datasource=repology depName=arch/libmilter
+pkgrel="1"
 pkgdesc="Implementation of the sendmail Mail Filter API"
 arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -12,7 +12,7 @@ source=(
   "https://ftp.sendmail.org/sendmail.${pkgver}.tar.gz"
   "site.config.m4"
 )
-sha256sums=('04bc76b6c886e6d111be7fd8daa32b8ce00128a288b6b52e067bc29f3854a6e6'
+sha256sums=('1a085faa8ace52cffde2f5e9bc611bdb5f81481caaabf46f0437b719ca089d2f'
   '9ea8ce8a8fc6179da65d0e9b7b6d7016d9a3f38070db4acce56d17a8d78ed3ad')
 
 build() {
