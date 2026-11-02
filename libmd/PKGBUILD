@@ -12,16 +12,6 @@ depends__apt=(
 depends__yum=(
   "glibc"
 )
-makedepends__apt=(
-  "autoconf"
-  "automake"
-  "libtool"
-)
-makedepends__yum=(
-  "autoconf"
-  "automake"
-  "libtool"
-)
 section="libs"
 priority="important"
 options=('!libtool' '!staticlibs')
@@ -42,10 +32,10 @@ build() {
     _build_flag="--build=$(gcc -dumpmachine)"
   fi
 
-  # The tarball ships automake 1.19 output; regenerate it with the build host's
-  # autotools, otherwise make re-runs the missing automake-1.19.
-  echo "${pkgver}" >.dist-version
-  autoreconf -fiv
+  # Use the shipped configure: its configure.ac does not regenerate with
+  # autoconf 2.69 (RHEL 8). Extraction does not keep mtimes, so make would
+  # try to rerun the shipped automake-1.19 rules; turn those tools into no-ops.
+  ACLOCAL=true AUTOCONF=true AUTOHEADER=true AUTOMAKE=true \
   ./configure \
     --prefix=/opt/zextras/common \
     --disable-static \
