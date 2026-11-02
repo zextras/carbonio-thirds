@@ -12,6 +12,16 @@ depends__apt=(
 depends__yum=(
   "glibc"
 )
+makedepends__apt=(
+  "autoconf"
+  "automake"
+  "libtool"
+)
+makedepends__yum=(
+  "autoconf"
+  "automake"
+  "libtool"
+)
 section="libs"
 priority="important"
 options=('!libtool' '!staticlibs')
@@ -32,6 +42,10 @@ build() {
     _build_flag="--build=$(gcc -dumpmachine)"
   fi
 
+  # The tarball ships automake 1.19 output; regenerate it with the build host's
+  # autotools, otherwise make re-runs the missing automake-1.19.
+  echo "${pkgver}" >.dist-version
+  autoreconf -fiv
   ./configure \
     --prefix=/opt/zextras/common \
     --disable-static \
