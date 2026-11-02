@@ -18,6 +18,10 @@
       "install": true
     },
     {
+      "name": "libmd",
+      "install": true
+    },
+    {
       "name": "libbsd",
       "install": true
     },

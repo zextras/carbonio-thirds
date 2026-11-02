@@ -1,0 +1,47 @@
+pkgname="carbonio-libmd"
+pkgver="1.3.0" # renovate: datasource=repology depName=arch/libmd
+pkgrel="1"
+pkgdesc="Message Digest functions from BSD systems"
+arch=('aarch64' 'x86_64')
+maintainer="Zextras <packages@zextras.com>"
+url="https://github.com/zextras"
+license=('BSD-3-Clause AND BSD-2-Clause AND ISC AND Beerware AND LicenseRef-public-domain')
+depends__apt=(
+  "libc6"
+)
+depends__yum=(
+  "glibc"
+)
+section="libs"
+priority="important"
+options=('!libtool' '!staticlibs')
+source=(
+  "https://archive.hadrons.org/software/libmd/libmd-${pkgver}.tar.xz"
+)
+sha256sums=('fc0f1eb6b6766470326f2c014693809190e67dba84274a6fbae9d4912d066706')
+
+build() {
+  cd "${srcdir}/libmd-${pkgver}"
+  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
+  export CFLAGS="-fPIC -ffile-prefix-map=${srcdir}=."
+
+  _host_flag=""
+  _build_flag=""
+  if [ -n "${CROSS_COMPILE}" ]; then
+    _host_flag="--host=${CROSS_COMPILE_HOST}"
+    _build_flag="--build=$(gcc -dumpmachine)"
+  fi
+
+  ./configure \
+    --prefix=/opt/zextras/common \
+    --disable-static \
+    ${_host_flag} ${_build_flag}
+  _jobs=$(($(nproc) / 2))
+  [ "$_jobs" -lt 1 ] && _jobs=1
+  make -j"$_jobs"
+}
+
+package() {
+  cd "${srcdir}/libmd-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+}

@@ -7,9 +7,11 @@ maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('BSD-2-Clause AND BSD-3-Clause AND Beerware AND ISC AND MIT AND LicenseRef-public-domain')
 depends__apt=(
+  "carbonio-libmd"
   "libc6"
 )
 depends__yum=(
+  "carbonio-libmd"
   "glibc"
 )
 makedepends__apt=(
@@ -32,7 +34,9 @@ sha256sums=('d788da8d5d73f3f2575559233bb004615547f989322d0517a89411d1e08b5f7a')
 
 build() {
   cd "${srcdir}/libbsd-${pkgver}"
-  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
+  export LDFLAGS="-L/opt/zextras/common/lib -Wl,-rpath,/opt/zextras/common/lib"
+  export CPPFLAGS="-I/opt/zextras/common/include"
+  export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
   export CFLAGS="-fPIC -D_REENTRANT -ffile-prefix-map=${srcdir}=."
   export CXXFLAGS="-fPIC -D_REENTRANT -ffile-prefix-map=${srcdir}=."
 
