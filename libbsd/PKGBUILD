@@ -1,15 +1,17 @@
 pkgname="carbonio-libbsd"
-pkgver="0.10.0" # renovate: datasource=github-tags depName=guillemj/libbsd
-pkgrel="3"
+pkgver="0.12.2" # renovate: datasource=github-tags depName=guillemj/libbsd
+pkgrel="1"
 pkgdesc="Provides useful functions commonly found on BSD systems like strlcpy()"
 arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('BSD-2-Clause AND BSD-3-Clause AND Beerware AND ISC AND MIT AND LicenseRef-public-domain')
 depends__apt=(
+  "carbonio-libmd"
   "libc6"
 )
 depends__yum=(
+  "carbonio-libmd"
   "glibc"
 )
 makedepends__apt=(
@@ -28,11 +30,13 @@ options=('!libtool' '!staticlibs')
 source=(
   "https://github.com/guillemj/libbsd/archive/refs/tags/${pkgver}.tar.gz"
 )
-sha256sums=('00d0a39eb5334cae476be30027a63370cf9427242af66a70505699ffc83451d7')
+sha256sums=('d788da8d5d73f3f2575559233bb004615547f989322d0517a89411d1e08b5f7a')
 
 build() {
   cd "${srcdir}/libbsd-${pkgver}"
-  export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
+  export LDFLAGS="-L/opt/zextras/common/lib -Wl,-rpath,/opt/zextras/common/lib"
+  export CPPFLAGS="-I/opt/zextras/common/include"
+  export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig"
   export CFLAGS="-fPIC -D_REENTRANT -ffile-prefix-map=${srcdir}=."
   export CXXFLAGS="-fPIC -D_REENTRANT -ffile-prefix-map=${srcdir}=."
 
