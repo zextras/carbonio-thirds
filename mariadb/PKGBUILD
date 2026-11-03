@@ -290,22 +290,26 @@ postinst__ubuntu_jammy() {
         su - zextras -c 'zmmailboxdctl stop'
         su - zextras -c 'mysql.server restart'
 
-        # Retrieve settings values from LocalConfigCLI.
-        # shutil is avoided cause of default use of "#!/bin/sh"
-        # in postinstall and shebang compatibility with shutil
-        eval "$(/opt/zextras/common/bin/java \
-          -client \
-          -cp '/opt/zextras/mailbox/jars/*' \
-          -Djava.library.path=/opt/zextras/lib \
-          -Dzimbra.home=/opt/zextras \
-          com.zimbra.cs.localconfig.LocalConfigCLI -q -m shell || :)"
+        # Retrieve settings values through zmlocalconfig (works with both
+        # the legacy Java implementation and the configd wrapper).
+        lc_settings=""
+        if lc_settings="$(/opt/zextras/bin/zmlocalconfig -q -s -m shell)" && [ -n "$lc_settings" ]; then
+          eval "$lc_settings"
+        else
+          lc_settings=""
+        fi
 
-        /opt/zextras/common/bin/mariadb-upgrade \
-          --user="root" \
-          --host="${mysql_bind_address}" \
-          --port="${mysql_port}" \
-          --password="${mysql_root_password}" \
-          --socket="/run/carbonio/mysql.sock"
+        if [ -n "$lc_settings" ] && [ -n "${mysql_root_password}" ]; then
+          /opt/zextras/common/bin/mariadb-upgrade \
+            --user="root" \
+            --host="${mysql_bind_address}" \
+            --port="${mysql_port}" \
+            --password="${mysql_root_password}" \
+            --socket="/run/carbonio/mysql.sock"
+        else
+          echo "ERROR: unable to read MariaDB settings from zmlocalconfig;" >&2
+          echo "ERROR: skipping mariadb-upgrade, run it manually after the upgrade." >&2
+        fi
 
         # Restart both appserver and its db
         su - zextras -c 'mysql.server restart'
@@ -353,22 +357,26 @@ postinst__ubuntu_noble() {
         systemctl restart carbonio-appserver-db.service &>/dev/null || :
         sleep 10
 
-        # Retrieve settings values from LocalConfigCLI.
-        # shutil is avoided cause of default use of "#!/bin/sh"
-        # in postinstall and shebang compatibility with shutil
-        eval "$(/opt/zextras/common/bin/java \
-          -client \
-          -cp '/opt/zextras/mailbox/jars/*' \
-          -Djava.library.path=/opt/zextras/lib \
-          -Dzimbra.home=/opt/zextras \
-          com.zimbra.cs.localconfig.LocalConfigCLI -q -m shell || :)"
+        # Retrieve settings values through zmlocalconfig (works with both
+        # the legacy Java implementation and the configd wrapper).
+        lc_settings=""
+        if lc_settings="$(/opt/zextras/bin/zmlocalconfig -q -s -m shell)" && [ -n "$lc_settings" ]; then
+          eval "$lc_settings"
+        else
+          lc_settings=""
+        fi
 
-        /opt/zextras/common/bin/mariadb-upgrade \
-          --user="root" \
-          --host="${mysql_bind_address}" \
-          --port="${mysql_port}" \
-          --password="${mysql_root_password}" \
-          --socket="/run/carbonio/mysql.sock"
+        if [ -n "$lc_settings" ] && [ -n "${mysql_root_password}" ]; then
+          /opt/zextras/common/bin/mariadb-upgrade \
+            --user="root" \
+            --host="${mysql_bind_address}" \
+            --port="${mysql_port}" \
+            --password="${mysql_root_password}" \
+            --socket="/run/carbonio/mysql.sock"
+        else
+          echo "ERROR: unable to read MariaDB settings from zmlocalconfig;" >&2
+          echo "ERROR: skipping mariadb-upgrade, run it manually after the upgrade." >&2
+        fi
 
         # Restart both appserver and its db
         systemctl restart carbonio-appserver-db.service &>/dev/null || :
@@ -415,22 +423,26 @@ postinst__rocky_8() {
       su - zextras -c 'zmmailboxdctl stop'
       su - zextras -c 'mysql.server restart'
 
-      # Retrieve settings values from LocalConfigCLI.
-      # shutil is avoided cause of default use of "#!/bin/sh"
-      # in postinstall and shebang compatibility with shutil
-      eval "$(/opt/zextras/common/bin/java \
-        -client \
-        -cp '/opt/zextras/mailbox/jars/*' \
-        -Djava.library.path=/opt/zextras/lib \
-        -Dzimbra.home=/opt/zextras \
-        com.zimbra.cs.localconfig.LocalConfigCLI -q -m shell || :)"
+      # Retrieve settings values through zmlocalconfig (works with both
+      # the legacy Java implementation and the configd wrapper).
+      lc_settings=""
+      if lc_settings="$(/opt/zextras/bin/zmlocalconfig -q -s -m shell)" && [ -n "$lc_settings" ]; then
+        eval "$lc_settings"
+      else
+        lc_settings=""
+      fi
 
-      /opt/zextras/common/bin/mariadb-upgrade \
-        --user="root" \
-        --host="${mysql_bind_address}" \
-        --port="${mysql_port}" \
-        --password="${mysql_root_password}" \
-        --socket="/run/carbonio/mysql.sock"
+      if [ -n "$lc_settings" ] && [ -n "${mysql_root_password}" ]; then
+        /opt/zextras/common/bin/mariadb-upgrade \
+          --user="root" \
+          --host="${mysql_bind_address}" \
+          --port="${mysql_port}" \
+          --password="${mysql_root_password}" \
+          --socket="/run/carbonio/mysql.sock"
+      else
+        echo "ERROR: unable to read MariaDB settings from zmlocalconfig;" >&2
+        echo "ERROR: skipping mariadb-upgrade, run it manually after the upgrade." >&2
+      fi
 
       # Restart both appserver and its db
       su - zextras -c 'mysql.server restart'
@@ -476,22 +488,26 @@ postinst__rocky_9() {
       systemctl restart carbonio-appserver-db.service &>/dev/null || :
       sleep 10
 
-      # Retrieve settings values from LocalConfigCLI.
-      # shutil is avoided cause of default use of "#!/bin/sh"
-      # in postinstall and shebang compatibility with shutil
-      eval "$(/opt/zextras/common/bin/java \
-        -client \
-        -cp '/opt/zextras/mailbox/jars/*' \
-        -Djava.library.path=/opt/zextras/lib \
-        -Dzimbra.home=/opt/zextras \
-        com.zimbra.cs.localconfig.LocalConfigCLI -q -m shell || :)"
+      # Retrieve settings values through zmlocalconfig (works with both
+      # the legacy Java implementation and the configd wrapper).
+      lc_settings=""
+      if lc_settings="$(/opt/zextras/bin/zmlocalconfig -q -s -m shell)" && [ -n "$lc_settings" ]; then
+        eval "$lc_settings"
+      else
+        lc_settings=""
+      fi
 
-      /opt/zextras/common/bin/mariadb-upgrade \
-        --user="root" \
-        --host="${mysql_bind_address}" \
-        --port="${mysql_port}" \
-        --password="${mysql_root_password}" \
-        --socket="/run/carbonio/mysql.sock"
+      if [ -n "$lc_settings" ] && [ -n "${mysql_root_password}" ]; then
+        /opt/zextras/common/bin/mariadb-upgrade \
+          --user="root" \
+          --host="${mysql_bind_address}" \
+          --port="${mysql_port}" \
+          --password="${mysql_root_password}" \
+          --socket="/run/carbonio/mysql.sock"
+      else
+        echo "ERROR: unable to read MariaDB settings from zmlocalconfig;" >&2
+        echo "ERROR: skipping mariadb-upgrade, run it manually after the upgrade." >&2
+      fi
 
       # Restart both appserver and its db
       systemctl restart carbonio-appserver-db.service &>/dev/null || :
