@@ -1,0 +1,36 @@
+Fix the pthread TLS configure probe: pthread_{get,set}specific take the key by
+value. GCC >= 14 turns -Wint-conversion into an error, the probe fails, and the
+dbstl build stops with "No appropriate TLS modifier defined".
+Same fix as Arch/Gentoo (https://bugs.gentoo.org/918936); applied to the
+generated configure too so autoconf is not needed at build time.
+
+--- a/dist/configure
++++ b/dist/configure
+@@ -19371,10 +19371,10 @@
+              pthread_key_create(&key, NULL);
+          }
+          static void *get_tls() {
+-             return (void *)pthread_getspecific(&key);
++             return (void *)pthread_getspecific(key);
+          }
+          static void set_tls(void *p) {
+-              pthread_setspecific(&key, p);
++              pthread_setspecific(key, p);
+          }
+ int
+ main ()
+--- a/dist/aclocal/tls.m4
++++ b/dist/aclocal/tls.m4
+@@ -42,10 +42,10 @@
+              pthread_key_create(&key, NULL);
+          }
+          static void *get_tls() {
+-             return (void *)pthread_getspecific(&key);
++             return (void *)pthread_getspecific(key);
+          }
+          static void set_tls(void *p) {
+-              pthread_setspecific(&key, p);
++              pthread_setspecific(key, p);
+          }], [],
+          [ac_cv_tls=pthread])
+   fi
