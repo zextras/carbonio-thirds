@@ -31,9 +31,9 @@ section="libs"
 priority="important"
 options=('!libtool')
 source=(
-  "https://github.com/GNOME/libxml2/archive/refs/tags/v${pkgver}.tar.gz"
+  "https://download.gnome.org/sources/libxml2/${pkgver%.*}/libxml2-${pkgver}.tar.xz"
 )
-sha256sums=('bb01bd9ac9a7403f9706816fd6d3e7888041d32b0211075feb20e755d2a9f29d')
+sha256sums=('98087fd181d9070724f3fbc65c7377db03038eb92bd882374daff44940138821')
 
 build() {
   cd "${srcdir}/libxml2-${pkgver}"
@@ -41,7 +41,8 @@ build() {
   export CFLAGS="-ffile-prefix-map=${srcdir}=. -I/opt/zextras/common/include"
   export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig:/opt/zextras/common/lib64/pkgconfig"
 
-  autoreconf -fiv
+  # Release tarball ships a generated configure; autoreconf would need
+  # automake >= 1.16.3, which el8 lacks.
 
   _host_flag=""
   _build_flag=""
