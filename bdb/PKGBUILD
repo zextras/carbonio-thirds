@@ -1,29 +1,31 @@
 pkgname="carbonio-bdb"
-pkgver="5.3.28" # renovate: datasource=repology depName=arch/db
-pkgrel="3"
+pkgver="6.2.32" # renovate: datasource=repology depName=arch/db
+pkgrel="1"
 pkgdesc="The Berkeley DB embedded database system"
 arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
-license=('Sleepycat AND BSD-3-Clause AND CDDL-1.0')
+license=('AGPL-3.0-only AND BSD-3-Clause')
 section="utils"
 priority="optional"
 options=('!libtool')
 source=(
   "https://download.oracle.com/berkeley-db/db-${pkgver}.tar.gz"
-  "atomic.patch"
+  "tls-configure.patch"
 )
-sha256sums=('e0a992d740709892e81f9d93f06daf305cf73fb81b545afe72478043172c3628'
-  'ba0e2b4f53e9cb0ec58f60a979b53b8567b4565f0384886196f1fc1ef111d151')
+sha256sums=('a9c5e2b004a5777aa03510cfe5cd766a4a3b777713406b02809c17c8e0e7a8fb'
+  '8beb3e0e9135f8b5410d8fc8d1b2d17063c4db26a358e42eb57f95bf573b26f8')
 
 build() {
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
   export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig:/opt/zextras/common/lib64/pkgconfig"
+  # Unprototyped `int (*)()` tables break under C23 (GCC >= 15 default).
+  export CFLAGS="${CFLAGS} -std=gnu99"
   cd "${srcdir}/db-${pkgver}"
-  patch -p0 -i "${srcdir}/atomic.patch"
+  patch -Np1 -i "${srcdir}/tls-configure.patch"
 
-  # db-5.3.28's bundled config.sub (2012) doesn't recognize aarch64-*.
-  # Only needed under cross-compile; native builds work with the bundled file.
+  # Bundled config.sub/config.guess date from 2015; refresh them from the host
+  # for cross-compiles. Native builds work with the bundled files.
   # Debian/Ubuntu: /usr/share/misc/; RHEL/Rocky: /usr/share/automake-*/.
   if [ -n "${CROSS_COMPILE}" ]; then
     for _f in config.sub config.guess; do
