@@ -1,6 +1,6 @@
 pkgname="carbonio-libxml2"
-pkgver="2.10.1" # renovate: datasource=github-tags depName=GNOME/libxml2
-pkgrel="2"
+pkgver="2.15.4" # renovate: datasource=github-tags depName=GNOME/libxml2
+pkgrel="1"
 pkgdesc="XML parsing library, version 2"
 arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -31,9 +31,9 @@ section="libs"
 priority="important"
 options=('!libtool')
 source=(
-  "https://github.com/GNOME/libxml2/archive/refs/tags/v${pkgver}.tar.gz"
+  "https://download.gnome.org/sources/libxml2/${pkgver%.*}/libxml2-${pkgver}.tar.xz"
 )
-sha256sums=('fb9f90ca7cceb1930d2a890c1c222ef709352b0fea6e5430d03902133f1d476c')
+sha256sums=('98087fd181d9070724f3fbc65c7377db03038eb92bd882374daff44940138821')
 
 build() {
   cd "${srcdir}/libxml2-${pkgver}"
@@ -41,7 +41,8 @@ build() {
   export CFLAGS="-ffile-prefix-map=${srcdir}=. -I/opt/zextras/common/include"
   export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig:/opt/zextras/common/lib64/pkgconfig"
 
-  autoreconf -fiv
+  # Release tarball ships a generated configure; autoreconf would need
+  # automake >= 1.16.3, which el8 lacks.
 
   _host_flag=""
   _build_flag=""
