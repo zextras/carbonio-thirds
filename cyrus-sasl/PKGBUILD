@@ -7,7 +7,7 @@ maintainer="Zextras <packages@zextras.com>"
 url="https://github.com/zextras"
 license=('BSD-Attribution-HPND-disclaimer')
 depends__apt=(
-  "carbonio-libxml2>=2.15.4"
+  "carbonio-libxml2"
   "carbonio-krb5"
   "carbonio-openssl"
   "zlib1g"
@@ -20,7 +20,7 @@ makedepends__apt=(
   "zlib1g-dev"
 )
 depends__yum=(
-  "carbonio-libxml2>=2.15.4"
+  "carbonio-libxml2"
   "carbonio-krb5"
   "carbonio-openssl"
   "zlib"
