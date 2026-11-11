@@ -94,6 +94,17 @@ pipeline {
             }
         }
 
+        stage('Publish docker images') {
+            steps {
+                dockerStage([
+                    dockerfile: 'docker/nginx/Dockerfile',
+                    imageName: 'carbonio-nginx',
+                    ocLabels: [title: 'Carbonio Nginx'],
+                    platforms: ['linux/amd64', 'linux/arm64'] as Set,
+                ])
+            }
+        }
+
         stage('Semantic Release') {
             steps {
                 semanticRelease()
