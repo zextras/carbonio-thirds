@@ -8,7 +8,7 @@ url="https://github.com/zextras"
 license=('IPL-1.0 OR EPL-2.0')
 depends__apt=(
   "carbonio-core"
-  "carbonio-configd>=1.3.0"
+  "carbonio-configd"
   "carbonio-cyrus-sasl"
   "carbonio-mariadb"
   "carbonio-openldap"
@@ -19,7 +19,7 @@ depends__apt=(
 )
 depends__ubuntu_noble=(
   "carbonio-core"
-  "carbonio-configd>=1.3.0"
+  "carbonio-configd"
   "carbonio-cyrus-sasl"
   "carbonio-mariadb"
   "carbonio-openldap"
@@ -44,7 +44,7 @@ makedepends__ubuntu_noble=(
 )
 depends__yum=(
   "carbonio-core"
-  "carbonio-configd>=1.3.0"
+  "carbonio-configd"
   "carbonio-cyrus-sasl"
   "carbonio-mariadb>10.1.48"
   "carbonio-openldap"
