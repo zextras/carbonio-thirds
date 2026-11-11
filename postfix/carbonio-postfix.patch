@@ -312,34 +312,13 @@ diff '--color=auto' -Naur a/conf/postfix-script b/conf/postfix-script
  	    -prune ! -user root \
  	    -exec $WARN not owned by root: {} \;
  
-@@ -347,18 +347,23 @@
+@@ -358,7 +358,8 @@
+ 	find $todo ! -user root \
+ 	    -exec $WARN not owned by root: {} \;
  
- 	# Check Postfix root-owned directory tree owner/permissions.
- 
--	todo="$config_directory/."
-+	todo=""
- 	test -n "$check_shared_files" && {
--		todo="$daemon_directory/. $meta_directory/. $todo"
-+		todo="$daemon_directory/. $meta_directory/."
- 		test "$shlib_directory" = "no" || 
- 		    todo="$shlib_directory/. $todo"
- 	}
-+	if [ x"$todo" != "x" ]
-+	then
-+		todo=`echo "$todo" | tr ' ' '\12' | sort -u`
-+		find $todo -path /opt/zextras/common/conf/. -prune -o ! -user root \
-+	    	-exec $WARN not owned by root: {} \;
-+	fi
-+	todo="$todo $config_directory/."
- 	todo=`echo "$todo" | tr ' ' '\12' | sort -u`
--
--	find $todo ! -user root \
--	    -exec $WARN not owned by root: {} \;
--
 -	find $todo \( -perm -020 -o -perm -002 \) \
-+	find $todo  -path /opt/zextras/common/libexec/./openldap -prune -o \
-+            -path /opt/zextras/common/conf/. -prune -o \
-+            \( -perm -020 -o -perm -002 \) \
++	find $todo -path /opt/zextras/common/libexec/./openldap -prune -o \
++	    \( -perm -020 -o -perm -002 \) \
  	    -exec $WARN group or other writable: {} \;
  
  	# Check Postfix mail_owner-owned directory tree owner/permissions.

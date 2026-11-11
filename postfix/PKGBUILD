@@ -1,6 +1,6 @@
 pkgname="carbonio-postfix"
 pkgver="3.11.7" # renovate: datasource=repology depName=arch/postfix
-pkgrel="2"
+pkgrel="3"
 pkgdesc="Fast, easy to administer, secure mail server"
 arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -8,7 +8,7 @@ url="https://github.com/zextras"
 license=('IPL-1.0 OR EPL-2.0')
 depends__apt=(
   "carbonio-core"
-  "carbonio-configd"
+  "carbonio-configd>=1.3.0"
   "carbonio-cyrus-sasl"
   "carbonio-mariadb"
   "carbonio-openldap"
@@ -19,7 +19,7 @@ depends__apt=(
 )
 depends__ubuntu_noble=(
   "carbonio-core"
-  "carbonio-configd"
+  "carbonio-configd>=1.3.0"
   "carbonio-cyrus-sasl"
   "carbonio-mariadb"
   "carbonio-openldap"
@@ -44,7 +44,7 @@ makedepends__ubuntu_noble=(
 )
 depends__yum=(
   "carbonio-core"
-  "carbonio-configd"
+  "carbonio-configd>=1.3.0"
   "carbonio-cyrus-sasl"
   "carbonio-mariadb>10.1.48"
   "carbonio-openldap"
@@ -73,11 +73,11 @@ source=(
 )
 sha256sums=(
   'a2f3242345753448072177fae83c322a403c9263696996406201145dab8e8625'
-  '1cb01fe1f452fd9b64db087e5e9f926d80fd265b48b5eae70b32a18f62255d03'
+  '53de6b236b89320810244552573a5e1821f2003649e4b5d40800d9540132480f'
   '1cfe3fd5c8d8d0acdcd84b94c35479084bc8486a6cc7f4b4d83dd12dd09299f5'
   'ef21e6b1a4b2d44994d8af52e046144cc06d542f0675de7944d0e3e2f6f2893c'
   '6ad170eece16c7ee4d947a84cf2efb153a4ed52ace02c70016829253dd70aa5e'
-  'edbd7857db1140e9995ab9d210797308c7b826035d06adde7d0d62755e8eb602'
+  '6dcf8abc0caea92d9c7584635c714c2433e46cf0838dd80b509dfdc88422cee7'
   '1b797f517e0883099df1ce4157ccff580d5a3a84c01b4abb8179e81b8b2d7817'
   '571c3e944763eda58de86e66b2974989fff9edb469a76a34b031c518d40b3c9e'
 )
@@ -94,6 +94,14 @@ _package() {
   # NOTE: patching conf/main.cf is ineffective here — postfix-install overwrites it.
   sed -i '/^sample_directory[[:space:]]*=[[:space:]]*$/d' \
     "${pkgdir}/opt/zextras/common/conf/main.cf"
+
+  # CO-4621: the config directory and the files master trusts as root MUST be
+  # root-owned and not writable by anyone else in the package payload itself
+  # (container images unpack the package with `dpkg -x`, no tmpfiles run).
+  # Ownership is root:root: packages are built with root-mapped file ownership.
+  chmod 0755 "${pkgdir}/opt/zextras/common/conf"
+  chmod 0644 "${pkgdir}/opt/zextras/common/conf/main.cf" \
+    "${pkgdir}/opt/zextras/common/conf/master.cf"
 
   install -Dm755 auxiliary/qshape/qshape.pl \
     "${pkgdir}"/opt/zextras/common/sbin/qshape.pl
