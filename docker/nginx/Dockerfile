@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.24
 
-FROM --platform=$BUILDPLATFORM docker.io/library/ubuntu:jammy AS installer
+FROM --platform=$BUILDPLATFORM docker.io/library/ubuntu:noble AS installer
 
 ARG TARGETARCH
 ARG BUILDARCH=amd64
@@ -48,7 +48,7 @@ RUN apt-get update \
  && { cat /etc/passwd; echo 'zextras:x:999:999:Carbonio:/opt/zextras:/usr/sbin/nologin'; } > /staging/etc/passwd \
  && { cat /etc/group; echo 'zextras:x:999:'; } > /staging/etc/group
 
-FROM --platform=$TARGETPLATFORM docker.io/library/ubuntu:jammy
+FROM --platform=$TARGETPLATFORM docker.io/library/ubuntu:noble
 
 COPY --from=installer /staging/etc/passwd /staging/etc/group /etc/
 COPY --from=installer /staging/usr/local/lib /usr/local/lib/
