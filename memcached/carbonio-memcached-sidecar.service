@@ -2,8 +2,12 @@
 Description=Carbonio Memcached Sidecar
 Documentation=https://docs.zextras.com/
 Requires=network-online.target
-After=network-online.target service-discover.service
-PartOf=service-discover.target
+After=network-online.target service-discover.service carbonio-memcached.service
+PartOf=service-discover.target carbonio-memcached.service
+# The token is written by the pending setup ("carbonio-<svc> setup") once
+# Consul is bootstrapped. Without it the sidecar cannot start: skip it
+# instead of failing every 15 s and holding up units ordered after it.
+ConditionPathExists=/etc/carbonio/memcached/service-discover/token
 StartLimitBurst=5
 StartLimitIntervalSec=120s
 

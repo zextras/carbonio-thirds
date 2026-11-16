@@ -38,6 +38,7 @@ source=(
   "${pkgname}-intentions.json"
   "${pkgname}-policies.json"
   "${pkgname}-service-protocol.json"
+  "${pkgname}-sidecar.conf"
   "${pkgname}-sidecar.service"
   "${pkgname}-sidecar-legacy.service"
   "${pkgname}.hcl"
@@ -51,7 +52,8 @@ sha256sums=(
   'c32bf56d9de4b75e9de6bbe1f8a055d86409e0c54c25e04a23135f1d52330b40'
   '8d25760595a59a5ca1f014093693caf911f5397ebce00752abcfa0db4a505c36'
   '50743f955abb8b550c5fd9384a7421e8b85631dfaa7e2d8e39259aa7fbcab7ee'
-  'df992ef4518f5295ca021727295d7fbafa551afd7d5a2aecbbabac066fc90c32'
+  '4debffd1eec9578cd26cb02c0f9a9dcd2e07d36ca15ff1064125d6ccb6d6d4d6'
+  'e0c7088a2ca431d7dbf9533d5e24f2971d3f7dca0593fcde944fdfb6427e5693'
   '5738b755e7749ad1e5ff0f6e610eb1207bf2137d665595ddc2747e19a52f7520'
   'ef21da10a2e6a4195c16a1a240052a74c52f18dedb165c248a5e988c669a3f97'
   'be1ae3ae5fdbcebd749294ceb8bdf32cbac7ee8f1322aadbfe0e2726af7c7514'
@@ -155,6 +157,8 @@ package() {
 
   install -Dm644 "${srcdir}/${pkgname}-sidecar.service" \
     "${pkgdir}/usr/lib/systemd/system/${pkgname}-sidecar.service"
+  install -Dm644 "${srcdir}/${pkgname}-sidecar.conf" \
+    "${pkgdir}/usr/lib/systemd/system/${pkgname}.service.d/${pkgname}-sidecar.conf"
 }
 
 package__rocky_8() {
@@ -170,6 +174,8 @@ package__rocky_9() {
 
   install -Dm644 "${srcdir}/${pkgname}-sidecar.service" \
     "${pkgdir}/usr/lib/systemd/system/${pkgname}-sidecar.service"
+  install -Dm644 "${srcdir}/${pkgname}-sidecar.conf" \
+    "${pkgdir}/usr/lib/systemd/system/${pkgname}.service.d/${pkgname}-sidecar.conf"
 }
 
 package__ubuntu_jammy() {
@@ -184,6 +190,8 @@ package__ubuntu_noble() {
 
   install -Dm644 "${srcdir}/${pkgname}-sidecar.service" \
     "${pkgdir}/usr/lib/systemd/system/${pkgname}-sidecar.service"
+  install -Dm644 "${srcdir}/${pkgname}-sidecar.conf" \
+    "${pkgdir}/usr/lib/systemd/system/${pkgname}.service.d/${pkgname}-sidecar.conf"
 }
 
 postinst__rocky_8() {
