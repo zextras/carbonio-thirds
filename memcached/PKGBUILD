@@ -1,6 +1,6 @@
 pkgname="carbonio-memcached"
 pkgver="1.6.45" # renovate: datasource=github-tags depName=memcached/memcached
-pkgrel="2"
+pkgrel="3"
 pkgdesc="Distributed memory object caching system"
 arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
