@@ -1,6 +1,6 @@
 pkgname="carbonio-openldap"
 pkgver="2.6.13" # renovate: datasource=github-tags depName=openldap/openldap  extractVersion=^OPENLDAP_REL_ENG_(?<version>.+)$ versioning=regex:^(?<major>\d+)_(?<minor>\d+)(_(?<patch>\d+))?$
-pkgrel="3"
+pkgrel="4"
 pkgdesc="Lightweight Directory Access Protocol (LDAP) library"
 arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -46,7 +46,7 @@ source=(
 sha256sums=(
   'd693b49517a42efb85a1a364a310aed16a53d428d1b46c0d31ef3fba78fcb656'
   'a2ba7ee70d6caf8f21bdac376d95b1e98361874c4fcc62dd63356f9f2a1cae99'
-  'c46289282074e8572e49ac7cf76c9d266242805d1d9a7265882af0f6949fdf20'
+  '8799a8614d16d1154cc16f6c7b1c591f1818e4e22ef5b04fdf0307995ca183c7'
   '4466e1a9337bfdf031fcf16875aec5fcdda33106d40a9734c3a4e84d7d825707'
   'd64b270fd9863319863cd9fb5619d4386cfdb87d841d11a7e5dc4fcb558c1689'
 )
