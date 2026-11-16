@@ -10,7 +10,13 @@ RUN apt-get update \
  && if [ "${TARGETARCH}" != "${BUILDARCH}" ]; then \
       dpkg --add-architecture ${TARGETARCH} \
       && sed -i 's|^deb |deb [arch='"${BUILDARCH}"'] |' /etc/apt/sources.list \
-      && printf 'Types: deb\nURIs: http://ports.ubuntu.com/ubuntu-ports/\nSuites: jammy jammy-updates jammy-security\nComponents: main restricted universe multiverse\nArchitectures: %s\nSigned-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg\n' "${TARGETARCH}" \
+      && printf '%s\n' \
+           'Types: deb' \
+           'URIs: http://ports.ubuntu.com/ubuntu-ports/' \
+           'Suites: jammy jammy-updates jammy-security' \
+           'Components: main restricted universe multiverse' \
+           "Architectures: ${TARGETARCH}" \
+           'Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg' \
          > /etc/apt/sources.list.d/ports-${TARGETARCH}.sources; \
     fi \
  && printf 'deb [arch=%s trusted=yes] https://repo.zextras.tools/repository/ubuntu-devel-jammy jammy main\n' "${TARGETARCH}" \
@@ -31,7 +37,10 @@ RUN apt-get update \
  && rm -rf /tmp/debs /var/lib/apt/lists/* \
  && mkdir -p /staging/usr/local/lib \
  && for dir in /staging/lib /staging/usr/lib; do \
-      if [ -d "$dir" ]; then find "$dir" -name '*.so*' -not -path '*/opt/*' -exec cp -P -t /staging/usr/local/lib/ {} +; fi; \
+      if [ -d "$dir" ]; then \
+        find "$dir" -name '*.so*' -not -path '*/opt/*' \
+          -exec cp -P -t /staging/usr/local/lib/ {} +; \
+      fi; \
     done \
  && mkdir -p /staging/writable/opt/zextras/conf/nginx/includes \
              /staging/writable/opt/zextras/data/tmp/nginx/client \
