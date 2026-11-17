@@ -20,18 +20,15 @@ Restart=on-failure
 RestartSec=3s
 LimitNOFILE=524288
 
-# Hardening (root service — limited subset)
+# Hardening: mount-namespace options only. The unit runs as zextras and
+# configd drives postfix through sudo; on systemd 252 (RHEL 9) any
+# seccomp-based option (RestrictAddressFamilies, RestrictNamespaces,
+# RestrictRealtime, LockPersonality, ProtectKernel*, ProtectHostname,
+# ProtectClock, SystemCallFilter, ...) implies NoNewPrivileges for a
+# non-root unit, and sudo then refuses to run (CO-4780, as CO-4222 for
+# carbonio-configd.service). Do not add them back.
 ProtectHome=yes
-ProtectKernelModules=yes
-ProtectKernelLogs=yes
-ProtectKernelTunables=yes
 ProtectControlGroups=yes
-RestrictRealtime=yes
-RestrictNamespaces=yes
-LockPersonality=yes
-ProtectHostname=yes
-ProtectClock=yes
-RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX AF_NETLINK
 
 [Install]
 WantedBy=carbonio-mta.target
