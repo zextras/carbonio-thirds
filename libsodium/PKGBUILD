@@ -15,7 +15,7 @@ source=(
 sha256sums=('adbdd8f16149e81ac6078a03aca6fc03b592b89ef7b5ed83841c086191be3349')
 
 build() {
-  cd "${srcdir}/libsodium-stable"
+  cd "${srcdir}/libsodium-${pkgver}"
   export LDFLAGS="-Wl,-rpath,/opt/zextras/common/lib"
   export PKG_CONFIG_PATH="/opt/zextras/common/lib/pkgconfig:/opt/zextras/common/lib64/pkgconfig"
 
@@ -36,6 +36,6 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/libsodium-stable"
+  cd "${srcdir}/libsodium-${pkgver}"
   make DESTDIR="${pkgdir}" install
 }
