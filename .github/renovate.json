@@ -1,4 +1,45 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["github>zextras/infra-renovate-config"]
+  "extends": ["github>zextras/infra-renovate-config"],
+  "packageRules": [
+    {
+      "description": "The shared PKGBUILD manager only captures datasource and depName from the marker comment, so per-package tag formats live here. krb5 has no GitHub releases; tags are krb5-X.Y[.Z]-final.",
+      "matchPackageNames": ["krb5/krb5"],
+      "extractVersion": "^krb5-(?<version>\\d+\\.\\d+(?:\\.\\d+)?)-final$"
+    },
+    {
+      "description": "Stay on the 10.11 LTS series; tags are mariadb-X.Y.Z.",
+      "matchPackageNames": ["MariaDB/server"],
+      "extractVersion": "^mariadb-(?<version>.+)$",
+      "allowedVersions": "/^10\\.11\\./"
+    },
+    {
+      "description": "Upstream tags (OPENLDAP_REL_ENG_2_6_16) use underscores, which Renovate cannot turn into the dotted pkgver; track Fedora rawhide, which follows the 2.6 LTS series. Repology returns Fedora's [epoch:]version-release (2.6.16-1.fc46); strip epoch and release.",
+      "matchPackageNames": ["fedora_rawhide/openldap"],
+      "extractVersion": "^(?:\\d+:)?(?<version>\\d+\\.\\d+\\.\\d+)(?:-.+)?$",
+      "allowedVersions": "/^2\\.6\\./"
+    },
+    {
+      "description": "Stable (even minor) branch only; tags are release-X.Y.Z.",
+      "matchPackageNames": ["nginx/nginx"],
+      "extractVersion": "^release-(?<version>.+)$",
+      "allowedVersions": "/^1\\.(2[0-9]*[02468]|[3-9][0-9]*[02468])\\./"
+    },
+    {
+      "matchPackageNames": ["libevent/libevent"],
+      "extractVersion": "^release-(?<version>.+)-stable$"
+    },
+    {
+      "matchPackageNames": ["jedisct1/libsodium"],
+      "extractVersion": "^(?<version>.+)-RELEASE$"
+    },
+    {
+      "matchPackageNames": ["unicode-org/icu"],
+      "extractVersion": "^release-(?<version>\\d+\\.\\d+)$"
+    },
+    {
+      "matchPackageNames": ["cyrusimap/cyrus-sasl"],
+      "extractVersion": "^cyrus-sasl-(?<version>.+)$"
+    }
+  ]
 }

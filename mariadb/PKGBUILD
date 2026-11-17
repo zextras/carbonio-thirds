@@ -1,5 +1,5 @@
 pkgname="carbonio-mariadb"
-pkgver="10.11.17" # renovate: datasource=github-releases depName=MariaDB/server
+pkgver="10.11.20" # renovate: datasource=github-releases depName=MariaDB/server
 pkgrel="1"
 pkgdesc="Fast SQL database server, derived from MySQL"
 arch=('aarch64' 'x86_64')
@@ -94,7 +94,7 @@ section="utils"
 priority="optional"
 options=('!staticlibs')
 source=("https://archive.mariadb.org/mariadb-${pkgver}/source/mariadb-${pkgver}.tar.gz")
-sha256sums=('2c54afc85e5f592efcec19042fb0baec8de0332bd3da55b4418fe2bfdf343de4')
+sha256sums=('ac5c003f725950a4cbf9829bd9b191b73f8ab0f2630d6dbc6292fc5244d3c7cb')
 
 build() {
 
