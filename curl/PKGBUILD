@@ -1,5 +1,5 @@
 pkgname="carbonio-curl"
-pkgver="8.14.1" # renovate: datasource=repology depName=arch/curl
+pkgver="8.23.0" # renovate: datasource=repology depName=arch/curl
 pkgrel="1"
 pkgdesc="An URL retrieval utility and library"
 arch=('aarch64' 'x86_64')
@@ -36,7 +36,7 @@ source=(
   "https://github.com/nss-dev/nss/raw/NSS_3_122_RTM/lib/ckfw/builtins/certdata.txt"
 )
 sha256sums=(
-  '6766ada7101d292b42b8b15681120acd68effa4a9660935853cf6d61f0d984d4'
+  'e3de77cfa6367083c776a26647fc9f633b538c06c3baa73d931a252ac8f72b49'
   '3b98d4e3ff57a326d9587c33633039c8c3a9cf0b55f7ca581d7598ff329eb1f3'
 )
 

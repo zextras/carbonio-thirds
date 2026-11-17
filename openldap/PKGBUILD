@@ -1,6 +1,6 @@
 pkgname="carbonio-openldap"
-pkgver="2.6.13" # renovate: datasource=repology depName=fedora_rawhide/openldap
-pkgrel="5"
+pkgver="2.6.16" # renovate: datasource=repology depName=fedora_rawhide/openldap
+pkgrel="1"
 pkgdesc="Lightweight Directory Access Protocol (LDAP) library"
 arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -64,7 +64,7 @@ source=(
   "systemd-tmpfile.conf"
 )
 sha256sums=(
-  'd693b49517a42efb85a1a364a310aed16a53d428d1b46c0d31ef3fba78fcb656'
+  '8d8452bc3f56aa7a392c62dd377733f83d1314eed6c52fe44028439a3bb4df18'
   'a2ba7ee70d6caf8f21bdac376d95b1e98361874c4fcc62dd63356f9f2a1cae99'
   '6c22d2f856c0e0ddcd68fb88322fe4a8edf5c2c6e0a322d656877b392a0cce52'
   '4466e1a9337bfdf031fcf16875aec5fcdda33106d40a9734c3a4e84d7d825707'
