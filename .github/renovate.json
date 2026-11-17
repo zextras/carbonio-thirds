@@ -3,6 +3,12 @@
   "extends": ["github>zextras/infra-renovate-config"],
   "packageRules": [
     {
+      "description": "Stay on the OpenSSL 3.5 LTS series (supported until 2030-04-08); 4.x changes the soname and needs a coordinated cross-repo rebuild. Tags are openssl-X.Y.Z.",
+      "matchPackageNames": ["openssl/openssl"],
+      "extractVersion": "^openssl-(?<version>.+)$",
+      "allowedVersions": "/^3\\.5\\./"
+    },
+    {
       "description": "The shared PKGBUILD manager only captures datasource and depName from the marker comment, so per-package tag formats live here. krb5 has no GitHub releases; tags are krb5-X.Y[.Z]-final.",
       "matchPackageNames": ["krb5/krb5"],
       "extractVersion": "^krb5-(?<version>\\d+\\.\\d+(?:\\.\\d+)?)-final$"
