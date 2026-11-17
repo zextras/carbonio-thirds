@@ -1,5 +1,5 @@
 pkgname="carbonio-openldap"
-pkgver="2.6.13" # renovate: datasource=github-tags depName=openldap/openldap  extractVersion=^OPENLDAP_REL_ENG_(?<version>.+)$ versioning=regex:^(?<major>\d+)_(?<minor>\d+)(_(?<patch>\d+))?$
+pkgver="2.6.13" # renovate: datasource=repology depName=fedora_rawhide/openldap
 pkgrel="5"
 pkgdesc="Lightweight Directory Access Protocol (LDAP) library"
 arch=('aarch64' 'x86_64')
