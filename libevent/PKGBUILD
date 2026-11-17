@@ -32,6 +32,10 @@ build() {
     unset PKG_CONFIG_PATH
   fi
 
+  # Use the shipped configure: the 2.1.13 tarball has Makefile.am newer than
+  # aclocal.m4 (and extraction does not keep mtimes), so make would rerun
+  # the automake-1.18 rules it was generated with; turn those into no-ops.
+  ACLOCAL=true AUTOCONF=true AUTOHEADER=true AUTOMAKE=true \
   ./configure --prefix=/opt/zextras/common \
     --disable-samples \
     ${_host_flag} ${_build_flag}
