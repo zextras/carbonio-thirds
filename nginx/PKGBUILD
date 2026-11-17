@@ -69,7 +69,7 @@ source=(
   "systemd-tmpfile.conf"
 )
 sha256sums=(
-  'e5823dc6f45610993def93ebf6cfce68264af4958c77e874b7d20f3709001b8f'
+  '3cf46f5ed7504d460125866b7bea99fb357f31d887e2e63b35503310e9b8b6c8'
   'SKIP'
   'SKIP'
   'SKIP'
