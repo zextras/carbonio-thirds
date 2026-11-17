@@ -1,6 +1,6 @@
 pkgname="carbonio-libevent"
-pkgver="2.1.12" # renovate: datasource=github-releases depName=libevent/libevent
-pkgrel="4"
+pkgver="2.1.13" # renovate: datasource=github-releases depName=libevent/libevent
+pkgrel="1"
 pkgdesc="An event notification library"
 arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -15,7 +15,7 @@ options=('!libtool' '!staticlibs')
 source=(
   "https://github.com/libevent/libevent/releases/download/release-${pkgver}-stable/libevent-${pkgver}-stable.tar.gz"
 )
-sha256sums=('92e6de1be9ec176428fd2367677e61ceffc2ee1cb119035037a27d346b0403bb')
+sha256sums=('f7e9383b8c0baa81b687e5b5eecc01beefaf1b19b64151d95ed61647fe7a315c')
 
 build() {
   cd "${srcdir}/libevent-${pkgver}-stable"
@@ -32,6 +32,10 @@ build() {
     unset PKG_CONFIG_PATH
   fi
 
+  # Use the shipped configure: the 2.1.13 tarball has Makefile.am newer than
+  # aclocal.m4 (and extraction does not keep mtimes), so make would rerun
+  # the automake-1.18 rules it was generated with; turn those into no-ops.
+  ACLOCAL=true AUTOCONF=true AUTOHEADER=true AUTOMAKE=true \
   ./configure --prefix=/opt/zextras/common \
     --disable-samples \
     ${_host_flag} ${_build_flag}
