@@ -1,6 +1,6 @@
 pkgname="carbonio-libsodium"
-pkgver="1.0.19" # renovate: datasource=github-releases depName=jedisct1/libsodium
-pkgrel="3"
+pkgver="1.0.22" # renovate: datasource=github-releases depName=jedisct1/libsodium
+pkgrel="1"
 pkgdesc="P(ortable|ackageable) NaCl-based crypto library"
 arch=('aarch64' 'x86_64')
 maintainer="Zextras <packages@zextras.com>"
@@ -12,7 +12,7 @@ options=('!libtool' '!staticlibs')
 source=(
   "https://github.com/jedisct1/libsodium/releases/download/${pkgver}-RELEASE/libsodium-${pkgver}.tar.gz"
 )
-sha256sums=('018d79fe0a045cca07331d37bd0cb57b2e838c51bc48fd837a1472e50068bbea')
+sha256sums=('adbdd8f16149e81ac6078a03aca6fc03b592b89ef7b5ed83841c086191be3349')
 
 build() {
   cd "${srcdir}/libsodium-stable"
