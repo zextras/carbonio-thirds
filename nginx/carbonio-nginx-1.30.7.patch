@@ -1,6 +1,6 @@
-diff -Naur nginx-1.30.0/auto/lib/conf nginx-1.30.0-patched/auto/lib/conf
---- nginx-1.30.0/auto/lib/conf	2026-04-14 15:10:11.000000000 +0200
-+++ nginx-1.30.0-patched/auto/lib/conf	2026-04-24 09:33:43.000000000 +0200
+diff -Naur nginx-1.30.7/auto/lib/conf nginx-1.30.7-patched/auto/lib/conf
+--- nginx-1.30.7/auto/lib/conf	2026-11-11 19:08:26.000000000 +0100
++++ nginx-1.30.7-patched/auto/lib/conf	2026-11-18 18:42:20.339383966 +0100
 @@ -52,3 +52,7 @@
  if [ $NGX_LIBATOMIC != NO ]; then
      . auto/lib/libatomic/conf
@@ -9,9 +9,9 @@ diff -Naur nginx-1.30.0/auto/lib/conf nginx-1.30.0-patched/auto/lib/conf
 +if [ $USE_SASL = YES ]; then
 +    . auto/lib/sasl/conf
 +fi
-diff -Naur nginx-1.30.0/auto/lib/sasl/conf nginx-1.30.0-patched/auto/lib/sasl/conf
---- nginx-1.30.0/auto/lib/sasl/conf	1970-01-01 01:00:00.000000000 +0100
-+++ nginx-1.30.0-patched/auto/lib/sasl/conf	2026-04-24 09:33:43.000000000 +0200
+diff -Naur nginx-1.30.7/auto/lib/sasl/conf nginx-1.30.7-patched/auto/lib/sasl/conf
+--- nginx-1.30.7/auto/lib/sasl/conf	1970-01-01 01:00:00.000000000 +0100
++++ nginx-1.30.7-patched/auto/lib/sasl/conf	2026-11-18 18:42:20.339428132 +0100
 @@ -0,0 +1,79 @@
 +    ngx_feature="SASL library"
 +    ngx_feature_name="NGX_SASL"
@@ -92,9 +92,9 @@ diff -Naur nginx-1.30.0/auto/lib/sasl/conf nginx-1.30.0-patched/auto/lib/sasl/co
 +    exit 1
 +
 +fi
-diff -Naur nginx-1.30.0/auto/modules nginx-1.30.0-patched/auto/modules
---- nginx-1.30.0/auto/modules	2026-04-14 15:10:11.000000000 +0200
-+++ nginx-1.30.0-patched/auto/modules	2026-04-24 09:33:43.000000000 +0200
+diff -Naur nginx-1.30.7/auto/modules nginx-1.30.7-patched/auto/modules
+--- nginx-1.30.7/auto/modules	2026-11-11 19:08:26.000000000 +0100
++++ nginx-1.30.7-patched/auto/modules	2026-11-18 18:42:20.339486714 +0100
 @@ -77,7 +77,8 @@
                           src/http/ngx_http_variables.h \
                           src/http/ngx_http_script.h \
@@ -136,9 +136,9 @@ diff -Naur nginx-1.30.0/auto/modules nginx-1.30.0-patched/auto/modules
  
  
  # thread pool module should be initialized after events
-diff -Naur nginx-1.30.0/auto/options nginx-1.30.0-patched/auto/options
---- nginx-1.30.0/auto/options	2026-04-14 15:10:11.000000000 +0200
-+++ nginx-1.30.0-patched/auto/options	2026-04-24 09:33:43.000000000 +0200
+diff -Naur nginx-1.30.7/auto/options nginx-1.30.7-patched/auto/options
+--- nginx-1.30.7/auto/options	2026-11-11 19:08:26.000000000 +0100
++++ nginx-1.30.7-patched/auto/options	2026-11-18 18:42:20.339546604 +0100
 @@ -157,6 +157,10 @@
  USE_OPENSSL_QUIC=NO
  OPENSSL=NONE
@@ -186,9 +186,9 @@ diff -Naur nginx-1.30.0/auto/options nginx-1.30.0-patched/auto/options
    --with-zlib=DIR                    set path to zlib library sources
    --with-zlib-opt=OPTIONS            set additional build options for zlib
    --with-zlib-asm=CPU                use zlib assembler sources optimized
-diff -Naur nginx-1.30.0/auto/sources nginx-1.30.0-patched/auto/sources
---- nginx-1.30.0/auto/sources	2026-04-14 15:10:11.000000000 +0200
-+++ nginx-1.30.0-patched/auto/sources	2026-04-24 09:33:43.000000000 +0200
+diff -Naur nginx-1.30.7/auto/sources nginx-1.30.7-patched/auto/sources
+--- nginx-1.30.7/auto/sources	2026-11-11 19:08:26.000000000 +0100
++++ nginx-1.30.7-patched/auto/sources	2026-11-18 18:42:20.339585844 +0100
 @@ -39,6 +39,8 @@
             src/core/ngx_module.h \
             src/core/ngx_resolver.h \
@@ -217,9 +217,9 @@ diff -Naur nginx-1.30.0/auto/sources nginx-1.30.0-patched/auto/sources
  UNIX_INCS="$CORE_INCS $EVENT_INCS src/os/unix"
  
  UNIX_DEPS="$CORE_DEPS $EVENT_DEPS \
-diff -Naur nginx-1.30.0/docs/html/zmerror_upstream_502.html nginx-1.30.0-patched/docs/html/zmerror_upstream_502.html
---- nginx-1.30.0/docs/html/zmerror_upstream_502.html	1970-01-01 01:00:00.000000000 +0100
-+++ nginx-1.30.0-patched/docs/html/zmerror_upstream_502.html	2026-04-24 09:33:43.000000000 +0200
+diff -Naur nginx-1.30.7/docs/html/zmerror_upstream_502.html nginx-1.30.7-patched/docs/html/zmerror_upstream_502.html
+--- nginx-1.30.7/docs/html/zmerror_upstream_502.html	1970-01-01 01:00:00.000000000 +0100
++++ nginx-1.30.7-patched/docs/html/zmerror_upstream_502.html	2026-11-18 18:42:20.339613030 +0100
 @@ -0,0 +1,29 @@
 +<html>
 +<head>
@@ -250,9 +250,9 @@ diff -Naur nginx-1.30.0/docs/html/zmerror_upstream_502.html nginx-1.30.0-patched
 +
 +</body>
 +</html>
-diff -Naur nginx-1.30.0/docs/html/zmerror_upstream_504.html nginx-1.30.0-patched/docs/html/zmerror_upstream_504.html
---- nginx-1.30.0/docs/html/zmerror_upstream_504.html	1970-01-01 01:00:00.000000000 +0100
-+++ nginx-1.30.0-patched/docs/html/zmerror_upstream_504.html	2026-04-24 09:33:43.000000000 +0200
+diff -Naur nginx-1.30.7/docs/html/zmerror_upstream_504.html nginx-1.30.7-patched/docs/html/zmerror_upstream_504.html
+--- nginx-1.30.7/docs/html/zmerror_upstream_504.html	1970-01-01 01:00:00.000000000 +0100
++++ nginx-1.30.7-patched/docs/html/zmerror_upstream_504.html	2026-11-18 18:42:20.339630236 +0100
 @@ -0,0 +1,30 @@
 +<html>
 +<head>
@@ -284,9 +284,9 @@ diff -Naur nginx-1.30.0/docs/html/zmerror_upstream_504.html nginx-1.30.0-patched
 +</body>
 +</html>
 +
-diff -Naur nginx-1.30.0/src/core/ngx_log.c nginx-1.30.0-patched/src/core/ngx_log.c
---- nginx-1.30.0/src/core/ngx_log.c	2026-04-14 15:10:11.000000000 +0200
-+++ nginx-1.30.0-patched/src/core/ngx_log.c	2026-04-24 09:33:43.000000000 +0200
+diff -Naur nginx-1.30.7/src/core/ngx_log.c nginx-1.30.7-patched/src/core/ngx_log.c
+--- nginx-1.30.7/src/core/ngx_log.c	2026-11-11 19:08:26.000000000 +0100
++++ nginx-1.30.7-patched/src/core/ngx_log.c	2026-11-18 18:42:20.339660598 +0100
 @@ -86,7 +86,7 @@
  
  static const char *debug_levels[] = {
@@ -296,9 +296,9 @@ diff -Naur nginx-1.30.0/src/core/ngx_log.c nginx-1.30.0-patched/src/core/ngx_log
  };
  
  
-diff -Naur nginx-1.30.0/src/core/ngx_log.h nginx-1.30.0-patched/src/core/ngx_log.h
---- nginx-1.30.0/src/core/ngx_log.h	2026-04-14 15:10:11.000000000 +0200
-+++ nginx-1.30.0-patched/src/core/ngx_log.h	2026-04-24 09:33:43.000000000 +0200
+diff -Naur nginx-1.30.7/src/core/ngx_log.h nginx-1.30.7-patched/src/core/ngx_log.h
+--- nginx-1.30.7/src/core/ngx_log.h	2026-11-11 19:08:26.000000000 +0100
++++ nginx-1.30.7-patched/src/core/ngx_log.h	2026-11-18 18:42:20.339699957 +0100
 @@ -30,6 +30,7 @@
  #define NGX_LOG_DEBUG_HTTP        0x100
  #define NGX_LOG_DEBUG_MAIL        0x200
@@ -316,9 +316,9 @@ diff -Naur nginx-1.30.0/src/core/ngx_log.h nginx-1.30.0-patched/src/core/ngx_log
  #define NGX_LOG_DEBUG_CONNECTION  0x80000000
  #define NGX_LOG_DEBUG_ALL         0x7ffffff0
  
-diff -Naur nginx-1.30.0/src/core/ngx_memcache.c nginx-1.30.0-patched/src/core/ngx_memcache.c
---- nginx-1.30.0/src/core/ngx_memcache.c	1970-01-01 01:00:00.000000000 +0100
-+++ nginx-1.30.0-patched/src/core/ngx_memcache.c	2026-04-24 09:33:43.000000000 +0200
+diff -Naur nginx-1.30.7/src/core/ngx_memcache.c nginx-1.30.7-patched/src/core/ngx_memcache.c
+--- nginx-1.30.7/src/core/ngx_memcache.c	1970-01-01 01:00:00.000000000 +0100
++++ nginx-1.30.7-patched/src/core/ngx_memcache.c	2026-11-18 18:42:20.339715664 +0100
 @@ -0,0 +1,2170 @@
 +#include <ngx_memcache.h>
 +#include <openssl/md5.h>
@@ -2490,9 +2490,9 @@ diff -Naur nginx-1.30.0/src/core/ngx_memcache.c nginx-1.30.0-patched/src/core/ng
 +
 +    return pdu;
 +}
-diff -Naur nginx-1.30.0/src/core/ngx_memcache.h nginx-1.30.0-patched/src/core/ngx_memcache.h
---- nginx-1.30.0/src/core/ngx_memcache.h	1970-01-01 01:00:00.000000000 +0100
-+++ nginx-1.30.0-patched/src/core/ngx_memcache.h	2026-04-24 09:33:43.000000000 +0200
+diff -Naur nginx-1.30.7/src/core/ngx_memcache.h nginx-1.30.7-patched/src/core/ngx_memcache.h
+--- nginx-1.30.7/src/core/ngx_memcache.h	1970-01-01 01:00:00.000000000 +0100
++++ nginx-1.30.7-patched/src/core/ngx_memcache.h	2026-11-18 18:42:20.340001375 +0100
 @@ -0,0 +1,142 @@
 +#ifndef _NGX_MEMCACHE_H_INCLUDED_
 +#define _NGX_MEMCACHE_H_INCLUDED_
@@ -2636,9 +2636,9 @@ diff -Naur nginx-1.30.0/src/core/ngx_memcache.h nginx-1.30.0-patched/src/core/ng
 +void ngx_memcache_ignore_work_by_ctx (void * ctx);
 +
 +#endif
-diff -Naur nginx-1.30.0/src/core/ngx_palloc.c nginx-1.30.0-patched/src/core/ngx_palloc.c
---- nginx-1.30.0/src/core/ngx_palloc.c	2026-04-14 15:10:11.000000000 +0200
-+++ nginx-1.30.0-patched/src/core/ngx_palloc.c	2026-04-24 09:33:43.000000000 +0200
+diff -Naur nginx-1.30.7/src/core/ngx_palloc.c nginx-1.30.7-patched/src/core/ngx_palloc.c
+--- nginx-1.30.7/src/core/ngx_palloc.c	2026-11-11 19:08:26.000000000 +0100
++++ nginx-1.30.7-patched/src/core/ngx_palloc.c	2026-11-18 18:42:20.340028367 +0100
 @@ -70,8 +70,6 @@
      }
  
@@ -2648,9 +2648,9 @@ diff -Naur nginx-1.30.0/src/core/ngx_palloc.c nginx-1.30.0-patched/src/core/ngx_
  
          if (n == NULL) {
              break;
-diff -Naur nginx-1.30.0/src/core/ngx_string.c nginx-1.30.0-patched/src/core/ngx_string.c
---- nginx-1.30.0/src/core/ngx_string.c	2026-04-14 15:10:11.000000000 +0200
-+++ nginx-1.30.0-patched/src/core/ngx_string.c	2026-04-24 09:33:43.000000000 +0200
+diff -Naur nginx-1.30.7/src/core/ngx_string.c nginx-1.30.7-patched/src/core/ngx_string.c
+--- nginx-1.30.7/src/core/ngx_string.c	2026-11-11 19:08:26.000000000 +0100
++++ nginx-1.30.7-patched/src/core/ngx_string.c	2026-11-18 18:42:20.340096893 +0100
 @@ -86,6 +86,24 @@
      return dst;
  }
@@ -2676,9 +2676,9 @@ diff -Naur nginx-1.30.0/src/core/ngx_string.c nginx-1.30.0-patched/src/core/ngx_
  
  /*
   * supported formats:
-diff -Naur nginx-1.30.0/src/core/ngx_string.h nginx-1.30.0-patched/src/core/ngx_string.h
---- nginx-1.30.0/src/core/ngx_string.h	2026-04-14 15:10:11.000000000 +0200
-+++ nginx-1.30.0-patched/src/core/ngx_string.h	2026-04-24 09:33:43.000000000 +0200
+diff -Naur nginx-1.30.7/src/core/ngx_string.h nginx-1.30.7-patched/src/core/ngx_string.h
+--- nginx-1.30.7/src/core/ngx_string.h	2026-11-11 19:08:26.000000000 +0100
++++ nginx-1.30.7-patched/src/core/ngx_string.h	2026-11-18 18:42:20.340153612 +0100
 @@ -150,6 +150,7 @@
  
  u_char *ngx_cpystrn(u_char *dst, u_char *src, size_t n);
@@ -2687,9 +2687,9 @@ diff -Naur nginx-1.30.0/src/core/ngx_string.h nginx-1.30.0-patched/src/core/ngx_
  u_char * ngx_cdecl ngx_sprintf(u_char *buf, const char *fmt, ...);
  u_char * ngx_cdecl ngx_snprintf(u_char *buf, size_t max, const char *fmt, ...);
  u_char * ngx_cdecl ngx_slprintf(u_char *buf, u_char *last, const char *fmt,
-diff -Naur nginx-1.30.0/src/core/ngx_zm_lookup.c nginx-1.30.0-patched/src/core/ngx_zm_lookup.c
---- nginx-1.30.0/src/core/ngx_zm_lookup.c	1970-01-01 01:00:00.000000000 +0100
-+++ nginx-1.30.0-patched/src/core/ngx_zm_lookup.c	2026-04-24 09:33:43.000000000 +0200
+diff -Naur nginx-1.30.7/src/core/ngx_zm_lookup.c nginx-1.30.7-patched/src/core/ngx_zm_lookup.c
+--- nginx-1.30.7/src/core/ngx_zm_lookup.c	1970-01-01 01:00:00.000000000 +0100
++++ nginx-1.30.7-patched/src/core/ngx_zm_lookup.c	2026-11-18 18:42:20.340167596 +0100
 @@ -0,0 +1,2267 @@
 +#include <ngx_zm_lookup.h>
 +#include <ngx_memcache.h>
@@ -4958,9 +4958,9 @@ diff -Naur nginx-1.30.0/src/core/ngx_zm_lookup.c nginx-1.30.0-patched/src/core/n
 +
 +    return NULL;
 +}
-diff -Naur nginx-1.30.0/src/core/ngx_zm_lookup.h nginx-1.30.0-patched/src/core/ngx_zm_lookup.h
---- nginx-1.30.0/src/core/ngx_zm_lookup.h	1970-01-01 01:00:00.000000000 +0100
-+++ nginx-1.30.0-patched/src/core/ngx_zm_lookup.h	2026-04-24 09:33:43.000000000 +0200
+diff -Naur nginx-1.30.7/src/core/ngx_zm_lookup.h nginx-1.30.7-patched/src/core/ngx_zm_lookup.h
+--- nginx-1.30.7/src/core/ngx_zm_lookup.h	1970-01-01 01:00:00.000000000 +0100
++++ nginx-1.30.7-patched/src/core/ngx_zm_lookup.h	2026-11-18 18:42:20.340442980 +0100
 @@ -0,0 +1,192 @@
 +#ifndef _NGX_ZM_LOOKUP_H_INCLUDED_
 +#define _NGX_ZM_LOOKUP_H_INCLUDED_
@@ -5154,9 +5154,9 @@ diff -Naur nginx-1.30.0/src/core/ngx_zm_lookup.h nginx-1.30.0-patched/src/core/n
 +        ngx_log_t *log, ngx_str_t user, ngx_str_t ip);
 +
 +#endif
-diff -Naur nginx-1.30.0/src/event/ngx_event_openssl.c nginx-1.30.0-patched/src/event/ngx_event_openssl.c
---- nginx-1.30.0/src/event/ngx_event_openssl.c	2026-04-14 15:10:11.000000000 +0200
-+++ nginx-1.30.0-patched/src/event/ngx_event_openssl.c	2026-04-24 09:33:43.000000000 +0200
+diff -Naur nginx-1.30.7/src/event/ngx_event_openssl.c nginx-1.30.7-patched/src/event/ngx_event_openssl.c
+--- nginx-1.30.7/src/event/ngx_event_openssl.c	2026-11-11 19:08:26.000000000 +0100
++++ nginx-1.30.7-patched/src/event/ngx_event_openssl.c	2026-11-18 18:42:20.340636227 +0100
 @@ -3648,9 +3648,6 @@
  #endif
  
@@ -5175,9 +5175,9 @@ diff -Naur nginx-1.30.0/src/event/ngx_event_openssl.c nginx-1.30.0-patched/src/e
      if (c->timedout || c->error || c->buffered) {
          mode = SSL_RECEIVED_SHUTDOWN|SSL_SENT_SHUTDOWN;
          SSL_set_quiet_shutdown(c->ssl->connection, 1);
-diff -Naur nginx-1.30.0/src/event/ngx_event_udp.h nginx-1.30.0-patched/src/event/ngx_event_udp.h
---- nginx-1.30.0/src/event/ngx_event_udp.h	2026-04-14 15:10:11.000000000 +0200
-+++ nginx-1.30.0-patched/src/event/ngx_event_udp.h	2026-04-24 09:33:43.000000000 +0200
+diff -Naur nginx-1.30.7/src/event/ngx_event_udp.h nginx-1.30.7-patched/src/event/ngx_event_udp.h
+--- nginx-1.30.7/src/event/ngx_event_udp.h	2026-11-11 19:08:26.000000000 +0100
++++ nginx-1.30.7-patched/src/event/ngx_event_udp.h	2026-11-18 18:42:20.340799202 +0100
 @@ -41,10 +41,11 @@
  #if (NGX_HAVE_IP_PKTINFO)
      struct in_pktinfo     pkt;
@@ -5194,9 +5194,20 @@ diff -Naur nginx-1.30.0/src/event/ngx_event_udp.h nginx-1.30.0-patched/src/event
  } ngx_addrinfo_t;
  
  size_t ngx_set_srcaddr_cmsg(struct cmsghdr *cmsg,
-diff -Naur nginx-1.30.0/src/http/ngx_http_core_module.c nginx-1.30.0-patched/src/http/ngx_http_core_module.c
---- nginx-1.30.0/src/http/ngx_http_core_module.c	2026-04-14 15:10:11.000000000 +0200
-+++ nginx-1.30.0-patched/src/http/ngx_http_core_module.c	2026-04-24 09:33:43.000000000 +0200
+diff -Naur nginx-1.30.7/src/http/ngx_http.h nginx-1.30.7-patched/src/http/ngx_http.h
+--- nginx-1.30.7/src/http/ngx_http.h	2026-11-11 19:08:26.000000000 +0100
++++ nginx-1.30.7-patched/src/http/ngx_http.h	2026-11-18 18:42:20.341107690 +0100
+@@ -34,6 +34,7 @@
+ #include <ngx_http_request.h>
+ #include <ngx_http_script.h>
+ #include <ngx_http_upstream.h>
++#include <ngx_http_upstream_fair.h>
+ #include <ngx_http_upstream_round_robin.h>
+ #include <ngx_http_core_module.h>
+ 
+diff -Naur nginx-1.30.7/src/http/ngx_http_core_module.c nginx-1.30.7-patched/src/http/ngx_http_core_module.c
+--- nginx-1.30.7/src/http/ngx_http_core_module.c	2026-11-11 19:08:26.000000000 +0100
++++ nginx-1.30.7-patched/src/http/ngx_http_core_module.c	2026-11-18 18:42:20.340945345 +0100
 @@ -799,6 +799,13 @@
  
  #endif
@@ -5211,7 +5222,7 @@ diff -Naur nginx-1.30.0/src/http/ngx_http_core_module.c nginx-1.30.0-patched/src
        ngx_null_command
  };
  
-@@ -3696,6 +3703,7 @@
+@@ -3702,6 +3709,7 @@
      clcf->open_file_cache_min_uses = NGX_CONF_UNSET_UINT;
      clcf->open_file_cache_errors = NGX_CONF_UNSET;
      clcf->open_file_cache_events = NGX_CONF_UNSET;
@@ -5219,9 +5230,9 @@ diff -Naur nginx-1.30.0/src/http/ngx_http_core_module.c nginx-1.30.0-patched/src
  
  #if (NGX_HTTP_GZIP)
      clcf->gzip_vary = NGX_CONF_UNSET;
-diff -Naur nginx-1.30.0/src/http/ngx_http_core_module.h nginx-1.30.0-patched/src/http/ngx_http_core_module.h
---- nginx-1.30.0/src/http/ngx_http_core_module.h	2026-04-14 15:10:11.000000000 +0200
-+++ nginx-1.30.0-patched/src/http/ngx_http_core_module.h	2026-04-24 09:33:43.000000000 +0200
+diff -Naur nginx-1.30.7/src/http/ngx_http_core_module.h nginx-1.30.7-patched/src/http/ngx_http_core_module.h
+--- nginx-1.30.7/src/http/ngx_http_core_module.h	2026-11-11 19:08:26.000000000 +0100
++++ nginx-1.30.7-patched/src/http/ngx_http_core_module.h	2026-11-18 18:42:20.341077289 +0100
 @@ -412,6 +412,7 @@
      ngx_uint_t    server_tokens;           /* server_tokens */
      ngx_flag_t    chunked_transfer_encoding; /* chunked_transfer_encoding */
@@ -5230,20 +5241,9 @@ diff -Naur nginx-1.30.0/src/http/ngx_http_core_module.h nginx-1.30.0-patched/src
  
  #if (NGX_HTTP_GZIP)
      ngx_flag_t    gzip_vary;               /* gzip_vary */
-diff -Naur nginx-1.30.0/src/http/ngx_http.h nginx-1.30.0-patched/src/http/ngx_http.h
---- nginx-1.30.0/src/http/ngx_http.h	2026-04-14 15:10:11.000000000 +0200
-+++ nginx-1.30.0-patched/src/http/ngx_http.h	2026-04-24 09:33:43.000000000 +0200
-@@ -34,6 +34,7 @@
- #include <ngx_http_request.h>
- #include <ngx_http_script.h>
- #include <ngx_http_upstream.h>
-+#include <ngx_http_upstream_fair.h>
- #include <ngx_http_upstream_round_robin.h>
- #include <ngx_http_core_module.h>
- 
-diff -Naur nginx-1.30.0/src/http/ngx_http_upstream.c nginx-1.30.0-patched/src/http/ngx_http_upstream.c
---- nginx-1.30.0/src/http/ngx_http_upstream.c	2026-04-14 15:10:11.000000000 +0200
-+++ nginx-1.30.0-patched/src/http/ngx_http_upstream.c	2026-04-24 09:33:43.000000000 +0200
+diff -Naur nginx-1.30.7/src/http/ngx_http_upstream.c nginx-1.30.7-patched/src/http/ngx_http_upstream.c
+--- nginx-1.30.7/src/http/ngx_http_upstream.c	2026-11-11 19:08:26.000000000 +0100
++++ nginx-1.30.7-patched/src/http/ngx_http_upstream.c	2026-11-18 18:42:20.341264352 +0100
 @@ -8,6 +8,7 @@
  #include <ngx_config.h>
  #include <ngx_core.h>
@@ -5271,7 +5271,7 @@ diff -Naur nginx-1.30.0/src/http/ngx_http_upstream.c nginx-1.30.0-patched/src/ht
          ngx_http_upstream_finalize_request(r, u,
                                             NGX_HTTP_INTERNAL_SERVER_ERROR);
          return;
-@@ -1621,7 +1625,7 @@
+@@ -1623,7 +1627,7 @@
      }
  
      if (rc == NGX_DECLINED) {
@@ -5280,7 +5280,7 @@ diff -Naur nginx-1.30.0/src/http/ngx_http_upstream.c nginx-1.30.0-patched/src/ht
          return;
      }
  
-@@ -1752,6 +1756,7 @@
+@@ -1754,6 +1758,7 @@
          return;
      }
  
@@ -5288,7 +5288,7 @@ diff -Naur nginx-1.30.0/src/http/ngx_http_upstream.c nginx-1.30.0-patched/src/ht
      if (u->conf->ssl_server_name || u->conf->ssl_verify) {
          if (ngx_http_upstream_ssl_name(r, u, c) != NGX_OK) {
              ngx_http_upstream_finalize_request(r, u,
-@@ -1789,7 +1794,7 @@
+@@ -1791,7 +1796,7 @@
  
  #endif
  
@@ -5297,7 +5297,7 @@ diff -Naur nginx-1.30.0/src/http/ngx_http_upstream.c nginx-1.30.0-patched/src/ht
          c->ssl->save_session = ngx_http_upstream_ssl_save_session;
  
          if (u->peer.set_session(&u->peer, u->peer.data) != NGX_OK) {
-@@ -4575,6 +4580,7 @@
+@@ -4588,6 +4593,7 @@
  {
      ngx_msec_t  timeout;
      ngx_uint_t  status, state;
@@ -5305,7 +5305,7 @@ diff -Naur nginx-1.30.0/src/http/ngx_http_upstream.c nginx-1.30.0-patched/src/ht
  
      ngx_log_debug1(NGX_LOG_DEBUG_HTTP, r->connection->log, 0,
                     "http next upstream, %xi", ft_type);
-@@ -4664,10 +4670,16 @@
+@@ -4677,10 +4683,16 @@
          ft_type |= NGX_HTTP_UPSTREAM_FT_NON_IDEMPOTENT;
      }
  
@@ -5323,7 +5323,7 @@ diff -Naur nginx-1.30.0/src/http/ngx_http_upstream.c nginx-1.30.0-patched/src/ht
      {
  #if (NGX_HTTP_CACHE)
  
-@@ -6329,7 +6341,8 @@
+@@ -6342,7 +6354,8 @@
                                           |NGX_HTTP_UPSTREAM_MAX_FAILS
                                           |NGX_HTTP_UPSTREAM_FAIL_TIMEOUT
                                           |NGX_HTTP_UPSTREAM_DOWN
@@ -5333,7 +5333,7 @@ diff -Naur nginx-1.30.0/src/http/ngx_http_upstream.c nginx-1.30.0-patched/src/ht
      if (uscf == NULL) {
          return NGX_CONF_ERROR;
      }
-@@ -6415,6 +6428,9 @@
+@@ -6428,6 +6441,9 @@
          return NGX_CONF_ERROR;
      }
  
@@ -5343,7 +5343,7 @@ diff -Naur nginx-1.30.0/src/http/ngx_http_upstream.c nginx-1.30.0-patched/src/ht
      return rv;
  }
  
-@@ -6425,7 +6441,7 @@
+@@ -6438,7 +6454,7 @@
      ngx_http_upstream_srv_conf_t  *uscf = conf;
  
      time_t                       fail_timeout;
@@ -5352,7 +5352,7 @@ diff -Naur nginx-1.30.0/src/http/ngx_http_upstream.c nginx-1.30.0-patched/src/ht
      ngx_url_t                    u;
      ngx_int_t                    weight, max_conns, max_fails;
      ngx_uint_t                   i;
-@@ -6447,6 +6463,8 @@
+@@ -6460,6 +6476,8 @@
      max_conns = 0;
      max_fails = 1;
      fail_timeout = 10;
@@ -5361,7 +5361,7 @@ diff -Naur nginx-1.30.0/src/http/ngx_http_upstream.c nginx-1.30.0-patched/src/ht
  #if (NGX_HTTP_UPSTREAM_ZONE)
      resolve = 0;
  #endif
-@@ -6593,6 +6611,20 @@
+@@ -6606,6 +6624,20 @@
          }
  #endif
  
@@ -5382,7 +5382,7 @@ diff -Naur nginx-1.30.0/src/http/ngx_http_upstream.c nginx-1.30.0-patched/src/ht
          goto invalid;
      }
  
-@@ -6686,6 +6718,7 @@
+@@ -6699,6 +6731,7 @@
      us->max_conns = max_conns;
      us->max_fails = max_fails;
      us->fail_timeout = fail_timeout;
@@ -5390,9 +5390,38 @@ diff -Naur nginx-1.30.0/src/http/ngx_http_upstream.c nginx-1.30.0-patched/src/ht
  
      return NGX_CONF_OK;
  
-diff -Naur nginx-1.30.0/src/http/ngx_http_upstream_fair.c nginx-1.30.0-patched/src/http/ngx_http_upstream_fair.c
---- nginx-1.30.0/src/http/ngx_http_upstream_fair.c	1970-01-01 01:00:00.000000000 +0100
-+++ nginx-1.30.0-patched/src/http/ngx_http_upstream_fair.c	2026-04-24 09:33:43.000000000 +0200
+diff -Naur nginx-1.30.7/src/http/ngx_http_upstream.h nginx-1.30.7-patched/src/http/ngx_http_upstream.h
+--- nginx-1.30.7/src/http/ngx_http_upstream.h	2026-11-11 19:08:26.000000000 +0100
++++ nginx-1.30.7-patched/src/http/ngx_http_upstream.h	2026-11-18 18:42:20.341634571 +0100
+@@ -103,6 +103,7 @@
+     ngx_uint_t                       max_conns;
+     ngx_uint_t                       max_fails;
+     time_t                           fail_timeout;
++    ngx_str_t                        version;
+     ngx_msec_t                       slow_start;
+     ngx_uint_t                       down;
+ 
+@@ -126,6 +127,7 @@
+ #define NGX_HTTP_UPSTREAM_DOWN          0x0010
+ #define NGX_HTTP_UPSTREAM_BACKUP        0x0020
+ #define NGX_HTTP_UPSTREAM_MODIFY        0x0040
++#define NGX_HTTP_UPSTREAM_VERSION       0x0050
+ #define NGX_HTTP_UPSTREAM_MAX_CONNS     0x0100
+ 
+ 
+@@ -142,6 +144,9 @@
+     in_port_t                        port;
+     ngx_uint_t                       no_port;  /* unsigned no_port:1 */
+ 
++    // added by zimbra to support async upstream peer init
++    void (* connect)(ngx_http_request_t *r, ngx_http_upstream_t *u);
++
+ #if (NGX_HTTP_UPSTREAM_ZONE)
+     ngx_shm_zone_t                  *shm_zone;
+     ngx_resolver_t                  *resolver;
+diff -Naur nginx-1.30.7/src/http/ngx_http_upstream_fair.c nginx-1.30.7-patched/src/http/ngx_http_upstream_fair.c
+--- nginx-1.30.7/src/http/ngx_http_upstream_fair.c	1970-01-01 01:00:00.000000000 +0100
++++ nginx-1.30.7-patched/src/http/ngx_http_upstream_fair.c	2026-11-18 18:42:20.341435167 +0100
 @@ -0,0 +1,1280 @@
 +#include <ngx_config.h>
 +#include <ngx_core.h>
@@ -6674,9 +6703,9 @@ diff -Naur nginx-1.30.0/src/http/ngx_http_upstream_fair.c nginx-1.30.0-patched/s
 +#endif
 +
 +/* vim: set et ts=4 sw=4: */
-diff -Naur nginx-1.30.0/src/http/ngx_http_upstream_fair.h nginx-1.30.0-patched/src/http/ngx_http_upstream_fair.h
---- nginx-1.30.0/src/http/ngx_http_upstream_fair.h	1970-01-01 01:00:00.000000000 +0100
-+++ nginx-1.30.0-patched/src/http/ngx_http_upstream_fair.h	2026-04-24 09:33:43.000000000 +0200
+diff -Naur nginx-1.30.7/src/http/ngx_http_upstream_fair.h nginx-1.30.7-patched/src/http/ngx_http_upstream_fair.h
+--- nginx-1.30.7/src/http/ngx_http_upstream_fair.h	1970-01-01 01:00:00.000000000 +0100
++++ nginx-1.30.7-patched/src/http/ngx_http_upstream_fair.h	2026-11-18 18:42:20.341606737 +0100
 @@ -0,0 +1,98 @@
 +#ifndef _NGX_HTTP_UPSTREAM_FAIR_H_INCLUDED_
 +#define _NGX_HTTP_UPSTREAM_FAIR_H_INCLUDED_
@@ -6776,226 +6805,9 @@ diff -Naur nginx-1.30.0/src/http/ngx_http_upstream_fair.h nginx-1.30.0-patched/s
 +    void* data, ngx_log_t* log);
 +
 +#endif /* _NGX_HTTP_UPSTREAM_FAIR_H_INCLUDED_ */
-diff -Naur nginx-1.30.0/src/http/ngx_http_upstream.h nginx-1.30.0-patched/src/http/ngx_http_upstream.h
---- nginx-1.30.0/src/http/ngx_http_upstream.h	2026-04-14 15:10:11.000000000 +0200
-+++ nginx-1.30.0-patched/src/http/ngx_http_upstream.h	2026-04-24 09:33:43.000000000 +0200
-@@ -103,6 +103,7 @@
-     ngx_uint_t                       max_conns;
-     ngx_uint_t                       max_fails;
-     time_t                           fail_timeout;
-+    ngx_str_t                        version;
-     ngx_msec_t                       slow_start;
-     ngx_uint_t                       down;
- 
-@@ -126,6 +127,7 @@
- #define NGX_HTTP_UPSTREAM_DOWN          0x0010
- #define NGX_HTTP_UPSTREAM_BACKUP        0x0020
- #define NGX_HTTP_UPSTREAM_MODIFY        0x0040
-+#define NGX_HTTP_UPSTREAM_VERSION       0x0050
- #define NGX_HTTP_UPSTREAM_MAX_CONNS     0x0100
- 
- 
-@@ -142,6 +144,9 @@
-     in_port_t                        port;
-     ngx_uint_t                       no_port;  /* unsigned no_port:1 */
- 
-+    // added by zimbra to support async upstream peer init
-+    void (* connect)(ngx_http_request_t *r, ngx_http_upstream_t *u);
-+
- #if (NGX_HTTP_UPSTREAM_ZONE)
-     ngx_shm_zone_t                  *shm_zone;
-     ngx_resolver_t                  *resolver;
-diff -Naur nginx-1.30.0/src/mail/ngx_mail_auth_http_module.c nginx-1.30.0-patched/src/mail/ngx_mail_auth_http_module.c
---- nginx-1.30.0/src/mail/ngx_mail_auth_http_module.c	2026-04-14 15:10:11.000000000 +0200
-+++ nginx-1.30.0-patched/src/mail/ngx_mail_auth_http_module.c	2026-04-24 09:33:43.000000000 +0200
-@@ -1539,6 +1539,7 @@
-         conf->host_header = prev->host_header;
-         conf->uri = prev->uri;
- 
-+        /* zimbra uses zmauth, so no auth_http
-         if (conf->peer == NULL) {
-             ngx_log_error(NGX_LOG_EMERG, cf->log, 0,
-                           "no \"auth_http\" is defined for server in %s:%ui",
-@@ -1546,6 +1547,7 @@
- 
-             return NGX_CONF_ERROR;
-         }
-+        */
-     }
- 
-     ngx_conf_merge_msec_value(conf->timeout, prev->timeout, 60000);
-diff -Naur nginx-1.30.0/src/mail/ngx_mail_core_module.c nginx-1.30.0-patched/src/mail/ngx_mail_core_module.c
---- nginx-1.30.0/src/mail/ngx_mail_core_module.c	2026-04-14 15:10:11.000000000 +0200
-+++ nginx-1.30.0-patched/src/mail/ngx_mail_core_module.c	2026-04-24 09:33:43.000000000 +0200
-@@ -92,6 +92,41 @@
-       offsetof(ngx_mail_core_srv_conf_t, max_errors),
-       NULL },
- 
-+    { ngx_string("sasl_app_name"),
-+      NGX_MAIL_MAIN_CONF|NGX_CONF_TAKE1,
-+      ngx_conf_set_str_slot,
-+      NGX_MAIL_SRV_CONF_OFFSET,
-+      offsetof(ngx_mail_core_srv_conf_t, sasl_app_name),
-+      NULL },
-+
-+    { ngx_string("sasl_service_name"),
-+      NGX_MAIL_SRV_CONF|NGX_CONF_TAKE1,
-+      ngx_conf_set_str_slot,
-+      NGX_MAIL_SRV_CONF_OFFSET,
-+      offsetof(ngx_mail_core_srv_conf_t, sasl_service_name),
-+      NULL },
-+
-+    { ngx_string("zm_auth_wait"),
-+      NGX_MAIL_MAIN_CONF|NGX_CONF_TAKE1,
-+      ngx_conf_set_msec_slot,
-+      NGX_MAIL_SRV_CONF_OFFSET,
-+      offsetof(ngx_mail_core_srv_conf_t, auth_wait_intvl),
-+      NULL },
-+
-+    { ngx_string("default_realm"),
-+      NGX_MAIL_MAIN_CONF|NGX_CONF_TAKE1,
-+      ngx_conf_set_str_slot,
-+      NGX_MAIL_SRV_CONF_OFFSET,
-+      offsetof(ngx_mail_core_srv_conf_t, default_realm),
-+      NULL },
-+
-+    { ngx_string("sasl_host_from_ip"),
-+      NGX_MAIL_MAIN_CONF|NGX_CONF_TAKE1,
-+      ngx_conf_set_flag_slot,
-+      NGX_MAIL_SRV_CONF_OFFSET,
-+      offsetof(ngx_mail_core_srv_conf_t, sasl_host_from_ip),
-+      NULL },
-+
-       ngx_null_command
- };
- 
-@@ -167,12 +202,15 @@
-      *     cscf->error_log = NULL;
-      */
- 
-+    cscf->protocol = NGX_CONF_UNSET_PTR;
-     cscf->timeout = NGX_CONF_UNSET_MSEC;
-     cscf->resolver_timeout = NGX_CONF_UNSET_MSEC;
- 
-     cscf->max_errors = NGX_CONF_UNSET_UINT;
- 
-     cscf->resolver = NGX_CONF_UNSET_PTR;
-+    cscf->auth_wait_intvl = NGX_CONF_UNSET_MSEC;
-+    cscf->sasl_host_from_ip = NGX_CONF_UNSET;
- 
-     cscf->file_name = cf->conf_file->file.name.data;
-     cscf->line = cf->conf_file->line;
-@@ -180,7 +218,6 @@
-     return cscf;
- }
- 
--
- static char *
- ngx_mail_core_merge_srv_conf(ngx_conf_t *cf, void *parent, void *child)
- {
-@@ -192,6 +229,27 @@
-                               30000);
- 
-     ngx_conf_merge_uint_value(conf->max_errors, prev->max_errors, 5);
-+    ngx_conf_merge_str_value(
-+        conf->sasl_app_name, prev->sasl_app_name, "nginx");
-+
-+    ngx_conf_merge_str_value(
-+        conf->sasl_service_name, prev->sasl_service_name, "");
-+
-+    if (conf->sasl_service_name.len == 0) {
-+        if (conf->protocol->type == NGX_MAIL_IMAP_PROTOCOL) {
-+            conf->sasl_service_name.data = (u_char *)"imap";
-+            conf->sasl_service_name.len = sizeof("imap") - 1;
-+        } else if (conf->protocol->type == NGX_MAIL_POP3_PROTOCOL) {
-+            conf->sasl_service_name.data = (u_char *)"pop";
-+            conf->sasl_service_name.len = sizeof("pop") - 1;
-+        } else if (conf->protocol->type == NGX_MAIL_SMTP_PROTOCOL) {
-+            conf->sasl_service_name.data = (u_char *)"smtp";
-+            conf->sasl_service_name.len = sizeof("smtp") - 1;
-+        } else {
-+            conf->sasl_service_name.data = (u_char *)"unknown";
-+            conf->sasl_service_name.len = sizeof("unknown") - 1;
-+        }
-+    }
- 
-     ngx_conf_merge_str_value(conf->server_name, prev->server_name, "");
- 
-@@ -214,6 +272,17 @@
-         }
-     }
- 
-+    /*
-+     * master_auth_username and master_auth_password is already set in ngx_zm_lookup module
-+     *
-+     * ngx_conf_merge_str_value(conf->master_auth_username, prev->master_auth_username, "");
-+     * ngx_conf_merge_str_value(conf->master_auth_password, prev->master_auth_password, "");
-+     */
-+    ngx_conf_merge_msec_value (conf->auth_wait_intvl, prev->auth_wait_intvl, 10000);
-+
-+    ngx_conf_merge_str_value (conf->default_realm, prev->default_realm,"");
-+    ngx_conf_merge_value (conf->sasl_host_from_ip, prev->sasl_host_from_ip, 0);
-+
-     ngx_conf_merge_ptr_value(conf->resolver, prev->resolver, NULL);
- 
-     return NGX_CONF_OK;
-@@ -609,7 +678,7 @@
-         nls->wildcard = ngx_inet_wildcard(nls->sockaddr);
- 
-         als = cmcf->listen.elts;
--
-+        /* Zimbra ports can be same
-         for (i = 0; i < cmcf->listen.nelts - 1; i++) {
- 
-             if (ngx_cmp_sockaddr(als[i].sockaddr, als[i].socklen,
-@@ -624,7 +693,7 @@
-                                &nls->addr_text);
-             return NGX_CONF_ERROR;
-         }
--
-+        */
-     next:
-         continue;
-     }
-@@ -726,3 +795,35 @@
- 
-     return NGX_CONF_OK;
- }
-+
-+
-+ngx_mail_cleanup_t *
-+ngx_mail_cleanup_add(ngx_mail_session_t *s, size_t size)
-+{
-+    ngx_mail_cleanup_t  *cln;
-+
-+    cln = ngx_palloc(s->connection->pool, sizeof(ngx_mail_cleanup_t));
-+    if (cln == NULL) {
-+        return NULL;
-+    }
-+
-+    if (size) {
-+        cln->data = ngx_palloc(s->connection->pool, size);
-+        if (cln->data == NULL) {
-+            return NULL;
-+        }
-+
-+    } else {
-+        cln->data = NULL;
-+    }
-+
-+    cln->handler = NULL;
-+    cln->next = s->cleanup;
-+
-+    s->cleanup = cln;
-+
-+    ngx_log_debug1(NGX_LOG_DEBUG_MAIL, s->connection->log, 0,
-+                   "mail cleanup add: %p", cln);
-+
-+    return cln;
-+}
-diff -Naur nginx-1.30.0/src/mail/ngx_mail.h nginx-1.30.0-patched/src/mail/ngx_mail.h
---- nginx-1.30.0/src/mail/ngx_mail.h	2026-04-14 15:10:11.000000000 +0200
-+++ nginx-1.30.0-patched/src/mail/ngx_mail.h	2026-04-24 09:33:43.000000000 +0200
+diff -Naur nginx-1.30.7/src/mail/ngx_mail.h nginx-1.30.7-patched/src/mail/ngx_mail.h
+--- nginx-1.30.7/src/mail/ngx_mail.h	2026-11-11 19:08:26.000000000 +0100
++++ nginx-1.30.7-patched/src/mail/ngx_mail.h	2026-11-18 18:42:20.341839237 +0100
 @@ -18,7 +18,7 @@
  #include <ngx_mail_ssl_module.h>
  #endif
@@ -7255,10 +7067,198 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail.h nginx-1.30.0-patched/src/mail/ngx_ma
  
  extern ngx_uint_t    ngx_mail_max_module;
  extern ngx_module_t  ngx_mail_core_module;
-diff -Naur nginx-1.30.0/src/mail/ngx_mail_handler.c nginx-1.30.0-patched/src/mail/ngx_mail_handler.c
---- nginx-1.30.0/src/mail/ngx_mail_handler.c	2026-04-14 15:10:11.000000000 +0200
-+++ nginx-1.30.0-patched/src/mail/ngx_mail_handler.c	2026-04-24 09:33:43.000000000 +0200
-@@ -10,10 +10,20 @@
+diff -Naur nginx-1.30.7/src/mail/ngx_mail_auth_http_module.c nginx-1.30.7-patched/src/mail/ngx_mail_auth_http_module.c
+--- nginx-1.30.7/src/mail/ngx_mail_auth_http_module.c	2026-11-11 19:08:26.000000000 +0100
++++ nginx-1.30.7-patched/src/mail/ngx_mail_auth_http_module.c	2026-11-18 18:42:20.341701244 +0100
+@@ -1568,6 +1568,7 @@
+         conf->host_header = prev->host_header;
+         conf->uri = prev->uri;
+ 
++        /* zimbra uses zmauth, so no auth_http
+         if (conf->peer == NULL) {
+             ngx_log_error(NGX_LOG_EMERG, cf->log, 0,
+                           "no \"auth_http\" is defined for server in %s:%ui",
+@@ -1575,6 +1576,7 @@
+ 
+             return NGX_CONF_ERROR;
+         }
++        */
+     }
+ 
+     ngx_conf_merge_msec_value(conf->timeout, prev->timeout, 60000);
+diff -Naur nginx-1.30.7/src/mail/ngx_mail_core_module.c nginx-1.30.7-patched/src/mail/ngx_mail_core_module.c
+--- nginx-1.30.7/src/mail/ngx_mail_core_module.c	2026-11-11 19:08:26.000000000 +0100
++++ nginx-1.30.7-patched/src/mail/ngx_mail_core_module.c	2026-11-18 18:42:20.341779894 +0100
+@@ -92,6 +92,41 @@
+       offsetof(ngx_mail_core_srv_conf_t, max_errors),
+       NULL },
+ 
++    { ngx_string("sasl_app_name"),
++      NGX_MAIL_MAIN_CONF|NGX_CONF_TAKE1,
++      ngx_conf_set_str_slot,
++      NGX_MAIL_SRV_CONF_OFFSET,
++      offsetof(ngx_mail_core_srv_conf_t, sasl_app_name),
++      NULL },
++
++    { ngx_string("sasl_service_name"),
++      NGX_MAIL_SRV_CONF|NGX_CONF_TAKE1,
++      ngx_conf_set_str_slot,
++      NGX_MAIL_SRV_CONF_OFFSET,
++      offsetof(ngx_mail_core_srv_conf_t, sasl_service_name),
++      NULL },
++
++    { ngx_string("zm_auth_wait"),
++      NGX_MAIL_MAIN_CONF|NGX_CONF_TAKE1,
++      ngx_conf_set_msec_slot,
++      NGX_MAIL_SRV_CONF_OFFSET,
++      offsetof(ngx_mail_core_srv_conf_t, auth_wait_intvl),
++      NULL },
++
++    { ngx_string("default_realm"),
++      NGX_MAIL_MAIN_CONF|NGX_CONF_TAKE1,
++      ngx_conf_set_str_slot,
++      NGX_MAIL_SRV_CONF_OFFSET,
++      offsetof(ngx_mail_core_srv_conf_t, default_realm),
++      NULL },
++
++    { ngx_string("sasl_host_from_ip"),
++      NGX_MAIL_MAIN_CONF|NGX_CONF_TAKE1,
++      ngx_conf_set_flag_slot,
++      NGX_MAIL_SRV_CONF_OFFSET,
++      offsetof(ngx_mail_core_srv_conf_t, sasl_host_from_ip),
++      NULL },
++
+       ngx_null_command
+ };
+ 
+@@ -167,12 +202,15 @@
+      *     cscf->error_log = NULL;
+      */
+ 
++    cscf->protocol = NGX_CONF_UNSET_PTR;
+     cscf->timeout = NGX_CONF_UNSET_MSEC;
+     cscf->resolver_timeout = NGX_CONF_UNSET_MSEC;
+ 
+     cscf->max_errors = NGX_CONF_UNSET_UINT;
+ 
+     cscf->resolver = NGX_CONF_UNSET_PTR;
++    cscf->auth_wait_intvl = NGX_CONF_UNSET_MSEC;
++    cscf->sasl_host_from_ip = NGX_CONF_UNSET;
+ 
+     cscf->file_name = cf->conf_file->file.name.data;
+     cscf->line = cf->conf_file->line;
+@@ -180,7 +218,6 @@
+     return cscf;
+ }
+ 
+-
+ static char *
+ ngx_mail_core_merge_srv_conf(ngx_conf_t *cf, void *parent, void *child)
+ {
+@@ -192,6 +229,27 @@
+                               30000);
+ 
+     ngx_conf_merge_uint_value(conf->max_errors, prev->max_errors, 5);
++    ngx_conf_merge_str_value(
++        conf->sasl_app_name, prev->sasl_app_name, "nginx");
++
++    ngx_conf_merge_str_value(
++        conf->sasl_service_name, prev->sasl_service_name, "");
++
++    if (conf->sasl_service_name.len == 0) {
++        if (conf->protocol->type == NGX_MAIL_IMAP_PROTOCOL) {
++            conf->sasl_service_name.data = (u_char *)"imap";
++            conf->sasl_service_name.len = sizeof("imap") - 1;
++        } else if (conf->protocol->type == NGX_MAIL_POP3_PROTOCOL) {
++            conf->sasl_service_name.data = (u_char *)"pop";
++            conf->sasl_service_name.len = sizeof("pop") - 1;
++        } else if (conf->protocol->type == NGX_MAIL_SMTP_PROTOCOL) {
++            conf->sasl_service_name.data = (u_char *)"smtp";
++            conf->sasl_service_name.len = sizeof("smtp") - 1;
++        } else {
++            conf->sasl_service_name.data = (u_char *)"unknown";
++            conf->sasl_service_name.len = sizeof("unknown") - 1;
++        }
++    }
+ 
+     ngx_conf_merge_str_value(conf->server_name, prev->server_name, "");
+ 
+@@ -214,6 +272,17 @@
+         }
+     }
+ 
++    /*
++     * master_auth_username and master_auth_password is already set in ngx_zm_lookup module
++     *
++     * ngx_conf_merge_str_value(conf->master_auth_username, prev->master_auth_username, "");
++     * ngx_conf_merge_str_value(conf->master_auth_password, prev->master_auth_password, "");
++     */
++    ngx_conf_merge_msec_value (conf->auth_wait_intvl, prev->auth_wait_intvl, 10000);
++
++    ngx_conf_merge_str_value (conf->default_realm, prev->default_realm,"");
++    ngx_conf_merge_value (conf->sasl_host_from_ip, prev->sasl_host_from_ip, 0);
++
+     ngx_conf_merge_ptr_value(conf->resolver, prev->resolver, NULL);
+ 
+     return NGX_CONF_OK;
+@@ -609,7 +678,7 @@
+         nls->wildcard = ngx_inet_wildcard(nls->sockaddr);
+ 
+         als = cmcf->listen.elts;
+-
++        /* Zimbra ports can be same
+         for (i = 0; i < cmcf->listen.nelts - 1; i++) {
+ 
+             if (ngx_cmp_sockaddr(als[i].sockaddr, als[i].socklen,
+@@ -624,7 +693,7 @@
+                                &nls->addr_text);
+             return NGX_CONF_ERROR;
+         }
+-
++        */
+     next:
+         continue;
+     }
+@@ -726,3 +795,35 @@
+ 
+     return NGX_CONF_OK;
+ }
++
++
++ngx_mail_cleanup_t *
++ngx_mail_cleanup_add(ngx_mail_session_t *s, size_t size)
++{
++    ngx_mail_cleanup_t  *cln;
++
++    cln = ngx_palloc(s->connection->pool, sizeof(ngx_mail_cleanup_t));
++    if (cln == NULL) {
++        return NULL;
++    }
++
++    if (size) {
++        cln->data = ngx_palloc(s->connection->pool, size);
++        if (cln->data == NULL) {
++            return NULL;
++        }
++
++    } else {
++        cln->data = NULL;
++    }
++
++    cln->handler = NULL;
++    cln->next = s->cleanup;
++
++    s->cleanup = cln;
++
++    ngx_log_debug1(NGX_LOG_DEBUG_MAIL, s->connection->log, 0,
++                   "mail cleanup add: %p", cln);
++
++    return cln;
++}
+diff -Naur nginx-1.30.7/src/mail/ngx_mail_handler.c nginx-1.30.7-patched/src/mail/ngx_mail_handler.c
+--- nginx-1.30.7/src/mail/ngx_mail_handler.c	2026-11-11 19:08:26.000000000 +0100
++++ nginx-1.30.7-patched/src/mail/ngx_mail_handler.c	2026-11-18 18:42:20.341913194 +0100
+@@ -10,11 +10,21 @@
  #include <ngx_event.h>
  #include <ngx_mail.h>
  
@@ -7272,6 +7272,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_handler.c nginx-1.30.0-patched/src/mai
  static void ngx_mail_proxy_protocol_handler(ngx_event_t *rev);
  static void ngx_mail_init_session_handler(ngx_event_t *rev);
  static void ngx_mail_init_session(ngx_connection_t *c);
+ static void ngx_mail_block_read(ngx_event_t *rev);
 +static void ngx_mail_choke_session(throttle_callback_t *cb);
 +static void ngx_mail_allow_session(throttle_callback_t *cb);
 +static void ngx_mail_allow_userauth(throttle_callback_t *cb);
@@ -7279,7 +7280,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_handler.c nginx-1.30.0-patched/src/mai
  
  #if (NGX_MAIL_SSL)
  static void ngx_mail_ssl_init_connection(ngx_ssl_t *ssl, ngx_connection_t *c);
-@@ -22,12 +32,25 @@
+@@ -23,12 +33,25 @@
      ngx_connection_t *c);
  #endif
  
@@ -7306,7 +7307,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_handler.c nginx-1.30.0-patched/src/mai
      ngx_event_t               *rev;
      ngx_mail_port_t           *port;
      struct sockaddr           *sa;
-@@ -37,7 +60,7 @@
+@@ -38,7 +61,7 @@
      ngx_mail_session_t        *s;
      ngx_mail_addr_conf_t      *addr_conf;
      ngx_mail_core_srv_conf_t  *cscf;
@@ -7315,7 +7316,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_handler.c nginx-1.30.0-patched/src/mai
  #if (NGX_HAVE_INET6)
      struct sockaddr_in6       *sin6;
      ngx_mail_in6_addr_t       *addr6;
-@@ -145,10 +168,28 @@
+@@ -146,10 +169,28 @@
  
      ngx_set_connection_log(c, cscf->error_log);
  
@@ -7347,7 +7348,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_handler.c nginx-1.30.0-patched/src/mai
  
      ctx = ngx_palloc(c->pool, sizeof(ngx_mail_log_ctx_t));
      if (ctx == NULL) {
-@@ -157,6 +198,7 @@
+@@ -158,6 +199,7 @@
      }
  
      ctx->client = &c->addr_text;
@@ -7355,7 +7356,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_handler.c nginx-1.30.0-patched/src/mai
      ctx->session = s;
  
      c->log->connection = c->number;
-@@ -379,7 +421,7 @@
+@@ -380,7 +422,7 @@
          ngx_mail_init_session(c);
          return;
      }
@@ -7364,7 +7365,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_handler.c nginx-1.30.0-patched/src/mai
      ngx_mail_close_connection(c);
  }
  
-@@ -456,33 +498,267 @@
+@@ -453,33 +495,267 @@
  {
      ngx_mail_session_t        *s;
      ngx_mail_core_srv_conf_t  *cscf;
@@ -7633,7 +7634,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_handler.c nginx-1.30.0-patched/src/mai
                                 + NGX_TIME_T_LEN
                                 + cscf->server_name.len);
      if (s->salt.data == NULL) {
-@@ -520,14 +796,42 @@
+@@ -517,14 +793,42 @@
  #endif
  
  
@@ -7677,7 +7678,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_handler.c nginx-1.30.0-patched/src/mai
  #if (NGX_DEBUG_MAIL_PASSWD)
      ngx_log_debug1(NGX_LOG_DEBUG_MAIL, c->log, 0,
                     "mail auth plain: \"%V\"", &arg[n]);
-@@ -544,6 +848,8 @@
+@@ -541,6 +845,8 @@
          return NGX_MAIL_PARSE_INVALID_COMMAND;
      }
  
@@ -7686,7 +7687,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_handler.c nginx-1.30.0-patched/src/mai
      p = plain.data;
      last = p + plain.len;
  
-@@ -555,6 +861,9 @@
+@@ -552,6 +858,9 @@
          return NGX_MAIL_PARSE_INVALID_COMMAND;
      }
  
@@ -7696,7 +7697,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_handler.c nginx-1.30.0-patched/src/mai
      pos = p;
  
      while (p < last && *p) { p++; }
-@@ -571,11 +880,29 @@
+@@ -568,11 +877,29 @@
      s->passwd.len = last - p;
      s->passwd.data = p;
  
@@ -7726,7 +7727,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_handler.c nginx-1.30.0-patched/src/mai
      return NGX_DONE;
  }
  
-@@ -591,6 +918,22 @@
+@@ -588,6 +915,22 @@
      ngx_log_debug1(NGX_LOG_DEBUG_MAIL, c->log, 0,
                     "mail auth login username: \"%V\"", &arg[n]);
  
@@ -7749,7 +7750,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_handler.c nginx-1.30.0-patched/src/mai
      login.data = ngx_pnalloc(c->pool, ngx_base64_decoded_length(arg[n].len));
      if (login.data == NULL) {
          return NGX_ERROR;
-@@ -607,7 +950,7 @@
+@@ -604,7 +947,7 @@
      ngx_log_debug1(NGX_LOG_DEBUG_MAIL, c->log, 0,
                     "mail auth login username: \"%V\"", &s->login);
  
@@ -7758,7 +7759,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_handler.c nginx-1.30.0-patched/src/mai
  }
  
  
-@@ -622,7 +965,21 @@
+@@ -619,7 +962,21 @@
      ngx_log_debug1(NGX_LOG_DEBUG_MAIL, c->log, 0,
                     "mail auth login password: \"%V\"", &arg[0]);
  #endif
@@ -7780,7 +7781,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_handler.c nginx-1.30.0-patched/src/mai
      passwd.data = ngx_pnalloc(c->pool, ngx_base64_decoded_length(arg[0].len));
      if (passwd.data == NULL) {
          return NGX_ERROR;
-@@ -641,6 +998,9 @@
+@@ -638,6 +995,9 @@
                     "mail auth login password: \"%V\"", &s->passwd);
  #endif
  
@@ -7790,7 +7791,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_handler.c nginx-1.30.0-patched/src/mai
      return NGX_DONE;
  }
  
-@@ -720,12 +1080,640 @@
+@@ -717,12 +1077,640 @@
                     "mail auth cram-md5: \"%V\" \"%V\"", &s->login, &s->passwd);
  
      s->auth_method = NGX_MAIL_AUTH_CRAM_MD5;
@@ -8431,7 +8432,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_handler.c nginx-1.30.0-patched/src/mai
  ngx_mail_auth_external(ngx_mail_session_t *s, ngx_connection_t *c,
      ngx_uint_t n)
  {
-@@ -800,7 +1788,7 @@
+@@ -797,7 +1785,7 @@
          }
  
          if (s->quit) {
@@ -8440,7 +8441,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_handler.c nginx-1.30.0-patched/src/mai
              return;
          }
  
-@@ -831,6 +1819,84 @@
+@@ -833,6 +1821,84 @@
  }
  
  
@@ -8525,7 +8526,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_handler.c nginx-1.30.0-patched/src/mai
  ngx_int_t
  ngx_mail_read_command(ngx_mail_session_t *s, ngx_connection_t *c)
  {
-@@ -928,17 +1994,72 @@
+@@ -930,17 +1996,72 @@
  }
  
  
@@ -8599,7 +8600,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_handler.c nginx-1.30.0-patched/src/mai
  }
  
  
-@@ -975,6 +2096,13 @@
+@@ -988,6 +2109,13 @@
  }
  
  
@@ -8613,7 +8614,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_handler.c nginx-1.30.0-patched/src/mai
  u_char *
  ngx_mail_log_error(ngx_log_t *log, u_char *buf, size_t len)
  {
-@@ -990,7 +2118,11 @@
+@@ -1003,7 +2131,11 @@
  
      ctx = log->data;
  
@@ -8626,7 +8627,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_handler.c nginx-1.30.0-patched/src/mai
      len -= p - buf;
      buf = p;
  
-@@ -1016,7 +2148,127 @@
+@@ -1029,7 +2161,127 @@
          return p;
      }
  
@@ -8754,9 +8755,9 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_handler.c nginx-1.30.0-patched/src/mai
 +
 +    return res;
 +}
-diff -Naur nginx-1.30.0/src/mail/ngx_mail_imap_handler.c nginx-1.30.0-patched/src/mail/ngx_mail_imap_handler.c
---- nginx-1.30.0/src/mail/ngx_mail_imap_handler.c	2026-04-14 15:10:11.000000000 +0200
-+++ nginx-1.30.0-patched/src/mail/ngx_mail_imap_handler.c	2026-04-24 09:33:43.000000000 +0200
+diff -Naur nginx-1.30.7/src/mail/ngx_mail_imap_handler.c nginx-1.30.7-patched/src/mail/ngx_mail_imap_handler.c
+--- nginx-1.30.7/src/mail/ngx_mail_imap_handler.c	2026-11-11 19:08:26.000000000 +0100
++++ nginx-1.30.7-patched/src/mail/ngx_mail_imap_handler.c	2026-11-18 18:42:20.342138482 +0100
 @@ -20,27 +20,34 @@
      ngx_connection_t *c);
  static ngx_int_t ngx_mail_imap_starttls(ngx_mail_session_t *s,
@@ -8798,7 +8799,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_imap_handler.c nginx-1.30.0-patched/sr
  
      c->read->handler = ngx_mail_imap_init_protocol;
  
-@@ -91,6 +98,7 @@
+@@ -92,6 +99,7 @@
          }
      }
  
@@ -8806,7 +8807,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_imap_handler.c nginx-1.30.0-patched/sr
      s->mail_state = ngx_imap_start;
      c->read->handler = ngx_mail_imap_auth_state;
  
-@@ -115,7 +123,7 @@
+@@ -116,7 +124,7 @@
      if (rev->timedout) {
          ngx_log_error(NGX_LOG_INFO, c->log, NGX_ETIMEDOUT, "client timed out");
          c->timedout = 1;
@@ -8815,7 +8816,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_imap_handler.c nginx-1.30.0-patched/sr
          return;
      }
  
-@@ -149,8 +157,8 @@
+@@ -150,8 +158,8 @@
      }
  
      tag = 1;
@@ -8825,7 +8826,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_imap_handler.c nginx-1.30.0-patched/sr
  
      if (rc == NGX_OK) {
  
-@@ -169,7 +177,6 @@
+@@ -170,7 +178,6 @@
  
              case NGX_IMAP_AUTHENTICATE:
                  rc = ngx_mail_imap_authenticate(s, c);
@@ -8833,7 +8834,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_imap_handler.c nginx-1.30.0-patched/sr
                  break;
  
              case NGX_IMAP_CAPABILITY:
-@@ -178,7 +185,6 @@
+@@ -179,7 +186,6 @@
  
              case NGX_IMAP_LOGOUT:
                  s->quit = 1;
@@ -8841,7 +8842,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_imap_handler.c nginx-1.30.0-patched/sr
                  break;
  
              case NGX_IMAP_NOOP:
-@@ -188,6 +194,10 @@
+@@ -189,6 +195,10 @@
                  rc = ngx_mail_imap_starttls(s, c);
                  break;
  
@@ -8852,7 +8853,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_imap_handler.c nginx-1.30.0-patched/sr
              default:
                  rc = NGX_MAIL_PARSE_INVALID_COMMAND;
                  break;
-@@ -198,10 +208,10 @@
+@@ -199,10 +209,10 @@
          case ngx_imap_auth_login_username:
              rc = ngx_mail_auth_login_username(s, c, 0);
  
@@ -8867,7 +8868,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_imap_handler.c nginx-1.30.0-patched/sr
              break;
  
          case ngx_imap_auth_login_password:
-@@ -212,6 +222,18 @@
+@@ -213,6 +223,18 @@
              rc = ngx_mail_auth_plain(s, c, 0);
              break;
  
@@ -8886,7 +8887,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_imap_handler.c nginx-1.30.0-patched/sr
          case ngx_imap_auth_cram_md5:
              rc = ngx_mail_auth_cram_md5(s, c);
              break;
-@@ -233,17 +255,75 @@
+@@ -234,17 +256,75 @@
      switch (rc) {
  
      case NGX_DONE:
@@ -8964,7 +8965,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_imap_handler.c nginx-1.30.0-patched/sr
          break;
      }
  
-@@ -252,8 +332,8 @@
+@@ -253,8 +333,8 @@
              ngx_str_set(&s->tag, imap_star);
          }
  
@@ -8975,7 +8976,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_imap_handler.c nginx-1.30.0-patched/sr
              s->tagged_line.data = ngx_pnalloc(c->pool, s->tagged_line.len);
              if (s->tagged_line.data == NULL) {
                  ngx_mail_close_connection(c);
-@@ -268,9 +348,10 @@
+@@ -269,9 +349,10 @@
          }
  
          p = ngx_cpymem(p, s->tag.data, s->tag.len);
@@ -8987,7 +8988,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_imap_handler.c nginx-1.30.0-patched/sr
          s->out.data = s->tagged_line.data;
      }
  
-@@ -307,6 +388,7 @@
+@@ -308,6 +389,7 @@
  
  #if (NGX_MAIL_SSL)
      if (ngx_mail_starttls_only(s, c)) {
@@ -8995,7 +8996,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_imap_handler.c nginx-1.30.0-patched/sr
          return NGX_MAIL_PARSE_INVALID_COMMAND;
      }
  #endif
-@@ -317,6 +399,10 @@
+@@ -318,6 +400,10 @@
          return NGX_MAIL_PARSE_INVALID_COMMAND;
      }
  
@@ -9006,7 +9007,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_imap_handler.c nginx-1.30.0-patched/sr
      s->login.len = arg[0].len;
      s->login.data = ngx_pnalloc(c->pool, s->login.len);
      if (s->login.data == NULL) {
-@@ -325,6 +411,10 @@
+@@ -326,6 +412,10 @@
  
      ngx_memcpy(s->login.data, arg[0].data, s->login.len);
  
@@ -9017,7 +9018,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_imap_handler.c nginx-1.30.0-patched/sr
      s->passwd.len = arg[1].len;
      s->passwd.data = ngx_pnalloc(c->pool, s->passwd.len);
      if (s->passwd.data == NULL) {
-@@ -342,6 +432,8 @@
+@@ -343,6 +433,8 @@
                     "imap login:\"%V\"", &s->login);
  #endif
  
@@ -9026,7 +9027,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_imap_handler.c nginx-1.30.0-patched/sr
      return NGX_DONE;
  }
  
-@@ -349,7 +441,7 @@
+@@ -350,7 +442,7 @@
  static ngx_int_t
  ngx_mail_imap_authenticate(ngx_mail_session_t *s, ngx_connection_t *c)
  {
@@ -9035,7 +9036,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_imap_handler.c nginx-1.30.0-patched/sr
      ngx_mail_core_srv_conf_t  *cscf;
      ngx_mail_imap_srv_conf_t  *iscf;
  
-@@ -359,37 +451,85 @@
+@@ -360,37 +452,85 @@
      }
  #endif
  
@@ -9129,7 +9130,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_imap_handler.c nginx-1.30.0-patched/sr
          }
  
          if (s->salt.data == NULL) {
-@@ -402,7 +542,7 @@
+@@ -403,7 +543,7 @@
  
          if (ngx_mail_auth_cram_md5_salt(s, c, "+ ", 2) == NGX_OK) {
              s->mail_state = ngx_imap_auth_cram_md5;
@@ -9138,7 +9139,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_imap_handler.c nginx-1.30.0-patched/sr
          }
  
          return NGX_ERROR;
-@@ -475,3 +615,67 @@
+@@ -476,3 +616,67 @@
  
      return NGX_MAIL_PARSE_INVALID_COMMAND;
  }
@@ -9206,9 +9207,9 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_imap_handler.c nginx-1.30.0-patched/sr
 +
 +    return NGX_OK;
 +}
-diff -Naur nginx-1.30.0/src/mail/ngx_mail_imap_module.c nginx-1.30.0-patched/src/mail/ngx_mail_imap_module.c
---- nginx-1.30.0/src/mail/ngx_mail_imap_module.c	2026-04-14 15:10:11.000000000 +0200
-+++ nginx-1.30.0-patched/src/mail/ngx_mail_imap_module.c	2026-04-24 09:33:43.000000000 +0200
+diff -Naur nginx-1.30.7/src/mail/ngx_mail_imap_module.c nginx-1.30.7-patched/src/mail/ngx_mail_imap_module.c
+--- nginx-1.30.7/src/mail/ngx_mail_imap_module.c	2026-11-11 19:08:26.000000000 +0100
++++ nginx-1.30.7-patched/src/mail/ngx_mail_imap_module.c	2026-11-18 18:42:20.342234322 +0100
 @@ -15,7 +15,9 @@
  static void *ngx_mail_imap_create_srv_conf(ngx_conf_t *cf);
  static char *ngx_mail_imap_merge_srv_conf(ngx_conf_t *cf, void *parent,
@@ -9627,9 +9628,9 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_imap_module.c nginx-1.30.0-patched/src
 +    }
  }
 +
-diff -Naur nginx-1.30.0/src/mail/ngx_mail_imap_module.h nginx-1.30.0-patched/src/mail/ngx_mail_imap_module.h
---- nginx-1.30.0/src/mail/ngx_mail_imap_module.h	2026-04-14 15:10:11.000000000 +0200
-+++ nginx-1.30.0-patched/src/mail/ngx_mail_imap_module.h	2026-04-24 09:33:43.000000000 +0200
+diff -Naur nginx-1.30.7/src/mail/ngx_mail_imap_module.h nginx-1.30.7-patched/src/mail/ngx_mail_imap_module.h
+--- nginx-1.30.7/src/mail/ngx_mail_imap_module.h	2026-11-11 19:08:26.000000000 +0100
++++ nginx-1.30.7-patched/src/mail/ngx_mail_imap_module.h	2026-11-18 18:42:20.342295563 +0100
 @@ -24,6 +24,15 @@
      ngx_uint_t   auth_methods;
  
@@ -9646,9 +9647,9 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_imap_module.h nginx-1.30.0-patched/src
  } ngx_mail_imap_srv_conf_t;
  
  
-diff -Naur nginx-1.30.0/src/mail/ngx_mail_parse.c nginx-1.30.0-patched/src/mail/ngx_mail_parse.c
---- nginx-1.30.0/src/mail/ngx_mail_parse.c	2026-04-14 15:10:11.000000000 +0200
-+++ nginx-1.30.0-patched/src/mail/ngx_mail_parse.c	2026-04-24 09:33:43.000000000 +0200
+diff -Naur nginx-1.30.7/src/mail/ngx_mail_parse.c nginx-1.30.7-patched/src/mail/ngx_mail_parse.c
+--- nginx-1.30.7/src/mail/ngx_mail_parse.c	2026-11-11 19:08:26.000000000 +0100
++++ nginx-1.30.7-patched/src/mail/ngx_mail_parse.c	2026-11-18 18:42:20.342339646 +0100
 @@ -13,22 +13,102 @@
  #include <ngx_mail_imap_module.h>
  #include <ngx_mail_smtp_module.h>
@@ -10978,9 +10979,9 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_parse.c nginx-1.30.0-patched/src/mail/
 -    return NGX_MAIL_PARSE_INVALID_COMMAND;
 +    return NGX_MAIL_PARSE_INVALID_AUTH_MECH;
  }
-diff -Naur nginx-1.30.0/src/mail/ngx_mail_pop3_handler.c nginx-1.30.0-patched/src/mail/ngx_mail_pop3_handler.c
---- nginx-1.30.0/src/mail/ngx_mail_pop3_handler.c	2026-04-14 15:10:11.000000000 +0200
-+++ nginx-1.30.0-patched/src/mail/ngx_mail_pop3_handler.c	2026-04-24 09:33:43.000000000 +0200
+diff -Naur nginx-1.30.7/src/mail/ngx_mail_pop3_handler.c nginx-1.30.7-patched/src/mail/ngx_mail_pop3_handler.c
+--- nginx-1.30.7/src/mail/ngx_mail_pop3_handler.c	2026-11-11 19:08:26.000000000 +0100
++++ nginx-1.30.7-patched/src/mail/ngx_mail_pop3_handler.c	2026-11-18 18:42:20.342528605 +0100
 @@ -21,12 +21,18 @@
  static ngx_int_t ngx_mail_pop3_auth(ngx_mail_session_t *s, ngx_connection_t *c);
  
@@ -11025,7 +11026,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_pop3_handler.c nginx-1.30.0-patched/sr
      }
  
      c->read->handler = ngx_mail_pop3_init_protocol;
-@@ -80,6 +86,7 @@
+@@ -81,6 +87,7 @@
  {
      ngx_connection_t    *c;
      ngx_mail_session_t  *s;
@@ -11033,7 +11034,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_pop3_handler.c nginx-1.30.0-patched/sr
  
      c = rev->data;
  
-@@ -102,13 +109,16 @@
+@@ -103,13 +110,16 @@
              return;
          }
  
@@ -11051,7 +11052,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_pop3_handler.c nginx-1.30.0-patched/sr
      s->mail_state = ngx_pop3_start;
      c->read->handler = ngx_mail_pop3_auth_state;
  
-@@ -143,7 +153,7 @@
+@@ -144,7 +154,7 @@
              ngx_mail_close_connection(c);
              return;
          }
@@ -11060,7 +11061,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_pop3_handler.c nginx-1.30.0-patched/sr
          return;
      }
  
-@@ -175,6 +185,7 @@
+@@ -176,6 +186,7 @@
  
              case NGX_POP3_USER:
                  rc = ngx_mail_pop3_user(s, c);
@@ -11068,7 +11069,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_pop3_handler.c nginx-1.30.0-patched/sr
                  break;
  
              case NGX_POP3_CAPA:
-@@ -213,6 +224,7 @@
+@@ -214,6 +225,7 @@
  
              case NGX_POP3_PASS:
                  rc = ngx_mail_pop3_pass(s, c);
@@ -11076,7 +11077,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_pop3_handler.c nginx-1.30.0-patched/sr
                  break;
  
              case NGX_POP3_CAPA:
-@@ -240,8 +252,10 @@
+@@ -241,8 +253,10 @@
          case ngx_pop3_auth_login_username:
              rc = ngx_mail_auth_login_username(s, c, 0);
  
@@ -11089,7 +11090,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_pop3_handler.c nginx-1.30.0-patched/sr
              break;
  
          case ngx_pop3_auth_login_password:
-@@ -256,6 +270,18 @@
+@@ -257,6 +271,18 @@
              rc = ngx_mail_auth_cram_md5(s, c);
              break;
  
@@ -11108,7 +11109,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_pop3_handler.c nginx-1.30.0-patched/sr
          case ngx_pop3_auth_external:
              rc = ngx_mail_auth_external(s, c, 0);
              break;
-@@ -269,41 +295,70 @@
+@@ -270,41 +296,70 @@
      switch (rc) {
  
      case NGX_DONE:
@@ -11202,7 +11203,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_pop3_handler.c nginx-1.30.0-patched/sr
  }
  
  static ngx_int_t
-@@ -313,6 +368,7 @@
+@@ -314,6 +369,7 @@
  
  #if (NGX_MAIL_SSL)
      if (ngx_mail_starttls_only(s, c)) {
@@ -11210,7 +11211,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_pop3_handler.c nginx-1.30.0-patched/sr
          return NGX_MAIL_PARSE_INVALID_COMMAND;
      }
  #endif
-@@ -322,6 +378,10 @@
+@@ -323,6 +379,10 @@
      }
  
      arg = s->args.elts;
@@ -11221,7 +11222,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_pop3_handler.c nginx-1.30.0-patched/sr
      s->login.len = arg[0].len;
      s->login.data = ngx_pnalloc(c->pool, s->login.len);
      if (s->login.data == NULL) {
-@@ -333,8 +393,6 @@
+@@ -334,8 +394,6 @@
      ngx_log_debug1(NGX_LOG_DEBUG_MAIL, c->log, 0,
                     "pop3 login: \"%V\"", &s->login);
  
@@ -11230,7 +11231,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_pop3_handler.c nginx-1.30.0-patched/sr
      return NGX_OK;
  }
  
-@@ -349,6 +407,11 @@
+@@ -350,6 +408,11 @@
      }
  
      arg = s->args.elts;
@@ -11242,7 +11243,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_pop3_handler.c nginx-1.30.0-patched/sr
      s->passwd.len = arg[0].len;
      s->passwd.data = ngx_pnalloc(c->pool, s->passwd.len);
      if (s->passwd.data == NULL) {
-@@ -362,6 +425,9 @@
+@@ -363,6 +426,9 @@
                     "pop3 passwd: \"%V\"", &s->passwd);
  #endif
  
@@ -11252,7 +11253,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_pop3_handler.c nginx-1.30.0-patched/sr
      return NGX_DONE;
  }
  
-@@ -464,6 +530,7 @@
+@@ -465,6 +531,7 @@
                     "pop3 apop: \"%V\" \"%V\"", &s->login, &s->passwd);
  
      s->auth_method = NGX_MAIL_AUTH_APOP;
@@ -11260,7 +11261,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_pop3_handler.c nginx-1.30.0-patched/sr
  
      return NGX_DONE;
  }
-@@ -484,10 +551,7 @@
+@@ -485,10 +552,7 @@
      pscf = ngx_mail_get_module_srv_conf(s, ngx_mail_pop3_module);
  
      if (s->args.nelts == 0) {
@@ -11272,7 +11273,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_pop3_handler.c nginx-1.30.0-patched/sr
      }
  
      rc = ngx_mail_auth_parse(s, c);
-@@ -496,34 +560,74 @@
+@@ -497,34 +561,74 @@
  
      case NGX_MAIL_AUTH_LOGIN:
  
@@ -11352,7 +11353,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_pop3_handler.c nginx-1.30.0-patched/sr
          }
  
          return NGX_ERROR;
-@@ -538,6 +642,9 @@
+@@ -539,6 +643,9 @@
          s->mail_state = ngx_pop3_auth_external;
  
          return NGX_OK;
@@ -11362,9 +11363,9 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_pop3_handler.c nginx-1.30.0-patched/sr
      }
  
      return rc;
-diff -Naur nginx-1.30.0/src/mail/ngx_mail_pop3_module.c nginx-1.30.0-patched/src/mail/ngx_mail_pop3_module.c
---- nginx-1.30.0/src/mail/ngx_mail_pop3_module.c	2026-04-14 15:10:11.000000000 +0200
-+++ nginx-1.30.0-patched/src/mail/ngx_mail_pop3_module.c	2026-04-24 09:33:43.000000000 +0200
+diff -Naur nginx-1.30.7/src/mail/ngx_mail_pop3_module.c nginx-1.30.7-patched/src/mail/ngx_mail_pop3_module.c
+--- nginx-1.30.7/src/mail/ngx_mail_pop3_module.c	2026-11-11 19:08:26.000000000 +0100
++++ nginx-1.30.7-patched/src/mail/ngx_mail_pop3_module.c	2026-11-18 18:42:20.342615516 +0100
 @@ -16,6 +16,7 @@
  static char *ngx_mail_pop3_merge_srv_conf(ngx_conf_t *cf, void *parent,
      void *child);
@@ -11733,9 +11734,9 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_pop3_module.c nginx-1.30.0-patched/src
  
      return NGX_CONF_OK;
  }
-diff -Naur nginx-1.30.0/src/mail/ngx_mail_pop3_module.h nginx-1.30.0-patched/src/mail/ngx_mail_pop3_module.h
---- nginx-1.30.0/src/mail/ngx_mail_pop3_module.h	2026-04-14 15:10:11.000000000 +0200
-+++ nginx-1.30.0-patched/src/mail/ngx_mail_pop3_module.h	2026-04-24 09:33:43.000000000 +0200
+diff -Naur nginx-1.30.7/src/mail/ngx_mail_pop3_module.h nginx-1.30.7-patched/src/mail/ngx_mail_pop3_module.h
+--- nginx-1.30.7/src/mail/ngx_mail_pop3_module.h	2026-11-11 19:08:26.000000000 +0100
++++ nginx-1.30.7-patched/src/mail/ngx_mail_pop3_module.h	2026-11-18 18:42:20.342674662 +0100
 @@ -15,6 +15,8 @@
  
  
@@ -11754,9 +11755,9 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_pop3_module.h nginx-1.30.0-patched/src
  } ngx_mail_pop3_srv_conf_t;
  
  
-diff -Naur nginx-1.30.0/src/mail/ngx_mail_proxy_module.c nginx-1.30.0-patched/src/mail/ngx_mail_proxy_module.c
---- nginx-1.30.0/src/mail/ngx_mail_proxy_module.c	2026-04-14 15:10:11.000000000 +0200
-+++ nginx-1.30.0-patched/src/mail/ngx_mail_proxy_module.c	2026-04-24 09:33:43.000000000 +0200
+diff -Naur nginx-1.30.7/src/mail/ngx_mail_proxy_module.c nginx-1.30.7-patched/src/mail/ngx_mail_proxy_module.c
+--- nginx-1.30.7/src/mail/ngx_mail_proxy_module.c	2026-11-11 19:08:26.000000000 +0100
++++ nginx-1.30.7-patched/src/mail/ngx_mail_proxy_module.c	2026-11-18 18:42:20.342726527 +0100
 @@ -5,20 +5,32 @@
   */
  
@@ -11790,7 +11791,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_proxy_module.c nginx-1.30.0-patched/sr
      ngx_msec_t  timeout;
  } ngx_mail_proxy_conf_t;
  
-@@ -39,6 +51,31 @@
+@@ -40,6 +52,31 @@
  static char *ngx_mail_proxy_merge_conf(ngx_conf_t *cf, void *parent,
      void *child);
  
@@ -11822,7 +11823,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_proxy_module.c nginx-1.30.0-patched/sr
  
  static ngx_command_t  ngx_mail_proxy_commands[] = {
  
-@@ -56,6 +93,13 @@
+@@ -57,6 +94,13 @@
        offsetof(ngx_mail_proxy_conf_t, buffer_size),
        NULL },
  
@@ -11836,7 +11837,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_proxy_module.c nginx-1.30.0-patched/sr
      { ngx_string("proxy_timeout"),
        NGX_MAIL_MAIN_CONF|NGX_MAIL_SRV_CONF|NGX_CONF_TAKE1,
        ngx_conf_set_msec_slot,
-@@ -70,6 +114,20 @@
+@@ -71,6 +115,20 @@
        offsetof(ngx_mail_proxy_conf_t, pass_error_message),
        NULL },
  
@@ -11857,7 +11858,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_proxy_module.c nginx-1.30.0-patched/sr
      { ngx_string("xclient"),
        NGX_MAIL_MAIN_CONF|NGX_MAIL_SRV_CONF|NGX_CONF_FLAG,
        ngx_conf_set_flag_slot,
-@@ -77,6 +135,17 @@
+@@ -78,6 +136,17 @@
        offsetof(ngx_mail_proxy_conf_t, xclient),
        NULL },
  
@@ -11875,7 +11876,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_proxy_module.c nginx-1.30.0-patched/sr
      { ngx_string("proxy_smtp_auth"),
        NGX_MAIL_MAIN_CONF|NGX_MAIL_SRV_CONF|NGX_CONF_FLAG,
        ngx_conf_set_flag_slot,
-@@ -121,8 +190,12 @@
+@@ -122,8 +191,12 @@
      NGX_MODULE_V1_PADDING
  };
  
@@ -11889,7 +11890,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_proxy_module.c nginx-1.30.0-patched/sr
  
  
  void
-@@ -159,7 +232,9 @@
+@@ -160,7 +233,9 @@
          return;
      }
  
@@ -11900,8 +11901,8 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_proxy_module.c nginx-1.30.0-patched/sr
  
      p->upstream.connection->data = s;
      p->upstream.connection->pool = s->connection->pool;
-@@ -167,8 +242,6 @@
-     s->connection->read->handler = ngx_mail_proxy_block_read;
+@@ -169,8 +244,6 @@
+     s->connection->write->handler = ngx_mail_proxy_block_write;
      p->upstream.connection->write->handler = ngx_mail_proxy_write_handler;
  
 -    pcf = ngx_mail_get_module_srv_conf(s, ngx_mail_proxy_module);
@@ -11909,7 +11910,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_proxy_module.c nginx-1.30.0-patched/sr
      s->proxy->buffer = ngx_create_temp_buf(s->connection->pool,
                                             pcf->buffer_size);
      if (s->proxy->buffer == NULL) {
-@@ -180,6 +253,16 @@
+@@ -182,6 +255,16 @@
  
      s->out.len = 0;
  
@@ -11926,7 +11927,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_proxy_module.c nginx-1.30.0-patched/sr
      switch (s->protocol) {
  
      case NGX_MAIL_POP3_PROTOCOL:
-@@ -228,10 +311,20 @@
+@@ -247,10 +330,20 @@
  {
      u_char                 *p;
      ngx_int_t               rc;
@@ -11947,7 +11948,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_proxy_module.c nginx-1.30.0-patched/sr
  
      ngx_log_debug0(NGX_LOG_DEBUG_MAIL, rev->log, 0,
                     "mail proxy pop3 auth handler");
-@@ -239,6 +332,9 @@
+@@ -258,6 +351,9 @@
      c = rev->data;
      s = c->data;
  
@@ -11957,7 +11958,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_proxy_module.c nginx-1.30.0-patched/sr
      if (rev->timedout) {
          ngx_log_error(NGX_LOG_INFO, c->log, NGX_ETIMEDOUT,
                        "upstream timed out");
-@@ -258,7 +354,7 @@
+@@ -277,7 +373,7 @@
          return;
      }
  
@@ -11966,7 +11967,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_proxy_module.c nginx-1.30.0-patched/sr
  
      if (rc == NGX_AGAIN) {
          if (ngx_handle_read_event(c->read, 0) != NGX_OK) {
-@@ -270,29 +366,158 @@
+@@ -289,29 +385,158 @@
      }
  
      if (rc == NGX_ERROR) {
@@ -12135,7 +12136,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_proxy_module.c nginx-1.30.0-patched/sr
          break;
  
      case ngx_pop3_user:
-@@ -315,27 +540,66 @@
+@@ -334,27 +559,66 @@
          break;
  
      case ngx_pop3_passwd:
@@ -12217,7 +12218,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_proxy_module.c nginx-1.30.0-patched/sr
  
      default:
  #if (NGX_SUPPRESS_WARN)
-@@ -368,16 +632,33 @@
+@@ -387,16 +651,33 @@
  {
      u_char                 *p;
      ngx_int_t               rc;
@@ -12252,7 +12253,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_proxy_module.c nginx-1.30.0-patched/sr
  
      if (rev->timedout) {
          ngx_log_error(NGX_LOG_INFO, c->log, NGX_ETIMEDOUT,
-@@ -409,32 +690,268 @@
+@@ -428,32 +709,268 @@
          return;
      }
  
@@ -12532,7 +12533,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_proxy_module.c nginx-1.30.0-patched/sr
          break;
  
      case ngx_imap_login:
-@@ -442,15 +959,15 @@
+@@ -461,15 +978,15 @@
  
          s->connection->log->action = "sending user name to upstream";
  
@@ -12551,7 +12552,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_proxy_module.c nginx-1.30.0-patched/sr
                     - line.data;
  
          s->mail_state = ngx_imap_user;
-@@ -476,31 +993,67 @@
+@@ -495,31 +1012,67 @@
          break;
  
      case ngx_imap_passwd:
@@ -12635,7 +12636,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_proxy_module.c nginx-1.30.0-patched/sr
  #endif
          break;
      }
-@@ -970,6 +1523,33 @@
+@@ -990,6 +1543,33 @@
      ssize_t                 n;
      ngx_buf_t              *b;
      ngx_mail_proxy_conf_t  *pcf;
@@ -12669,7 +12670,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_proxy_module.c nginx-1.30.0-patched/sr
  
      s->connection->log->action = "reading response from upstream";
  
-@@ -988,7 +1568,12 @@
+@@ -1008,7 +1588,12 @@
  
      b->last += n;
  
@@ -12683,7 +12684,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_proxy_module.c nginx-1.30.0-patched/sr
          return NGX_AGAIN;
      }
  
-@@ -1004,13 +1589,20 @@
+@@ -1024,13 +1609,20 @@
          return NGX_AGAIN;
      }
  
@@ -12706,7 +12707,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_proxy_module.c nginx-1.30.0-patched/sr
          }
          break;
  
-@@ -1018,18 +1610,37 @@
+@@ -1038,18 +1630,37 @@
          switch (state) {
  
          case ngx_imap_start:
@@ -12745,7 +12746,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_proxy_module.c nginx-1.30.0-patched/sr
          case ngx_imap_passwd:
  
              /*
-@@ -1054,10 +1665,54 @@
+@@ -1074,10 +1685,54 @@
                  }
              }
  
@@ -12804,7 +12805,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_proxy_module.c nginx-1.30.0-patched/sr
                  }
              }
  
-@@ -1126,6 +1781,11 @@
+@@ -1146,6 +1801,11 @@
          break;
      }
  
@@ -12816,7 +12817,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_proxy_module.c nginx-1.30.0-patched/sr
      pcf = ngx_mail_get_module_srv_conf(s, ngx_mail_proxy_module);
  
      if (pcf->pass_error_message == 0) {
-@@ -1179,6 +1839,7 @@
+@@ -1199,6 +1859,7 @@
                            "upstream timed out");
          }
  
@@ -12824,7 +12825,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_proxy_module.c nginx-1.30.0-patched/sr
          ngx_mail_proxy_close_session(s);
          return;
      }
-@@ -1256,7 +1917,14 @@
+@@ -1276,7 +1937,14 @@
  
              n = src->recv(src, b->last, size);
  
@@ -12840,7 +12841,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_proxy_module.c nginx-1.30.0-patched/sr
                  break;
              }
  
-@@ -1319,6 +1987,10 @@
+@@ -1339,6 +2007,10 @@
  }
  
  
@@ -12851,7 +12852,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_proxy_module.c nginx-1.30.0-patched/sr
  static void
  ngx_mail_proxy_upstream_error(ngx_mail_session_t *s)
  {
-@@ -1327,6 +1999,14 @@
+@@ -1347,6 +2019,14 @@
                         "close mail proxy connection: %d",
                         s->proxy->upstream.connection->fd);
  
@@ -12866,7 +12867,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_proxy_module.c nginx-1.30.0-patched/sr
          ngx_close_connection(s->proxy->upstream.connection);
      }
  
-@@ -1348,6 +2028,14 @@
+@@ -1368,6 +2048,14 @@
                         "close mail proxy connection: %d",
                         s->proxy->upstream.connection->fd);
  
@@ -12881,7 +12882,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_proxy_module.c nginx-1.30.0-patched/sr
          ngx_close_connection(s->proxy->upstream.connection);
      }
  
-@@ -1363,10 +2051,22 @@
+@@ -1383,10 +2071,22 @@
                         "close mail proxy connection: %d",
                         s->proxy->upstream.connection->fd);
  
@@ -12905,7 +12906,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_proxy_module.c nginx-1.30.0-patched/sr
  }
  
  
-@@ -1382,11 +2082,16 @@
+@@ -1402,11 +2102,16 @@
  
      pcf->enable = NGX_CONF_UNSET;
      pcf->pass_error_message = NGX_CONF_UNSET;
@@ -12922,7 +12923,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_proxy_module.c nginx-1.30.0-patched/sr
  
      return pcf;
  }
-@@ -1400,12 +2105,500 @@
+@@ -1420,12 +2125,500 @@
  
      ngx_conf_merge_value(conf->enable, prev->enable, 0);
      ngx_conf_merge_value(conf->pass_error_message, prev->pass_error_message, 0);
@@ -13423,9 +13424,9 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_proxy_module.c nginx-1.30.0-patched/sr
 +
 +#endif
 +
-diff -Naur nginx-1.30.0/src/mail/ngx_mail_smtp_module.c nginx-1.30.0-patched/src/mail/ngx_mail_smtp_module.c
---- nginx-1.30.0/src/mail/ngx_mail_smtp_module.c	2026-04-14 15:10:11.000000000 +0200
-+++ nginx-1.30.0-patched/src/mail/ngx_mail_smtp_module.c	2026-04-24 09:33:43.000000000 +0200
+diff -Naur nginx-1.30.7/src/mail/ngx_mail_smtp_module.c nginx-1.30.7-patched/src/mail/ngx_mail_smtp_module.c
+--- nginx-1.30.7/src/mail/ngx_mail_smtp_module.c	2026-11-11 19:08:26.000000000 +0100
++++ nginx-1.30.7-patched/src/mail/ngx_mail_smtp_module.c	2026-11-18 18:42:20.342983242 +0100
 @@ -50,7 +50,8 @@
  
      ngx_string("451 4.3.2 Internal server error" CRLF),

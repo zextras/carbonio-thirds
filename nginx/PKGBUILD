@@ -1,5 +1,5 @@
 pkgname="carbonio-nginx"
-pkgver="1.30.6" # renovate: datasource=github-tags depName=nginx/nginx
+pkgver="1.30.7" # renovate: datasource=github-tags depName=nginx/nginx
 pkgrel="1"
 pkgdesc="Lightweight HTTP server and IMAP/POP3 proxy server"
 arch=('aarch64' 'x86_64')
@@ -50,14 +50,14 @@ section="utils"
 priority="optional"
 source=(
   "https://nginx.org/download/nginx-${pkgver}.tar.gz"
-  "lua-nginx-module::git+https://github.com/openresty/lua-nginx-module#commit=c81c9517034aa7868fc333df5d53af9c860056eb"
+  "lua-nginx-module::git+https://github.com/openresty/lua-nginx-module#commit=e672520a9480524f40ee8f999ef1f182959750a9"
   "lua-resty-openssl-aux-module::git+https://github.com/fffonion/lua-resty-openssl-aux-module#commit=9d39a905c30e9b8626b5e787accd99d4333edfba"
   "modules::git+https://github.com/zextras/carbonio-nginx-modules#commit=79b2a956fab93a9769d5a0d8d0adc34343d06900"
-  "nginx-brotli::git+https://github.com/google/ngx_brotli#commit=a71f9312c2deb28875acc7bacfdd5695a111aa53"
+  "nginx-brotli::git+https://github.com/google/ngx_brotli#commit=53e0fb55f250f48fe80c0ddbf6c0f7103cdbaae1"
   "ngx_devel_kit::git+https://github.com/vision5/ngx_devel_kit#commit=bd44d16302273052d6005d7bdb55f74e23813de3"
-  "lua-resty-core::git+https://github.com/openresty/lua-resty-core#commit=04c564acc22c90f9650fe42fec74879ae4b656a6"
+  "lua-resty-core::git+https://github.com/openresty/lua-resty-core#commit=873d072635fd408d81a0abd4187392f3f128ceb9"
   "lua-resty-lrucache::git+https://github.com/openresty/lua-resty-lrucache#commit=0bb1eff11d248ad22026b935b28453ec7f1b27c5"
-  "stream-lua-nginx-module::git+https://github.com/openresty/stream-lua-nginx-module#commit=c5b3410939478069b2af6552205173fb8b6a43fd"
+  "stream-lua-nginx-module::git+https://github.com/openresty/stream-lua-nginx-module#commit=7581c68b43e1645bffe0d7262b1f4230d9698a6a"
   "${pkgname}.service"
   "${pkgname}-${pkgver}.patch"
   "lua_default_path.patch"
@@ -69,7 +69,7 @@ source=(
   "systemd-tmpfile.conf"
 )
 sha256sums=(
-  '3cf46f5ed7504d460125866b7bea99fb357f31d887e2e63b35503310e9b8b6c8'
+  '2565b5c837050e958f70fb0f73c48e2bca4542ad349fd356f46fb0c72610bc6e'
   'SKIP'
   'SKIP'
   'SKIP'
@@ -79,13 +79,13 @@ sha256sums=(
   'SKIP'
   'SKIP'
   'ade88ca03d52552198559f2731e6e83cb3d60f1bb2b203fad2c8e565232ade6f'
-  'b7c6b068b5a8ca5cfab7048a198d6106a011353d9ffadc89554637fcff9a10e6'
+  '35fbbf9adb223d7657d7cfa6b17d62cb25a049aa7175e346557bca92f24614da'
   '5ee2be98ad3619ec851f697fc0b32cd6c5d7e4ceb81d266e26a03bf627c59fbe'
   '0934df2c7cc8288c99293c383abedcea7ac05aac9209dedaf3d65641e2fc726f'
   'acbaaf5bf119bdf6b14408b01bb198c32f9ea7a382ae139aae02fbb76c0a6e40'
   'c61a268071994d9985d584d50430c393d3e5604353f3b992b108adfafef905c7'
   '921afab08ef59372abb079337acbb3d995c03595113eabdc97f2f8041a26aae2'
-  '47bdb8793c109e6aed69b1d47b3c665508b21133169cc123012a0328223ef2d3'
+  'e14bbc994c30daf0507eb447fd5c5c11eb7dfaa381b90b6a14e8d3bf45981f57'
   '0d9bf766db1f5e64bd6f8766f22735f7af5cffed4759e15b0d99dd9da4ce9ee2'
 )
 
