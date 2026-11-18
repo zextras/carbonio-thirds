@@ -1,5 +1,5 @@
 pkgname="carbonio-nginx"
-pkgver="1.30.6" # renovate: datasource=github-tags depName=nginx/nginx
+pkgver="1.30.7" # renovate: datasource=github-tags depName=nginx/nginx
 pkgrel="1"
 pkgdesc="Lightweight HTTP server and IMAP/POP3 proxy server"
 arch=('aarch64' 'x86_64')
@@ -69,7 +69,7 @@ source=(
   "systemd-tmpfile.conf"
 )
 sha256sums=(
-  '3cf46f5ed7504d460125866b7bea99fb357f31d887e2e63b35503310e9b8b6c8'
+  '2565b5c837050e958f70fb0f73c48e2bca4542ad349fd356f46fb0c72610bc6e'
   'SKIP'
   'SKIP'
   'SKIP'

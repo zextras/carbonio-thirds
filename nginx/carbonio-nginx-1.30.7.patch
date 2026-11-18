@@ -7258,7 +7258,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail.h nginx-1.30.0-patched/src/mail/ngx_ma
 diff -Naur nginx-1.30.0/src/mail/ngx_mail_handler.c nginx-1.30.0-patched/src/mail/ngx_mail_handler.c
 --- nginx-1.30.0/src/mail/ngx_mail_handler.c	2026-04-14 15:10:11.000000000 +0200
 +++ nginx-1.30.0-patched/src/mail/ngx_mail_handler.c	2026-04-24 09:33:43.000000000 +0200
-@@ -10,10 +10,20 @@
+@@ -10,11 +10,21 @@
  #include <ngx_event.h>
  #include <ngx_mail.h>
  
@@ -7272,6 +7272,7 @@ diff -Naur nginx-1.30.0/src/mail/ngx_mail_handler.c nginx-1.30.0-patched/src/mai
  static void ngx_mail_proxy_protocol_handler(ngx_event_t *rev);
  static void ngx_mail_init_session_handler(ngx_event_t *rev);
  static void ngx_mail_init_session(ngx_connection_t *c);
+ static void ngx_mail_block_read(ngx_event_t *rev);
 +static void ngx_mail_choke_session(throttle_callback_t *cb);
 +static void ngx_mail_allow_session(throttle_callback_t *cb);
 +static void ngx_mail_allow_userauth(throttle_callback_t *cb);
