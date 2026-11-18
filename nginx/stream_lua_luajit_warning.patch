@@ -4,7 +4,7 @@ not indicate a problem.
 
 --- a/src/ngx_stream_lua_module.c
 +++ b/src/ngx_stream_lua_module.c
-@@ -639,7 +639,7 @@
+@@ -657,7 +657,7 @@
 
  #ifndef OPENRESTY_LUAJIT
          if (ngx_process != NGX_PROCESS_SIGNALLER && !ngx_test_config) {
