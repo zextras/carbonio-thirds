@@ -1,5 +1,5 @@
 library(
-    identifier: 'jenkins-lib-common@1.7.5',
+    identifier: 'jenkins-lib-common@v5.5.0',
     retriever: modernSCM([
         $class: 'GitSCMSource',
         credentialsId: 'jenkins-integration-with-github-account',
@@ -33,18 +33,59 @@ pipeline {
             }
         }
 
+        stage('Skip CI') {
+            steps {
+                script { semanticRelease.guard() }
+            }
+        }
+
+        stage('SonarQube analysis') {
+            steps {
+                unstash 'project'
+                script {
+                    scannerHome = tool 'SonarScanner'
+                }
+                withSonarQubeEnv(credentialsId: 'sonarqube-user-token',
+                    installationName: 'SonarQube instance') {
+                    sh "${scannerHome}/bin/sonar-scanner"
+                }
+            }
+        }
+
         stage('Build deb/rpm') {
             steps {
                 echo 'Building deb/rpm packages'
                 buildStage(
                     addCarbonioRepos: true,
-                    buildDirs: ['native', 'perl'],
                     parallelBuilds: false,
                     prepare: true,
-                    debugSymbols: true,
+                    debugSymbols: env.TAG_NAME as boolean,
                 )
             }
         }
 
+        stage('Debug Symbols') {
+            steps {
+                debuginfodStage(tagOnly: true)
+            }
+        }
+
+        stage('Upload artifacts')
+        {
+            tools {
+                jfrog 'jfrog-cli'
+            }
+            steps {
+                uploadStage(
+                    yapPath: 'yap.json',
+                )
+            }
+        }
+
+        stage('Semantic Release') {
+            steps {
+                semanticRelease()
+            }
+        }
     }
 }

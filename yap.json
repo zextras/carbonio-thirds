@@ -1,8 +1,9 @@
 {
-  "name": "native",
+  "name": "carbonio-thirds",
   "description": "This is the manifest to build native third-party packages",
-  "buildDir": "/tmp/",
+  "buildDir": "/tmp/carbonio-thirds-build/",
   "output": "artifacts",
+  "skipDeps": ["carbonio-core"],
   "projects": [
     {
       "name": "icu",
@@ -63,9 +64,6 @@
     {
       "name": "openldap",
       "install": true
-    },
-    {
-      "name": "clamav"
     },
     {
       "name": "postfix"

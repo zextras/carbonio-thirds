@@ -1,9 +1,8 @@
 # Makefile for building carbonio-thirds packages using YAP
 #
 # Usage:
-#   make build TARGET=ubuntu-jammy           # Build all packages for Ubuntu 22.04
-#   make build-native TARGET=rocky-9         # Build only native packages
-#   make build-perl TARGET=ubuntu-noble      # Build only perl packages
+#   make build TARGET=ubuntu-jammy           # Build packages for Ubuntu 22.04
+#   make build TARGET=rocky-9                # Build packages for Rocky Linux 9
 #   make clean                               # Clean build artifacts
 #
 # Supported targets:
@@ -38,25 +37,16 @@ CONTAINER_OPTS = --rm -ti \
 	-v $(CCACHE_DIR):/root/.ccache \
 	-e CCACHE_DIR=/root/.ccache
 
-.PHONY: all build build-native build-perl clean list-targets help pull
+.PHONY: all build clean list-targets help pull
 
 # Default target
 all: build
 
-## build: Build all packages (native and perl) for the specified TARGET
-build: build-native build-perl
-
-## build-native: Build only native packages for the specified TARGET
-build-native:
-	@echo "Building native packages for $(TARGET)..."
+## build: Build packages for the specified TARGET
+build:
+	@echo "Building packages for $(TARGET)..."
 	@mkdir -p $(OUTPUT_DIR) $(CCACHE_DIR)
-	$(CONTAINER_RUNTIME) run $(CONTAINER_OPTS) $(YAP_IMAGE) -c "yap prepare $(TARGET) && yap build $(TARGET) /project/native"
-
-## build-perl: Build only perl packages for the specified TARGET
-build-perl:
-	@echo "Building perl packages for $(TARGET)..."
-	@mkdir -p $(OUTPUT_DIR) $(CCACHE_DIR)
-	$(CONTAINER_RUNTIME) run $(CONTAINER_OPTS) $(YAP_IMAGE) -c "yap prepare $(TARGET) && yap build $(TARGET) /project/perl"
+	$(CONTAINER_RUNTIME) run $(CONTAINER_OPTS) $(YAP_IMAGE) -c "yap prepare $(TARGET) && yap build $(TARGET) /project"
 
 ## pull: Pull the YAP container image for the specified TARGET
 pull:
@@ -67,7 +57,6 @@ pull:
 clean:
 	@echo "Cleaning build artifacts..."
 	rm -rf $(OUTPUT_DIR)
-	rm -rf native/artifacts perl/artifacts
 
 ## clean-all: Remove build artifacts
 clean-all: clean
@@ -107,7 +96,5 @@ help:
 	@echo ""
 	@echo "Examples:"
 	@echo "  make build TARGET=ubuntu-jammy"
-	@echo "  make build-native TARGET=rocky-9"
-	@echo "  make build-perl TARGET=ubuntu-noble"
 	@echo "  make pull TARGET=ubuntu-noble"
 	@echo ""
