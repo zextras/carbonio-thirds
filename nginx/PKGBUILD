@@ -11,14 +11,14 @@ depends__apt=(
   "carbonio-openssl"
   "libbrotli1"
   "libcap2-bin"
-  "libpcre3"
+  "libpcre2-8-0"
   "zlib1g"
 )
 makedepends__apt=(
   "git"
   "libbrotli-dev"
   "libcap2-bin"
-  "libpcre3-dev"
+  "libpcre2-dev"
   "zlib1g-dev"
 )
 depends__yum=(
@@ -26,14 +26,14 @@ depends__yum=(
   "carbonio-openssl"
   "brotli"
   "libcap"
-  "pcre"
+  "pcre2"
   "zlib"
 )
 makedepends__yum=(
   "brotli-devel"
   "git"
   "libcap"
-  "pcre-devel"
+  "pcre2-devel"
   "zlib-devel"
 )
 section="utils"

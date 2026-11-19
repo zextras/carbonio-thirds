@@ -18,30 +18,6 @@
       "install": true
     },
     {
-      "name": "libbsd",
-      "install": true
-    },
-    {
-      "name": "libevent",
-      "install": true
-    },
-    {
-      "name": "libsodium",
-      "install": true
-    },
-    {
-      "name": "libmilter",
-      "install": true
-    },
-    {
-      "name": "altermime",
-      "install": true
-    },
-    {
-      "name": "bdb",
-      "install": true
-    },
-    {
       "name": "krb5",
       "install": true
     },
@@ -62,21 +38,7 @@
       "install": true
     },
     {
-      "name": "openldap",
-      "install": true
-    },
-    {
-      "name": "postfix"
-    },
-    {
-      "name": "memcached"
-    },
-    {
       "name": "nginx"
-    },
-    {
-      "name": "opendkim",
-      "install": true
     }
   ]
 }
