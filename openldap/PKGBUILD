@@ -22,9 +22,11 @@ depends__yum=(
 )
 makedepends__apt=(
   "libcap2-bin"
+  "libltdl-dev"
 )
 makedepends__yum=(
   "libcap"
+  "libtool-ltdl-devel"
 )
 section="libs"
 priority="important"
