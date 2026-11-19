@@ -16,10 +16,15 @@ depends__yum=(
 )
 makedepends__apt=(
   "autoconf"
+  "automake"
+  "libtool"
   "pkg-config"
   "zlib1g-dev"
 )
 makedepends__yum=(
+  "autoconf"
+  "automake"
+  "libtool"
   "zlib-devel"
 )
 section="libs"

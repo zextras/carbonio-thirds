@@ -10,12 +10,18 @@ depends__apt=(
   "carbonio-libevent"
 )
 makedepends__apt=(
+  "autoconf"
+  "automake"
+  "libtool"
   "pkg-config"
 )
 depends__yum=(
   "carbonio-libevent"
 )
 makedepends__yum=(
+  "autoconf"
+  "automake"
+  "libtool"
   "pkgconfig"
 )
 section="utils"

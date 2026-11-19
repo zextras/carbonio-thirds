@@ -49,12 +49,14 @@ makedepends__apt=(
   "libedit-dev"
   "libjudy-dev"
   "liblz4-dev"
-  "libncurses5-dev"
+  "libncurses-dev"
   "libnuma-dev"
   "libpam0g-dev"
+  "libpcre2-dev"
   "libpcre3-dev"
   "libsnappy-dev"
   "libzstd-dev"
+  "pkg-config"
   "zlib1g-dev"
 )
 depends__yum=(
@@ -79,6 +81,7 @@ makedepends__yum=(
   "ncurses-devel"
   "pam-devel"
   "pcre-devel"
+  "pcre2-devel"
   "snappy-devel"
 )
 section="utils"
@@ -140,7 +143,7 @@ build() {
     -DWITH_EMBEDDED_SERVER=OFF \
     -DWITH_FAST_MUTEXES=ON \
     -DWITH_JEMALLOC=ON \
-    -DWITH_PCRE=system \
+    -DWITH_PCRE=bundled \
     -DWITH_SSL=yes \
     -DWITH_UNIT_TESTS=OFF \
     -DWITH_ZLIB=system \

@@ -10,22 +10,30 @@ depends__apt=(
   "carbonio-cyrus-sasl"
   "carbonio-bdb"
   "carbonio-libbsd"
+  "carbonio-libmilter"
   "carbonio-openldap"
   "carbonio-openssl"
   "zlib1g"
 )
 makedepends__apt=(
+  "autoconf"
+  "automake"
+  "libtool"
   "zlib1g-dev"
 )
 depends__yum=(
   "carbonio-cyrus-sasl"
   "carbonio-bdb"
   "carbonio-libbsd"
+  "carbonio-libmilter"
   "carbonio-openldap"
   "carbonio-openssl"
   "zlib"
 )
 makedepends__yum=(
+  "autoconf"
+  "automake"
+  "libtool"
   "zlib-devel"
 )
 section="utils"

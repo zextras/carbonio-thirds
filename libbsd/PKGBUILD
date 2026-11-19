@@ -12,6 +12,16 @@ depends__apt=(
 depends__yum=(
   "glibc"
 )
+makedepends__apt=(
+  "autoconf"
+  "automake"
+  "libtool"
+)
+makedepends__yum=(
+  "autoconf"
+  "automake"
+  "libtool"
+)
 section="libs"
 priority="important"
 source=(
