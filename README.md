@@ -36,16 +36,14 @@ Included components:
 # Build all packages for Ubuntu 22.04
 make build TARGET=ubuntu-jammy
 
-# Build all packages for Rocky Linux 9
-make build TARGET=rocky-9
+# Build all packages for Ubuntu 24.04
+make build TARGET=ubuntu-noble
 ```
 
 ### Supported Targets
 
 - `ubuntu-jammy` - Ubuntu 22.04 LTS
 - `ubuntu-noble` - Ubuntu 24.04 LTS
-- `rocky-8` - Rocky Linux 8
-- `rocky-9` - Rocky Linux 9
 
 Run `make list-targets` to see this list, or `make help` for all options.
 
@@ -58,7 +56,7 @@ You can customize the build by setting environment variables:
 make build TARGET=ubuntu-jammy CONTAINER_RUNTIME=docker
 
 # Use a different output directory
-make build TARGET=rocky-9 OUTPUT_DIR=./my-packages
+make build TARGET=ubuntu-noble OUTPUT_DIR=./my-packages
 ```
 
 ## Installation
@@ -69,12 +67,6 @@ These packages are distributed as part of the [Carbonio platform](https://zextra
 
 ```bash
 apt-get install <package-name>
-```
-
-### Rocky Linux (8/9)
-
-```bash
-yum install <package-name>
 ```
 
 ## Contributing

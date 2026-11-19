@@ -2,11 +2,11 @@
 #
 # Usage:
 #   make build TARGET=ubuntu-jammy           # Build packages for Ubuntu 22.04
-#   make build TARGET=rocky-9                # Build packages for Rocky Linux 9
+#   make build TARGET=ubuntu-noble           # Build packages for Ubuntu 24.04
 #   make clean                               # Clean build artifacts
 #
 # Supported targets:
-#   ubuntu-jammy, ubuntu-noble, rocky-8, rocky-9
+#   ubuntu-jammy, ubuntu-noble
 
 # Configuration
 YAP_IMAGE_PREFIX ?= docker.io/m0rf30/yap
@@ -67,8 +67,6 @@ list-targets:
 	@echo ""
 	@echo "  ubuntu-jammy    (Ubuntu 22.04 LTS)"
 	@echo "  ubuntu-noble    (Ubuntu 24.04 LTS)"
-	@echo "  rocky-8         (Rocky Linux 8)"
-	@echo "  rocky-9         (Rocky Linux 9)"
 	@echo ""
 	@echo "Usage: make build TARGET=<target>"
 

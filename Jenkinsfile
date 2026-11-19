@@ -52,11 +52,12 @@ pipeline {
             }
         }
 
-        stage('Build deb/rpm') {
+        stage('Build deb') {
             steps {
-                echo 'Building deb/rpm packages'
+                echo 'Building deb packages'
                 buildStage(
                     addCarbonioRepos: true,
+                    distros: ['ubuntu-jammy', 'ubuntu-noble'],
                     parallelBuilds: false,
                     prepare: true,
                     debugSymbols: env.TAG_NAME as boolean,
@@ -77,6 +78,7 @@ pipeline {
             }
             steps {
                 uploadStage(
+                    distros: ['ubuntu-jammy', 'ubuntu-noble'],
                     yapPath: 'yap.json',
                 )
             }
