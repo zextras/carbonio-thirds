@@ -53,6 +53,31 @@ source=(
   "CVE-2026-42946-1.patch"
   "CVE-2026-42946-2.patch"
   "CVE-2026-49975.patch"
+  "CVE-2026-42055.patch"
+  "CVE-2026-48142.patch"
+  "CVE-2026-56434.patch"
+  "CVE-2026-60005.patch"
+  "CVE-2026-42533.patch"
+  "CVE-2026-15176.patch"
+  "CVE-2026-93479.patch"
+  "CVE-2026-95101.patch"
+  "CVE-2026-97205.patch"
+  "CVE-2026-97629.patch"
+  "CVE-2026-123007.patch"
+  "CVE-2026-123633.patch"
+  "CVE-2026-113425-1.patch"
+  "CVE-2026-113425-2.patch"
+  "CVE-2026-113425-3.patch"
+  "CVE-2026-113425-4.patch"
+  "CVE-2026-113425-5.patch"
+  "CVE-2026-118899.patch"
+  "CVE-2026-118899-post1.patch"
+  "CVE-2026-120967.patch"
+  "CVE-2026-121810.patch"
+  "CVE-2026-123634-pre1.patch"
+  "CVE-2026-123634.patch"
+  "CVE-2026-123640-1.patch"
+  "CVE-2026-123640-2.patch"
 )
 sha256sums=(
   '2c96a946bfb0882a21744ed429770a2123ae1828c7c48665092993ddee91a918'
@@ -61,6 +86,31 @@ sha256sums=(
   '53789dd07373db982d5376f497d456fedb7baaa1a6cc0fd29228975dcfbd50c8'
   'ba83cd36d49f281227fb96de3870d10f3a51374a18d648bb1d85574a26c15893'
   '0d9bf766db1f5e64bd6f8766f22735f7af5cffed4759e15b0d99dd9da4ce9ee2'
+  'SKIP'
+  'SKIP'
+  'SKIP'
+  'SKIP'
+  'SKIP'
+  'SKIP'
+  'SKIP'
+  'SKIP'
+  'SKIP'
+  'SKIP'
+  'SKIP'
+  'SKIP'
+  'SKIP'
+  'SKIP'
+  'SKIP'
+  'SKIP'
+  'SKIP'
+  'SKIP'
+  'SKIP'
+  'SKIP'
+  'SKIP'
+  'SKIP'
+  'SKIP'
+  'SKIP'
+  'SKIP'
   'SKIP'
   'SKIP'
   'SKIP'
@@ -141,6 +191,31 @@ build() {
   patch -Np1 -i "${srcdir}/CVE-2026-42946-1.patch"
   patch -Np1 -i "${srcdir}/CVE-2026-42946-2.patch"
   patch -Np1 -i "${srcdir}/CVE-2026-49975.patch"
+  patch -Np1 -i "${srcdir}/CVE-2026-42055.patch"
+  patch -Np1 -i "${srcdir}/CVE-2026-48142.patch"
+  patch -Np1 -i "${srcdir}/CVE-2026-56434.patch"
+  patch -Np1 -i "${srcdir}/CVE-2026-60005.patch"
+  patch -Np1 -i "${srcdir}/CVE-2026-42533.patch"
+  patch -Np1 -i "${srcdir}/CVE-2026-15176.patch"
+  patch -Np1 -i "${srcdir}/CVE-2026-93479.patch"
+  patch -Np1 -i "${srcdir}/CVE-2026-95101.patch"
+  patch -Np1 -i "${srcdir}/CVE-2026-97205.patch"
+  patch -Np1 -i "${srcdir}/CVE-2026-97629.patch"
+  patch -Np1 -i "${srcdir}/CVE-2026-123007.patch"
+  patch -Np1 -i "${srcdir}/CVE-2026-123633.patch"
+  patch -Np1 -i "${srcdir}/CVE-2026-113425-1.patch"
+  patch -Np1 -i "${srcdir}/CVE-2026-113425-2.patch"
+  patch -Np1 -i "${srcdir}/CVE-2026-113425-3.patch"
+  patch -Np1 -i "${srcdir}/CVE-2026-113425-4.patch"
+  patch -Np1 -i "${srcdir}/CVE-2026-113425-5.patch"
+  patch -Np1 -i "${srcdir}/CVE-2026-118899.patch"
+  patch -Np1 -i "${srcdir}/CVE-2026-118899-post1.patch"
+  patch -Np1 -i "${srcdir}/CVE-2026-120967.patch"
+  patch -Np1 -i "${srcdir}/CVE-2026-121810.patch"
+  patch -Np1 -i "${srcdir}/CVE-2026-123634-pre1.patch"
+  patch -Np1 -i "${srcdir}/CVE-2026-123634.patch"
+  patch -Np1 -i "${srcdir}/CVE-2026-123640-1.patch"
+  patch -Np1 -i "${srcdir}/CVE-2026-123640-2.patch"
 
   ./configure \
     --add-module="${srcdir}/nginx-brotli" \
