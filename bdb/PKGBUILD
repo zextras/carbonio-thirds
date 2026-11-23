@@ -9,6 +9,10 @@ license=('AGPL-3.0-only AND BSD-3-Clause')
 section="utils"
 priority="optional"
 options=('!libtool')
+makedepends=(
+  "diffutils"
+  "file"
+)
 source=(
   "https://download.oracle.com/berkeley-db/db-${pkgver}.tar.gz"
   "tls-configure.patch"
