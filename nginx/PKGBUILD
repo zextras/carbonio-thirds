@@ -18,6 +18,7 @@ depends__apt=(
   "zlib1g"
 )
 makedepends__apt=(
+  "cmake"
   "git"
   "libbrotli-dev"
   "libcap2-bin"
