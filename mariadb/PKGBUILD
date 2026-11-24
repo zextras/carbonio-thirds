@@ -272,7 +272,7 @@ postinst__ubuntu_jammy() {
     # Handle MariaDB upgrade scenarios
     if [ -f /opt/zextras/db/data/mysql_upgrade_info ]; then
       # Check if this is a major version upgrade
-      current_version="10.11.14"
+      current_version="10.11.20"
       installed_version=$(cat /opt/zextras/db/data/mysql_upgrade_info | head -n1 | cut -d'-' -f1)
 
       # Compare major and minor version numbers
@@ -338,7 +338,7 @@ postinst__ubuntu_noble() {
     # Handle MariaDB upgrade scenarios
     if [ -f /opt/zextras/db/data/mysql_upgrade_info ]; then
       # Check if this is a major version upgrade
-      current_version="10.11.14"
+      current_version="10.11.20"
       installed_version=$(cat /opt/zextras/db/data/mysql_upgrade_info | head -n1 | cut -d'-' -f1)
 
       # Compare major and minor version numbers
@@ -405,7 +405,7 @@ postinst__rocky_8() {
   # Handle MariaDB upgrade scenarios
   if [ -f /opt/zextras/db/data/mysql_upgrade_info ]; then
     # Check if this is a major version upgrade
-    current_version="10.11.14"
+    current_version="10.11.20"
     installed_version=$(cat /opt/zextras/db/data/mysql_upgrade_info | head -n1 | cut -d'-' -f1)
 
     # Compare major and minor version numbers
@@ -469,7 +469,7 @@ postinst__rocky_9() {
   # Handle MariaDB upgrade scenarios
   if [ -f /opt/zextras/db/data/mysql_upgrade_info ]; then
     # Check if this is a major version upgrade
-    current_version="10.11.14"
+    current_version="10.11.20"
     installed_version=$(cat /opt/zextras/db/data/mysql_upgrade_info | head -n1 | cut -d'-' -f1)
 
     # Compare major and minor version numbers
