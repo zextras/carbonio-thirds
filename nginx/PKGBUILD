@@ -1,5 +1,5 @@
 pkgname="carbonio-nginx"
-pkgver="1.30.7" # renovate: datasource=github-tags depName=nginx/nginx
+pkgver="1.30.8" # renovate: datasource=github-tags depName=nginx/nginx
 pkgrel="1"
 pkgdesc="Lightweight HTTP server and IMAP/POP3 proxy server"
 arch=('aarch64' 'x86_64')
@@ -60,7 +60,7 @@ source=(
   "lua-resty-lrucache::git+https://github.com/openresty/lua-resty-lrucache#commit=0bb1eff11d248ad22026b935b28453ec7f1b27c5"
   "stream-lua-nginx-module::git+https://github.com/openresty/stream-lua-nginx-module#commit=7581c68b43e1645bffe0d7262b1f4230d9698a6a"
   "${pkgname}.service"
-  "${pkgname}-${pkgver}.patch"
+  "${pkgname}.patch"
   "lua_default_path.patch"
   "lua_luajit_warning.patch"
   "sd_notify.patch"
@@ -70,7 +70,7 @@ source=(
   "systemd-tmpfile.conf"
 )
 sha256sums=(
-  '2565b5c837050e958f70fb0f73c48e2bca4542ad349fd356f46fb0c72610bc6e'
+  'f867314ada32e717b949930859656c48a72dc6657aec598db58af2f98a40e1c1'
   'SKIP'
   'SKIP'
   'SKIP'
@@ -153,7 +153,7 @@ prepare() {
   fi
 
   cd "${srcdir}/nginx-${pkgver}"
-  patch -Np1 --forward -r - -i "${srcdir}/${pkgname}-${pkgver}.patch" || [ $? -eq 1 ]
+  patch -Np1 --forward -r - -i "${srcdir}/${pkgname}.patch" || [ $? -eq 1 ]
   patch -Np1 --forward -r - -i "${srcdir}/sd_notify.patch" || [ $? -eq 1 ]
   patch -Np1 --forward -r - -i "${srcdir}/endianness_cross.patch" || [ $? -eq 1 ]
 
