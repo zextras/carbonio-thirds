@@ -1,5 +1,5 @@
 pkgname="carbonio-postfix"
-pkgver="3.11.7" # renovate: datasource=repology depName=arch/postfix
+pkgver="3.11.8" # renovate: datasource=repology depName=arch/postfix
 pkgrel="4"
 pkgdesc="Fast, easy to administer, secure mail server"
 arch=('aarch64' 'x86_64')
