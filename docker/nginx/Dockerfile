@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.24
+# syntax=docker/dockerfile:1.29
 
 FROM --platform=$BUILDPLATFORM docker.io/library/ubuntu:jammy AS installer
 
